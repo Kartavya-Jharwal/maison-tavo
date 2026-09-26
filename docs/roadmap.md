@@ -87,13 +87,18 @@ without asking the person who did the work.
 Groundwork. Cheap, fast, and de-risks everything downstream.
 
 - [x] This roadmap committed and published in the docs site nav.
-- [ ] **Competitor machine-readability audit** (brief Section 1 open thread) run and written to
-      `docs/audit-machine-readability.md`: view-source + app-listing check across Mauviel,
-      Demeyere, HexClad, Our Place, Smithey for JSON-LD, GTIN, induction-compatibility fields,
-      and any UCP/agentic exposure. Substantiates the first-mover position (D4); findings
-      tagged VERIFIED / OBSERVED / HYPOTHESIS per the brief's evidence tiers.
-- [ ] Catalog spec schema reviewed against the audit findings (does our schema answer the gap the
-      audit actually found, or the one we assumed?).
+- [x] **Competitor machine-readability audit** (brief Section 1 open thread) —
+      [docs/audit-machine-readability.md](audit-machine-readability.md). All seven competitors
+      checked; findings tagged VERIFIED / OBSERVED / HYPOTHESIS. Outcome: D4 rescoped — the
+      defensible claim is "first in cookware to make the product spec layer machine-readable"
+      (agentic *transactions* are already Shopify platform table stakes; the *spec layer* is
+      the open gap).
+- [x] Catalog spec schema reviewed against the audit findings — confirmed aligned: the audit's
+      key implication (Shopify's native UCP catalog carries no metafields) means
+      differentiation comes from enriched JSON-LD `additionalProperty` (M4) plus the agent
+      layer reading `packages/catalog` directly (M2) — both already planned; the schema carries
+      exactly the fields (material architecture, heat sources, dimensions) the audit found
+      missing everywhere else.
 - [x] Strategic decisions register opened ([decisions.md](decisions.md)) — category question
       (D1), provenance (D2), and ICP blend (D3) decided; audit position (D4) recorded.
 - [ ] **Motion spike:** anime.js + Motion (vanilla ESM builds) vendored into `theme/assets/`,

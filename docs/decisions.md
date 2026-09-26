@@ -67,19 +67,29 @@ change the answer.
 
 ### D4 — Is the "machine-readable" gap real across competitors?
 
-- **Status:** Position taken (26 Sep 2026); audit substantiation due M0, brief Section 1.
-- **Decision:** Working position — **no competitor has made a legible shift into agentic
-  commerce; this is a first-mover advantage.** Maison Tavo builds as the category's first
-  agent-native cookware brand.
-- **Rationale:** Consistent with the OBSERVED split in the brief (heirloom brands on thin
-  digital, D2C brands on templated Shopify). The M0 audit (`docs/audit-machine-readability.md`)
-  still runs — not to decide the position, but to *substantiate* it with per-competitor
-  evidence (JSON-LD, GTIN, induction fields, UCP exposure) before the claim appears in
-  customer-facing copy. Per evidence-tier discipline, the claim is HYPOTHESIS until the audit
-  promotes it to OBSERVED.
-- **Reversible?** Yes — if the audit finds a competitor already exposing agent-consumable
-  structured commerce data, the claim narrows to "first in cookware at this depth" and the
-  copy adjusts.
+- **Status:** **Decided — claim rescoped after audit** (26 Sep 2026), brief Section 1. Full
+  evidence: [audit-machine-readability.md](audit-machine-readability.md).
+- **Decision:** The first-mover claim narrows to the spec layer: **"first in cookware to make
+  the product spec layer machine-readable."** The unqualified "first in agentic commerce"
+  claim is abandoned — it is falsifiable by anyone with curl.
+- **Audit findings:**
+  - HexClad, Our Place, and Smithey already expose full agentic *transactions* (UCP profile,
+    13 MCP tools incl. `complete_checkout`, payment handlers) — but as **Shopify's platform
+    default**, not brand initiative (OBSERVED). Agentic checkout is table stakes on Shopify,
+    not differentiation.
+  - **Zero of seven competitors** (Mauviel, Demeyere, HexClad, Our Place, Smithey, Made In,
+    Borough Furnace) expose material, dimensions, or heat-source compatibility as structured
+    fields — VERIFIED including a live UCP `search_catalog` probe against HexClad where
+    induction compatibility exists only in description prose.
+  - GTIN is partially closed (Mauviel, Demeyere, Our Place) — table stakes, not
+    differentiation.
+- **Consequence:** Shopify's native UCP catalog response carries no metafields, so metafields
+  alone do not differentiate the agent surface. The gap is closed only by enriched JSON-LD
+  `additionalProperty` on PDPs **plus** the `apps/agents` constraint evaluator reading
+  `packages/catalog` directly — making the catalog spec schema the load-bearing artifact of
+  the claim. This is now reflected in the M2/M4 markers.
+- **Reversible?** The audit is repeatable; if a competitor ships structured spec data, the
+  claim re-narrows to depth ("first at this depth").
 
 ### D5 — Exact layer stack in customer-facing copy
 
