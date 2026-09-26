@@ -357,6 +357,10 @@ rationale:
 
 - Live theme is never touched automatically: development theme only until an explicit production
   push is approved (see `theme/AGENTS.md`).
+- Theme dev loop is push-based (`shopify theme push --development --nodelete` + preview URL)
+  until the CLI's `theme dev` color_palette validation bug is fixed upstream — see
+  [development.md](development.md). Do not change valid `color_palette` defaults to appease the
+  dev server.
 - React Router imports only in `hydrogen/` — never `react-router-dom`, never `@remix-run/*`.
 - Evidence-tier discipline: VERIFIED / OBSERVED / HYPOTHESIS tags survive into customer-facing
   copy on the About page; nothing unaudited gets quoted as fact.

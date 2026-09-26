@@ -7,32 +7,32 @@
           "type": "entry",
           "settings": {
             "date_label": "Note 01",
-            "heading": "The rooms of the house",
-            "text": "<p>We begin with proportion: header, collection, and the quiet of an empty cart. The storefront should feel like a well-lit atelier — nothing competing with the cloth.</p>"
+            "heading": "The mixed-revenue kitchen",
+            "text": "<p>At Savi, rooms only held after corporate MICE banquets ran morning to evening and walk-in family lunches shared the same kitchen and service spine. Mixed revenue, not a single hero dish.</p>"
           }
         },
         "pattern": {
           "type": "entry",
           "settings": {
             "date_label": "Note 02",
-            "heading": "Pattern before colour",
-            "text": "<p>The first toile is always in calico. Online, that discipline becomes information architecture: About, Story, Building of, Journal — rooms that exist before merchandise shouts.</p>"
+            "heading": "Menu before merch",
+            "text": "<p>At Siya, every historical menu was digitised before repricing. Culinary families, seasonals, rotational pop-ups, print-ready composition. The storefront inherits that order: rooms that exist before merchandise shouts.</p>"
           }
         },
         "cloth": {
           "type": "entry",
           "settings": {
             "date_label": "Note 03",
-            "heading": "Cloth and token",
-            "text": "<p>Colour on the site is inherited from Horizon’s tokens so the house can change cloth without rewriting the rooms. Placeholder copy lives here until the atelier replaces it with the season’s true notes.</p>"
+            "heading": "Kill gates",
+            "text": "<p>The leased-hotel hold was returned when the thesis failed — offboarding records, inventory state, a pitchbook. The house keeps that honesty: stop when the work will not hold.</p>"
           }
         },
         "light": {
           "type": "entry",
           "settings": {
             "date_label": "Note 04",
-            "heading": "Light on the worktable",
-            "text": "<p>Photography will arrive last. Until then, type and space carry the fitting. We would rather show an honest empty wall than a borrowed set.</p>"
+            "heading": "Software as mise en place",
+            "text": "<p>Kartavya also builds software — restaurant platforms, hospitality automation, this storefront. Code is prep: labelled, rotated, ready for service. It is not the tasting menu.</p>"
           }
         },
         "open": {
@@ -40,15 +40,15 @@
           "settings": {
             "date_label": "Note 05",
             "heading": "Opening the door",
-            "text": "<p>When the first edition is ready, this journal will record the making — not the marketing. Add entries in the theme editor; keep the voice of the house.</p>"
+            "text": "<p>About, Story, Building of, Journal. Add entries as the kitchen advances. Keep the voice of the house.</p>"
           }
         }
       },
       "block_order": ["rooms", "pattern", "cloth", "light", "open"],
       "settings": {
-        "eyebrow": "Atelier",
+        "eyebrow": "Kitchen",
         "heading": "Building of",
-        "lede": "A making-of journal for the house: how a collection is cut, how the rooms of the storefront are composed, and what we refuse along the way. These notes are living copy — replace them as the atelier advances.",
+        "lede": "A making-of journal for the house: how hotel F&B and restaurant menus became a product house, and how the storefront is composed. These notes are living copy, sourced from published work.",
         "padding-block-start": 48,
         "padding-block-end": 80
       }

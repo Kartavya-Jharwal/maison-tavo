@@ -65,6 +65,7 @@
     </div>
   </dialog>
 
+  <script src="{{ 'maison-runtime.js' | asset_url }}" defer></script>
   <script>
     (function () {
       var dialog = document.getElementById('SplashIntro');
@@ -104,6 +105,37 @@
         } catch (error) {}
       }
 
+      function finishClose() {
+        if (typeof dialog.close === 'function') {
+          dialog.close();
+        } else {
+          dialog.removeAttribute('open');
+        }
+        dialog.removeAttribute('data-closing');
+        closing = false;
+      }
+
+      function closeWithMotion(done) {
+        var runtime = window.MaisonRuntime;
+        var panel = dialog.querySelector('.splash-intro__panel');
+        if (!runtime || typeof runtime.animate !== 'function' || !panel) {
+          window.setTimeout(done, 280);
+          return;
+        }
+        try {
+          var result = runtime.animate(
+            panel,
+            { opacity: [1, 0], transform: ['none', 'translateY(-0.5rem)'] },
+            { duration: 0.28 }
+          );
+          if (result && result.finished && typeof result.finished.then === 'function') {
+            result.finished.then(done).catch(done);
+            return;
+          }
+        } catch (error) {}
+        window.setTimeout(done, 280);
+      }
+
       function closeSplash() {
         if (closing || !dialog.open) return;
         closing = true;
@@ -111,22 +143,12 @@
         markSeen();
         dialog.setAttribute('data-closing', '');
 
-        var finish = function () {
-          if (typeof dialog.close === 'function') {
-            dialog.close();
-          } else {
-            dialog.removeAttribute('open');
-          }
-          dialog.removeAttribute('data-closing');
-          closing = false;
-        };
-
         if (reduceMotion) {
-          finish();
+          finishClose();
           return;
         }
 
-        window.setTimeout(finish, 280);
+        closeWithMotion(finishClose);
       }
 
       if (hasSeen()) {
@@ -166,7 +188,9 @@
     })();
   </script>
 
-  {% stylesheet %}
+{% endif %}
+
+{% stylesheet %}
     .splash-intro {
       inset: 0;
       width: 100%;
@@ -252,5 +276,4 @@
         animation: none;
       }
     }
-  {% endstylesheet %}
-{% endif %}
+{% endstylesheet %}

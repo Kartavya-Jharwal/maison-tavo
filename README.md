@@ -39,6 +39,7 @@ Theme CLI (`shopify theme dev`) serves HTTP on port **9292** and creates an **un
 | `bun run dev:hydrogen:https` | HTTPS proxy https://localhost:3443 → 3000 |
 | `bun run dev:agents` | Agent server at https://localhost:4443 |
 | `bun run tunnel:agents` | Cloudflare tunnel in front of 4443 |
+| `bun run theme:build` | Bundle theme JS (`motion`, `zustand`) into `theme/assets/` |
 | `bun run theme:check` | Shopify Theme Check |
 | `bun run typecheck` | Typecheck `packages/ucp` and `apps/agents` |
 | `bun test packages apps` | Unit tests |

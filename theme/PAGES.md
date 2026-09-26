@@ -19,7 +19,9 @@ Do not remove the footer **Policy links** block. It lists Shopify-hosted policie
 
 Location: footer group → **Policies and links** (`sections/footer-utilities.liquid`) → **Copyright** block (`blocks/footer-copyright.liquid`).
 
-The line reads “Site designed and developed by **Kartavya**” and links to [https://kartavya.tech](https://kartavya.tech) (`target="_blank"`, `rel="noopener"`). Toggle and labels live on that block; name/URL also fall back to **Theme settings → Navigation & pages**. Existing copyright, powered-by Shopify, and policy/menu blocks stay in place.
+The line reads “Site designed and developed by **Kartavya Jharwal**” and links to [https://kartavya.tech](https://kartavya.tech) (`target="_blank"`, `rel="noopener"`). Full name matches the published contact card; the URL is unchanged. Toggle and labels live on that block; name/URL also fall back to **Theme settings → Navigation & pages**. Existing copyright, powered-by Shopify, and policy/menu blocks stay in place.
+
+Founder and developer copy for About / Our story / Building of is sourced in `FOUNDER.md`. Do not paste resume text into lawyer-review legal pages.
 
 ## Pages to create
 

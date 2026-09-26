@@ -2,7 +2,9 @@
   "name": "@maison-tavo/theme",
   "description": "Maison Tavo live storefront — customized Horizon (Liquid)",
   "private": true,
+  "type": "module",
   "scripts": {
+    "build": "bun scripts/build.ts",
     "dev": "shopify theme dev -e development",
     "pull": "shopify theme pull -e development",
     "pull:live": "shopify theme pull -e production",
@@ -14,5 +16,9 @@
   },
   "devDependencies": {
     "@shopify/cli": "4.8.2"
+  },
+  "dependencies": {
+    "motion": "^13.4.4",
+    "zustand": "^5.0.15"
   }
 }

@@ -6,22 +6,22 @@
         "craft": {
           "type": "pillar",
           "settings": {
-            "heading": "Craft over spectacle",
-            "text": "<p>Every silhouette is cut for the body that will wear it, not the camera that might catch it. We edit until only the necessary line remains.</p>"
+            "heading": "Kitchen before spectacle",
+            "text": "<p>At Savi Hotels &amp; Resorts in Jaipur, Kartavya Jharwal took operating control of a leased property: banquet dayparts, walk-in family lunches, and rooms sharing one kitchen and service spine. We still edit until only the line that can hold volume remains.</p>"
           }
         },
         "material": {
           "type": "pillar",
           "settings": {
-            "heading": "Material honesty",
-            "text": "<p>Cloth is chosen for hand and age: how it falls in late light, how it will look after a hundred evenings. Hardware is quiet. Linings are finished as if they might be seen.</p>"
+            "heading": "Menu honesty",
+            "text": "<p>At Siya, the property restaurant, the work was a 191-item menu: taxonomy, bills of materials, and pricing staff could audit. What the house prints is what the kitchen can stand behind.</p>"
           }
         },
         "quiet": {
           "type": "pillar",
           "settings": {
-            "heading": "Quiet luxury",
-            "text": "<p>Maison Tavo does not chase a calendar of drops for their own sake. We open the atelier when a story is complete, and we close it when the edition is spoken for.</p>"
+            "heading": "Quiet hospitality",
+            "text": "<p>The published record prefers playbooks to noise, and a kill gate to a story that will not hold. Maison Tavo opens when the edition is ready — not on a calendar of drops.</p>"
           }
         }
       },
@@ -29,8 +29,8 @@
       "settings": {
         "eyebrow": "The house",
         "heading": "Maison Tavo",
-        "lede": "A house of considered objects, made to be lived with and remembered. We work slowly, in small editions, for people who prefer presence to noise.",
-        "closing": "Maison Tavo is not a season. It is a wardrobe built in chapters — each piece a quiet argument for lasting form.",
+        "lede": "A food house of considered objects, made to be lived with and remembered. Kartavya Jharwal builds it between London and Jaipur — from hotel kitchens, restaurant menus, and the discipline of a well-run pass.",
+        "closing": "Kartavya also builds software. This storefront is designed and developed at kartavya.tech. The house itself remains a product house for food.",
         "padding-block-start": 48,
         "padding-block-end": 80
       }

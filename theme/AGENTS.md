@@ -12,6 +12,7 @@ From the repo root:
 
 ```bash
 bun run theme:check
+bun run theme:build            # bundle scripts/src → assets (motion, zustand)
 bun run dev:theme              # http://127.0.0.1:9292 — unpublished development theme
 bun run dev:theme:https        # https://localhost:9443 → 9292 (second terminal; run `bun run certs` first)
 ```
@@ -19,6 +20,7 @@ bun run dev:theme:https        # https://localhost:9443 → 9292 (second termina
 From `theme/`:
 
 ```bash
+bun run build
 shopify theme dev -e development
 shopify theme check
 shopify theme pull -e production     # sync from live (skips settings_data.json)
@@ -64,3 +66,25 @@ Keep `assets/package.json` (`{ "type": "module" }`). It is part of Horizon’s J
 - Ignore `assets/**` in `.shopifyignore`.
 - Restyle live pages in `hydrogen/`.
 - Hardcode Cloudflare tunnel URLs in committed files.
+
+## Storefront JS bundle (Bun)
+
+Liquid cannot import npm. Source lives in `scripts/src/`; `bun run build` (from `theme/`, or `bun run theme:build` from the repo root) emits Shopify-uploadable files in `assets/`. Edit the source, then rebuild — do not hand-edit the generated assets.
+
+| Package | Role |
+| --- | --- |
+| `motion` | Vanilla animation (`animate`, `stagger`, `inView`, `scroll`). No React. |
+| `zustand` | Vanilla stores (`createStore` from `zustand/vanilla`) for JS islands / microapps. |
+
+```bash
+bun run --cwd theme build
+# or from repo root:
+bun run theme:build
+```
+
+| Output | Loader |
+| --- | --- |
+| `assets/maison-runtime.js` | IIFE, sets `window.MaisonRuntime`. Loaded from `snippets/splash-intro.liquid` (`defer`). |
+| `assets/microapp-lookbook.js` | Lookbook island (Zustand + Motion). Loaded by `sections/maison-microapp.liquid` inside the sandboxed iframe. |
+
+Keep `assets/package.json` as `{ "type": "module" }` (Horizon ESM). `scripts/` is in `.shopifyignore`; the bundled files in `assets/` are what Shopify uploads. GSAP, Lenis, and React are not in this bundle — do not replace Horizon with a SPA.

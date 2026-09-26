@@ -21,7 +21,7 @@
   </span>
   {%- if block_settings.show_developer_credit -%}
     {%- liquid
-      assign developer_name = block_settings.developer_name | default: settings.maison_developer_name | default: 'Kartavya'
+      assign developer_name = block_settings.developer_name | default: settings.maison_developer_name | default: 'Kartavya Jharwal'
       assign developer_url = block_settings.developer_url | default: settings.maison_developer_url | default: 'https://kartavya.tech'
       if developer_url == blank
         assign developer_url = 'https://kartavya.tech'
@@ -86,14 +86,13 @@
       "type": "text",
       "id": "developer_name",
       "label": "t:settings.maison_developer_name",
-      "default": "Kartavya",
+      "default": "Kartavya Jharwal",
       "visible_if": "{{ block.settings.show_developer_credit == true }}"
     },
     {
       "type": "url",
       "id": "developer_url",
       "label": "t:settings.maison_developer_url",
-      "default": "https://kartavya.tech",
       "visible_if": "{{ block.settings.show_developer_credit == true }}"
     },
     {

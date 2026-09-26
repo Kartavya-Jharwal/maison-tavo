@@ -18,7 +18,8 @@
     "tunnel:agents": "bunx cloudflared tunnel --url https://localhost:4443 --no-tls-verify",
     "typecheck": "bun run --filter '@maison-tavo/ucp' --filter '@maison-tavo/agents' typecheck",
     "test": "bun test packages apps",
-    "theme:check": "bun run --cwd theme check"
+    "theme:check": "bun run --cwd theme check",
+    "theme:build": "bun run --cwd theme build"
   },
   "devDependencies": {
     "@types/bun": "^1.3.14",
