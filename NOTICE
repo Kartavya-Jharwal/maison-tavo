@@ -1,0 +1,4 @@
+The storefront scaffold comes from the Shopify Hydrogen skeleton
+(https://github.com/Shopify/hydrogen). Those upstream files stay under
+Shopify's license. Maison Tavo's license in LICENSE applies to this
+project and does not replace Shopify's terms for the unmodified skeleton.
