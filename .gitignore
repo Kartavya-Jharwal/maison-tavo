@@ -1,12 +1,17 @@
 node_modules
-/.cache
-/build
-/dist
-/public/build
-/.mf
+.cache
+build
+dist
+hydrogen/public/build
+.mf
 .env
+apps/agents/.env
 .shopify
 .react-router
+*.tsbuildinfo
+
+# Local HTTPS certificates from `bun run certs`
+.certs/
 
 # MkDocs
 /site

@@ -1,0 +1,184 @@
+{% liquid
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+
+  assign app_id = section.settings.app_id | strip | downcase
+  if app_id == blank and page != blank
+    assign metafield_id = page.metafields.maison.microapp_id.value | default: page.metafields.custom.microapp_id.value
+    assign app_id = metafield_id | strip | downcase
+  endif
+  if app_id == blank
+    assign app_id = 'lookbook'
+  endif
+  assign app_id = app_id | handleize | replace: '_', '-'
+  assign asset_file = 'microapp-' | append: app_id | append: '.js'
+  assign script_url = asset_file | asset_url
+  assign frame_title = section.settings.heading | default: app_id
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+<div
+  class="section section--page-width spacing-style maison-editorial maison-microapp{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  data-microapp-id="{{ app_id | escape }}"
+>
+  <header class="maison-editorial__header">
+    {% if section.settings.eyebrow != blank %}
+      <p class="maison-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h1 class="maison-editorial__title">{{ section.settings.heading | escape }}</h1>
+    {% elsif page != blank %}
+      <h1 class="maison-editorial__title">{{ page.title | escape }}</h1>
+    {% endif %}
+    {% if section.settings.lede != blank %}
+      <p class="maison-editorial__lede">{{ section.settings.lede | escape }}</p>
+    {% endif %}
+    <p class="maison-microapp__demo-note">{{ 'maison.microapp_demo_note' | t }}</p>
+  </header>
+
+  {% if app_id == blank %}
+    <p class="maison-microapp__missing">{{ 'maison.microapp_invalid' | t }}</p>
+  {% else %}
+    <iframe
+      class="maison-microapp__frame"
+      title="{{ frame_title | escape }}"
+      sandbox="allow-scripts"
+      referrerpolicy="no-referrer"
+      srcdoc="<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><style>html,body{margin:0;min-height:100%;background:transparent;color:inherit;font-family:system-ui,sans-serif}</style></head><body><div id='maison-microapp-root' data-microapp-id='{{ app_id | escape }}'></div><script src='{{ script_url }}'></script></body></html>"
+    ></iframe>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .maison-editorial {
+    color: var(--color-foreground);
+  }
+
+  .maison-editorial__header {
+    max-width: 42rem;
+    margin-block-end: 3rem;
+  }
+
+  .maison-editorial__eyebrow {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-editorial__title {
+    margin-block: 0.75rem 1rem;
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    letter-spacing: 0.04em;
+  }
+
+  .maison-editorial__lede {
+    margin: 0;
+    max-width: 40rem;
+    color: var(--color-foreground-muted);
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+
+  .maison-microapp__demo-note {
+    margin: 1rem 0 0;
+    max-width: 40rem;
+    color: var(--color-foreground-muted);
+    font-size: 0.875rem;
+  }
+
+  .maison-microapp__frame {
+    display: block;
+    width: 100%;
+    min-height: 32rem;
+    margin-block-start: 2rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .maison-microapp__missing {
+    color: var(--color-foreground-muted);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.maison_microapp",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "app_id",
+      "label": "t:settings.maison_app_id",
+      "default": "lookbook",
+      "info": "t:info.maison_microapp_id"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:settings.maison_eyebrow",
+      "default": "Atelier tools"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "Colour story explorer"
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "t:settings.maison_lede",
+      "default": "A frontend-only lookbook toy. Pair palettes with silhouettes. Nothing is saved; this is not a Shopify app."
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.maison_microapp",
+      "category": "t:categories.custom"
+    }
+  ]
+}
+{% endschema %}

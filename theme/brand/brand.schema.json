@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://maison-tavo.local/theme/brand/brand.schema.json",
+  "title": "Maison Tavo brand tokens",
+  "description": "Canonical brand bible for the Horizon theme. Swap this file per client, then copy values into Theme settings. Runtime CSS is emitted from settings, not from this JSON.",
+  "type": "object",
+  "required": ["color", "typography", "spacing", "radius", "shadow", "motion", "zIndex", "breakpoints", "borders"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "theme": { "type": "string" },
+        "snapshot": { "type": "string" },
+        "layers": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["primitive", "semantic", "component"] }
+        },
+        "howto": { "type": "string" }
+      }
+    },
+    "color": { "$ref": "#/$defs/category" },
+    "typography": { "$ref": "#/$defs/category" },
+    "spacing": { "$ref": "#/$defs/tokenMap" },
+    "radius": { "$ref": "#/$defs/tokenMap" },
+    "shadow": { "$ref": "#/$defs/tokenMap" },
+    "motion": { "$ref": "#/$defs/tokenMap" },
+    "zIndex": { "$ref": "#/$defs/tokenMap" },
+    "breakpoints": { "$ref": "#/$defs/tokenMap" },
+    "borders": { "$ref": "#/$defs/tokenMap" },
+    "layout": { "$ref": "#/$defs/category" },
+    "component": { "$ref": "#/$defs/category" }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "token": {
+      "type": "object",
+      "required": ["value"],
+      "properties": {
+        "value": {
+          "type": ["string", "number", "integer"]
+        },
+        "css": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "array", "items": { "type": "string" } }
+          ]
+        },
+        "setting": { "type": "string" },
+        "layer": { "type": "string" },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "tokenMap": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          { "$ref": "#/$defs/token" },
+          { "$ref": "#/$defs/tokenMap" }
+        ]
+      }
+    },
+    "category": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          { "$ref": "#/$defs/token" },
+          { "$ref": "#/$defs/tokenMap" },
+          { "$ref": "#/$defs/category" }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "legal": {
+      "type": "maison-legal",
+      "settings": {
+        "document": "terms",
+        "eyebrow": "Legal",
+        "heading": "Terms of Service",
+        "show_native_policy": true,
+        "padding-block-start": 48,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": ["legal"]
+}

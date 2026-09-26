@@ -1,5 +1,11 @@
 name: Storefront 1000180983
-on: [push]
+on:
+  push:
+    paths:
+      - "hydrogen/**"
+      - "package.json"
+      - "bun.lock"
+      - ".github/workflows/oxygen-deployment-1000180983.yml"
 
 permissions:
   contents: read
@@ -26,6 +32,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Build and Publish to Oxygen
-        run: npx shopify hydrogen deploy
+        working-directory: hydrogen
+        run: bun run deploy
         env:
           SHOPIFY_HYDROGEN_DEPLOYMENT_TOKEN: ${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_1000180983 }}

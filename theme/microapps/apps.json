@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "id": "lookbook",
+      "title": "Lookbook / colour story explorer",
+      "description": "Frontend-only demo: pair Maison Tavo palettes with silhouettes. No backend, no cart, no personal data.",
+      "entry": "microapp-lookbook.js",
+      "route_handle": "lookbook"
+    }
+  ]
+}

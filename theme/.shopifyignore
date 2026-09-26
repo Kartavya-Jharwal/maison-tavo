@@ -1,0 +1,6 @@
+# Workspace files only — do not ignore Liquid/CSS/JS, or assets/package.json
+# (Horizon ES modules). A bare `package.json` pattern would hide that asset.
+/package.json
+/shopify.theme.toml
+/node_modules
+/AGENTS.md

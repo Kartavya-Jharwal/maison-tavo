@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "legal": {
+      "type": "maison-legal",
+      "settings": {
+        "document": "ipr",
+        "eyebrow": "Legal",
+        "heading": "Intellectual property",
+        "show_native_policy": false,
+        "padding-block-start": 48,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": ["legal"]
+}

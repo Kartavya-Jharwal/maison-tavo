@@ -1,0 +1,287 @@
+{% doc %}
+  Default legal HTML for privacy, terms, and IPR house pages.
+  Matches theme/legal/*.md. Merchant richtext in the section overrides this.
+
+  @param {string} document - privacy, terms, or ipr
+{% enddoc %}
+
+{%- case document -%}
+  {%- when 'privacy' -%}
+    <h2>1. Who we are</h2>
+    <p>
+      This Privacy Policy is <strong>template copy requiring lawyer review</strong>. It is not legal advice.
+      For the purposes of this placeholder, the operator of the Maison Tavo storefront is Kartavya
+      (together with Maison Tavo, “we”, “us”). Contact:
+      {% if shop.email != blank %}
+        <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>
+      {% else %}
+        the email address published on this store
+      {% endif %}
+      and <a href="https://kartavya.tech" target="_blank" rel="noopener">kartavya.tech</a>.
+    </p>
+    <h2>2. Scope</h2>
+    <p>
+      This notice describes how we may collect, use, store, and share personal information when you visit
+      {{ shop.name }}, create an account, place an order, contact us, or otherwise interact with our Shopify-hosted
+      storefront and related services (including checkout, customer accounts, and email).
+    </p>
+    <h2>3. Information we collect</h2>
+    <p>Depending on how you use the store, we may process:</p>
+    <ul>
+      <li>Identity and contact data (name, email, shipping and billing addresses, phone number).</li>
+      <li>Order and transaction data (products purchased, payment status, fulfilment details). Payment card data is processed by Shopify and payment providers; we do not intend to store full card numbers.</li>
+      <li>Account data if you register (login identifiers, order history, saved addresses, preferences).</li>
+      <li>Technical and usage data (IP address, device and browser type, approximate location, pages viewed, referring URLs) via Shopify, cookies, and similar technologies.</li>
+      <li>Communications you send us (enquiries, reviews, returns correspondence).</li>
+      <li>Marketing preferences (newsletter signup, consent records where required).</li>
+    </ul>
+    <h2>4. How we use information</h2>
+    <p>We use personal information to:</p>
+    <ul>
+      <li>Provide, fulfil, and administer orders, returns, exchanges, and customer service.</li>
+      <li>Operate accounts, authentication, and fraud prevention.</li>
+      <li>Comply with tax, accounting, consumer, and other legal obligations.</li>
+      <li>Improve the storefront, diagnose issues, and understand aggregated shopping behaviour.</li>
+      <li>Send service messages (order updates) and, where permitted, marketing about Maison Tavo.</li>
+    </ul>
+    <h2>5. Legal bases (placeholder)</h2>
+    <p>
+      Where data protection laws require a legal basis, we may rely on performance of a contract, legitimate
+      interests (for example securing the store and understanding how it is used), compliance with law, and
+      consent (for example optional marketing cookies or newsletters). This paragraph must be rewritten for
+      the jurisdictions in which Maison Tavo actually sells.
+    </p>
+    <h2>6. Sharing</h2>
+    <p>
+      We share information with service providers who assist the house, including Shopify Inc. and its
+      affiliates, payment processors, fulfilment and shipping partners, email and analytics vendors, and
+      professional advisers. We may disclose information if required by law, to protect rights and safety,
+      or in connection with a merger, acquisition, or sale of assets. We do not sell personal information
+      as a standalone product. If you are in a jurisdiction with a “sale” or “sharing” definition for
+      advertising cookies, have counsel map those flows before launch.
+    </p>
+    <h2>7. Cookies and similar technologies</h2>
+    <p>
+      Shopify and optional apps may set cookies, pixels, and local storage for checkout, sessions, preferences,
+      analytics, and advertising. You can control cookies through your browser. Blocking some cookies may
+      affect cart and checkout. Configure a cookie banner and Shopify customer privacy settings to match
+      the markets you serve.
+    </p>
+    <h2>8. Retention</h2>
+    <p>
+      We retain personal information for as long as needed for the purposes above, including order records
+      required for tax and consumer law, then delete or anonymise it according to Shopify tools and our
+      internal schedule. Retention periods must be confirmed by counsel and operations.
+    </p>
+    <h2>9. Security</h2>
+    <p>
+      We use Shopify’s platform controls and organisational measures appropriate to a small luxury house.
+      No method of transmission or storage is perfectly secure. Please use a unique password for your
+      customer account and contact us promptly if you suspect unauthorised access.
+    </p>
+    <h2>10. International transfers</h2>
+    <p>
+      Shopify and our providers may process data in countries other than your own, including Canada, the
+      United States, and other locations where Shopify operates. Transfer safeguards (for example standard
+      contractual clauses) should be confirmed against Shopify’s current data processing terms.
+    </p>
+    <h2>11. Your rights</h2>
+    <p>
+      Depending on your location, you may have rights to access, correct, delete, restrict, or port your
+      data, to object to certain processing, and to withdraw consent. Customer account tools and Shopify
+      privacy settings may help you exercise some of these rights. You may also contact us using the
+      details above, and you may complain to a supervisory authority. Do not treat this list as exhaustive
+      or as creating rights that local law does not grant.
+    </p>
+    <h2>12. Children</h2>
+    <p>
+      Maison Tavo is not directed to children. We do not knowingly collect personal information from
+      children under the age required by applicable law. If you believe we have, contact us so we can delete it.
+    </p>
+    <h2>13. Changes</h2>
+    <p>
+      We may update this policy. The “last reviewed” date in the accompanying markdown source
+      (<code>theme/legal/privacy.md</code>) should be updated when counsel signs off. Material changes may
+      be announced on the storefront or by email where required.
+    </p>
+    <h2>14. Contact</h2>
+    <p>
+      Maison Tavo / Kartavya — privacy enquiries via
+      {% if shop.email != blank %}{{ shop.email }}{% else %}the store contact form{% endif %}.
+      Native Shopify policy, if published:
+      {% if shop.privacy_policy %}
+        <a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title }}</a>.
+      {% else %}
+        not yet published in Admin → Settings → Policies.
+      {% endif %}
+    </p>
+
+  {%- when 'terms' -%}
+    <h2>1. Agreement</h2>
+    <p>
+      These Terms of Service are <strong>template copy requiring lawyer review</strong> and are not legal advice.
+      They govern access to {{ shop.name }} and purchases of Maison Tavo products. The store is operated by
+      Kartavya as a placeholder operator for this template. By using the site or placing an order you agree
+      to these terms and to our Privacy Policy. If you do not agree, do not use the store.
+    </p>
+    <h2>2. Eligibility</h2>
+    <p>
+      You must be able to form a binding contract in your jurisdiction and must provide accurate checkout
+      information. You are responsible for activity under your customer account.
+    </p>
+    <h2>3. Products and descriptions</h2>
+    <p>
+      We describe materials, colour, and fit with care, but photography, screens, and handmade variation mean
+      that pieces may differ slightly from images. Editions may be limited. We may correct errors in pricing
+      or description and refuse or cancel orders where we reasonably believe there is a mistake, fraud, or
+      stock issue.
+    </p>
+    <h2>4. Orders, pricing, and payment</h2>
+    <p>
+      An order is an offer to buy. Acceptance occurs when we confirm the order or dispatch the goods, as
+      specified at checkout. Prices are shown in the store currency and may exclude or include taxes and
+      duties according to Shopify Markets configuration. Payment is processed by Shopify and the payment
+      methods enabled on the store. You represent that you are authorised to use the selected method.
+    </p>
+    <h2>5. Shipping and risk</h2>
+    <p>
+      Delivery estimates are not guarantees. Risk and title pass according to the shipping terms stated at
+      checkout and any Shipping Policy published in Shopify Admin. You are responsible for providing a
+      deliverable address and for customs charges where applicable.
+    </p>
+    <h2>6. Returns, refunds, and cancellations</h2>
+    <p>
+      Returns follow the Refund Policy hosted by Shopify, if published, and any additional house rules
+      stated on the product or cart. Unworn, unaltered pieces in original condition may be returnable within
+      the stated window; made-to-order, final-sale, and intimate items may be excluded as disclosed before
+      purchase. This paragraph must be aligned with consumer mandatory rights in each market of sale.
+    </p>
+    <h2>7. Intellectual property</h2>
+    <p>
+      The Maison Tavo name, marks, product designs, photography, copy, and storefront look are protected.
+      See the Intellectual Property page (template <code>page.ipr</code>). You may not copy, scrape, or
+      commercially reuse house content without written permission, except for brief fair quotation permitted by law.
+    </p>
+    <h2>8. Acceptable use</h2>
+    <p>
+      You may not misuse the store, attempt unauthorised access, interfere with checkout, submit unlawful
+      content, or use the site to infringe others’ rights. We may suspend access where we reasonably suspect
+      abuse.
+    </p>
+    <h2>9. Third-party services</h2>
+    <p>
+      Checkout, payments, reviews, and apps may be provided by third parties under their own terms.
+      Shopify’s terms apply to platform features we do not control.
+    </p>
+    <h2>10. Disclaimer and limitation of liability</h2>
+    <p>
+      To the fullest extent permitted by law, the store and products are provided as described, and we
+      exclude implied warranties that can legally be excluded. We are not liable for indirect, incidental,
+      special, or consequential loss, or loss of profit, data, or goodwill, arising from use of the store
+      or delay in delivery, except where liability cannot be limited (including death or personal injury
+      caused by negligence, fraud, or mandatory consumer guarantees). Where liability can be limited, our
+      aggregate liability relating to an order is limited to the amount you paid for that order.
+    </p>
+    <h2>11. Indemnity</h2>
+    <p>
+      You will indemnify Maison Tavo and Kartavya against claims arising from your misuse of the store or
+      breach of these terms, to the extent permitted by law.
+    </p>
+    <h2>12. Governing law</h2>
+    <p>
+      These terms are governed by the laws of the jurisdiction in which the operator is established, without
+      prejudice to mandatory consumer protections of your country of residence. Counsel must insert the
+      actual governing law, venue, and any alternative dispute process before this store trades.
+    </p>
+    <h2>13. Changes</h2>
+    <p>
+      We may revise these terms by posting an updated version. Continued use after the effective date
+      constitutes acceptance where permitted. For material changes affecting existing orders, the terms
+      in force at purchase typically apply.
+    </p>
+    <h2>14. Contact</h2>
+    <p>
+      Maison Tavo / Kartavya —
+      {% if shop.email != blank %}{{ shop.email }}{% else %}store contact form{% endif %}.
+      Native Shopify terms, if published:
+      {% if shop.terms_of_service %}
+        <a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title }}</a>.
+      {% else %}
+        not yet published in Admin → Settings → Policies.
+      {% endif %}
+    </p>
+
+  {%- when 'ipr' -%}
+    <h2>1. Purpose</h2>
+    <p>
+      This Intellectual Property notice is <strong>template copy requiring lawyer review</strong> and is not
+      legal advice. It explains how Maison Tavo and Kartavya (placeholder operator) protect the house’s
+      names, designs, imagery, and storefront, and how visitors may use them.
+    </p>
+    <h2>2. Ownership</h2>
+    <p>
+      Unless otherwise stated, all intellectual property in the Maison Tavo house, including trade marks,
+      trade dress, product silhouettes, patterns, lookbook photography, film, copy, graphics, and the
+      selection and arrangement of the storefront, is owned by Maison Tavo, Kartavya, or licensors.
+      Purchase of a garment transfers the physical item, not the underlying design copyright, pattern,
+      or brand rights, except as required by exhaustion or other mandatory law.
+    </p>
+    <h2>3. Trade marks</h2>
+    <p>
+      “Maison Tavo”, associated logos, and campaign names are trade marks or trade names, whether or not
+      registered. You may not use them in a way that suggests endorsement, affiliation, or that you operate
+      the house. Domain names, social handles, and metadata that imitate the house are not permitted.
+    </p>
+    <h2>4. Copyright</h2>
+    <p>
+      Site text, product stories, journal articles, and original photography are protected by copyright.
+      You may view them for personal, non-commercial shopping. You may not reproduce galleries, scrape
+      product data for competing catalogues, train models on house imagery where prohibited, or republish
+      lookbooks without written consent.
+    </p>
+    <h2>5. Design and product rights</h2>
+    <p>
+      Maison Tavo products may be protected by design registrations, unregistered design rights, copyright
+      in artistic craftsmanship, and trade dress. Copying, adapting, or manufacturing confusingly similar
+      garments, hardware, or packaging for commercial purposes is prohibited.
+    </p>
+    <h2>6. Limited licence to visitors</h2>
+    <p>
+      We grant a limited, revocable, non-transferable licence to access the storefront and to download a
+      copy of a page for personal reference. Framing, mirroring, or systematic extraction of the catalogue
+      is outside this licence.
+    </p>
+    <h2>7. User submissions</h2>
+    <p>
+      If you send comments, photos, or reviews, you grant Maison Tavo a worldwide, royalty-free licence to
+      use that content to operate and promote the house, while you retain ownership of your original
+      copyright. Do not submit material you do not have rights to. We may remove content that infringes
+      or violates these terms.
+    </p>
+    <h2>8. Third-party rights</h2>
+    <p>
+      Some fonts, stock, or platform components are licensed from third parties (including Shopify). Those
+      licences do not grant you extra rights. Product names of other houses that appear in editorial
+      comparison remain their owners’ property.
+    </p>
+    <h2>9. Notice of infringement</h2>
+    <p>
+      If you believe storefront content infringes your IP, send a notice with: (a) your contact details;
+      (b) identification of the work; (c) the URL of the allegedly infringing material; (d) a statement
+      of good-faith belief; and (e) a statement that the information is accurate and that you are the
+      owner or authorised agent. We will consider valid notices and may remove or disable access. Counsel
+      should add a jurisdiction-specific takedown process (for example DMCA) before targeting those markets.
+    </p>
+    <h2>10. Enforcement</h2>
+    <p>
+      We may investigate misuse, send cease-and-desist correspondence, use platform reporting tools, and
+      seek injunctions or damages. Nothing in this notice limits remedies available at law.
+    </p>
+    <h2>11. Contact</h2>
+    <p>
+      IP enquiries: Maison Tavo / Kartavya —
+      {% if shop.email != blank %}{{ shop.email }}{% else %}store contact form{% endif %}
+      — and <a href="https://kartavya.tech" target="_blank" rel="noopener">kartavya.tech</a>.
+      Source documentation for this page lives in <code>theme/legal/ipr.md</code>.
+    </p>
+{%- endcase -%}

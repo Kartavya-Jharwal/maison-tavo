@@ -1,0 +1,256 @@
+{% doc %}
+  First-visit splash / intro overlay. Included from layout/theme.liquid.
+  Hidden on cart and checkout. Uses Brand tokens CSS variables.
+{% enddoc %}
+
+{% liquid
+  assign splash_blocked = false
+  if request.page_type == 'cart' or request.page_type == 'checkout' or template.name == 'cart' or template.name == 'checkout'
+    assign splash_blocked = true
+  endif
+%}
+
+{% if settings.splash_enable and splash_blocked == false %}
+  {% liquid
+    assign splash_heading = settings.splash_heading | strip
+    if splash_heading == blank
+      assign splash_heading = shop.name
+    endif
+    assign splash_skip = settings.splash_skip_label | strip
+    if splash_skip == blank
+      assign splash_skip = 'Skip'
+    endif
+    assign splash_logo_height = settings.logo_height | default: 36 | times: 2
+    assign splash_duration_s = settings.splash_duration | append: 's'
+  %}
+
+  <dialog
+    id="SplashIntro"
+    class="splash-intro"
+    aria-labelledby="SplashIntroHeading"
+    data-duration="{{ settings.splash_duration }}"
+    data-storage="{{ settings.splash_storage }}"
+    data-once="{% if settings.splash_show_once %}true{% else %}false{% endif %}"
+    data-design-mode="{% if request.design_mode %}true{% else %}false{% endif %}"
+    data-storage-key="maison-tavo-splash-seen"
+    style="--splash-duration: {{ splash_duration_s }};"
+  >
+    <div class="splash-intro__panel">
+      <h2
+        id="SplashIntroHeading"
+        class="splash-intro__heading"
+      >
+        {% if settings.splash_show_logo and settings.logo != blank %}
+          <span class="visually-hidden">{{ splash_heading }}</span>
+          {% render 'image',
+            image: settings.logo,
+            class: 'splash-intro__logo',
+            height: splash_logo_height,
+            alt_text_fallback: splash_heading,
+            text_fallback: splash_heading
+          %}
+        {% else %}
+          {{ splash_heading }}
+        {% endif %}
+      </h2>
+
+      <button
+        id="SplashIntroSkip"
+        type="button"
+        class="button-secondary splash-intro__skip"
+        data-splash-skip
+      >
+        {{ splash_skip }}
+      </button>
+    </div>
+  </dialog>
+
+  <script>
+    (function () {
+      var dialog = document.getElementById('SplashIntro');
+      if (!dialog || dialog.dataset.splashBound === 'true') return;
+      dialog.dataset.splashBound = 'true';
+
+      var once = dialog.getAttribute('data-once') === 'true';
+      var designMode = dialog.getAttribute('data-design-mode') === 'true';
+      var storageType = dialog.getAttribute('data-storage') || 'session';
+      var key = dialog.getAttribute('data-storage-key') || 'maison-tavo-splash-seen';
+      var duration = parseFloat(dialog.getAttribute('data-duration') || '0');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var closeTimer;
+      var closing = false;
+
+      function getStore() {
+        try {
+          return storageType === 'local' ? window.localStorage : window.sessionStorage;
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function hasSeen() {
+        if (designMode || !once) return false;
+        var store = getStore();
+        if (!store) return false;
+        return store.getItem(key) === '1';
+      }
+
+      function markSeen() {
+        if (designMode || !once) return;
+        var store = getStore();
+        if (!store) return;
+        try {
+          store.setItem(key, '1');
+        } catch (error) {}
+      }
+
+      function closeSplash() {
+        if (closing || !dialog.open) return;
+        closing = true;
+        window.clearTimeout(closeTimer);
+        markSeen();
+        dialog.setAttribute('data-closing', '');
+
+        var finish = function () {
+          if (typeof dialog.close === 'function') {
+            dialog.close();
+          } else {
+            dialog.removeAttribute('open');
+          }
+          dialog.removeAttribute('data-closing');
+          closing = false;
+        };
+
+        if (reduceMotion) {
+          finish();
+          return;
+        }
+
+        window.setTimeout(finish, 280);
+      }
+
+      if (hasSeen()) {
+        dialog.remove();
+        return;
+      }
+
+      if (typeof dialog.showModal === 'function') {
+        dialog.showModal();
+      } else {
+        dialog.setAttribute('open', '');
+      }
+
+      var skipButton = dialog.querySelector('[data-splash-skip]');
+      if (skipButton) {
+        skipButton.addEventListener('click', function (event) {
+          event.preventDefault();
+          closeSplash();
+        });
+        window.requestAnimationFrame(function () {
+          skipButton.focus();
+        });
+      }
+
+      dialog.addEventListener('cancel', function (event) {
+        event.preventDefault();
+        closeSplash();
+      });
+
+      dialog.addEventListener('click', function (event) {
+        if (event.target === dialog) closeSplash();
+      });
+
+      if (duration > 0) {
+        closeTimer = window.setTimeout(closeSplash, duration * 1000);
+      }
+    })();
+  </script>
+
+  {% stylesheet %}
+    .splash-intro {
+      inset: 0;
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      max-height: none;
+      margin: 0;
+      padding: var(--brand-space-xl, var(--padding-xl));
+      border: 0;
+      background: var(--splash-background, var(--brand-color-canvas, var(--color-background)));
+      color: var(--splash-foreground, var(--brand-color-ink, var(--color-foreground)));
+      font-family: var(--brand-font-heading, var(--font-heading--family));
+      z-index: var(--brand-z-splash, var(--layer-temporary));
+    }
+
+    .splash-intro[open] {
+      display: grid;
+      place-items: center;
+      animation: splash-intro-fade-in var(--brand-motion-slow, var(--animation-speed-slow))
+        var(--brand-motion-easing, var(--animation-easing));
+    }
+
+    .splash-intro[data-closing] {
+      animation: splash-intro-fade-out var(--brand-motion-slow, var(--animation-speed-slow))
+        var(--brand-motion-easing, var(--animation-easing));
+    }
+
+    .splash-intro::backdrop {
+      background: var(--splash-background, var(--brand-color-canvas, var(--color-background)));
+    }
+
+    .splash-intro__panel {
+      display: grid;
+      justify-items: center;
+      gap: var(--brand-space-xl, var(--gap-xl));
+      text-align: center;
+    }
+
+    .splash-intro__heading {
+      margin: 0;
+      font-family: var(--brand-font-heading, var(--font-heading--family));
+      font-size: var(--font-size--h2, var(--font-h2--size));
+      font-weight: var(--font-heading--weight);
+      letter-spacing: var(--brand-letter-spacing-sm, var(--letter-spacing-sm));
+      line-height: var(--brand-line-height-heading, var(--line-height--heading-normal));
+      color: inherit;
+    }
+
+    .splash-intro__logo {
+      display: block;
+      width: auto;
+      height: auto;
+      max-height: calc(var(--header-logo-image-height, 36px) * 2);
+      margin-inline: auto;
+      object-fit: contain;
+    }
+
+    .splash-intro__skip {
+      min-height: var(--minimum-touch-target);
+    }
+
+    @keyframes splash-intro-fade-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes splash-intro-fade-out {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .splash-intro[open],
+      .splash-intro[data-closing] {
+        animation: none;
+      }
+    }
+  {% endstylesheet %}
+{% endif %}

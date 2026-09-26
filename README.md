@@ -1,44 +1,59 @@
 # Maison Tavo
 
-Headless storefront for Maison Tavo. Shopify Hydrogen renders the shop; React Router owns the routes.
+Bun workspace for the Maison Tavo Shopify store. The **live storefront is the Liquid theme** in `theme/` (customized Horizon). Hydrogen in `hydrogen/` is a secondary Oxygen preview, not the published shop.
 
-## Stack
+Store: [maison-tavo.myshopify.com](https://maison-tavo.myshopify.com)
 
-- [Shopify Hydrogen](https://shopify.dev/custom-storefronts/hydrogen) on Oxygen
-- React Router 7
-- Vite, Tailwind CSS 4, and TypeScript
+## Layout
 
-## Requirements
+| Path | Role |
+| --- | --- |
+| `theme/` | Live Liquid / Horizon theme |
+| `hydrogen/` | Hydrogen + React Router app on Oxygen (preview) |
+| `packages/ucp` | UCP client library |
+| `apps/agents` | Local UCP agent HTTPS server |
+| `docs/` | MkDocs sources (published from another branch / GitHub Pages) |
 
-Node.js 22 or 24.
+## Setup
+
+Requires [Bun](https://bun.sh/) and [mkcert](https://github.com/FiloSottile/mkcert) for local HTTPS.
+
+```bash
+bun install
+bun run certs
+```
+
+Copy `apps/agents/.env.example` to `apps/agents/.env` and fill placeholders. Do not commit `.env` files. Cloudflare tunnel hostnames from `bun run tunnel:agents` are ephemeral — put them only in the local `.env`.
+
+Hydrogen storefront credentials live in `hydrogen/.env` (gitignored).
 
 ## Local development
 
-```bash
-npm install
-npm run dev
-```
-
-Store credentials belong in `.env`. That file is ignored by git.
+Theme CLI (`shopify theme dev`) serves HTTP on port **9292** and creates an **unpublished** development theme. It does not overwrite live. Live publish is an explicit production push.
 
 | Command | Purpose |
 | --- | --- |
-| `npm run dev` | Develop locally, with codegen |
-| `npm run build` | Production build |
-| `npm run preview` | Preview the production build |
-| `npm run lint` | Lint |
-| `npm run typecheck` | Typecheck |
+| `bun run dev:theme` | Theme preview at http://127.0.0.1:9292 |
+| `bun run dev:theme:https` | HTTPS proxy https://localhost:9443 → 9292 |
+| `bun run dev:hydrogen` | Hydrogen at http://localhost:3000 |
+| `bun run dev:hydrogen:https` | HTTPS proxy https://localhost:3443 → 3000 |
+| `bun run dev:agents` | Agent server at https://localhost:4443 |
+| `bun run tunnel:agents` | Cloudflare tunnel in front of 4443 |
+| `bun run theme:check` | Shopify Theme Check |
+| `bun run typecheck` | Typecheck `packages/ucp` and `apps/agents` |
+| `bun test packages apps` | Unit tests |
 
-## Documentation
+Run `dev:theme` and `dev:theme:https` in two terminals if you need HTTPS in front of the theme.
 
-Guides are written for [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/).
+Equivalent theme CLI (from `theme/`):
 
 ```bash
-python -m pip install -r requirements-docs.txt
-python -m mkdocs serve
+shopify theme dev -e development
+shopify theme pull -e production
+shopify theme push -e production
 ```
 
-Source pages are in `docs/`. The generated site (`site/`) is not committed.
+Production push uses live theme id `198667665777` with `allow-live` and does not upload `config/settings_data.json` (theme editor values stay on the store). CSS/custom-theme notes: [`theme/AGENTS.md`](theme/AGENTS.md).
 
 ## License
 

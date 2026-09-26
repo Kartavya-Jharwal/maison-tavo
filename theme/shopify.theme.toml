@@ -1,0 +1,21 @@
+# Maison Tavo live storefront — customized Horizon (Liquid).
+# Horizon IS this theme. There is no separate Liquid vs Horizon fork.
+#
+# development: unpublished preview via `shopify theme dev` (does not overwrite live)
+# production: live theme id 198667665777 on maison-tavo.myshopify.com
+#
+# Shortcuts (from this directory, or `bun run --cwd theme <script>`):
+#   shopify theme dev -e development
+#   shopify theme pull -e production
+#   shopify theme push -e production
+
+[environments.development]
+store = "maison-tavo.myshopify.com"
+# No theme id: `shopify theme dev` creates/uses an unpublished development theme.
+
+[environments.production]
+store = "maison-tavo.myshopify.com"
+theme = "198667665777"
+allow-live = true
+nodelete = true
+ignore = ["config/settings_data.json"]

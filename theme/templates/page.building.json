@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "building": {
+      "type": "maison-building",
+      "blocks": {
+        "rooms": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Note 01",
+            "heading": "The rooms of the house",
+            "text": "<p>We begin with proportion: header, collection, and the quiet of an empty cart. The storefront should feel like a well-lit atelier — nothing competing with the cloth.</p>"
+          }
+        },
+        "pattern": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Note 02",
+            "heading": "Pattern before colour",
+            "text": "<p>The first toile is always in calico. Online, that discipline becomes information architecture: About, Story, Building of, Journal — rooms that exist before merchandise shouts.</p>"
+          }
+        },
+        "cloth": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Note 03",
+            "heading": "Cloth and token",
+            "text": "<p>Colour on the site is inherited from Horizon’s tokens so the house can change cloth without rewriting the rooms. Placeholder copy lives here until the atelier replaces it with the season’s true notes.</p>"
+          }
+        },
+        "light": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Note 04",
+            "heading": "Light on the worktable",
+            "text": "<p>Photography will arrive last. Until then, type and space carry the fitting. We would rather show an honest empty wall than a borrowed set.</p>"
+          }
+        },
+        "open": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Note 05",
+            "heading": "Opening the door",
+            "text": "<p>When the first edition is ready, this journal will record the making — not the marketing. Add entries in the theme editor; keep the voice of the house.</p>"
+          }
+        }
+      },
+      "block_order": ["rooms", "pattern", "cloth", "light", "open"],
+      "settings": {
+        "eyebrow": "Atelier",
+        "heading": "Building of",
+        "lede": "A making-of journal for the house: how a collection is cut, how the rooms of the storefront are composed, and what we refuse along the way. These notes are living copy — replace them as the atelier advances.",
+        "padding-block-start": 48,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": ["building"]
+}

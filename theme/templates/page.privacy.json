@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "legal": {
+      "type": "maison-legal",
+      "settings": {
+        "document": "privacy",
+        "eyebrow": "Legal",
+        "heading": "Privacy Policy",
+        "show_native_policy": true,
+        "padding-block-start": 48,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": ["legal"]
+}

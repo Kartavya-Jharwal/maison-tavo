@@ -1,0 +1,50 @@
+{
+  "sections": {
+    "story": {
+      "type": "maison-story",
+      "blocks": {
+        "commission": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "I",
+            "heading": "A private commission",
+            "text": "<p>The first cloth was chosen for how it held candlelight. From that fitting, a language of proportion followed: high collars, a measured shoulder, a hem that knows the floor without announcing it.</p>"
+          }
+        },
+        "atelier": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "II",
+            "heading": "The atelier",
+            "text": "<p>Work is done in small rooms. Patterns are walked around a person, not a dress form alone. We keep a ledger of cloth — origin, mill, and the evening it was first worn — so the house can remember what the calendar forgets.</p>"
+          }
+        },
+        "wardrobe": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "III",
+            "heading": "A public wardrobe",
+            "text": "<p>Friends asked to be dressed the same way. Maison Tavo opened so those requests could be answered with the same patience: limited editions, honest materials, and a storefront that behaves like a well-lit fitting room rather than a marketplace shout.</p>"
+          }
+        },
+        "invitation": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "IV",
+            "heading": "The invitation",
+            "text": "<p>You are invited to read the journal, walk the lookbook, and take only what will be worn. The house is built in public now, but the standard remains private: would we keep this piece ourselves?</p>"
+          }
+        }
+      },
+      "block_order": ["commission", "atelier", "wardrobe", "invitation"],
+      "settings": {
+        "eyebrow": "Origin",
+        "heading": "Our story",
+        "lede": "Maison Tavo began as a private wardrobe — pieces made for evenings that asked for composure, and mornings that asked for ease. The house opened when those pieces were requested by others.",
+        "padding-block-start": 48,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": ["story"]
+}

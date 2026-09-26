@@ -1,0 +1,61 @@
+# PRs: Theme Check only.
+# Pushes to main: Theme Check, then an unpublished development theme push if
+# SHOPIFY_CLI_THEME_TOKEN is set. Live publish is never automatic —
+# use `bun run --cwd theme push` (production env, allow-live).
+name: Theme
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    paths:
+      - "theme/**"
+      - ".github/workflows/theme.yml"
+
+permissions:
+  contents: read
+  checks: write
+
+jobs:
+  check:
+    name: Theme Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Theme Check
+        run: bun run theme:check
+
+  push-unpublished:
+    name: Push unpublished development theme
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Setup bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Push unpublished theme
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+          SHOPIFY_FLAG_STORE: maison-tavo.myshopify.com
+          SHOPIFY_FLAG_FORCE: "1"
+        working-directory: theme
+        run: |
+          if [ -z "$SHOPIFY_CLI_THEME_TOKEN" ]; then
+            echo "SHOPIFY_CLI_THEME_TOKEN is not set; skipping unpublished theme push."
+            echo "Live publish is local: bun run --cwd theme push"
+            exit 0
+          fi
+          bun run push:unpublished

@@ -1,0 +1,264 @@
+{% liquid
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+
+  assign document = section.settings.document | default: 'privacy'
+  if document == 'privacy'
+    assign native_policy = shop.privacy_policy
+  elsif document == 'terms'
+    assign native_policy = shop.terms_of_service
+  endif
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+<div
+  class="section section--page-width spacing-style maison-editorial maison-legal{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  style="{% render 'spacing-style', settings: section.settings %}"
+>
+  <header class="maison-editorial__header">
+    {% if section.settings.eyebrow != blank %}
+      <p class="maison-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h1 class="maison-editorial__title">{{ section.settings.heading | escape }}</h1>
+    {% elsif page != blank %}
+      <h1 class="maison-editorial__title">{{ page.title | escape }}</h1>
+    {% endif %}
+  </header>
+
+  <p class="maison-legal__notice" role="note">
+    {{ 'maison.legal_template_notice' | t }}
+  </p>
+
+  {% if section.settings.show_native_policy and native_policy != blank %}
+    <p class="maison-legal__native">
+      {{ 'maison.native_shopify_policy' | t }}:
+      <a href="{{ native_policy.url }}">{{ native_policy.title | escape }}</a>
+    </p>
+  {% endif %}
+
+  <div class="maison-legal__body rte">
+    {% if section.settings.body != blank %}
+      {{ section.settings.body }}
+    {% else %}
+      {% render 'maison-legal-copy', document: document %}
+    {% endif %}
+
+    {% for block in section.blocks %}
+      <section {{ block.shopify_attributes }}>
+        {% if block.settings.heading != blank %}
+          <h2>{{ block.settings.heading | escape }}</h2>
+        {% endif %}
+        {% if block.settings.text != blank %}
+          {{ block.settings.text }}
+        {% endif %}
+      </section>
+    {% endfor %}
+  </div>
+
+  {% if shop.policies.size > 0 %}
+    <nav class="maison-legal__policies" aria-label="{{ 'maison.native_shopify_policy' | t }}">
+      <p class="maison-editorial__eyebrow">{{ 'maison.native_shopify_policy' | t }}</p>
+      <ul class="maison-legal__policy-list list-unstyled">
+        {% for policy in shop.policies %}
+          {% if policy != blank %}
+            <li>
+              <a href="{{ policy.url }}">{{ policy.title | escape }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </nav>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .maison-editorial {
+    color: var(--color-foreground);
+  }
+
+  .maison-editorial__header {
+    max-width: 42rem;
+    margin-block-end: 3rem;
+  }
+
+  .maison-editorial__eyebrow {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-editorial__title {
+    margin-block: 0.75rem 1rem;
+    font-family: var(--font-heading--family);
+    font-weight: var(--font-heading--weight);
+    letter-spacing: 0.04em;
+  }
+
+  .maison-legal__notice,
+  .maison-legal__native {
+    max-width: 44rem;
+    margin: 0 0 1.5rem;
+    padding: 1rem 1.15rem;
+    border: 1px solid var(--color-border);
+    color: var(--color-foreground-muted);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .maison-legal__native {
+    border-style: dashed;
+  }
+
+  .maison-legal__body {
+    max-width: 44rem;
+  }
+
+  .maison-legal__body h2 {
+    margin-block: 2rem 0.75rem;
+    font-family: var(--font-heading--family);
+    font-size: 1.125rem;
+    letter-spacing: 0.03em;
+  }
+
+  .maison-legal__body p,
+  .maison-legal__body li {
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-legal__policies {
+    margin-block-start: 3rem;
+    padding-block-start: 1.5rem;
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .maison-legal__policy-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+  }
+
+  .maison-legal__policy-list a {
+    color: var(--color-foreground);
+    text-underline-offset: 0.18em;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.maison_legal",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "document",
+      "label": "t:settings.maison_document",
+      "options": [
+        {
+          "value": "privacy",
+          "label": "t:options.privacy"
+        },
+        {
+          "value": "terms",
+          "label": "t:options.terms"
+        },
+        {
+          "value": "ipr",
+          "label": "t:options.ipr"
+        }
+      ],
+      "default": "privacy"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:settings.maison_eyebrow",
+      "default": "Legal"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "Privacy Policy"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_native_policy",
+      "label": "t:settings.maison_show_native_policy",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "t:settings.maison_body",
+      "info": "t:content.maison_pages_help"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "clause",
+      "name": "t:names.maison_clause",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:settings.heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:settings.content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.maison_legal",
+      "category": "t:categories.text"
+    }
+  ]
+}
+{% endschema %}
