@@ -16,7 +16,7 @@ Storefront password is required. Voice needs a secure context — use the Shopif
 
 | | |
 | --- | --- |
-| **Vendored** | anime.js **v4.1.4** → `theme/assets/vendor/anime.esm.js`; Motion (motion.dev vanilla) **v12.43.0** → `theme/assets/vendor/motion.esm.js` |
+| **Vendored** | anime.js **v4.1.4** → `theme/assets/anime.esm.js`; Motion (motion.dev vanilla) **v12.43.0** → `theme/assets/motion.esm.js` (flat under `assets/` — Shopify rejects asset subfolders) |
 | **Module** | `theme/assets/maison-motion.js` (ESM: imports both vendors) |
 | **Wired in** | `theme/snippets/scripts.liquid` — loads only when `template.name == 'index'` |
 | **Demo** | Homepage hero: anime.js staggers `.hero__content-wrapper` children (opacity + `translateY`); Motion settles `.hero__media-wrapper` (opacity + scale `1.05 → 1`) |
@@ -26,7 +26,7 @@ Storefront password is required. Voice needs a secure context — use the Shopif
 1. Open the homepage on the development-theme preview URL.
 2. Hard-refresh: hero content blocks should stagger in; hero media should ease from slight zoom to 1.
 3. Enable OS/browser **prefers-reduced-motion**: animations must not run.
-4. DevTools Network: `maison-motion.js`, `vendor/anime.esm.js`, `vendor/motion.esm.js` return 200 (not 404).
+4. DevTools Network: `maison-motion.js`, `anime.esm.js`, `motion.esm.js` return 200 (not 404).
 
 ### Learned
 
@@ -46,7 +46,7 @@ Storefront password is required. Voice needs a secure context — use the Shopif
 
 | | |
 | --- | --- |
-| **Vendored** | Howler.js **v2.2.4** (`howler.core.min.js`) → `theme/assets/vendor/howler.core.min.js` (UMD; attaches `window.Howl`) |
+| **Vendored** | Howler.js **v2.2.4** (`howler.core.min.js`) → `theme/assets/howler.core.min.js` (UMD; attaches `window.Howl`) |
 | **Asset** | `theme/assets/maison-add-to-cart.wav` |
 | **Module** | `theme/assets/maison-sound.js` |
 | **Wired in** | `theme/snippets/scripts.liquid` — classic Howler script + `window.maisonSound.src` + ESM module (all templates) |
@@ -57,7 +57,7 @@ Storefront password is required. Voice needs a secure context — use the Shopif
 1. Any page: toggle appears bottom-left; default is **Sound off** (silent).
 2. Click toggle → short click plays (unlocks AudioContext); label flips to **Sound on**; preference in `localStorage` key `maison:sound-enabled`.
 3. With sound on, add a product to cart → click should play once. Remove/update should stay quiet.
-4. Network: `vendor/howler.core.min.js`, `maison-sound.js`, `maison-add-to-cart.wav` all 200.
+4. Network: `howler.core.min.js`, `maison-sound.js`, `maison-add-to-cart.wav` all 200.
 
 ### Learned
 
@@ -136,8 +136,8 @@ Storefront password is required. Voice needs a secure context — use the Shopif
 
 | Spike | Delete |
 | --- | --- |
-| Motion | `maison-motion.js`, `vendor/anime.esm.js`, `vendor/motion.esm.js`, index script block in `scripts.liquid` |
-| Sound | `maison-sound.js`, `vendor/howler.core.min.js`, `maison-add-to-cart.wav`, Howler/`maisonSound`/module block in `scripts.liquid` |
+| Motion | `maison-motion.js`, `anime.esm.js`, `motion.esm.js`, index script block in `scripts.liquid` |
+| Sound | `maison-sound.js`, `howler.core.min.js`, `maison-add-to-cart.wav`, Howler/`maisonSound`/module block in `scripts.liquid` |
 | Fonts | Fraunces block in `fonts.liquid` + both `fraunces-*.woff2` |
 | Voice | `sections/maison-voice-spike.liquid` + `maison_voice_spike` entry in `password.json` |
 

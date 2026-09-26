@@ -2,19 +2,22 @@
  * M0 SPIKE — Motion (WS5).
  *
  * Proves anime.js v4 + Motion (motion.dev vanilla) run as vendored ESM browser
- * builds in the Horizon theme with no build step:
+ * builds in the Horizon theme with no build step (flat under `assets/` —
+ * Shopify rejects asset subfolders):
  *   - anime.js v4.1.4   → staggered hero content reveal (homepage)
  *   - motion v12.43.0   → hero media settle (scale + fade)
  *
  * D10 compliance:
  *   - Skipped entirely under `prefers-reduced-motion: reduce`.
  *   - Animates opacity/transform only — zero layout shift.
- *   - Fully removable: delete this file, `assets/vendor/`, and the
- *     `maison-motion.js` script tag in `snippets/scripts.liquid`.
+ *   - Fully removable: delete this file, `anime.esm.js` / `motion.esm.js`,
+ *     and the `maison-motion.js` script tag in `snippets/scripts.liquid`.
+ *
+ * Note: Shopify rejects assets subfolders, so vendors live flat under assets/.
  */
 
-import { animate, stagger } from './vendor/anime.esm.js';
-import { animate as motionAnimate } from './vendor/motion.esm.js';
+import { animate, stagger } from './anime.esm.js';
+import { animate as motionAnimate } from './motion.esm.js';
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
