@@ -118,19 +118,21 @@ Groundwork. Cheap, fast, and de-risks everything downstream.
 The catalog is the shared dependency: the agent layer, the storefront, and the Kansa page all
 read from it. Built once, carried through every later phase (brief Section 13).
 
-- [ ] `packages/catalog` workspace created: zod `ProductSpec` schema covering alloy
+Products are DRAFT/unpublished; push via `bun scripts/push-catalog.ts --apply`.
+
+- [x] `packages/catalog` workspace created: zod `ProductSpec` schema covering alloy
       composition / layer stack, dimensions, weight, heat-source compatibility
       (induction / gas / electric), thermal conductivity, GTIN, care and seasoning rules,
       warranty tier.
-- [ ] Seed data for 6–10 SKUs: skillets, tagines, and the 3-piece Damascus knife line, priced
+- [x] Seed data for 6–10 SKUs: skillets, tagines, and the 3-piece Damascus knife line, priced
       across the full $200–$2,200 band, versioned in the repo as data (not typed into admin by
       hand).
-- [ ] Layer stack stated in data as a flagged fabrication assumption (D5), never as a precise
+- [x] Layer stack stated in data as a flagged fabrication assumption (D5), never as a precise
       marketing claim.
-- [ ] Product metafield definitions created on `maison-tavo.myshopify.com` via Shopify CLI /
+- [x] Product metafield definitions created on `maison-tavo.myshopify.com` via Shopify CLI /
       Admin GraphQL (`specs.alloy`, `specs.heat_sources`, `specs.thermal_conductivity`,
       `specs.dimensions`, `specs.care_rules`; GTIN on variant barcode).
-- [ ] All 6–10 products created in admin with price, imagery, and metafield values populated
+- [x] All 6–10 products created in admin with price, imagery, and metafield values populated
       from the seed data by script — reproducible, re-runnable.
 
 ### M2 — Agent layer: query-to-cart + payments scaffolding — Phase 0 complete
