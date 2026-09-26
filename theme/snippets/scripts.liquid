@@ -276,6 +276,32 @@
   </script>
 {% endif %}
 
+{%- comment -%}
+  M0 spikes (WS5) — vendored ESM, no build step, fully removable (D10).
+  Motion: homepage hero reveal only. Sound: opt-in toggle + add-to-cart click,
+  silent by default. Howler ships no ESM build, so it loads as a classic
+  script and exposes window.Howl to the module.
+{%- endcomment -%}
+{% if template.name == 'index' %}
+  <script
+    src="{{ 'maison-motion.js' | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
+{% endif %}
+<script
+  src="{{ 'vendor/howler.core.min.js' | asset_url }}"
+  defer="defer"
+></script>
+<script>
+  window.maisonSound = { src: {{ 'maison-add-to-cart.wav' | asset_url | json }} };
+</script>
+<script
+  src="{{ 'maison-sound.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
 <script
   src="{{ 'auto-close-details.js' | asset_url }}"
   defer="defer"

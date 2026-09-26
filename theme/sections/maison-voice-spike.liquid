@@ -1,0 +1,155 @@
+{% comment %}
+  M0 SPIKE — Voice (WS5, D9). NOT FOR PRODUCTION.
+  Proves the Web Speech API round-trip (SpeechRecognition → scripted intent →
+  SpeechSynthesis) on the password page, which is HTTPS on the preview and
+  therefore a secure context for the mic. Isolated to templates/password.json;
+  remove the section reference there + this file to revert.
+{% endcomment %}
+
+<div class="maison-voice-spike" id="maison-voice-spike-{{ section.id }}">
+  <h2 class="maison-voice-spike__heading">M0 spike — voice round-trip</h2>
+  <p class="maison-voice-spike__note">
+    Engineering spike, not a feature. Press the button, say something (try
+    &ldquo;how do I season a pan&rdquo;), and the page speaks a scripted reply.
+  </p>
+  <button type="button" class="maison-voice-spike__button" data-voice-listen>
+    🎙 Listen
+  </button>
+  <p class="maison-voice-spike__status" data-voice-status role="status" aria-live="polite"></p>
+  <p class="maison-voice-spike__transcript" data-voice-transcript></p>
+  <p class="maison-voice-spike__support" data-voice-support></p>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('maison-voice-spike-{{ section.id }}');
+    if (!root) return;
+
+    var button = root.querySelector('[data-voice-listen]');
+    var statusEl = root.querySelector('[data-voice-status]');
+    var transcriptEl = root.querySelector('[data-voice-transcript]');
+    var supportEl = root.querySelector('[data-voice-support]');
+
+    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var canSpeak = 'speechSynthesis' in window;
+    var secure = window.isSecureContext;
+
+    supportEl.textContent =
+      'secure context: ' + secure +
+      ' · SpeechRecognition: ' + (SpeechRecognition ? 'available' : 'NOT available (Safari/Firefox)') +
+      ' · SpeechSynthesis: ' + (canSpeak ? 'available' : 'NOT available');
+
+    function say(text) {
+      if (!canSpeak) return;
+      window.speechSynthesis.cancel();
+      var utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function respond(transcript) {
+      var t = transcript.toLowerCase();
+      if (t.indexOf('season') !== -1) {
+        return 'To season your pan: coat it with a thin layer of oil, heat it until the oil just smokes, then let it cool. Repeat twice.';
+      }
+      if (t.indexOf('sear') !== -1 || t.indexOf('temperature') !== -1) {
+        return 'For a hard sear, bring the pan to about 230 degrees Celsius before the protein touches the metal.';
+      }
+      return 'I heard: ' + transcript + '. The scripted Kansa intents replace this echo in M4.';
+    }
+
+    if (!SpeechRecognition) {
+      statusEl.textContent = 'SpeechRecognition unsupported in this browser — synthesis demo only.';
+      button.disabled = true;
+      button.addEventListener('click', function () {
+        say('Speech recognition is not available here, but synthesis works.');
+      });
+      return;
+    }
+
+    button.addEventListener('click', function () {
+      var recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      statusEl.textContent = 'Listening…';
+      button.disabled = true;
+
+      recognition.onresult = function (event) {
+        var transcript = event.results[0][0].transcript;
+        transcriptEl.textContent = 'You said: “' + transcript + '”';
+        var reply = respond(transcript);
+        statusEl.textContent = 'Reply: ' + reply;
+        say(reply);
+      };
+      recognition.onerror = function (event) {
+        statusEl.textContent = 'Recognition error: ' + event.error +
+          (event.error === 'not-allowed' ? ' (mic permission denied)' : '');
+      };
+      recognition.onend = function () {
+        button.disabled = false;
+        if (statusEl.textContent === 'Listening…') statusEl.textContent = 'Stopped.';
+      };
+
+      try {
+        recognition.start();
+      } catch (error) {
+        statusEl.textContent = 'Could not start recognition: ' + error.message;
+        button.disabled = false;
+      }
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .maison-voice-spike {
+    max-width: 34rem;
+    margin: 3rem auto;
+    padding: 1.5rem;
+    border: 1px dashed currentColor;
+    border-radius: 8px;
+    font-family: system-ui, sans-serif;
+  }
+
+  .maison-voice-spike__heading {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .maison-voice-spike__note,
+  .maison-voice-spike__support {
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+
+  .maison-voice-spike__button {
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .maison-voice-spike__button:disabled {
+    opacity: 0.5;
+    cursor: wait;
+  }
+
+  .maison-voice-spike__status {
+    min-height: 1.2em;
+    font-weight: 600;
+  }
+
+  .maison-voice-spike__transcript {
+    font-style: italic;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "M0 spike — voice",
+  "settings": []
+}
+{% endschema %}

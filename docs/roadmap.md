@@ -101,17 +101,17 @@ Groundwork. Cheap, fast, and de-risks everything downstream.
       missing everywhere else.
 - [x] Strategic decisions register opened ([decisions.md](decisions.md)) — category question
       (D1), provenance (D2), and ICP blend (D3) decided; audit position (D4) recorded.
-- [ ] **Motion spike:** anime.js + Motion (vanilla ESM builds) vendored into `theme/assets/`,
+- [x] **Motion spike:** anime.js + Motion (vanilla ESM builds) vendored into `theme/assets/`,
       one demo animation running on the dev theme, `theme:check` clean. No build step — Horizon
-      serves theme assets only.
-- [ ] **Sound spike:** Howler.js vendored, one interaction sound behind an explicit opt-in
-      toggle, silent by default.
-- [ ] **Font spike:** one self-hosted variable WOFF2 with a unicode-range subset loading via
+      serves theme assets only. Notes: [spikes-m0.md](spikes-m0.md).
+- [x] **Sound spike:** Howler.js vendored, one interaction sound behind an explicit opt-in
+      toggle, silent by default. Notes: [spikes-m0.md](spikes-m0.md).
+- [x] **Font spike:** one self-hosted variable WOFF2 with a unicode-range subset loading via
       `fonts.liquid`, `font-display` and metric-override (`size-adjust`) fallback verified in
-      devtools.
-- [ ] **Voice spike:** Web Speech API (SpeechRecognition + SpeechSynthesis) round-trip on the
-      dev theme over the HTTPS proxy (`bun run dev:theme:https` — mic requires a secure
-      context). Proves the simulated-agent path before it is designed around.
+      devtools. Notes: [spikes-m0.md](spikes-m0.md).
+- [x] **Voice spike:** Web Speech API (SpeechRecognition + SpeechSynthesis) round-trip on the
+      password-page spike section (HTTPS preview / secure context). Proves the simulated-agent
+      path before it is designed around. Notes: [spikes-m0.md](spikes-m0.md).
 
 ### M1 — Catalog live in Shopify
 

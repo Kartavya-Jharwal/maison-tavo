@@ -10,3 +10,58 @@
 {%- unless settings.type_accent_font.system? -%}
   {{ settings.type_accent_font | font_url | preload_tag: as: 'font', type: 'font/woff2', fetchpriority: 'low' }}
 {%- endunless -%}
+
+{%- comment -%}
+  M0 SPIKE — self-hosted variable font (WS5 / M3 foundation).
+  Fraunces Variable (OFL-1.1, google/fonts via @fontsource-variable/fraunces 5.3.0),
+  one variable WOFF2 per unicode-range subset: latin is preloaded (critical),
+  latin-ext loads on demand. Metric-overridden fallback (Georgia, size-adjust 104%
+  ≈ Fraunces x-height 0.500em / Georgia 0.4816em) keeps the swap near-zero-CLS.
+  Remove this block + the two woff2 assets to revert.
+{%- endcomment -%}
+<link
+  rel="preload"
+  href="{{ 'fraunces-latin-full-normal.woff2' | asset_url }}"
+  as="font"
+  type="font/woff2"
+  crossorigin
+>
+<style>
+  /* fraunces-latin-full-normal — axes: opsz 9..144, wght 100..900, SOFT 0..100, WONK 0..1 */
+  @font-face {
+    font-family: 'Fraunces Variable';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('{{ 'fraunces-latin-full-normal.woff2' | asset_url }}') format('woff2-variations');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+
+  /* fraunces-latin-ext-full-normal — same axes, extended Latin, fetched only when needed */
+  @font-face {
+    font-family: 'Fraunces Variable';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('{{ 'fraunces-latin-ext-full-normal.woff2' | asset_url }}') format('woff2-variations');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+
+  /* Metric-overridden fallback: Georgia resized to Fraunces' x-height */
+  @font-face {
+    font-family: 'Fraunces Fallback';
+    src: local('Georgia');
+    size-adjust: 104%;
+  }
+
+  :root {
+    --font-fraunces--family: 'Fraunces Variable', 'Fraunces Fallback', Georgia, serif;
+  }
+
+  /* M0 spike demo: homepage hero headline set in Fraunces at max optical size */
+  .hero__content-wrapper .text-block {
+    font-family: var(--font-fraunces--family);
+    font-weight: 550;
+    font-variation-settings: 'opsz' 144;
+  }
+</style>
