@@ -16,7 +16,7 @@
     "dev:hydrogen:https": "bun scripts/https-proxy.ts --target http://localhost:3000 --port 3443",
     "dev:agents": "bun --watch --env-file=apps/agents/.env apps/agents/src/server.ts",
     "tunnel:agents": "bunx cloudflared tunnel --url https://localhost:4443 --no-tls-verify",
-    "typecheck": "bun run --filter '@maison-tavo/ucp' --filter '@maison-tavo/agents' typecheck",
+    "typecheck": "bun run --filter '@maison-tavo/ucp' --filter '@maison-tavo/catalog' --filter '@maison-tavo/agents' typecheck",
     "test": "bun test packages apps",
     "theme:check": "bun run --cwd theme check",
     "theme:build": "bun run --cwd theme build"
