@@ -120,20 +120,28 @@ read from it. Built once, carried through every later phase (brief Section 13).
 
 Products are DRAFT/unpublished; push via `bun scripts/push-catalog.ts --apply`.
 
+**Data refresh:** edit `data/*.csv` → `bun run --cwd packages/catalog seed:build` →
+`bun scripts/push-catalog.ts` (dry-run) → `bun scripts/push-catalog.ts --apply`.
+Re-pushes update existing drafts (title, description, tags, SEO, `specs.*` metafields,
+SKU/price/weight) and sync unpublished lineup collections (`terre-clay`, `forge-hybrid`,
+`forge-terre`, `kuro-strip`). Never publishes; never deletes unrelated products.
+
 - [x] `packages/catalog` workspace created: zod `ProductSpec` schema covering alloy
       composition / layer stack, dimensions, weight, heat-source compatibility
       (induction / gas / electric), thermal conductivity, GTIN, care and seasoning rules,
       warranty tier.
-- [x] Seed data for 6–10 SKUs: skillets, tagines, and the 3-piece Damascus knife line, priced
-      across the full $200–$2,200 band, versioned in the repo as data (not typed into admin by
-      hand).
+- [x] Seed data for 11 concept SKUs (Terre Clay, Forge Hybrid, Forge × Terre, Kuro Strip)
+      built from `data/maison-tavo-new-listings-*.csv`, versioned in the repo as data (not
+      typed into admin by hand).
 - [x] Layer stack stated in data as a flagged fabrication assumption (D5), never as a precise
       marketing claim.
 - [x] Product metafield definitions created on `maison-tavo.myshopify.com` via Shopify CLI /
-      Admin GraphQL (`specs.alloy`, `specs.heat_sources`, `specs.thermal_conductivity`,
-      `specs.dimensions`, `specs.care_rules`; GTIN on variant barcode).
-- [x] All 6–10 products created in admin with price, imagery, and metafield values populated
-      from the seed data by script — reproducible, re-runnable.
+      Admin GraphQL (`specs.lineup`, `specs.claim_status`, `specs.material_architecture`,
+      `specs.food_contact_strategy`, `specs.fabrication_route`, `specs.care_hypothesis`,
+      `specs.heat_sources`, `specs.agent_intents`, `specs.negative_constraints`,
+      `specs.concept_thesis`).
+- [x] All 11 products created/refreshed in admin as DRAFT with price and metafield values
+      from the seed data by script — reproducible, re-runnable; lineup collections assigned.
 
 ### M2 — Agent layer: query-to-cart + payments scaffolding — Phase 0 complete
 
@@ -163,34 +171,35 @@ that makes it a pillar rather than a demo.
 Token-level branding plus the typography engineering. Follows the `theme/AGENTS.md` workflow:
 settings and CSS custom properties, never hardcoded one-offs.
 
-- [ ] Five palette colors (Raw Copper, Aged Bronze, Obsidian Charcoal, Cast Clay, Damascus
+- [x] Five palette colors (Raw Copper, Aged Bronze, Obsidian Charcoal, Cast Clay, Damascus
       Silver) added to `theme/config/settings_schema.json` and wired in
       `theme/snippets/color-palette.liquid`.
-- [ ] Typography pairing set: high-contrast luxury serif for headings, industrial mono for
+- [x] Typography pairing set: high-contrast luxury serif for headings, industrial mono for
       metallurgical specs, via font settings.
-- [ ] **Font system (P1 showcase):** multiple self-hosted variable WOFF2 faces in
+- [x] **Font system (P1 showcase):** multiple self-hosted variable WOFF2 faces in
       `theme/assets/`, unicode-range subsetting (Latin core + extended), preload of the
       critical subset, `font-display` strategy, metric-overridden fallback stack
       (`size-adjust` / `ascent-override`) for zero-CLS swap — all in
       `theme/snippets/fonts.liquid`, pushing WOFF2 as far as it goes: one variable file per
       family, not one file per weight.
-- [ ] `theme/STYLEGUIDE.md` promoted from placeholder inventory to the approved brand mapping
+- [x] `theme/STYLEGUIDE.md` promoted from placeholder inventory to the approved brand mapping
       (its own stated workflow).
-- [ ] `bun run theme:check` clean; verified on the unpublished development theme only.
+- [x] `bun run theme:check` clean; verified on the unpublished development theme only.
 
 ### M4 — Content + experience layer + Kansa v0
 
 Storefront content (P0) and the experience engineering (P1) land together, in that order.
 
-- [ ] Homepage hero and section copy replaced (no stock "Browse our latest products" remains).
-- [ ] `templates/page.about.json` created; About page argues the Section 1 diagnostic directly
+- [x] Homepage hero and section copy replaced (no stock "Browse our latest products" remains).
+- [x] `templates/page.about.json` created; About page argues the Section 1 diagnostic directly
       with claims visibly tagged VERIFIED / OBSERVED / HYPOTHESIS (scored criterion, 25 pts).
-- [ ] PDP spec table block rendering product metafields in the mono typeface.
-- [ ] Product JSON-LD enriched beyond stock `structured_data`: `additionalProperty` for spec
+- [x] PDP spec table block rendering product metafields in the mono typeface.
+- [x] Product JSON-LD enriched beyond stock `structured_data`: `additionalProperty` for spec
       fields, GTIN — the storefront half of the machine-readability claim.
 - [ ] Collections and navigation hierarchy built (Skillets / Tagines / Knives / Sets).
 - [ ] **Motion pass (P1):** vendored anime.js / Motion microanimations — hero reveal, spec-table
       stagger, cart feedback — respecting `prefers-reduced-motion`, no layout shift.
+      *(Hero reveal from M0 + spec-table CSS stagger shipped; cart-feedback motion still open.)*
 - [ ] **Sound design v0 (P1):** Howler soundscape — interaction feedback on add-to-cart and
       configurator actions — opt-in toggle, silent by default, persisted preference (D10).
 - [ ] **Kansa page v0 (P1):** `/pages/kansa` template in the theme with the simulated voice
@@ -266,11 +275,12 @@ lists its file-level targets in this repo.
 
 ### WS1 — Catalog and data (M1, feeds everything)
 
-- `packages/catalog/` (new): `src/schema.ts` (zod `ProductSpec`), `src/seed.ts` (6–10 SKUs),
-  `test/schema.test.ts`.
-- `scripts/push-catalog.ts` (new): idempotent Admin GraphQL push of metafield definitions +
-  products from seed data.
-- Shopify admin: metafield definitions, products, variants, barcodes (GTIN).
+- `packages/catalog/` (new): `src/schema.ts` (zod `ProductSpec`), `src/seed.ts` (11 SKUs from
+  `data/*.csv` via `seed:build`), `test/schema.test.ts`.
+- `scripts/push-catalog.ts`: idempotent Admin GraphQL push of metafield definitions +
+  products from seed data; `--apply` creates missing drafts and refreshes existing ones;
+  syncs unpublished lineup collections.
+- Shopify admin: metafield definitions, DRAFT products, lineup collections.
 
 ### WS2 — Agent layer / Surface B (M2, Phase 3 ceiling)
 

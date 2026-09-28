@@ -3,8 +3,11 @@
  *
  * Creates PRODUCT metafield definitions in namespace `specs` and draft,
  * unpublished products from `@maison-tavo/catalog` seed data. Idempotent:
- * skips definitions / handles that already exist. Never publishes, never
- * deletes, never updates unrelated products.
+ * skips definitions that already exist; creates missing products; on
+ * `--apply`, refreshes existing drafts (title, description, tags, SEO,
+ * metafields, variant SKU/price/weight) from seed. Optionally syncs
+ * unpublished lineup collections and assigns products. Never publishes,
+ * never deletes, never updates unrelated products.
  *
  * Usage (from repo root):
  *   bun scripts/push-catalog.ts              # dry-run (default)
@@ -30,7 +33,7 @@ import {spawnSync} from 'node:child_process';
 import {homedir} from 'node:os';
 import {join} from 'node:path';
 import {readFileSync, existsSync} from 'node:fs';
-import {seedCatalog, type ProductSpec} from '../packages/catalog/src/index.ts';
+import {seedCatalog, type Lineup, type ProductSpec} from '../packages/catalog/src/index.ts';
 
 const STORE =
   flagValue('--store') ??
@@ -38,6 +41,43 @@ const STORE =
   'maison-tavo.myshopify.com';
 const APPLY = process.argv.includes('--apply');
 const API_VERSION = '2025-10';
+
+/** Unpublished custom collections keyed by seed lineup. */
+const LINEUP_COLLECTIONS: Array<{
+  lineup: Lineup;
+  handle: string;
+  title: string;
+  descriptionHtml: string;
+}> = [
+  {
+    lineup: 'Terre Clay',
+    handle: 'terre-clay',
+    title: 'Terre Clay',
+    descriptionHtml:
+      '<p>Earthenware and ceramic hospitality concepts — kulhads, laser-marked tabletop, clay-forward service.</p>',
+  },
+  {
+    lineup: 'Forge Hybrid',
+    handle: 'forge-hybrid',
+    title: 'Forge Hybrid',
+    descriptionHtml:
+      '<p>Mixed-metal cookware concepts — modular searing, plancha, and thermal-mass systems.</p>',
+  },
+  {
+    lineup: 'Forge × Terre',
+    handle: 'forge-terre',
+    title: 'Forge × Terre',
+    descriptionHtml:
+      '<p>Hybrid metal–clay pieces that separate cooking performance from table presentation.</p>',
+  },
+  {
+    lineup: 'Kuro Strip',
+    handle: 'kuro-strip',
+    title: 'Kuro Strip',
+    descriptionHtml:
+      '<p>Continuous-strip knife concepts — thin blades, exposed structure, hospitality prep.</p>',
+  },
+];
 
 type GraphqlResult = {
   data?: Record<string, unknown>;
@@ -379,12 +419,21 @@ async function existingDefinitionKeys(): Promise<Set<string>> {
   return new Set(nodes.map((n) => n.key));
 }
 
-async function existingProductsByHandle(): Promise<
-  Map<string, {id: string; status: string}>
-> {
+type ExistingProduct = {
+  id: string;
+  status: string;
+  variantId?: string;
+};
+
+async function existingProductsByHandle(): Promise<Map<string, ExistingProduct>> {
   const query = `query CatalogProducts($query: String!) {
     products(first: 50, query: $query) {
-      nodes { id handle status }
+      nodes {
+        id
+        handle
+        status
+        variants(first: 1) { nodes { id } }
+      }
     }
   }`;
   const result = await executeGraphql(query, {query: 'vendor:"Maison Tavo"'});
@@ -392,10 +441,46 @@ async function existingProductsByHandle(): Promise<
   const nodes =
     (
       result.data?.products as
-        | {nodes: Array<{id: string; handle: string; status: string}>}
+        | {
+            nodes: Array<{
+              id: string;
+              handle: string;
+              status: string;
+              variants: {nodes: Array<{id: string}>};
+            }>;
+          }
         | undefined
     )?.nodes ?? [];
-  return new Map(nodes.map((n) => [n.handle, {id: n.id, status: n.status}]));
+  return new Map(
+    nodes.map((n) => [
+      n.handle,
+      {
+        id: n.id,
+        status: n.status,
+        variantId: n.variants.nodes[0]?.id,
+      },
+    ]),
+  );
+}
+
+async function existingCollectionsByHandle(): Promise<Map<string, string>> {
+  const query = `query LineupCollections($query: String!) {
+    collections(first: 25, query: $query) {
+      nodes { id handle }
+    }
+  }`;
+  const handles = LINEUP_COLLECTIONS.map((c) => c.handle);
+  const result = await executeGraphql(query, {
+    query: handles.map((h) => `handle:${h}`).join(' OR '),
+  });
+  assertNoErrors('collections', result);
+  const nodes =
+    (
+      result.data?.collections as
+        | {nodes: Array<{id: string; handle: string}>}
+        | undefined
+    )?.nodes ?? [];
+  return new Map(nodes.map((n) => [n.handle, n.id]));
 }
 
 async function createDefinition(
@@ -457,9 +542,124 @@ async function createDefinition(
   return 'created';
 }
 
+async function setVariantFields(
+  productId: string,
+  variantId: string,
+  spec: ProductSpec,
+): Promise<void> {
+  const variantMutation = `mutation SetVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
+    productVariantsBulkUpdate(productId: $productId, variants: $variants) {
+      productVariants { id sku price }
+      userErrors { field message }
+    }
+  }`;
+
+  const variantResult = await executeGraphql(
+    variantMutation,
+    {
+      productId,
+      variants: [
+        {
+          id: variantId,
+          price: spec.price_usd.toFixed(2),
+          inventoryItem: {
+            sku: spec.sku,
+            requiresShipping: true,
+            measurement: {
+              weight: {
+                value: spec.weight_grams,
+                unit: 'GRAMS',
+              },
+            },
+          },
+        },
+      ],
+    },
+    {mutate: true},
+  );
+  assertNoErrors(`productVariantsBulkUpdate ${spec.handle}`, variantResult);
+
+  const variantPayload = variantResult.data?.productVariantsBulkUpdate as {
+    userErrors: Array<{message: string}>;
+  };
+  if (variantPayload.userErrors?.length) {
+    throw new Error(
+      `productVariantsBulkUpdate ${spec.handle}: ${variantPayload.userErrors
+        .map((e) => e.message)
+        .join('; ')}`,
+    );
+  }
+}
+
+async function updateProduct(
+  existing: ExistingProduct,
+  spec: ProductSpec,
+): Promise<{id: string; action: 'updated'}> {
+  if (!APPLY) {
+    console.log(
+      `  [dry-run] would update ${spec.handle} (${spec.sku}) DRAFT $${spec.price_usd}`,
+    );
+    return {id: existing.id, action: 'updated'};
+  }
+
+  const mutation = `mutation UpdateProduct($product: ProductUpdateInput!) {
+    productUpdate(product: $product) {
+      product { id handle status }
+      userErrors { field message }
+    }
+  }`;
+
+  const updateResult = await executeGraphql(
+    mutation,
+    {
+      product: {
+        id: existing.id,
+        title: spec.title,
+        descriptionHtml: spec.description_html,
+        vendor: spec.vendor,
+        productType: spec.product_type,
+        tags: spec.tags,
+        status: 'DRAFT',
+        seo: {
+          title: spec.seo_title ?? spec.title,
+          description: spec.seo_description ?? '',
+        },
+        metafields: productMetafields(spec),
+      },
+    },
+    {mutate: true},
+  );
+  assertNoErrors(`productUpdate ${spec.handle}`, updateResult);
+
+  const updated = updateResult.data?.productUpdate as {
+    product?: {id: string; handle: string; status: string};
+    userErrors: Array<{message: string; field?: string[]}>;
+  };
+
+  if (updated.userErrors?.length) {
+    throw new Error(
+      `productUpdate ${spec.handle}: ${updated.userErrors.map((e) => e.message).join('; ')}`,
+    );
+  }
+  if (!updated.product) {
+    throw new Error(`productUpdate ${spec.handle}: no product returned`);
+  }
+
+  const variantId = existing.variantId;
+  if (!variantId) {
+    throw new Error(`productUpdate ${spec.handle}: missing default variant`);
+  }
+  await setVariantFields(existing.id, variantId, spec);
+
+  console.log(
+    `  updated ${spec.handle} → ${updated.product.id} (${updated.product.status})`,
+  );
+  return {id: updated.product.id, action: 'updated'};
+}
+
 async function createProduct(
   spec: ProductSpec,
-): Promise<{id: string; action: 'created' | 'skipped'}> {
+): Promise<{id: string; action: 'created'}> {
   if (!APPLY) {
     console.log(
       `  [dry-run] would create ${spec.handle} (${spec.sku}) DRAFT $${spec.price_usd}`,
@@ -533,53 +733,136 @@ async function createProduct(
     throw new Error(`productCreate ${spec.handle}: missing default variant`);
   }
 
-  const variantMutation = `mutation SetVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
-    productVariantsBulkUpdate(productId: $productId, variants: $variants) {
-      productVariants { id sku price }
-      userErrors { field message }
-    }
-  }`;
-
-  const variantResult = await executeGraphql(
-    variantMutation,
-    {
-      productId: created.product.id,
-      variants: [
-        {
-          id: variantId,
-          price: spec.price_usd.toFixed(2),
-          inventoryItem: {
-            sku: spec.sku,
-            requiresShipping: true,
-            measurement: {
-              weight: {
-                value: spec.weight_grams,
-                unit: 'GRAMS',
-              },
-            },
-          },
-        },
-      ],
-    },
-    {mutate: true},
-  );
-  assertNoErrors(`productVariantsBulkUpdate ${spec.handle}`, variantResult);
-
-  const variantPayload = variantResult.data?.productVariantsBulkUpdate as {
-    userErrors: Array<{message: string}>;
-  };
-  if (variantPayload.userErrors?.length) {
-    throw new Error(
-      `productVariantsBulkUpdate ${spec.handle}: ${variantPayload.userErrors
-        .map((e) => e.message)
-        .join('; ')}`,
-    );
-  }
+  await setVariantFields(created.product.id, variantId, spec);
 
   console.log(
     `  created ${spec.handle} → ${created.product.id} (${created.product.status})`,
   );
   return {id: created.product.id, action: 'created'};
+}
+
+async function ensureLineupCollections(
+  productIdsByHandle: Map<string, string>,
+): Promise<void> {
+  console.log('\nLineup collections:');
+  const existing = await existingCollectionsByHandle();
+  let created = 0;
+  let updated = 0;
+
+  for (const col of LINEUP_COLLECTIONS) {
+    const productIds = seedCatalog
+      .filter((p) => p.lineup === col.lineup)
+      .map((p) => productIdsByHandle.get(p.handle))
+      .filter((id): id is string => Boolean(id) && !id.startsWith('dry-run://'));
+
+    if (!APPLY) {
+      const verb = existing.has(col.handle) ? 'update' : 'create';
+      console.log(
+        `  [dry-run] would ${verb} ${col.handle} (${productIds.length || seedCatalog.filter((p) => p.lineup === col.lineup).length} products)`,
+      );
+      continue;
+    }
+
+    let collectionId = existing.get(col.handle);
+    if (!collectionId) {
+      const mutation = `mutation CreateCollection($input: CollectionInput!) {
+        collectionCreate(input: $input) {
+          collection { id handle }
+          userErrors { field message }
+        }
+      }`;
+      const result = await executeGraphql(
+        mutation,
+        {
+          input: {
+            title: col.title,
+            handle: col.handle,
+            descriptionHtml: col.descriptionHtml,
+            products: productIds,
+          },
+        },
+        {mutate: true},
+      );
+      assertNoErrors(`collectionCreate ${col.handle}`, result);
+      const payload = result.data?.collectionCreate as {
+        collection?: {id: string; handle: string};
+        userErrors: Array<{message: string}>;
+      };
+      if (payload.userErrors?.length) {
+        throw new Error(
+          `collectionCreate ${col.handle}: ${payload.userErrors.map((e) => e.message).join('; ')}`,
+        );
+      }
+      if (!payload.collection) {
+        throw new Error(`collectionCreate ${col.handle}: no collection returned`);
+      }
+      collectionId = payload.collection.id;
+      created += 1;
+      console.log(`  created ${col.handle} → ${collectionId}`);
+    } else {
+      const mutation = `mutation UpdateCollection($input: CollectionInput!) {
+        collectionUpdate(input: $input) {
+          collection { id handle }
+          userErrors { field message }
+        }
+      }`;
+      const result = await executeGraphql(
+        mutation,
+        {
+          input: {
+            id: collectionId,
+            title: col.title,
+            descriptionHtml: col.descriptionHtml,
+          },
+        },
+        {mutate: true},
+      );
+      assertNoErrors(`collectionUpdate ${col.handle}`, result);
+      const payload = result.data?.collectionUpdate as {
+        userErrors: Array<{message: string}>;
+      };
+      if (payload.userErrors?.length) {
+        throw new Error(
+          `collectionUpdate ${col.handle}: ${payload.userErrors.map((e) => e.message).join('; ')}`,
+        );
+      }
+
+      if (productIds.length) {
+        const addMutation = `mutation AddProducts($id: ID!, $productIds: [ID!]!) {
+          collectionAddProducts(id: $id, productIds: $productIds) {
+            userErrors { field message }
+          }
+        }`;
+        const addResult = await executeGraphql(
+          addMutation,
+          {id: collectionId, productIds},
+          {mutate: true},
+        );
+        assertNoErrors(`collectionAddProducts ${col.handle}`, addResult);
+        const addPayload = addResult.data?.collectionAddProducts as {
+          userErrors: Array<{message: string}>;
+        };
+        if (addPayload.userErrors?.length) {
+          // Already-in-collection is fine for idempotent re-runs.
+          const fatal = addPayload.userErrors.filter(
+            (e) => !/already|exist/i.test(e.message),
+          );
+          if (fatal.length) {
+            throw new Error(
+              `collectionAddProducts ${col.handle}: ${fatal.map((e) => e.message).join('; ')}`,
+            );
+          }
+        }
+      }
+
+      updated += 1;
+      console.log(`  updated ${col.handle} → ${collectionId} (+${productIds.length} products)`);
+    }
+  }
+
+  if (APPLY) {
+    console.log(`Collections: created=${created} updated=${updated}`);
+  }
 }
 
 function adminUrl(productGid: string): string {
@@ -606,6 +889,7 @@ async function verify(): Promise<void> {
         claim_status: metafield(namespace: "specs", key: "claim_status") { value }
         heat_sources: metafield(namespace: "specs", key: "heat_sources") { value }
         concept_thesis: metafield(namespace: "specs", key: "concept_thesis") { value }
+        material_architecture: metafield(namespace: "specs", key: "material_architecture") { value }
       }
     }
   }`;
@@ -627,23 +911,71 @@ async function verify(): Promise<void> {
               variants: {nodes: Array<{sku: string; price: string}>};
               lineup?: {value: string} | null;
               claim_status?: {value: string} | null;
+              material_architecture?: {value: string} | null;
             }>;
           }
         | undefined
     )?.nodes ?? [];
 
   console.log('\nVerification:');
+  let ok = 0;
+  let missing = 0;
   for (const handle of handles) {
     const node = nodes.find((n) => n.handle === handle);
     if (!node) {
       console.log(`  MISSING ${handle}`);
+      missing += 1;
       continue;
     }
     const variant = node.variants.nodes[0];
+    const seed = seedCatalog.find((p) => p.handle === handle)!;
+    const skuOk = variant?.sku === seed.sku;
+    const metaOk = Boolean(node.lineup?.value && node.claim_status?.value);
+    if (skuOk && metaOk && node.status === 'DRAFT') ok += 1;
     console.log(
       `  ${handle}: ${node.status} vendor=${node.vendor} sku=${variant?.sku} price=${variant?.price} lineup=${node.lineup?.value ?? '∅'} claim=${node.claim_status?.value ?? '∅'}`,
     );
     console.log(`    ${adminUrl(node.id)}`);
+  }
+  console.log(`Verify tally: ok=${ok} missing=${missing} expected=${handles.length}`);
+
+  const colQuery = `query VerifyCols($query: String!) {
+    collections(first: 10, query: $query) {
+      nodes {
+        id
+        handle
+        title
+        productsCount { count }
+      }
+    }
+  }`;
+  const colResult = await executeGraphql(colQuery, {
+    query: LINEUP_COLLECTIONS.map((c) => `handle:${c.handle}`).join(' OR '),
+  });
+  assertNoErrors('verify collections', colResult);
+  const cols =
+    (
+      colResult.data?.collections as
+        | {
+            nodes: Array<{
+              handle: string;
+              title: string;
+              productsCount: {count: number};
+            }>;
+          }
+        | undefined
+    )?.nodes ?? [];
+  console.log('\nCollection verification:');
+  for (const col of LINEUP_COLLECTIONS) {
+    const node = cols.find((c) => c.handle === col.handle);
+    const expected = seedCatalog.filter((p) => p.lineup === col.lineup).length;
+    if (!node) {
+      console.log(`  MISSING ${col.handle} (expected ${expected} products)`);
+      continue;
+    }
+    console.log(
+      `  ${col.handle}: "${node.title}" products=${node.productsCount.count} (expected ${expected})`,
+    );
   }
 }
 
@@ -676,26 +1008,24 @@ async function main(): Promise<void> {
   const byHandle = await existingProductsByHandle();
   const productIds: Array<{handle: string; id: string; action: string}> = [];
   let createdProducts = 0;
-  let skippedProducts = 0;
+  let updatedProducts = 0;
 
   for (const spec of seedCatalog) {
     const existingProduct = byHandle.get(spec.handle);
     if (existingProduct) {
-      console.log(`  skip ${spec.handle} (exists ${existingProduct.id})`);
-      productIds.push({
-        handle: spec.handle,
-        id: existingProduct.id,
-        action: 'skipped',
-      });
-      skippedProducts += 1;
+      const {id, action} = await updateProduct(existingProduct, spec);
+      productIds.push({handle: spec.handle, id, action});
+      updatedProducts += 1;
       continue;
     }
     const {id, action} = await createProduct(spec);
     productIds.push({handle: spec.handle, id, action});
     if (action === 'created') createdProducts += 1;
-    else skippedProducts += 1;
   }
-  console.log(`Products: created=${createdProducts} skipped=${skippedProducts}`);
+  console.log(`Products: created=${createdProducts} updated=${updatedProducts}`);
+
+  const idMap = new Map(productIds.map((row) => [row.handle, row.id]));
+  await ensureLineupCollections(idMap);
 
   if (APPLY || byHandle.size > 0) {
     await verify();
