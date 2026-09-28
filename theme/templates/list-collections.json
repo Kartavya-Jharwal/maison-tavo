@@ -1,13 +1,59 @@
 /*
  * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
+ * Maison Tavo collections index — Forge / Terre / Kuro / Sets.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
+    "lineups": {
+      "type": "maison-lineups",
+      "blocks": {
+        "forge": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Skillets",
+            "label": "Forge",
+            "text": "Carbon-steel cookline concepts. Modular mass for the pass — catalog still in draft.",
+            "handle": "forge"
+          }
+        },
+        "terre": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Clay",
+            "label": "Terre",
+            "text": "Cast clay vessels and table forms. Grain and heat memory as design story, not a performance claim.",
+            "handle": "terre"
+          }
+        },
+        "kuro": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Knives",
+            "label": "Kuro",
+            "text": "Strip and hybrid-edge blade concepts. Edge geometry as craft language.",
+            "handle": "kuro"
+          }
+        },
+        "sets": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Hybrids",
+            "label": "Sets",
+            "text": "Forge × Terre service sets and nested pieces for the shared kitchen spine.",
+            "handle": "sets"
+          }
+        }
+      },
+      "block_order": ["forge", "terre", "kuro", "sets"],
+      "settings": {
+        "eyebrow": "The rooms",
+        "heading": "Shop by lineage",
+        "lede": "Four collection rooms for when the draft catalog opens: Forge for skillets, Terre for clay, Kuro for knives, Sets for hybrid service.",
+        "padding-block-start": 48,
+        "padding-block-end": 32
+      }
+    },
     "collection_list_Wfgh3m": {
       "type": "main-collection-list",
       "blocks": {
@@ -42,7 +88,7 @@
             "gradient_direction": "to top",
             "open_in_new_tab": false,
             "padding-block-start": 0,
-            "padding-block-end": 48,
+            "padding-block-end": 32,
             "padding-inline-start": 0,
             "padding-inline-end": 0
           },
@@ -51,11 +97,35 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<h1>Collections</h1>",
+                "text": "<h1>All collections</h1>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
                 "type_preset": "h2",
+                "font": "var(--font-heading--family)",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 8,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_lede": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>Admin collections appear here once created. Lineup rooms above link by handle even while products remain draft.</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
                 "font": "var(--font-body--family)",
                 "line_height": "normal",
                 "letter_spacing": "normal",
@@ -65,7 +135,7 @@
                 "background_color": "#00000026",
                 "corner_radius": 0,
                 "padding-block-start": 0,
-                "padding-block-end": 16,
+                "padding-block-end": 0,
                 "padding-inline-start": 0,
                 "padding-inline-end": 0
               },
@@ -73,7 +143,8 @@
             }
           },
           "block_order": [
-            "text_fRMQMR"
+            "text_fRMQMR",
+            "text_lede"
           ]
         },
         "static-collection-card": {
@@ -84,7 +155,7 @@
             "placement": "below_image",
             "horizontal_alignment": "flex-start",
             "vertical_alignment": "flex-start",
-            "collection_card_gap": 8,
+            "collection_card_gap": 12,
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -98,9 +169,9 @@
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
+                "type_preset": "h5",
+                "font": "var(--font-heading--family)",
+                "font_size": "1.125rem",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
@@ -120,7 +191,7 @@
               "name": "t:names.collection_card_image",
               "static": true,
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "landscape",
                 "toggle_overlay": false,
                 "overlay_color": "#00000026",
                 "overlay_style": "solid",
@@ -145,23 +216,24 @@
       "settings": {
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "columns": 3,
-        "mobile_columns": "2",
-        "columns_gap": 12,
+        "columns": 2,
+        "mobile_columns": "1",
+        "columns_gap": 20,
         "bento_gap": 8,
-        "rows_gap": 24,
-        "max_collections": 4,
+        "rows_gap": 32,
+        "max_collections": 8,
         "icons_style": "arrow",
         "icons_shape": "none",
         "section_width": "page-width",
-        "gap": 12,
+        "gap": 16,
         "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-start": 24,
+        "padding-block-end": 64
       }
     }
   },
   "order": [
+    "lineups",
     "collection_list_Wfgh3m"
   ]
 }

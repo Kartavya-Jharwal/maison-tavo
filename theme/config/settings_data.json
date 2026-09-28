@@ -17,7 +17,21 @@
     "type_body_font": "inter_n4",
     "type_subheading_font": "inter_n5",
     "type_heading_font": "inter_n7",
-    "type_accent_font": "inter_n7",
+    "type_accent_font": "anonymous_pro_n4",
+    "brand_color_raw_copper": "#C4784A",
+    "brand_color_aged_bronze": "#6E5A3D",
+    "brand_color_obsidian_charcoal": "#1A1714",
+    "brand_color_cast_clay": "#E8DFD4",
+    "brand_color_damascus_silver": "#9A9B9E",
+    "brand_color_white": "#ffffff",
+    "brand_color_black": "#1A1714",
+    "brand_color_accent": "#C4784A",
+    "brand_color_muted": "#9A9B9E",
+    "brand_color_error": "#8B0000",
+    "brand_color_success": "#3D5C45",
+    "brand_color_instock": "#3D5C45",
+    "brand_color_lowstock": "#C4784A",
+    "brand_color_outofstock": "#9A9B9E",
     "type_size_paragraph": "14",
     "type_line_height_paragraph": "body-loose",
     "type_font_h1": "heading",
@@ -103,10 +117,10 @@
     "variant_button_radius": 14,
     "variant_button_width": "equal-width-buttons",
     "color_palette": {
-      "background": "#ffffff",
-      "foreground": "#000000",
-      "color1": "#333333",
-      "color2": "#DFDFDF"
+      "background": "#E8DFD4",
+      "foreground": "#1A1714",
+      "color1": "#C4784A",
+      "color2": "#9A9B9E"
     }
   },
   "presets": {
@@ -205,10 +219,10 @@
       "variant_button_radius": 14,
       "variant_button_width": "equal-width-buttons",
       "color_palette": {
-        "background": "#ffffff",
-        "foreground": "#000000",
-        "color1": "#333333",
-        "color2": "#DFDFDF"
+        "background": "#E8DFD4",
+        "foreground": "#1A1714",
+        "color1": "#C4784A",
+        "color2": "#9A9B9E"
       }
     }
   }

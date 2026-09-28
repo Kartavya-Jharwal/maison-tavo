@@ -107,13 +107,34 @@
       {% render 'text-block-styles' %}
       {% render 'price-styles' %}
       {% render 'product-card-gallery-zoom-details-styles' %}
-      <div class="main-collection-grid__empty">
-        <h2 class="main-collection-grid__empty-title h2">
-          {{ 'content.no_products_found' | t }}
-        </h2>
-        <p>
-          {{ 'content.use_fewer_filters_html' | t: link: collection.url, class: 'main-collection-grid__empty-link' }}
-        </p>
+      {% liquid
+        assign maison_draft_empty = false
+        if template.name == 'collection' and collection != blank and collection.products_count == 0
+          assign maison_draft_empty = true
+        endif
+      %}
+      <div class="main-collection-grid__empty{% if maison_draft_empty %} main-collection-grid__empty--maison{% endif %}">
+        {% if maison_draft_empty %}
+          <p class="main-collection-grid__empty-eyebrow">{{ 'maison.collection_draft_eyebrow' | t }}</p>
+          <h2 class="main-collection-grid__empty-title h2">
+            {{ 'maison.collection_draft_title' | t }}
+          </h2>
+          <p class="main-collection-grid__empty-lede">
+            {{ 'maison.collection_draft_lede' | t }}
+          </p>
+          <p>
+            <a class="main-collection-grid__empty-link" href="{{ routes.collections_url }}">
+              {{ 'maison.collection_draft_cta' | t }}
+            </a>
+          </p>
+        {% else %}
+          <h2 class="main-collection-grid__empty-title h2">
+            {{ 'content.no_products_found' | t }}
+          </h2>
+          <p>
+            {{ 'content.use_fewer_filters_html' | t: link: collection.url, class: 'main-collection-grid__empty-link' }}
+          </p>
+        {% endif %}
       </div>
     {% else %}
       {% if enable_infinite_scroll %}
@@ -249,6 +270,32 @@
       10,
       minmax(clamp(50px, calc(100% - 9 * var(--product-grid-gap)) / 10, 80px), 1fr)
     );
+  }
+
+  .main-collection-grid__empty--maison {
+    max-width: 28rem;
+    padding-block: 2.5rem 1rem;
+  }
+
+  .main-collection-grid__empty-eyebrow {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-heading--family);
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brand-color-aged-bronze, var(--color-foreground-muted));
+  }
+
+  .main-collection-grid__empty--maison .main-collection-grid__empty-title {
+    font-family: var(--font-fraunces--family, var(--font-heading--family));
+    font-variation-settings: 'opsz' 72;
+    margin-block-end: 0.75rem;
+  }
+
+  .main-collection-grid__empty-lede {
+    margin: 0 0 1.25rem;
+    color: var(--color-foreground-muted);
+    line-height: 1.55;
   }
 
   @media (prefers-reduced-motion: no-preference) {

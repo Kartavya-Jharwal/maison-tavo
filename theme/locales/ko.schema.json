@@ -16,6 +16,8 @@
     "maison_legal": "Legal page",
     "maison_journal_intro": "Journal intro",
     "maison_microapp": "Frontend microapp",
+    "maison_lineups": "Shop by lineage",
+    "maison_lineup": "Lineup room",
     "maison_pillar": "Pillar",
     "maison_chapter": "Chapter",
     "maison_journal_entry": "Journal entry",
@@ -179,7 +181,8 @@
     "product_sku": "SKU(재고 관리 코드)",
     "layered_slideshow": "레이어드 슬라이드 쇼",
     "cart_drawer": "카트 서랍",
-    "disclosures": "고지 사항"
+    "disclosures": "고지 사항",
+    "maison_spec_table": "Spec table"
   },
   "settings": {
     "maison_show_developer_credit": "Show developer credit",
@@ -607,7 +610,15 @@
     "input_style": "입력 스타일",
     "selected_button_style": "선택한 버튼 스타일",
     "open_by_default": "기본으로 열기",
-    "title_preset": "제목 사전 설정"
+    "title_preset": "제목 사전 설정",
+    "maison_spec_heading": "Spec table heading",
+    "maison_collection_handle": "Collection handle",
+    "maison_place_1_label": "Place one label",
+    "maison_place_1_text": "Place one text",
+    "maison_place_2_label": "Place two label",
+    "maison_place_2_text": "Place two text",
+    "maison_place_3_label": "Place three label",
+    "maison_place_3_text": "Place three text"
   },
   "options": {
     "privacy": "Privacy Policy",
@@ -892,12 +903,16 @@
     "direction_end": "오른쪽",
     "direction_start": "왼쪽",
     "direction_top_end": "오른쪽 상단",
-    "direction_top_start": "왼쪽 상단"
+    "direction_top_start": "왼쪽 상단",
+    "verified": "VERIFIED",
+    "observed": "OBSERVED",
+    "hypothesis": "HYPOTHESIS"
   },
   "content": {
     "maison_pages_header": "Storefront pages",
     "maison_pages_help": "Create matching pages and a Journal blog in Shopify Admin, then assign the templates documented in theme/PAGES.md. Native Shopify policies stay in the footer alongside house legal pages.",
     "maison_pages_templates": "Templates: page.about, page.story, page.building, page.privacy, page.terms, page.ipr, page.microapp. Blog: journal.",
+    "maison_provenance": "Three-place provenance",
     "background_video": "배경 비디오",
     "describe_the_video_for": "스크린리더를 사용하는 고객에게 슬라이드 쇼를 설명합니다. [자세히 알아보기](https://help.shopify.com/manual/online-store/themes/theme-structure/theme-features#video-block)",
     "width_is_automatically_optimized": "너비는 모바일에 맞게 자동으로 최적화됩니다.",
@@ -1123,6 +1138,7 @@
   "info": {
     "maison_journal_handle": "Must match the blog handle created in Admin (default: journal)",
     "maison_microapp_id": "Must match an id in theme/microapps/apps.json. Shopify assets are flat, so the file is assets/microapp-{id}.js. Optional page metafield: maison.microapp_id.",
+    "maison_collection_handle": "Used when no collection is picked. Create forge, terre, kuro, sets in Admin.",
     "carousel_layout_on_mobile": "모바일에서는 항상 캐러셀이 사용됩니다.",
     "video_alt_text": "보조 기술 사용자를 위해 비디오를 설명하세요",
     "video_autoplay": "비디오는 기본적으로 음소거됩니다",

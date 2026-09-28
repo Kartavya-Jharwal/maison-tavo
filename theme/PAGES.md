@@ -10,8 +10,10 @@ Theme setting group **Navigation & pages** (`maison_pages`) at the end of `confi
 
 After pages exist, add them under **Online Store → Navigation**:
 
-- Header (primary): About us, Our story, Building of, Journal
+- Header (primary): **Forge** (`/collections/forge`), **Terre** (`/collections/terre`), **Kuro** (`/collections/kuro`), **Sets** (`/collections/sets`), then About us, Our story, Building of, Journal
 - Footer: Privacy Policy, Terms of Service, Intellectual property (plus Journal if you want it twice)
+
+Create empty collections with those handles even while products stay **draft** — theme lineup links and empty-state copy assume them. Do not publish filler stock.
 
 Do not remove the footer **Policy links** block. It lists Shopify-hosted policies from **Settings → Policies** (`shop.policies`, including `shop.privacy_policy` and `shop.terms_of_service` once published). House legal pages are additional rooms, not replacements.
 

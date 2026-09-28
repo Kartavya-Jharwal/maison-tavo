@@ -32,7 +32,7 @@
           "settings": {
             "kicker": "IV",
             "heading": "The house",
-            "text": "<p>Maison Tavo is public so that standard can sit in the open: limited editions, honest materials, a storefront that behaves like a pass rather than a shout. Software is how the rooms are built. It is not the lead of the story.</p>"
+            "text": "<p>Maison Tavo is public so that standard can sit in the open: limited editions, honest materials, a storefront that behaves like a pass rather than a shout. The design story is deliberate synthesis — casting, forging, and room language held as one texture. Spec depth and craft surface share the same pass; software is how the rooms are built, not the tasting menu.</p>"
           }
         }
       },
@@ -41,8 +41,15 @@
         "eyebrow": "Origin",
         "heading": "Our story",
         "lede": "Maison Tavo is Kartavya Jharwal’s food house. The public record begins in Jaipur hospitality: a leased hotel, a property restaurant, and the work of feeding rooms, banquets, and walk-in tables from one kitchen.",
-        "padding-block-start": 48,
-        "padding-block-end": 80
+        "provenance_eyebrow": "Three places",
+        "place_1_label": "Jaipur casting",
+        "place_1_text": "Hospitality kitchens and clay grain — the Terre lineage as kitchen memory, not borrowed prestige.",
+        "place_2_label": "Japanese forging",
+        "place_2_text": "Blade discipline and strip geometry — Kuro as craft language on the board.",
+        "place_3_label": "European rooms",
+        "place_3_text": "Composition and restraint — dual depth for the technologist and the curator on one surface.",
+        "padding-block-start": 56,
+        "padding-block-end": 96
       }
     }
   },

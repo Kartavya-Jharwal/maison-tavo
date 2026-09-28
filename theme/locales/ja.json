@@ -359,6 +359,12 @@
     "native_shopify_policy": "Shopify-hosted policy",
     "microapp_demo_note": "Frontend demo microapp. Nothing is saved or sent to a backend.",
     "microapp_invalid": "Choose a registered microapp id in the section or page metafield.",
-    "journal_kicker": "Journal"
+    "journal_kicker": "Journal",
+    "provenance_label": "Three-place design story",
+    "lineup_browse": "Enter room",
+    "collection_draft_eyebrow": "Draft catalog",
+    "collection_draft_title": "This room is open; pieces are still in the kiln.",
+    "collection_draft_lede": "Lineups (Forge, Terre, Kuro, Sets) are framed for when products leave draft. Nothing published here yet — no stock filler.",
+    "collection_draft_cta": "Browse all collections"
   }
 }

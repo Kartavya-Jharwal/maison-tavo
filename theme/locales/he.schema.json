@@ -33,6 +33,7 @@
     "maison_pages_header": "Storefront pages",
     "maison_pages_help": "Create matching pages and a Journal blog in Shopify Admin, then assign the templates documented in theme/PAGES.md. Native Shopify policies stay in the footer alongside house legal pages.",
     "maison_pages_templates": "Templates: page.about, page.story, page.building, page.privacy, page.terms, page.ipr, page.microapp. Blog: journal.",
+    "maison_provenance": "Three-place provenance",
     "visible_if_collection_has_more_products": "גלוי אם באוסף יש יותר מוצרים ממה שמוצג",
     "advanced": "מתקדם",
     "appearance": "מראה",
@@ -220,6 +221,7 @@
   "info": {
     "maison_journal_handle": "Must match the blog handle created in Admin (default: journal)",
     "maison_microapp_id": "Must match an id in theme/microapps/apps.json. Shopify assets are flat, so the file is assets/microapp-{id}.js. Optional page metafield: maison.microapp_id.",
+    "maison_collection_handle": "Used when no collection is picked. Create forge, terre, kuro, sets in Admin.",
     "actions_display_style": "תמיד נעשה שימוש בסמלים בנייד",
     "applies_on_image_only": "חל על תמונות בלבד",
     "aspect_ratio_adjusted": "מותאם בחלק מהפריסות",
@@ -256,6 +258,8 @@
     "maison_legal": "Legal page",
     "maison_journal_intro": "Journal intro",
     "maison_microapp": "Frontend microapp",
+    "maison_lineups": "Shop by lineage",
+    "maison_lineup": "Lineup room",
     "maison_pillar": "Pillar",
     "maison_chapter": "Chapter",
     "maison_journal_entry": "Journal entry",
@@ -419,7 +423,8 @@
     "view_all_button": "הצג הכול",
     "disclosures": "גילוי נאות",
     "pills": "גלולות",
-    "comparison_slider": "מחוון השוואה"
+    "comparison_slider": "מחוון השוואה",
+    "maison_spec_table": "Spec table"
   },
   "options": {
     "privacy": "Privacy Policy",
@@ -704,7 +709,10 @@
     "direction_end": "סוף",
     "direction_start": "התחלה",
     "direction_top_end": "למעלה, סוף",
-    "direction_top_start": "למעלה, התחלה"
+    "direction_top_start": "למעלה, התחלה",
+    "verified": "VERIFIED",
+    "observed": "OBSERVED",
+    "hypothesis": "HYPOTHESIS"
   },
   "settings": {
     "maison_show_developer_credit": "Show developer credit",
@@ -1132,7 +1140,15 @@
     "top_row_background": "רקע לשורה העליונה",
     "top_row_text": "טקסט לשורה העליונה",
     "bottom_row_background": "רקע לשורה התחתונה",
-    "bottom_row_text": "טקסט לשורה התחתונה"
+    "bottom_row_text": "טקסט לשורה התחתונה",
+    "maison_spec_heading": "Spec table heading",
+    "maison_collection_handle": "Collection handle",
+    "maison_place_1_label": "Place one label",
+    "maison_place_1_text": "Place one text",
+    "maison_place_2_label": "Place two label",
+    "maison_place_2_text": "Place two text",
+    "maison_place_3_label": "Place three label",
+    "maison_place_3_text": "Place three text"
   },
   "text_defaults": {
     "accordion_heading": "כותרת אקורדיון",

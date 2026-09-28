@@ -16,6 +16,8 @@
     "maison_legal": "Legal page",
     "maison_journal_intro": "Journal intro",
     "maison_microapp": "Frontend microapp",
+    "maison_lineups": "Shop by lineage",
+    "maison_lineup": "Lineup room",
     "maison_pillar": "Pillar",
     "maison_chapter": "Chapter",
     "maison_journal_entry": "Journal entry",
@@ -179,7 +181,8 @@
     "product_sku": "SKU",
     "layered_slideshow": "Diaporama superposé",
     "cart_drawer": "Panier coulissant",
-    "disclosures": "Divulgations"
+    "disclosures": "Divulgations",
+    "maison_spec_table": "Spec table"
   },
   "settings": {
     "maison_show_developer_credit": "Show developer credit",
@@ -607,7 +610,15 @@
     "input_style": "Style de champ de saisie",
     "selected_button_style": "Style de bouton sélectionné",
     "open_by_default": "Ouvert par défaut",
-    "title_preset": "Préréglage du titre"
+    "title_preset": "Préréglage du titre",
+    "maison_spec_heading": "Spec table heading",
+    "maison_collection_handle": "Collection handle",
+    "maison_place_1_label": "Place one label",
+    "maison_place_1_text": "Place one text",
+    "maison_place_2_label": "Place two label",
+    "maison_place_2_text": "Place two text",
+    "maison_place_3_label": "Place three label",
+    "maison_place_3_text": "Place three text"
   },
   "options": {
     "privacy": "Privacy Policy",
@@ -892,12 +903,16 @@
     "below_media": "Sous le support multimédia",
     "full_frame": "Plein cadre",
     "icons": "Icônes",
-    "input_field": "Champ de saisie"
+    "input_field": "Champ de saisie",
+    "verified": "VERIFIED",
+    "observed": "OBSERVED",
+    "hypothesis": "HYPOTHESIS"
   },
   "content": {
     "maison_pages_header": "Storefront pages",
     "maison_pages_help": "Create matching pages and a Journal blog in Shopify Admin, then assign the templates documented in theme/PAGES.md. Native Shopify policies stay in the footer alongside house legal pages.",
     "maison_pages_templates": "Templates: page.about, page.story, page.building, page.privacy, page.terms, page.ipr, page.microapp. Blog: journal.",
+    "maison_provenance": "Three-place provenance",
     "background_video": "Vidéo de fond",
     "describe_the_video_for": "Décrivez la vidéo pour les clients utilisant des lecteurs d’écran. [En savoir plus](https://help.shopify.com/manual/online-store/themes/theme-structure/theme-features#video-block)",
     "width_is_automatically_optimized": "La largeur est automatiquement optimisée pour les appareils mobiles.",
@@ -1123,6 +1138,7 @@
   "info": {
     "maison_journal_handle": "Must match the blog handle created in Admin (default: journal)",
     "maison_microapp_id": "Must match an id in theme/microapps/apps.json. Shopify assets are flat, so the file is assets/microapp-{id}.js. Optional page metafield: maison.microapp_id.",
+    "maison_collection_handle": "Used when no collection is picked. Create forge, terre, kuro, sets in Admin.",
     "carousel_layout_on_mobile": "Le carrousel est toujours utilisé sur mobile",
     "video_alt_text": "Décrivez la vidéo pour les utilisateurs de technologies d’assistance",
     "video_autoplay": "Les vidéos seront mises en sourdine par défaut",

@@ -35,22 +35,30 @@
             "text": "<p>Kartavya also builds software — restaurant platforms, hospitality automation, this storefront. Code is prep: labelled, rotated, ready for service. It is not the tasting menu.</p>"
           }
         },
-        "open": {
+        "lineage": {
           "type": "entry",
           "settings": {
             "date_label": "Note 05",
+            "heading": "Four rooms, still in draft",
+            "text": "<p>Forge for skillets, Terre for clay, Kuro for knives, Sets for hybrid service. Collection doors are framed before products publish — empty rooms on purpose, not stock filler.</p>"
+          }
+        },
+        "open": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Note 06",
             "heading": "Opening the door",
-            "text": "<p>About, Story, Building of, Journal. Add entries as the kitchen advances. Keep the voice of the house.</p>"
+            "text": "<p>About, Story, Building of, Journal. Add entries as the kitchen advances. Keep the voice of the house — synthesis as ambition, evidence tags where claims appear, no invented performance numbers.</p>"
           }
         }
       },
-      "block_order": ["rooms", "pattern", "cloth", "light", "open"],
+      "block_order": ["rooms", "pattern", "cloth", "light", "lineage", "open"],
       "settings": {
         "eyebrow": "Kitchen",
         "heading": "Building of",
-        "lede": "A making-of journal for the house: how hotel F&B and restaurant menus became a product house, and how the storefront is composed. These notes are living copy, sourced from published work.",
-        "padding-block-start": 48,
-        "padding-block-end": 80
+        "lede": "A making-of journal for the house: how hotel F&B and restaurant menus became a product house, and how the storefront is composed. Living notes, sourced from published work — not a fab sheet.",
+        "padding-block-start": 56,
+        "padding-block-end": 96
       }
     }
   },

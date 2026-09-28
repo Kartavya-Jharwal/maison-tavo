@@ -6,9 +6,9 @@
         "app_id": "lookbook",
         "eyebrow": "Atelier tools",
         "heading": "Colour story explorer",
-        "lede": "A frontend-only lookbook toy. Pair palettes with silhouettes. Nothing is saved; this is not a Shopify app.",
-        "padding-block-start": 48,
-        "padding-block-end": 80
+        "lede": "A frontend-only lookbook for palette against silhouette — curator depth without a cart. Nothing is saved; this is not a Shopify app.",
+        "padding-block-start": 56,
+        "padding-block-end": 96
       }
     }
   },

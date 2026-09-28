@@ -30,6 +30,11 @@
           class="maison-editorial__card"
           {{ block.shopify_attributes }}
         >
+          {% if block.settings.evidence_tier != blank and block.settings.evidence_tier != 'none' %}
+            <p class="maison-evidence maison-evidence--{{ block.settings.evidence_tier }}">
+              <span class="maison-evidence__tag">{{ block.settings.evidence_tier | upcase }}</span>
+            </p>
+          {% endif %}
           {% if block.settings.heading != blank %}
             <h2 class="maison-editorial__card-title">{{ block.settings.heading | escape }}</h2>
           {% endif %}
@@ -67,9 +72,10 @@
 
   .maison-editorial__title {
     margin-block: 0.75rem 1rem;
-    font-family: var(--font-heading--family);
+    font-family: var(--font-fraunces--family, var(--font-heading--family));
     font-weight: var(--font-heading--weight);
     letter-spacing: 0.04em;
+    font-variation-settings: 'opsz' 144;
   }
 
   .maison-editorial__lede,
@@ -99,7 +105,7 @@
   }
 
   .maison-editorial__card {
-    border-block-start: 1px solid var(--color-border);
+    border-block-start: 1px solid var(--brand-color-damascus-silver, var(--color-border));
     padding-block-start: 1.25rem;
   }
 
@@ -121,6 +127,36 @@
 
   .maison-editorial__rte p:last-child {
     margin-block-end: 0;
+  }
+
+  .maison-evidence {
+    margin: 0 0 0.75rem;
+  }
+
+  .maison-evidence__tag {
+    display: inline-block;
+    font-family: var(--font-mono--family, var(--font-accent--family));
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.2em 0.55em;
+    border: 1px solid var(--brand-color-damascus-silver, var(--color-border));
+    color: var(--brand-color-obsidian-charcoal, var(--color-foreground));
+  }
+
+  .maison-evidence--verified .maison-evidence__tag {
+    border-color: var(--brand-color-aged-bronze, var(--color-foreground));
+    color: var(--brand-color-aged-bronze, var(--color-foreground));
+  }
+
+  .maison-evidence--observed .maison-evidence__tag {
+    border-color: var(--brand-color-raw-copper, var(--color-foreground));
+    color: var(--brand-color-raw-copper, var(--color-foreground));
+  }
+
+  .maison-evidence--hypothesis .maison-evidence__tag {
+    border-style: dashed;
+    color: var(--color-foreground-muted);
   }
 {% endstylesheet %}
 
@@ -193,6 +229,18 @@
       "type": "pillar",
       "name": "t:names.maison_pillar",
       "settings": [
+        {
+          "type": "select",
+          "id": "evidence_tier",
+          "label": "t:settings.maison_evidence_tier",
+          "options": [
+            { "value": "none", "label": "t:options.none" },
+            { "value": "verified", "label": "t:options.verified" },
+            { "value": "observed", "label": "t:options.observed" },
+            { "value": "hypothesis", "label": "t:options.hypothesis" }
+          ],
+          "default": "none"
+        },
         {
           "type": "text",
           "id": "heading",

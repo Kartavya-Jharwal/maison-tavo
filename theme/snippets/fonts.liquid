@@ -12,20 +12,12 @@
 {%- endunless -%}
 
 {%- comment -%}
-  M0 SPIKE — self-hosted variable font (WS5 / M3 foundation).
-  Fraunces Variable (OFL-1.1, google/fonts via @fontsource-variable/fraunces 5.3.0),
-  one variable WOFF2 per unicode-range subset: latin is preloaded (critical),
-  latin-ext loads on demand. Metric-overridden fallback (Georgia, size-adjust 104%
-  ≈ Fraunces x-height 0.500em / Georgia 0.4816em) keeps the swap near-zero-CLS.
-  Remove this block + the two woff2 assets to revert.
+  Brand heading face — Fraunces Variable (OFL-1.1 via @fontsource-variable/fraunces 5.3.0).
+  One variable WOFF2 per unicode-range subset: latin is preloaded (critical),
+  latin-ext loads on demand. Metric-overridden Georgia fallback (size-adjust 104%)
+  keeps the swap near-zero-CLS. Wired as --font-heading--family in theme-styles-variables.
 {%- endcomment -%}
-<link
-  rel="preload"
-  href="{{ 'fraunces-latin-full-normal.woff2' | asset_url }}"
-  as="font"
-  type="font/woff2"
-  crossorigin
->
+{{ 'fraunces-latin-full-normal.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
 <style>
   /* fraunces-latin-full-normal — axes: opsz 9..144, wght 100..900, SOFT 0..100, WONK 0..1 */
   @font-face {
@@ -52,14 +44,18 @@
     font-family: 'Fraunces Fallback';
     src: local('Georgia');
     size-adjust: 104%;
+    ascent-override: 95%;
+    descent-override: 25%;
   }
 
   :root {
     --font-fraunces--family: 'Fraunces Variable', 'Fraunces Fallback', Georgia, serif;
   }
 
-  /* M0 spike demo: homepage hero headline set in Fraunces at max optical size */
-  .hero__content-wrapper .text-block {
+  /* Display optical size on hero + editorial titles */
+  .hero__content-wrapper .text-block.h2,
+  .hero__content-wrapper .text-block.h1,
+  .maison-editorial__title {
     font-family: var(--font-fraunces--family);
     font-weight: 550;
     font-variation-settings: 'opsz' 144;

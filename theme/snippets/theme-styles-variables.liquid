@@ -167,16 +167,22 @@
     --font-subheading--family: {{ settings.type_subheading_font.family }}, {{ settings.type_subheading_font.fallback_families }};
     --font-subheading--style: {{ settings.type_subheading_font.style }};
     --font-subheading--weight: {{ settings.type_subheading_font.weight }};
-    --font-heading--family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    /* Luxury serif headings: self-hosted Fraunces (fonts.liquid) overrides the picker face */
+    --font-heading--family: var(--font-fraunces--family, {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }});
     --font-heading--style: {{ settings.type_heading_font.style }};
     --font-heading--weight: {{ settings.type_heading_font.weight }};
     --font-accent--family: {{ settings.type_accent_font.family }}, {{ settings.type_accent_font.fallback_families }};
     --font-accent--style: {{ settings.type_accent_font.style }};
     --font-accent--weight: {{ settings.type_accent_font.weight }};
+    /* Industrial mono for metallurgical / spec surfaces (accent picker = Anonymous Pro) */
+    --font-mono--family: var(--font-accent--family);
+    --font-mono--style: var(--font-accent--style);
+    --font-mono--weight: var(--font-accent--weight);
     --brand-font-body: var(--font-body--family);
     --brand-font-subheading: var(--font-subheading--family);
     --brand-font-heading: var(--font-heading--family);
     --brand-font-accent: var(--font-accent--family);
+    --brand-font-mono: var(--font-mono--family);
 
     /* Margin sizes */
     --font-heading--spacing: 0.25em;

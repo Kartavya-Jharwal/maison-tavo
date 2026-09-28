@@ -2116,5 +2116,106 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "t:names.brand_tokens",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:content.maison_brand_palette"
+      },
+      {
+        "type": "paragraph",
+        "content": "t:content.maison_brand_palette_help"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_raw_copper",
+        "label": "t:settings.brand_color_raw_copper",
+        "default": "#C4784A"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_aged_bronze",
+        "label": "t:settings.brand_color_aged_bronze",
+        "default": "#6E5A3D"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_obsidian_charcoal",
+        "label": "t:settings.brand_color_obsidian_charcoal",
+        "default": "#1A1714"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_cast_clay",
+        "label": "t:settings.brand_color_cast_clay",
+        "default": "#E8DFD4"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_damascus_silver",
+        "label": "t:settings.brand_color_damascus_silver",
+        "default": "#9A9B9E"
+      },
+      {
+        "type": "header",
+        "content": "t:content.maison_brand_primitives"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_white",
+        "label": "t:settings.brand_color_white",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_black",
+        "label": "t:settings.brand_color_black",
+        "default": "#1A1714"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_accent",
+        "label": "t:settings.brand_color_accent",
+        "default": "#C4784A"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_muted",
+        "label": "t:settings.brand_color_muted",
+        "default": "#9A9B9E"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_error",
+        "label": "t:settings.brand_color_error",
+        "default": "#8B0000"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_success",
+        "label": "t:settings.brand_color_success",
+        "default": "#3D5C45"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_instock",
+        "label": "t:settings.brand_color_instock",
+        "default": "#3D5C45"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_lowstock",
+        "label": "t:settings.brand_color_lowstock",
+        "default": "#C4784A"
+      },
+      {
+        "type": "color",
+        "id": "brand_color_outofstock",
+        "label": "t:settings.brand_color_outofstock",
+        "default": "#9A9B9E"
+      }
+    ]
   }
 ]
