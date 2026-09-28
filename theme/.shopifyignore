@@ -5,3 +5,9 @@
 /node_modules
 /AGENTS.md
 /scripts
+
+# Locale verify / strip artifacts — Shopify requires .json under locales/
+/locales/*.txt
+/locales/*.pre-strip
+/locales/*.bak
+/locales/*~

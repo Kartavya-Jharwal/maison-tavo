@@ -10,6 +10,12 @@ apps/agents/.env
 .react-router
 *.tsbuildinfo
 
+# Shopify locale verify / strip artifacts (must never ship under theme/locales/)
+theme/locales/*.txt
+theme/locales/*.pre-strip
+theme/locales/*.bak
+theme/locales/*~
+
 # Local HTTPS certificates from `bun run certs`
 .certs/
 
