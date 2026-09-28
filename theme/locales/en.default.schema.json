@@ -434,7 +434,8 @@
     "maison_pillar": "Pillar",
     "maison_chapter": "Chapter",
     "maison_journal_entry": "Journal entry",
-    "maison_clause": "Clause"
+    "maison_clause": "Clause",
+    "maison_spec_table": "Spec table"
   },
   "options": {
     "above_carousel": "Above carousel",
@@ -1228,7 +1229,8 @@
     "maison_document": "Document",
     "maison_body": "Body",
     "maison_app_id": "Microapp id",
-    "maison_show_native_policy": "Link Shopify-hosted policy"
+    "maison_show_native_policy": "Link Shopify-hosted policy",
+    "maison_spec_heading": "Spec table heading"
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",

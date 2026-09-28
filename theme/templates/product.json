@@ -298,6 +298,14 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "maison_spec_table": {
+              "type": "maison-spec-table",
+              "name": "t:names.maison_spec_table",
+              "settings": {
+                "heading": "Specification"
+              },
+              "blocks": {}
             }
           },
           "block_order": [
@@ -305,6 +313,7 @@
             "divider_VJhene",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
+            "maison_spec_table",
             "text_aEtTtq"
           ]
         }

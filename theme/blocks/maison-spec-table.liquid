@@ -1,0 +1,270 @@
+{%- doc -%}
+  Industrial mono spec table for product `specs.*` metafields.
+  Surfaces claim_status first so CONCEPT_SPEC rows are never read as verified fact.
+{%- enddoc -%}
+
+{% liquid
+  assign product_resource = closest.product
+  assign specs = product_resource.metafields.specs
+  assign claim = specs.claim_status.value
+  assign lineup = specs.lineup.value
+  assign thesis = specs.concept_thesis.value
+  assign material = specs.material_architecture.value
+  assign food_contact = specs.food_contact_strategy.value
+  assign fabrication = specs.fabrication_route.value
+  assign care = specs.care_hypothesis.value
+  assign heat = specs.heat_sources.value
+  assign barcode = product_resource.selected_or_first_available_variant.barcode
+  assign has_specs = false
+  if claim != blank or lineup != blank or material != blank or heat != blank or thesis != blank or food_contact != blank or fabrication != blank or care != blank or barcode != blank
+    assign has_specs = true
+  endif
+  assign is_concept = false
+  if claim == 'CONCEPT_SPEC'
+    assign is_concept = true
+  endif
+%}
+
+{% if product_resource != blank and has_specs %}
+  <div
+    class="maison-spec-table{% if is_concept %} maison-spec-table--concept{% endif %}"
+    {{ block.shopify_attributes }}
+  >
+    {% if block.settings.heading != blank %}
+      <h2 class="maison-spec-table__heading">{{ block.settings.heading | escape }}</h2>
+    {% endif %}
+
+    {% if claim != blank %}
+      <p class="maison-spec-table__status" role="status">
+        <span class="maison-spec-table__label">Claim status</span>
+        <span class="maison-spec-table__badge maison-spec-table__badge--{{ claim | handleize }}">
+          {{- claim | escape -}}
+        </span>
+      </p>
+      {% if is_concept %}
+        <p class="maison-spec-table__notice">
+          Design intents from the engineering sheet — not certified ratings or verified measurements.
+          Specs below stay provisional until prototype validation.
+        </p>
+      {% elsif claim == 'PROTOTYPE_VALIDATED' %}
+        <p class="maison-spec-table__notice">
+          Prototype-validated against required tests. Not yet a production-verified claim.
+        </p>
+      {% endif %}
+    {% endif %}
+
+    <table class="maison-spec-table__grid">
+      <caption class="visually-hidden">Product specification</caption>
+      <tbody>
+        {% if lineup != blank %}
+          <tr>
+            <th scope="row">Lineup</th>
+            <td>{{ lineup | escape }}</td>
+          </tr>
+        {% endif %}
+        {% if thesis != blank %}
+          <tr>
+            <th scope="row">Concept thesis</th>
+            <td>{{ thesis | escape | newline_to_br }}</td>
+          </tr>
+        {% endif %}
+        {% if material != blank %}
+          <tr>
+            <th scope="row">Material architecture</th>
+            <td>{{ material | escape | newline_to_br }}</td>
+          </tr>
+        {% endif %}
+        {% if heat != blank %}
+          <tr>
+            <th scope="row">Heat sources</th>
+            <td>
+              {%- if heat.first -%}
+                {{ heat | join: ', ' | escape }}
+              {%- else -%}
+                {{ heat | escape }}
+              {%- endif -%}
+            </td>
+          </tr>
+        {% endif %}
+        {% if food_contact != blank %}
+          <tr>
+            <th scope="row">Food-contact strategy</th>
+            <td>{{ food_contact | escape | newline_to_br }}</td>
+          </tr>
+        {% endif %}
+        {% if fabrication != blank %}
+          <tr>
+            <th scope="row">Fabrication route</th>
+            <td>{{ fabrication | escape | newline_to_br }}</td>
+          </tr>
+        {% endif %}
+        {% if care != blank %}
+          <tr>
+            <th scope="row">Care hypothesis</th>
+            <td>{{ care | escape | newline_to_br }}</td>
+          </tr>
+        {% endif %}
+        {% if barcode != blank %}
+          <tr>
+            <th scope="row">GTIN</th>
+            <td>{{ barcode | escape }}</td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+{% elsif request.design_mode %}
+  <div class="maison-spec-table maison-spec-table--empty" {{ block.shopify_attributes }}>
+    <p class="maison-spec-table__notice">
+      Spec table appears when product metafields in the <code>specs</code> namespace are set.
+    </p>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .maison-spec-table {
+    width: 100%;
+    margin-block: var(--padding-md, 0.8rem) 0;
+    color: var(--color-foreground);
+  }
+
+  .maison-spec-table__heading {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-heading--family);
+    font-size: var(--font-size--md, 1rem);
+    letter-spacing: 0.04em;
+  }
+
+  .maison-spec-table__status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .maison-spec-table__label {
+    font-family: var(--font-mono--family, var(--font-accent--family));
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.65);
+  }
+
+  .maison-spec-table__badge {
+    font-family: var(--font-mono--family, var(--font-accent--family));
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2em 0.55em;
+    border: 1px solid var(--color-foreground);
+    color: var(--color-foreground);
+  }
+
+  .maison-spec-table__badge--concept-spec {
+    border-color: var(--brand-color-raw-copper, var(--color-foreground));
+    color: var(--brand-color-raw-copper, var(--color-foreground));
+  }
+
+  .maison-spec-table__badge--prototype-validated {
+    border-color: var(--brand-color-aged-bronze, var(--color-foreground));
+    color: var(--brand-color-aged-bronze, var(--color-foreground));
+  }
+
+  .maison-spec-table__badge--verified {
+    border-color: var(--brand-color-obsidian-charcoal, var(--color-foreground));
+    color: var(--brand-color-obsidian-charcoal, var(--color-foreground));
+  }
+
+  .maison-spec-table__notice {
+    margin: 0 0 1rem;
+    max-width: 42rem;
+    font-family: var(--font-mono--family, var(--font-accent--family));
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: rgb(var(--color-foreground-rgb) / 0.72);
+  }
+
+  .maison-spec-table--concept .maison-spec-table__grid td {
+    font-style: italic;
+  }
+
+  .maison-spec-table__grid {
+    width: 100%;
+    border-collapse: collapse;
+    border-block-start: 1px solid var(--brand-color-damascus-silver, rgb(var(--color-foreground-rgb) / 0.2));
+  }
+
+  .maison-spec-table__grid th,
+  .maison-spec-table__grid td {
+    padding-block: 0.75rem;
+    padding-inline: 0 1rem;
+    vertical-align: top;
+    text-align: start;
+    border-block-end: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+  }
+
+  .maison-spec-table__grid th {
+    width: 32%;
+    min-width: 8rem;
+    font-family: var(--font-mono--family, var(--font-accent--family));
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.65);
+  }
+
+  .maison-spec-table__grid td {
+    font-family: var(--font-mono--family, var(--font-accent--family));
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-foreground);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .maison-spec-table__grid tbody tr {
+      animation: maison-spec-fade 0.5s ease both;
+    }
+
+    .maison-spec-table__grid tbody tr:nth-child(1) { animation-delay: 0.05s; }
+    .maison-spec-table__grid tbody tr:nth-child(2) { animation-delay: 0.1s; }
+    .maison-spec-table__grid tbody tr:nth-child(3) { animation-delay: 0.15s; }
+    .maison-spec-table__grid tbody tr:nth-child(4) { animation-delay: 0.2s; }
+    .maison-spec-table__grid tbody tr:nth-child(5) { animation-delay: 0.25s; }
+    .maison-spec-table__grid tbody tr:nth-child(6) { animation-delay: 0.3s; }
+    .maison-spec-table__grid tbody tr:nth-child(7) { animation-delay: 0.35s; }
+    .maison-spec-table__grid tbody tr:nth-child(8) { animation-delay: 0.4s; }
+  }
+
+  @keyframes maison-spec-fade {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.maison_spec_table",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.maison_spec_heading",
+      "default": "Specification"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.maison_spec_table"
+    }
+  ]
+}
+{% endschema %}
