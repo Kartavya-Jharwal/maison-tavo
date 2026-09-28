@@ -159,7 +159,10 @@
     "disclosures": "ڈسکلوزر",
     "disclosures_metafield_content": "اس پروڈکٹ کے لیے درکار حفاظتی انتباہات اور ریگولیٹری ڈسکلوزر۔",
     "app_required_for_ratings": "پروڈکٹ کی ریٹنگز کے لیے ایک ایپ درکار ہے۔ [مزید جانیں](https://help.shopify.com/manual/apps)",
-    "navigation": "نیویگیشن"
+    "navigation": "نیویگیشن",
+    "maison_brand_palette": "Maison Tavo palette",
+    "maison_brand_palette_help": "Named brand colors. Wire into sections via CSS variables (--brand-color-raw-copper, etc.). Horizon color_palette still drives canvas/ink; map Cast Clay to background and Obsidian Charcoal to foreground in Theme settings Colors.",
+    "maison_brand_primitives": "Primitive aliases"
   },
   "html_defaults": {
     "join_our_email_list": "<h2>ہماری ای میل لسٹ میں شامل ہوں</h2>",
@@ -424,7 +427,8 @@
     "disclosures": "ڈسکلوزر",
     "pills": "پل",
     "comparison_slider": "موازنہ کرنے والا سلائیڈر",
-    "maison_spec_table": "Spec table"
+    "maison_spec_table": "Spec table",
+    "brand_tokens": "Brand tokens"
   },
   "options": {
     "privacy": "Privacy Policy",
@@ -1148,7 +1152,22 @@
     "maison_place_2_label": "Place two label",
     "maison_place_2_text": "Place two text",
     "maison_place_3_label": "Place three label",
-    "maison_place_3_text": "Place three text"
+    "maison_place_3_text": "Place three text",
+    "maison_evidence_tier": "Evidence tier",
+    "brand_color_raw_copper": "Raw Copper",
+    "brand_color_aged_bronze": "Aged Bronze",
+    "brand_color_obsidian_charcoal": "Obsidian Charcoal",
+    "brand_color_cast_clay": "Cast Clay",
+    "brand_color_damascus_silver": "Damascus Silver",
+    "brand_color_white": "White",
+    "brand_color_black": "Black",
+    "brand_color_accent": "Accent",
+    "brand_color_muted": "Muted",
+    "brand_color_error": "Error",
+    "brand_color_success": "Success",
+    "brand_color_instock": "In stock",
+    "brand_color_lowstock": "Low stock",
+    "brand_color_outofstock": "Out of stock"
   },
   "text_defaults": {
     "accordion_heading": "ایکارڈین کی سرخی",

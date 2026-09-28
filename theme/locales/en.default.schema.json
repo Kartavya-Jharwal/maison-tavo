@@ -117,7 +117,7 @@
     "maison_pages_header": "Storefront pages",
     "maison_pages_help": "Create matching pages and a Journal blog in Shopify Admin, then assign the templates documented in theme/PAGES.md. Native Shopify policies stay in the footer alongside house legal pages.",
     "maison_pages_templates": "Templates: page.about, page.story, page.building, page.privacy, page.terms, page.ipr, page.microapp. Blog: journal.",
-    "maison_provenance": "Three-place provenance",
+    "maison_provenance": "Three-place provenance",
     "popover": "Popover",
     "popover_position": "Popover position",
     "popup": "Popup",
@@ -167,7 +167,10 @@
     "disclosures": "Disclosures",
     "disclosures_metafield_content": "Required safety warnings and regulatory disclosures for this product.",
     "app_required_for_ratings": "An app is required for product ratings. [Learn more](https://help.shopify.com/manual/apps)",
-    "navigation": "Navigation"
+    "navigation": "Navigation",
+    "maison_brand_palette": "Maison Tavo palette",
+    "maison_brand_palette_help": "Named brand colors. Wire into sections via CSS variables (--brand-color-raw-copper, etc.). Horizon color_palette still drives canvas/ink; map Cast Clay to background and Obsidian Charcoal to foreground in Theme settings Colors.",
+    "maison_brand_primitives": "Primitive aliases"
   },
   "html_defaults": {
     "join_our_email_list": "<h2>Join our email list</h2>",
@@ -256,7 +259,7 @@
     "media_type_info": "Features are populated from your menu links",
     "maison_journal_handle": "Must match the blog handle created in Admin (default: journal)",
     "maison_microapp_id": "Must match an id in theme/microapps/apps.json. Shopify assets are flat, so the file is assets/microapp-{id}.js. Optional page metafield: maison.microapp_id.",
-    "maison_collection_handle": "Used when no collection is picked. Create forge, terre, kuro, sets in Admin."
+    "maison_collection_handle": "Used when no collection is picked. Catalog handles: forge-hybrid, terre-clay, kuro-strip, forge-terre."
   },
   "names": {
     "column": "Column",
@@ -439,7 +442,8 @@
     "maison_chapter": "Chapter",
     "maison_journal_entry": "Journal entry",
     "maison_clause": "Clause",
-    "maison_spec_table": "Spec table"
+    "maison_spec_table": "Spec table",
+    "brand_tokens": "Brand tokens"
   },
   "options": {
     "above_carousel": "Above carousel",
@@ -1236,7 +1240,7 @@
     "maison_document": "Document",
     "maison_body": "Body",
     "maison_app_id": "Microapp id",
-    "maison_show_native_policy": "Link Shopify-hosted policy",
+    "maison_show_native_policy": "Link Shopify-hosted policy",
     "maison_spec_heading": "Spec table heading",
     "maison_collection_handle": "Collection handle",
     "maison_place_1_label": "Place one label",
@@ -1244,7 +1248,22 @@
     "maison_place_2_label": "Place two label",
     "maison_place_2_text": "Place two text",
     "maison_place_3_label": "Place three label",
-    "maison_place_3_text": "Place three text"
+    "maison_place_3_text": "Place three text",
+    "maison_evidence_tier": "Evidence tier",
+    "brand_color_raw_copper": "Raw Copper",
+    "brand_color_aged_bronze": "Aged Bronze",
+    "brand_color_obsidian_charcoal": "Obsidian Charcoal",
+    "brand_color_cast_clay": "Cast Clay",
+    "brand_color_damascus_silver": "Damascus Silver",
+    "brand_color_white": "White",
+    "brand_color_black": "Black",
+    "brand_color_accent": "Accent",
+    "brand_color_muted": "Muted",
+    "brand_color_error": "Error",
+    "brand_color_success": "Success",
+    "brand_color_instock": "In stock",
+    "brand_color_lowstock": "Low stock",
+    "brand_color_outofstock": "Out of stock"
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",

@@ -182,7 +182,8 @@
     "layered_slideshow": "分层幻灯片",
     "cart_drawer": "购物车抽屉",
     "disclosures": "披露信息",
-    "maison_spec_table": "Spec table"
+    "maison_spec_table": "Spec table",
+    "brand_tokens": "Brand tokens"
   },
   "settings": {
     "maison_show_developer_credit": "Show developer credit",
@@ -618,7 +619,22 @@
     "maison_place_2_label": "Place two label",
     "maison_place_2_text": "Place two text",
     "maison_place_3_label": "Place three label",
-    "maison_place_3_text": "Place three text"
+    "maison_place_3_text": "Place three text",
+    "maison_evidence_tier": "Evidence tier",
+    "brand_color_raw_copper": "Raw Copper",
+    "brand_color_aged_bronze": "Aged Bronze",
+    "brand_color_obsidian_charcoal": "Obsidian Charcoal",
+    "brand_color_cast_clay": "Cast Clay",
+    "brand_color_damascus_silver": "Damascus Silver",
+    "brand_color_white": "White",
+    "brand_color_black": "Black",
+    "brand_color_accent": "Accent",
+    "brand_color_muted": "Muted",
+    "brand_color_error": "Error",
+    "brand_color_success": "Success",
+    "brand_color_instock": "In stock",
+    "brand_color_lowstock": "Low stock",
+    "brand_color_outofstock": "Out of stock"
   },
   "options": {
     "privacy": "Privacy Policy",
@@ -1038,7 +1054,10 @@
     "gift_card_products": "礼品卡产品",
     "disclosures": "披露信息",
     "disclosures_metafield_content": "此产品所需的安全警告和监管披露信息。",
-    "page_text_color_contrast_info": "具有自定义背景色的分区仅在颜色对比度足够时才会使用此文本颜色。"
+    "page_text_color_contrast_info": "具有自定义背景色的分区仅在颜色对比度足够时才会使用此文本颜色。",
+    "maison_brand_palette": "Maison Tavo palette",
+    "maison_brand_palette_help": "Named brand colors. Wire into sections via CSS variables (--brand-color-raw-copper, etc.). Horizon color_palette still drives canvas/ink; map Cast Clay to background and Obsidian Charcoal to foreground in Theme settings Colors.",
+    "maison_brand_primitives": "Primitive aliases"
   },
   "html_defaults": {
     "share_information_about_your": "<p>与您的客户分享有关您品牌的信息。描述产品、发布公告或欢迎客户光临您的商店。</p>",

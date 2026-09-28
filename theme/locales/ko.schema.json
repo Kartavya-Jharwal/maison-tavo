@@ -182,7 +182,8 @@
     "layered_slideshow": "레이어드 슬라이드 쇼",
     "cart_drawer": "카트 서랍",
     "disclosures": "고지 사항",
-    "maison_spec_table": "Spec table"
+    "maison_spec_table": "Spec table",
+    "brand_tokens": "Brand tokens"
   },
   "settings": {
     "maison_show_developer_credit": "Show developer credit",
@@ -618,7 +619,22 @@
     "maison_place_2_label": "Place two label",
     "maison_place_2_text": "Place two text",
     "maison_place_3_label": "Place three label",
-    "maison_place_3_text": "Place three text"
+    "maison_place_3_text": "Place three text",
+    "maison_evidence_tier": "Evidence tier",
+    "brand_color_raw_copper": "Raw Copper",
+    "brand_color_aged_bronze": "Aged Bronze",
+    "brand_color_obsidian_charcoal": "Obsidian Charcoal",
+    "brand_color_cast_clay": "Cast Clay",
+    "brand_color_damascus_silver": "Damascus Silver",
+    "brand_color_white": "White",
+    "brand_color_black": "Black",
+    "brand_color_accent": "Accent",
+    "brand_color_muted": "Muted",
+    "brand_color_error": "Error",
+    "brand_color_success": "Success",
+    "brand_color_instock": "In stock",
+    "brand_color_lowstock": "Low stock",
+    "brand_color_outofstock": "Out of stock"
   },
   "options": {
     "privacy": "Privacy Policy",
@@ -1038,7 +1054,10 @@
     "gift_card_products": "기프트 카드 제품",
     "disclosures": "고지 사항",
     "disclosures_metafield_content": "이 제품에 필수적인 안전 경고 및 규제 관련 고지 사항입니다.",
-    "page_text_color_contrast_info": "사용자 지정 배경 색상이 있는 섹션은 색상 대비가 충분한 경우에만 이 텍스트 색상을 사용합니다."
+    "page_text_color_contrast_info": "사용자 지정 배경 색상이 있는 섹션은 색상 대비가 충분한 경우에만 이 텍스트 색상을 사용합니다.",
+    "maison_brand_palette": "Maison Tavo palette",
+    "maison_brand_palette_help": "Named brand colors. Wire into sections via CSS variables (--brand-color-raw-copper, etc.). Horizon color_palette still drives canvas/ink; map Cast Clay to background and Obsidian Charcoal to foreground in Theme settings Colors.",
+    "maison_brand_primitives": "Primitive aliases"
   },
   "html_defaults": {
     "share_information_about_your": "<p>고객과 브랜드에 대한 정보를 공유하세요. 제품을 설명하거나, 공지 사항을 알리거나, 스토어를 방문하는 고객을 환영할 수 있습니다.</p>",
