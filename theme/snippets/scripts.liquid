@@ -277,18 +277,18 @@
 {% endif %}
 
 {%- comment -%}
-  M0 spikes (WS5) — vendored ESM, no build step, fully removable (D10).
-  Motion: homepage hero reveal only. Sound: opt-in toggle + add-to-cart click,
-  silent by default. Howler ships no ESM build, so it loads as a classic
-  script and exposes window.Howl to the module.
+  M0 → M3/M4 experience (WS5) — vendored ESM, no build step, fully removable (D10).
+  Motion: hero / card / spec reveals + cart feedback (prefers-reduced-motion).
+  Sound: opt-in toggle (silent default) + soft add-to-cart cue.
+  Howler ships no ESM build, so it loads as a classic script → window.Howl.
 {%- endcomment -%}
-{% if template.name == 'index' %}
-  <script
-    src="{{ 'maison-motion.js' | asset_url }}"
-    type="module"
-    fetchpriority="low"
-  ></script>
-{% endif %}
+{{ 'maison-motion.css' | asset_url | stylesheet_tag }}
+<script
+  src="{{ 'maison-motion.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+{{ 'maison-sound.css' | asset_url | stylesheet_tag }}
 <script
   src="{{ 'howler.core.min.js' | asset_url }}"
   defer="defer"

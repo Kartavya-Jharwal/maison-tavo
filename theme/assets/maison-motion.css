@@ -1,0 +1,28 @@
+/**
+ * Maison motion helpers (D10).
+ * Opacity/transform only. Content stays visible if JS never loads —
+ * prep opacity is applied inline by maison-motion.js for below-fold targets only.
+ */
+
+/* When JS is active, suppress the PDP block’s load-time keyframes so scroll
+   stagger owns the reveal (avoids double-animating rows already on screen). */
+html.maison-motion-active .maison-spec-table__row {
+  animation: none !important;
+}
+
+html.maison-motion-active cart-icon.header-actions__cart-icon,
+html.maison-motion-active .header-actions__cart-icon,
+html.maison-motion-active .cart-bubble {
+  transform-origin: center center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.maison-motion-active .maison-spec-table__row {
+    animation: none !important;
+  }
+
+  [data-maison-motion] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

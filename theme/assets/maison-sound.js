@@ -1,16 +1,11 @@
 /**
- * M0 SPIKE — Sound (WS5, D10).
+ * Maison sound (M0 spike → M3/M4, D10).
  *
- * Howler.js (vendored UMD build, loaded as a classic script so it can attach
- * `window.Howl`) powers one subtle interaction sound on add-to-cart.
+ * Howler.js (vendored UMD, classic script → `window.Howl`) powers soft
+ * interaction cues. Silent by default behind an explicit opt-in toggle.
  *
- * D10 compliance:
- *   - Silent by default. Sound only plays after an explicit opt-in via the
- *     toggle this module renders (bottom-left of the viewport).
- *   - Preference persists in localStorage (`maison:sound-enabled`).
- *   - The toggle and all behaviour are created here in JS — removing this
- *     file (and its script tags in `snippets/scripts.liquid`) removes every
- *     trace of the feature.
+ * Removable: delete this file, `howler.core.min.js`, `maison-add-to-cart.wav`,
+ * and the Howler / maisonSound / module block in `snippets/scripts.liquid`.
  */
 
 const STORAGE_KEY = 'maison:sound-enabled';
@@ -32,7 +27,7 @@ const setEnabled = (value) => {
   }
 };
 
-/** Lazily create the Howl so no audio is loaded until sound has been opted into at least once. */
+/** Lazily create the Howl so no audio loads until the shopper opts in once. */
 let clickSound = null;
 function getClickSound() {
   if (clickSound || typeof window.Howl !== 'function' || !window.maisonSound?.src) {
@@ -41,55 +36,59 @@ function getClickSound() {
   clickSound = new window.Howl({
     src: [window.maisonSound.src],
     preload: isEnabled(),
-    volume: 0.45,
+    volume: 0.4,
   });
   return clickSound;
 }
 
+function playSoftClick() {
+  if (!isEnabled()) return;
+  const sound = getClickSound();
+  if (!sound) return;
+  sound.volume(0.4);
+  sound.play();
+}
+
 function playAddToCartSound(event) {
   if (!isEnabled()) return;
-  // CartLinesUpdateEvent carries `action` ('add' | 'update' | 'remove') in its payload.
   const action = event?.detail?.action ?? event?.action;
   if (action && action !== 'add') return;
-  getClickSound()?.play();
+  playSoftClick();
 }
 
 function renderToggle() {
+  if (document.getElementById('maison-sound-toggle')) return;
+
   const button = document.createElement('button');
   button.type = 'button';
   button.id = 'maison-sound-toggle';
+  button.className = 'maison-sound-toggle';
   button.setAttribute('aria-pressed', String(isEnabled()));
-
-  Object.assign(button.style, {
-    position: 'fixed',
-    insetInlineStart: '12px',
-    insetBlockEnd: '12px',
-    zIndex: '100',
-    padding: '6px 12px',
-    font: '500 11px/1.4 system-ui, sans-serif',
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase',
-    color: 'inherit',
-    background: 'rgb(0 0 0 / 0.55)',
-    colorScheme: 'dark',
-    border: '1px solid rgb(255 255 255 / 0.35)',
-    borderRadius: '999px',
-    cursor: 'pointer',
-    backdropFilter: 'blur(6px)',
-  });
-  button.style.color = '#fff';
+  button.setAttribute(
+    'aria-label',
+    isEnabled() ? 'Mute sound effects' : 'Enable sound effects (off by default)',
+  );
+  button.title = 'Sound effects — off until you turn them on';
 
   const paint = () => {
     const on = isEnabled();
-    button.textContent = on ? '♪ Sound on' : '♪ Sound off';
+    button.textContent = on ? 'Sound on' : 'Sound off';
+    button.dataset.state = on ? 'on' : 'off';
     button.setAttribute('aria-pressed', String(on));
+    button.setAttribute(
+      'aria-label',
+      on ? 'Mute sound effects' : 'Enable sound effects (currently off)',
+    );
+    button.title = on
+      ? 'Sound effects on — click to mute'
+      : 'Sound effects off — click to enable soft cues';
   };
 
   button.addEventListener('click', () => {
     const next = !isEnabled();
     setEnabled(next);
     if (next) {
-      // The click is a user gesture, so this also unlocks the AudioContext.
+      // User gesture unlocks AudioContext; short cue confirms opt-in.
       getClickSound()?.play();
     }
     paint();
