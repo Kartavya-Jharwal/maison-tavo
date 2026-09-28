@@ -1,6 +1,6 @@
 /*
  * ------------------------------------------------------------
- * Maison Tavo collections index — Forge / Terre / Kuro / Sets.
+ * Maison Tavo collections index — Forge Hybrid / Terre Clay / Kuro Strip / Forge × Terre.
  * ------------------------------------------------------------
  */
 {
@@ -8,48 +8,48 @@
     "lineups": {
       "type": "maison-lineups",
       "blocks": {
-        "forge": {
+        "forge_hybrid": {
           "type": "lineup",
           "settings": {
             "kicker": "Skillets",
-            "label": "Forge",
+            "label": "Forge Hybrid",
             "text": "Carbon-steel cookline concepts. Modular mass for the pass — catalog still in draft.",
-            "handle": "forge"
+            "handle": "forge-hybrid"
           }
         },
-        "terre": {
+        "terre_clay": {
           "type": "lineup",
           "settings": {
             "kicker": "Clay",
-            "label": "Terre",
+            "label": "Terre Clay",
             "text": "Cast clay vessels and table forms. Grain and heat memory as design story, not a performance claim.",
-            "handle": "terre"
+            "handle": "terre-clay"
           }
         },
-        "kuro": {
+        "kuro_strip": {
           "type": "lineup",
           "settings": {
             "kicker": "Knives",
-            "label": "Kuro",
+            "label": "Kuro Strip",
             "text": "Strip and hybrid-edge blade concepts. Edge geometry as craft language.",
-            "handle": "kuro"
+            "handle": "kuro-strip"
           }
         },
-        "sets": {
+        "forge_terre": {
           "type": "lineup",
           "settings": {
             "kicker": "Hybrids",
-            "label": "Sets",
+            "label": "Forge × Terre",
             "text": "Forge × Terre service sets and nested pieces for the shared kitchen spine.",
-            "handle": "sets"
+            "handle": "forge-terre"
           }
         }
       },
-      "block_order": ["forge", "terre", "kuro", "sets"],
+      "block_order": ["forge_hybrid", "terre_clay", "kuro_strip", "forge_terre"],
       "settings": {
         "eyebrow": "The rooms",
         "heading": "Shop by lineage",
-        "lede": "Four collection rooms for when the draft catalog opens: Forge for skillets, Terre for clay, Kuro for knives, Sets for hybrid service.",
+        "lede": "Four collection rooms: Forge Hybrid for skillets, Terre Clay for vessels, Kuro Strip for knives, Forge × Terre for hybrid service.",
         "padding-block-start": 48,
         "padding-block-end": 32
       }

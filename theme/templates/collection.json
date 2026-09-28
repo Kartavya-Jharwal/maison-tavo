@@ -8,48 +8,48 @@
     "lineups": {
       "type": "maison-lineups",
       "blocks": {
-        "forge": {
+        "forge_hybrid": {
           "type": "lineup",
           "settings": {
             "kicker": "Skillets",
-            "label": "Forge",
+            "label": "Forge Hybrid",
             "text": "Carbon-steel cookline concepts. Modular mass for the pass — catalog still in draft.",
-            "handle": "forge"
+            "handle": "forge-hybrid"
           }
         },
-        "terre": {
+        "terre_clay": {
           "type": "lineup",
           "settings": {
             "kicker": "Clay",
-            "label": "Terre",
+            "label": "Terre Clay",
             "text": "Cast clay vessels and table forms. Grain and heat memory as design story, not a performance claim.",
-            "handle": "terre"
+            "handle": "terre-clay"
           }
         },
-        "kuro": {
+        "kuro_strip": {
           "type": "lineup",
           "settings": {
             "kicker": "Knives",
-            "label": "Kuro",
+            "label": "Kuro Strip",
             "text": "Strip and hybrid-edge blade concepts. Edge geometry as craft language.",
-            "handle": "kuro"
+            "handle": "kuro-strip"
           }
         },
-        "sets": {
+        "forge_terre": {
           "type": "lineup",
           "settings": {
             "kicker": "Hybrids",
-            "label": "Sets",
+            "label": "Forge × Terre",
             "text": "Forge × Terre service sets and nested pieces for the shared kitchen spine.",
-            "handle": "sets"
+            "handle": "forge-terre"
           }
         }
       },
-      "block_order": ["forge", "terre", "kuro", "sets"],
+      "block_order": ["forge_hybrid", "terre_clay", "kuro_strip", "forge_terre"],
       "settings": {
         "eyebrow": "Lineage",
         "heading": "Also in the house",
-        "lede": "Move between Forge, Terre, Kuro, and Sets. Empty rooms are intentional while products stay draft.",
+        "lede": "Move between Forge Hybrid, Terre Clay, Kuro Strip, and Forge × Terre.",
         "padding-block-start": 24,
         "padding-block-end": 16
       }

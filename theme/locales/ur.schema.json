@@ -224,7 +224,7 @@
   "info": {
     "maison_journal_handle": "Must match the blog handle created in Admin (default: journal)",
     "maison_microapp_id": "Must match an id in theme/microapps/apps.json. Shopify assets are flat, so the file is assets/microapp-{id}.js. Optional page metafield: maison.microapp_id.",
-    "maison_collection_handle": "Used when no collection is picked. Create forge, terre, kuro, sets in Admin.",
+    "maison_collection_handle": "Used when no collection is picked. Catalog handles: forge-hybrid, terre-clay, kuro-strip, forge-terre.",
     "actions_display_style": "موبائل پر ہمیشہ آئیکن استعمال ہوتے ہیں",
     "applies_on_image_only": "صرف تصاویر پر لاگو ہوتا ہے",
     "aspect_ratio_adjusted": "کچھ لے آؤٹ میں ایڈجسٹ کیا گیا",

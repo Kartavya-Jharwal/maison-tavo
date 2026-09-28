@@ -1157,7 +1157,7 @@
   "info": {
     "maison_journal_handle": "Must match the blog handle created in Admin (default: journal)",
     "maison_microapp_id": "Must match an id in theme/microapps/apps.json. Shopify assets are flat, so the file is assets/microapp-{id}.js. Optional page metafield: maison.microapp_id.",
-    "maison_collection_handle": "Used when no collection is picked. Create forge, terre, kuro, sets in Admin.",
+    "maison_collection_handle": "Used when no collection is picked. Catalog handles: forge-hybrid, terre-clay, kuro-strip, forge-terre.",
     "video_alt_text": "Beschreibe das Video für Benutzer von Hilfstechnologien",
     "video_autoplay": "Videos werden standardmäßig stummgeschaltet",
     "video_external": "Verwende eine YouTube- oder Vimeo-URL",
