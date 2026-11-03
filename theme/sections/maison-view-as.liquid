@@ -1,0 +1,476 @@
+{% doc %}
+  V4 View-as: Human / Agent / Voice (M1 thread).
+  Segmented control mounted on product pages (product.json).
+  Allows switching the product presentation between:
+  1. Human (Editorial craft layout)
+  2. Agent (Mono-typed JSON-LD / UCP endpoint inspector with Copy Endpoint)
+  3. Voice (SSML waveform view with synthesized audio playback & word-level highlight)
+{% enddoc %}
+
+<div class="maison-view-as section section--page-width" id="maison-view-as-root">
+  <div class="maison-view-as__bar">
+    <div class="maison-view-as__title-wrap">
+      <span class="maison-view-as__kicker">V4 SIGNATURE MOVE · M1 THESIS</span>
+      <h3 class="maison-view-as__heading">Three Front Doors</h3>
+    </div>
+    
+    <div class="maison-view-as__segmented" role="tablist" aria-label="View product as">
+      <button class="maison-view-as__seg-btn is-active" data-view="human" role="tab" aria-selected="true" data-strike>
+        <span class="maison-view-as__seg-icon">👤</span> Human Editorial
+      </button>
+      <button class="maison-view-as__seg-btn" data-view="agent" role="tab" aria-selected="false" data-strike>
+        <span class="maison-view-as__seg-icon">⚡</span> Agent (JSON-LD)
+      </button>
+      <button class="maison-view-as__seg-btn" data-view="voice" role="tab" aria-selected="false" data-strike>
+        <span class="maison-view-as__seg-icon">🎙️</span> Voice (SSML)
+      </button>
+    </div>
+  </div>
+
+  <!-- VIEW 1: HUMAN (EDITORIAL) -->
+  <div class="maison-view-as__panel is-active" id="view-panel-human" role="tabpanel">
+    <div class="maison-human-card">
+      <div class="maison-human-card__meta">
+        <span class="maison-human-pill">ALLOY: 1.0085 DROP-FORGED</span>
+        <span class="maison-human-pill">EVIDENCE: CONCEPT SPEC</span>
+        <span class="maison-human-pill">HERITAGE: JAIPUR × LONDON</span>
+      </div>
+      <p class="maison-human-card__lede">
+        "The pan begins as a billet, struck at 1,100 °C in one heat. Mass sits in the hand, not the handle.
+        The mill scale is preserved as the pan's heat memory — ready for a lifetime of service."
+      </p>
+      <div class="maison-human-card__chips">
+        <span>✓ Induction Bonded</span>
+        <span>✓ Beeswax Pre-seasoned</span>
+        <span>✓ Lifetime Refurbishment</span>
+        <span>✓ Zero Synthetic Coatings</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 2: AGENT (JSON-LD & UCP ENDPOINT) -->
+  <div class="maison-view-as__panel" id="view-panel-agent" role="tabpanel">
+    <div class="maison-agent-card">
+      <div class="maison-agent-card__top">
+        <span class="maison-agent-tag">APPLICATION/LD+JSON · UCP COMPLIANT</span>
+        <button class="maison-agent-copy" id="view-agent-copy">Copy Endpoint URL</button>
+      </div>
+      <pre class="maison-agent-code"><code id="product-jsonld-code">{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "sku": "MT-{{ product.handle | upcase | slice: 0, 10 }}",
+  "brand": { "@type": "Brand", "name": "Maison Tavo" },
+  "material": "1.2mm carbon steel alloy 1.0085",
+  "offers": {
+    "@type": "Offer",
+    "price": {{ product.price | money_without_currency | json }},
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "availability": "https://schema.org/InStock",
+    "priceValidUntil": "2027-12-31"
+  },
+  "additionalProperty": [
+    { "@type": "PropertyValue", "name": "claim_status", "value": "CONCEPT_SPEC" },
+    { "@type": "PropertyValue", "name": "induction_ready", "value": "true" },
+    { "@type": "PropertyValue", "name": "heat_sources", "value": "induction, gas, electric, oven, open_flame" },
+    { "@type": "PropertyValue", "name": "care_protocol", "value": "wipe_hot_oil_light_never_dishwash" },
+    { "@type": "PropertyValue", "name": "ucp_handshake", "value": "https://maison-tavo.myshopify.com/pages/ucp" }
+  ]
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- VIEW 3: VOICE (SSML WAVEFORM) -->
+  <div class="maison-view-as__panel" id="view-panel-voice" role="tabpanel">
+    <div class="maison-voice-card">
+      <div class="maison-voice-card__top">
+        <div class="maison-voice-wave" id="voice-wave-anim">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <button class="maison-voice-play-btn" id="voice-speak-btn" data-strike>
+          ▶ Play SSML Voice Synthesis
+        </button>
+      </div>
+      
+      <div class="maison-ssml-box">
+        <span class="maison-ssml-tag">&lt;speak&gt;</span>
+        <p class="maison-ssml-content" id="ssml-spoken-text">
+          <span class="ssml-chunk" data-index="0">Welcome to Maison Tavo.</span>
+          <span class="ssml-chunk" data-index="1">This piece is the {{ product.title }}.</span>
+          <span class="ssml-chunk" data-index="2">Drop-forged from one-point-two millimeter carbon steel.</span>
+          <span class="ssml-chunk" data-index="3">Pre-heat on medium heat for two minutes before searing.</span>
+          <span class="ssml-chunk" data-index="4">Never place in a dishwasher.</span>
+          <span class="ssml-chunk" data-index="5">Wipe hot, dry over flame, and oil light.</span>
+        </p>
+        <span class="maison-ssml-tag">&lt;/speak&gt;</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .maison-view-as {
+    margin-block: 2.5rem 3.5rem;
+    padding-block: 1.5rem;
+    border-block: 1px solid var(--color-border);
+  }
+
+  .maison-view-as__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-block-end: 1.5rem;
+  }
+
+  .maison-view-as__kicker {
+    display: block;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brand-color-aged-bronze, #8c7355);
+    margin-block-end: 0.25rem;
+  }
+
+  .maison-view-as__heading {
+    margin: 0;
+    font-family: var(--font-fraunces--family, var(--font-heading--family));
+    font-size: 1.35rem;
+    font-weight: 600;
+  }
+
+  .maison-view-as__segmented {
+    display: inline-flex;
+    background: #14171d;
+    padding: 4px;
+    border-radius: 6px;
+    border: 1px solid #232832;
+  }
+
+  .maison-view-as__seg-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.825rem;
+    padding: 0.45rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s ease;
+  }
+
+  .maison-view-as__seg-btn:hover {
+    color: #f1f5f9;
+  }
+
+  .maison-view-as__seg-btn.is-active {
+    background: #252d3d;
+    color: #38bdf8;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .maison-view-as__panel {
+    display: none;
+  }
+
+  .maison-view-as__panel.is-active {
+    display: block;
+    animation: maison-fade-in 0.3s ease;
+  }
+
+  @keyframes maison-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Human Card */
+  .maison-human-card {
+    background: #15181e;
+    border: 1px solid #252b36;
+    border-radius: 8px;
+    padding: 1.75rem;
+  }
+
+  .maison-human-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-block-end: 1rem;
+  }
+
+  .maison-human-pill {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.65rem;
+    border: 1px solid #334155;
+    color: #cbd5e1;
+    border-radius: 3px;
+  }
+
+  .maison-human-card__lede {
+    font-family: var(--font-fraunces--family, Georgia, serif);
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: #f1f5f9;
+    font-style: italic;
+    margin: 0 0 1.25rem;
+  }
+
+  .maison-human-card__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #94a3b8;
+  }
+
+  /* Agent Card */
+  .maison-agent-card {
+    background: #0d0f13;
+    border: 1px solid #232832;
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .maison-agent-card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-block-end: 1rem;
+    padding-block-end: 0.75rem;
+    border-block-end: 1px solid #1a202c;
+  }
+
+  .maison-agent-tag {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.7rem;
+    color: #38bdf8;
+    letter-spacing: 0.08em;
+  }
+
+  .maison-agent-copy {
+    background: #1e2430;
+    border: 1px solid #334155;
+    color: #cbd5e1;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.72rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .maison-agent-copy:hover {
+    background: #334155;
+    color: #fff;
+  }
+
+  .maison-agent-code {
+    margin: 0;
+    max-height: 320px;
+    overflow-y: auto;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.825rem;
+    line-height: 1.6;
+    color: #e2e8f0;
+  }
+
+  /* Voice Card */
+  .maison-voice-card {
+    background: #13171e;
+    border: 1px solid #232a36;
+    border-radius: 8px;
+    padding: 1.75rem;
+  }
+
+  .maison-voice-card__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block-end: 1.5rem;
+  }
+
+  .maison-voice-wave {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 24px;
+  }
+
+  .maison-voice-wave span {
+    width: 3px;
+    height: 6px;
+    background: #c9a96e;
+    border-radius: 2px;
+    transition: height 0.2s ease;
+  }
+
+  .maison-voice-wave.is-playing span {
+    animation: maison-wave-dance 0.8s infinite alternate ease-in-out;
+  }
+
+  .maison-voice-wave span:nth-child(2) { animation-delay: 0.1s; }
+  .maison-voice-wave span:nth-child(3) { animation-delay: 0.2s; }
+  .maison-voice-wave span:nth-child(4) { animation-delay: 0.3s; }
+  .maison-voice-wave span:nth-child(5) { animation-delay: 0.4s; }
+  .maison-voice-wave span:nth-child(6) { animation-delay: 0.5s; }
+  .maison-voice-wave span:nth-child(7) { animation-delay: 0.6s; }
+
+  @keyframes maison-wave-dance {
+    0% { height: 4px; }
+    100% { height: 22px; }
+  }
+
+  .maison-voice-play-btn {
+    background: #c9a96e;
+    color: #111;
+    font-weight: 600;
+    border: none;
+    padding: 0.65rem 1.4rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background 0.2s;
+  }
+
+  .maison-voice-play-btn:hover {
+    background: #e2c287;
+  }
+
+  .maison-ssml-box {
+    background: #0d0f13;
+    padding: 1.25rem;
+    border-radius: 6px;
+    border: 1px solid #1e2430;
+  }
+
+  .maison-ssml-tag {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.75rem;
+    color: #64748b;
+  }
+
+  .maison-ssml-content {
+    margin: 0.75rem 0;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #cbd5e1;
+  }
+
+  .ssml-chunk {
+    transition: color 0.2s, background 0.2s;
+    padding: 2px 4px;
+    border-radius: 3px;
+  }
+
+  .ssml-chunk.is-speaking {
+    background: #c9a96e;
+    color: #111;
+    font-weight: 600;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', () => {
+    const root = document.getElementById('maison-view-as-root');
+    if (!root) return;
+
+    const segButtons = root.querySelectorAll('.maison-view-as__seg-btn');
+    const panels = root.querySelectorAll('.maison-view-as__panel');
+
+    function switchView(viewName) {
+      if (document.startViewTransition) {
+        document.startViewTransition(() => updateDOM(viewName));
+      } else {
+        updateDOM(viewName);
+      }
+    }
+
+    function updateDOM(viewName) {
+      segButtons.forEach(btn => {
+        const active = btn.dataset.view === viewName;
+        btn.classList.toggle('is-active', active);
+        btn.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+
+      panels.forEach(panel => {
+        panel.classList.toggle('is-active', panel.id === `view-panel-${viewName}`);
+      });
+    }
+
+    segButtons.forEach(btn => {
+      btn.addEventListener('click', () => switchView(btn.dataset.view));
+    });
+
+    // Copy Agent endpoint URL
+    const copyBtn = document.getElementById('view-agent-copy');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        const endpoint = `${window.location.origin}${window.location.pathname}?view=ucp`;
+        navigator.clipboard.writeText(endpoint).then(() => {
+          const orig = copyBtn.textContent;
+          copyBtn.textContent = 'Endpoint Copied!';
+          setTimeout(() => copyBtn.textContent = orig, 2000);
+        });
+      });
+    }
+
+    // Voice playback with speech synthesis & word chunk highlight
+    const playBtn = document.getElementById('voice-speak-btn');
+    const wave = document.getElementById('voice-wave-anim');
+    const chunks = root.querySelectorAll('.ssml-chunk');
+
+    if (playBtn && 'speechSynthesis' in window) {
+      playBtn.addEventListener('click', () => {
+        window.speechSynthesis.cancel();
+        if (wave) wave.classList.add('is-playing');
+        playBtn.textContent = '■ Speaking…';
+
+        const fullText = Array.from(chunks).map(c => c.textContent).join(' ');
+        const utterance = new SpeechSynthesisUtterance(fullText);
+        utterance.rate = 0.95;
+
+        let chunkIndex = 0;
+        const totalChunks = chunks.length;
+        const interval = setInterval(() => {
+          chunks.forEach(c => c.classList.remove('is-speaking'));
+          if (chunkIndex < totalChunks) {
+            chunks[chunkIndex].classList.add('is-speaking');
+            chunkIndex++;
+          } else {
+            clearInterval(interval);
+          }
+        }, 1100);
+
+        utterance.onend = () => {
+          clearInterval(interval);
+          chunks.forEach(c => c.classList.remove('is-speaking'));
+          if (wave) wave.classList.remove('is-playing');
+          playBtn.textContent = '▶ Play SSML Voice Synthesis';
+        };
+
+        window.speechSynthesis.speak(utterance);
+      });
+    }
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "View-as Segmented Control",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [],
+  "presets": [
+    {
+      "name": "View-as (Human / Agent / Voice)",
+      "category": "Maison Tavo"
+    }
+  ]
+}
+{% endschema %}

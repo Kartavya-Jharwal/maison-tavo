@@ -561,10 +561,16 @@
         "padding-block-start": 64,
         "padding-block-end": 80
       }
+    },
+    "maison_view_as": {
+      "type": "maison-view-as",
+      "name": "View-as (Human / Agent / Voice)",
+      "settings": {}
     }
   },
   "order": [
     "main",
+    "maison_view_as",
     "maison_pdp_story",
     "product_recommendations_qggXJq"
   ]
