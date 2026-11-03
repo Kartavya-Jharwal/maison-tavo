@@ -364,6 +364,17 @@
       "type": "maison-last-call",
       "name": "Last-Call (V7)",
       "settings": {}
+    },
+    "maison_kansa_companion": {
+      "type": "kansa-app",
+      "settings": {
+        "heading": "Kansa: Pan Care & Maintenance Companion",
+        "subheading": "Culinary pan maintenance, seasoning triage, and metallurgy voice diagnostics."
+      }
+    },
+    "maison_ucp_console": {
+      "type": "maison-ucp-viewer",
+      "settings": {}
     }
   },
   "order": [
@@ -372,6 +383,8 @@
     "maison_finder",
     "product_list_fa6P9H",
     "maison_care_ritual",
+    "maison_kansa_companion",
+    "maison_ucp_console",
     "maison_last_call"
   ]
 }

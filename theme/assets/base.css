@@ -1836,3 +1836,181 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
     margin-top: calc(var(--header-height) * var(--transparent-header-offset-boolean) * -1);
   }
 }
+
+/* ==========================================================================
+   MAISON TAVO BRAND THEME OVERRIDES
+   "The forge, the kitchen, the temple bell"
+   Tokens: --soot, --limewash, --bone, --bell, --copper, --clay, --steel, --verdigris, --ember
+   ========================================================================== */
+
+:root {
+  --color-background: var(--limewash, #EFE8DC);
+  --color-foreground: var(--soot, #14110F);
+  --color-foreground-rgb: 20, 17, 15;
+  --color-background-rgb: 239, 232, 220;
+}
+
+html, body {
+  background-color: var(--limewash, #EFE8DC) !important;
+  color: var(--soot, #14110F) !important;
+  font-family: var(--font-body--family, 'Hanken Grotesk', -apple-system, sans-serif) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Page canvas ground */
+.page-wrapper,
+#MainContent,
+.content-for-layout,
+.section-background {
+  background-color: var(--limewash, #EFE8DC);
+}
+
+/* Typography Overrides */
+h1, h2, h3, h4, .h1, .h2, .h3, .h4,
+.product-title,
+.collection-title,
+.section-title {
+  font-family: var(--font-heading--family, 'Fraunces', serif) !important;
+  font-weight: 500 !important;
+  color: var(--soot, #14110F);
+}
+
+/* Monospace Specs & Price */
+.price,
+.product-price,
+.unit-price,
+.spec-value,
+.badge,
+[data-font-mono] {
+  font-family: var(--font-mono--family, 'JetBrains Mono', monospace) !important;
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+/* Header & Navigation Skin */
+.header-wrapper,
+#header-component {
+  background-color: var(--limewash, #EFE8DC) !important;
+  border-bottom: 1px solid rgba(184, 137, 58, 0.22) !important;
+}
+
+.header__heading-text,
+.header__heading-link {
+  font-family: var(--font-heading--family, 'Fraunces', serif) !important;
+  font-size: 1.45rem !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--soot, #14110F) !important;
+}
+
+.header__nav a,
+.navigation-link {
+  font-size: 0.85rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: var(--soot, #14110F) !important;
+  transition: color var(--dur-fast) var(--ease-strike);
+}
+
+.header__nav a:hover,
+.navigation-link:hover {
+  color: var(--bell, #B8893A) !important;
+}
+
+/* Product Cards */
+.product-card,
+.card {
+  background: var(--bone, #F7F2E9) !important;
+  border: 1px solid rgba(20, 17, 15, 0.1) !important;
+  border-radius: 3px !important;
+  padding: 1rem !important;
+  transition: transform var(--dur-mid) var(--ease-strike), box-shadow var(--dur-mid) var(--ease-strike), border-color var(--dur-mid) var(--ease-strike) !important;
+}
+
+.product-card:hover,
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--bell, #B8893A) !important;
+  box-shadow: 0 12px 28px rgba(20, 17, 15, 0.07);
+}
+
+.product-card__image-wrapper,
+.card__media {
+  background-color: var(--limewash, #EFE8DC) !important;
+  border-radius: 2px !important;
+  overflow: hidden;
+}
+
+/* Tactile Buttons with Ember Hover */
+.button,
+.button-primary,
+button.button,
+a.button {
+  background: var(--soot, #14110F) !important;
+  color: var(--bone, #F7F2E9) !important;
+  border: 1px solid var(--bell, #B8893A) !important;
+  font-family: var(--font-body--family, sans-serif) !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 0.75rem 1.6rem !important;
+  border-radius: 3px !important;
+  cursor: pointer;
+  transition: all var(--dur-mid) var(--ease-strike) !important;
+}
+
+.button:hover,
+.button-primary:hover,
+button.button:hover,
+a.button:hover {
+  background: var(--ember, #E2552B) !important;
+  border-color: var(--ember, #E2552B) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(226, 85, 43, 0.3) !important;
+}
+
+.button-secondary {
+  background: transparent !important;
+  color: var(--soot, #14110F) !important;
+  border: 1px solid rgba(20, 17, 15, 0.25) !important;
+}
+
+.button-secondary:hover {
+  border-color: var(--bell, #B8893A) !important;
+  color: var(--bell, #B8893A) !important;
+}
+
+/* Announcement Bar */
+.announcement-bar {
+  background: var(--soot, #14110F) !important;
+  color: var(--bone, #F7F2E9) !important;
+  border-bottom: 1px solid rgba(184, 137, 58, 0.35) !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.08em !important;
+}
+
+.announcement-bar a {
+  color: var(--bell, #B8893A) !important;
+}
+
+/* Footer Styling */
+footer,
+.footer,
+.footer-section {
+  background-color: var(--soot, #14110F) !important;
+  color: var(--bone, #F7F2E9) !important;
+  border-top: 1px solid rgba(184, 137, 58, 0.3) !important;
+}
+
+footer a,
+.footer a {
+  color: var(--bone, #F7F2E9) !important;
+  opacity: 0.85;
+  transition: opacity var(--dur-fast), color var(--dur-fast);
+}
+
+footer a:hover,
+.footer a:hover {
+  color: var(--bell, #B8893A) !important;
+  opacity: 1;
+}

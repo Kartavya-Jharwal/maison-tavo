@@ -29,6 +29,32 @@
         {% render 'spacing-style', settings: section.settings %}
       "
     >
+      <div class="maison-404-box" style="text-align: center; max-width: 620px; margin: 3rem auto; padding: 2.5rem; background: var(--bone, #F7F2E9); border: 1px solid rgba(184, 137, 58, 0.4); border-radius: 4px;">
+        <p style="font-family: var(--font-mono--family, monospace); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bell, #B8893A); margin-bottom: 0.75rem;">Maison Tavo · Foundry Dispatch</p>
+        <h2 style="font-family: var(--font-heading--family, 'Fraunces', serif); font-size: 2rem; margin: 0 0 1rem 0; color: var(--soot, #14110F);">Artifact or Spec Relocated</h2>
+        <p style="font-size: 0.95rem; line-height: 1.6; color: var(--soot, #14110F); margin-bottom: 1.75rem;">
+          The route you requested is live as an interactive companion on the storefront canvas. Launch the Kansa Voice Care companion or Universal Commerce Protocol console below.
+        </p>
+        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+          <a href="/#kansa" class="button button-primary">Launch Kansa Companion</a>
+          <a href="/#ucp" class="button button-secondary">Explore UCP Protocol</a>
+          <a href="/" class="button button-secondary">Return to Forge</a>
+        </div>
+      </div>
+
+      <script>
+        (function() {
+          var p = window.location.pathname.toLowerCase();
+          if (p.includes('/kansa')) {
+            window.location.replace('/#kansa');
+          } else if (p.includes('/ucp')) {
+            window.location.replace('/#ucp');
+          } else if (p.includes('/about') || p.includes('/story')) {
+            window.location.replace('/#lineups');
+          }
+        })();
+      </script>
+
       {% content_for 'blocks' %}
     </div>
   </div>

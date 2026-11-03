@@ -18,4 +18,3 @@ store = "maison-tavo.myshopify.com"
 theme = "198667665777"
 allow-live = true
 nodelete = true
-ignore = ["config/settings_data.json"]

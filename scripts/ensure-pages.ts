@@ -13,9 +13,17 @@ import {homedir} from 'node:os';
 import {join} from 'node:path';
 import {existsSync, readFileSync} from 'node:fs';
 
-/** Permanent domain required for `shopify store auth` / content scopes. */
+function flagValue(name: string): string | undefined {
+  const idx = process.argv.indexOf(name);
+  if (idx === -1) return undefined;
+  return process.argv[idx + 1];
+}
+
+/** Store domain for Admin GraphQL. */
 const STORE =
-  process.env.SHOPIFY_FLAG_STORE ?? 'maison-tavo-9pyrkr0c.myshopify.com';
+  flagValue('--store') ??
+  process.env.SHOPIFY_FLAG_STORE ??
+  'maison-tavo.myshopify.com';
 const APPLY = process.argv.includes('--apply');
 const API_VERSION = '2025-10';
 

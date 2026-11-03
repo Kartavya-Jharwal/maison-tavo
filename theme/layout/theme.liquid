@@ -174,5 +174,20 @@
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
+  
+    <!-- Maison Tavo Global Runtime & Quick HUD -->
+    <script src="{{ 'maison-runtime.js' | asset_url }}" defer></script>
+
+    <aside class="maison-quick-hud" aria-label="Maison Tavo Quick Access">
+      <a href="/#kansa" title="Launch Kansa Voice Diagnostic Companion">
+        <span>🎙️</span> <span>Kansa Care</span>
+      </a>
+      <a href="/#ucp" title="Explore Universal Commerce Protocol Spec">
+        <span>⚡</span> <span>UCP Spec</span>
+      </a>
+      <a href="/#finder" title="Cookware Finder Ceremony">
+        <span>✦</span> <span>Finder</span>
+      </a>
+    </aside>
   </body>
 </html>
