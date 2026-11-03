@@ -1,0 +1,332 @@
+{% comment %}
+  Maison Tavo — V2 Signature Hero: "Heat takes shape."
+  Art Direction: "The forge, the kitchen, the temple bell."
+  Asymmetric editorial layout, Fraunces serif display, Devanagari signature,
+  tactile provenance indicators, and direct exploration pathways.
+{% endcomment %}
+
+<section class="maison-hero" data-section-id="{{ section.id }}">
+  <div class="maison-hero__container">
+    <div class="maison-hero__grid">
+      <!-- Left Editorial Column -->
+      <div class="maison-hero__editorial">
+        <div class="maison-hero__eyebrow-row">
+          <span class="maison-hero__kicker">Atelier &amp; Fonderie</span>
+          <span class="maison-hero__divider">/</span>
+          <span class="maison-hero__devanagari">कांसे की गूँज · रसोई की साधना</span>
+        </div>
+
+        <h1 class="maison-hero__headline">
+          Heat takes<br>
+          <span class="maison-hero__headline--italic">shape.</span>
+        </h1>
+
+        <p class="maison-hero__lede">
+          Modern heirlooms for the working kitchen — metallurgy you can parse, craft you can live with.
+          Forged dual-mass carbon steel, hand-beaten bell bronze, and refractory cast clay.
+        </p>
+
+        <div class="maison-hero__actions">
+          <a href="#lineups" class="maison-btn maison-btn--primary">
+            <span>Explore Lineups</span>
+            <span class="maison-btn__arrow">→</span>
+          </a>
+          <a href="#finder" class="maison-btn maison-btn--subtle">
+            <span>Finder Ceremony</span>
+            <span class="maison-btn__dot">●</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Visual Column -->
+      <div class="maison-hero__visual">
+        <div class="maison-hero__image-frame">
+          <img
+            src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?q=85&w=1200&auto=format&fit=crop"
+            alt="Maison Tavo Hand-Forged Dual-Mass Cookware"
+            class="maison-hero__img"
+            loading="eager"
+            width="1200"
+            height="900"
+          >
+          <div class="maison-hero__provenance-tag">
+            <span class="tag-label">SPEC NO. 01</span>
+            <span class="tag-title">Forge Relay 280 · Dual-Mass Carbon Steel</span>
+            <span class="tag-meta">Induction Ready · Bell-Bronze Rivets · 2.4kg</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Metallurgy Provenance Strip -->
+    <div class="maison-hero__provenance-strip" id="lineups">
+      <div class="provenance-col">
+        <span class="provenance-num">01</span>
+        <h4 class="provenance-title">Forge Hybrid</h4>
+        <p class="provenance-desc">Carbon-steel cookline concepts. Dual-mass heat retention with lightweight hospitality handling.</p>
+      </div>
+      <div class="provenance-col">
+        <span class="provenance-num">02</span>
+        <h4 class="provenance-title">Terre Clay</h4>
+        <p class="provenance-desc">Refractory cast clay vessels and table service. Ancient thermal memory with modern kitchen durability.</p>
+      </div>
+      <div class="provenance-col">
+        <span class="provenance-num">03</span>
+        <h4 class="provenance-title">Kuro Strip</h4>
+        <p class="provenance-desc">Hybrid-edge blade geometry. Precision edge retention inspired by traditional forge craft.</p>
+      </div>
+      <div class="provenance-col">
+        <span class="provenance-num">04</span>
+        <h4 class="provenance-title">Universal Commerce</h4>
+        <p class="provenance-desc">Machine-readable UCP 2026 specs. Deterministic JSON metadata exposed for autonomous culinary agents.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .maison-hero {
+    background-color: var(--limewash, #EFE8DC);
+    color: var(--soot, #14110F);
+    padding-top: clamp(3rem, 6vw, 6.5rem);
+    padding-bottom: clamp(4rem, 8vw, 7.5rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .maison-hero__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 clamp(1.5rem, 4vw, 4rem);
+  }
+
+  .maison-hero__grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: clamp(2.5rem, 5vw, 6rem);
+    align-items: center;
+    margin-bottom: clamp(4rem, 8vw, 7rem);
+  }
+
+  .maison-hero__eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--bell, #B8893A);
+  }
+
+  .maison-hero__divider {
+    opacity: 0.4;
+  }
+
+  .maison-hero__devanagari {
+    font-family: var(--font-devanagari--family, 'Noto Serif Devanagari', serif);
+    letter-spacing: 0.15em;
+    font-size: 0.85rem;
+    color: var(--bell, #B8893A);
+  }
+
+  .maison-hero__headline {
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: clamp(3.2rem, 8vw, 7.5rem);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    margin: 0 0 2rem 0;
+    color: var(--soot, #14110F);
+  }
+
+  .maison-hero__headline--italic {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--bell, #B8893A);
+  }
+
+  .maison-hero__lede {
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    line-height: 1.65;
+    color: rgba(20, 17, 15, 0.82);
+    max-width: 48ch;
+    margin: 0 0 2.5rem 0;
+  }
+
+  .maison-hero__actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .maison-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.8rem;
+    border-radius: 2px;
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all var(--dur-mid, 420ms) var(--ease-strike, cubic-bezier(.2, .8, .2, 1));
+  }
+
+  .maison-btn--primary {
+    background: var(--soot, #14110F);
+    color: var(--bone, #F7F2E9);
+    border: 1px solid var(--bell, #B8893A);
+  }
+
+  .maison-btn--primary:hover {
+    background: var(--ember, #E2552B);
+    border-color: var(--ember, #E2552B);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(226, 85, 43, 0.25);
+  }
+
+  .maison-btn--subtle {
+    background: transparent;
+    color: var(--soot, #14110F);
+    border: 1px solid rgba(20, 17, 15, 0.25);
+  }
+
+  .maison-btn--subtle:hover {
+    border-color: var(--bell, #B8893A);
+    color: var(--bell, #B8893A);
+  }
+
+  .maison-btn__dot {
+    color: var(--bell, #B8893A);
+    font-size: 0.7rem;
+  }
+
+  /* Right Visual */
+  .maison-hero__visual {
+    position: relative;
+  }
+
+  .maison-hero__image-frame {
+    position: relative;
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--bone, #F7F2E9);
+    box-shadow: 0 24px 60px rgba(20, 17, 15, 0.12);
+  }
+
+  .maison-hero__img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3.2;
+    object-fit: cover;
+    display: block;
+    filter: contrast(1.04) brightness(0.98);
+    transition: transform var(--dur-slow, 900ms) var(--ease-strike, cubic-bezier(.2, .8, .2, 1));
+  }
+
+  .maison-hero__image-frame:hover .maison-hero__img {
+    transform: scale(1.02);
+  }
+
+  .maison-hero__provenance-tag {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    right: 1.25rem;
+    background: rgba(20, 17, 15, 0.88);
+    backdrop-filter: blur(8px);
+    padding: 1rem 1.25rem;
+    border-left: 2px solid var(--bell, #B8893A);
+    color: var(--bone, #F7F2E9);
+  }
+
+  .tag-label {
+    display: block;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: var(--bell, #B8893A);
+    margin-bottom: 0.2rem;
+  }
+
+  .tag-title {
+    display: block;
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: 1.05rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .tag-meta {
+    display: block;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.72rem;
+    color: #A39B8F;
+    letter-spacing: 0.04em;
+  }
+
+  /* Provenance 4-Column Strip */
+  .maison-hero__provenance-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    border-top: 1px solid rgba(20, 17, 15, 0.15);
+    padding-top: 3rem;
+  }
+
+  .provenance-col {
+    position: relative;
+    padding-right: 1rem;
+  }
+
+  .provenance-num {
+    display: block;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--bell, #B8893A);
+    margin-bottom: 0.6rem;
+  }
+
+  .provenance-title {
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--soot, #14110F);
+  }
+
+  .provenance-desc {
+    font-size: 0.86rem;
+    line-height: 1.6;
+    color: rgba(20, 17, 15, 0.75);
+    margin: 0;
+  }
+
+  @media (max-width: 960px) {
+    .maison-hero__grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    .maison-hero__provenance-strip {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.5rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .maison-hero__provenance-strip {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Maison V2 Hero",
+  "settings": []
+}
+{% endschema %}

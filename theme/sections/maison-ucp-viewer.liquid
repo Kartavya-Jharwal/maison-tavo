@@ -20,8 +20,9 @@
 
   <div class="maison-ucp__console">
     <div class="maison-ucp__console-bar">
-      <div class="maison-ucp__traffic-lights">
-        <span></span><span></span><span></span>
+      <div class="maison-ucp__status-indicator">
+        <span class="status-dot"></span>
+        <span class="status-text">UCP 2026 MACHINE ENDPOINT</span>
       </div>
       <div class="maison-ucp__tabs" role="tablist">
         <button class="maison-ucp__tab is-active" data-tab="tab-wellknown" role="tab" aria-selected="true">
@@ -35,7 +36,7 @@
         </button>
       </div>
       <button class="maison-ucp__copy-btn" id="ucp-copy-btn" title="Copy active JSON to clipboard">
-        Copy JSON
+        Copy Spec
       </button>
     </div>
 
@@ -270,60 +271,66 @@
     font-family: var(--font-mono--family, monospace);
     font-size: 0.6875rem;
     letter-spacing: 0.08em;
-    color: #4ade80;
+    color: var(--bell, #B8893A);
   }
 
   .maison-ucp__title {
     margin: 0 0 1rem;
-    font-family: var(--font-fraunces--family, var(--font-heading--family));
-    font-size: clamp(1.75rem, 1.2rem + 1.8vw, 3rem);
-    font-weight: var(--font-heading--weight);
-    letter-spacing: 0.02em;
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
     line-height: 1.1;
+    color: var(--soot, #14110F);
   }
 
   .maison-ucp__lede {
     margin: 0 0 2.5rem;
     max-width: 48rem;
-    color: var(--color-foreground-muted);
-    font-size: 1.125rem;
+    color: rgba(20, 17, 15, 0.78);
+    font-size: 1.1rem;
     line-height: 1.6;
   }
 
   /* Console container */
   .maison-ucp__console {
-    background: #0d0f12;
-    border: 1px solid #232830;
-    border-radius: 8px;
+    background: #100E0C;
+    border: 1px solid rgba(184, 137, 58, 0.35);
+    border-radius: 4px;
     overflow: hidden;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 16px 40px rgba(20, 17, 15, 0.15);
   }
 
   .maison-ucp__console-bar {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 0.65rem 1rem;
-    background: #14171d;
-    border-block-end: 1px solid #232830;
+    padding: 0.85rem 1.25rem;
+    background: #191512;
+    border-block-end: 1px solid rgba(184, 137, 58, 0.2);
     overflow-x: auto;
   }
 
-  .maison-ucp__traffic-lights {
+  .maison-ucp__status-indicator {
     display: flex;
-    gap: 6px;
+    align-items: center;
+    gap: 0.5rem;
   }
 
-  .maison-ucp__traffic-lights span {
-    width: 10px;
-    height: 10px;
+  .status-dot {
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: #333842;
+    background: var(--bell, #B8893A);
   }
 
-  .maison-ucp__traffic-lights span:nth-child(1) { background: #ef4444; }
-  .maison-ucp__traffic-lights span:nth-child(2) { background: #eab308; }
-  .maison-ucp__traffic-lights span:nth-child(3) { background: #22c55e; }
+  .status-text {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--bell, #B8893A);
+    white-space: nowrap;
+  }
 
   .maison-ucp__tabs {
     display: flex;
@@ -333,42 +340,43 @@
   .maison-ucp__tab {
     background: transparent;
     border: 1px solid transparent;
-    color: #94a3b8;
+    color: #A39B8F;
     font-family: var(--font-mono--family, monospace);
     font-size: 0.75rem;
     padding: 0.35rem 0.85rem;
-    border-radius: 4px;
+    border-radius: 2px;
     cursor: pointer;
     transition: all 0.2s ease;
   }
 
   .maison-ucp__tab:hover {
-    color: #f1f5f9;
-    background: #1e2430;
+    color: #F7F2E9;
+    background: #241F1A;
   }
 
   .maison-ucp__tab.is-active {
-    background: #242b38;
-    color: #38bdf8;
-    border-color: #334155;
-    font-weight: 600;
+    background: #241F1A;
+    color: var(--bell, #B8893A);
+    border-color: rgba(184, 137, 58, 0.4);
+    font-weight: 500;
   }
 
   .maison-ucp__copy-btn {
     margin-inline-start: auto;
-    background: #1e2430;
-    color: #cbd5e1;
-    border: 1px solid #334155;
+    background: transparent;
+    color: var(--bell, #B8893A);
+    border: 1px solid rgba(184, 137, 58, 0.4);
     font-family: var(--font-mono--family, monospace);
     font-size: 0.7rem;
-    padding: 0.3rem 0.75rem;
-    border-radius: 4px;
+    padding: 0.35rem 0.85rem;
+    border-radius: 2px;
     cursor: pointer;
+    transition: all 0.2s ease;
   }
 
   .maison-ucp__copy-btn:hover {
-    background: #334155;
-    color: #fff;
+    background: var(--bell, #B8893A);
+    color: #14110F;
   }
 
   .maison-ucp__panel {

@@ -1,0 +1,371 @@
+{% comment %}
+  Maison Tavo — Luxury Collection Showcase
+  Art Direction: "The forge, the kitchen, the temple bell."
+  Image-led cards, display serif typography, tabular mono specs,
+  category filtering, and direct links to both human PDP and agent UCP endpoint.
+{% endcomment %}
+
+<section class="maison-showcase section--page-width" id="collection" data-section-id="{{ section.id }}">
+  <header class="maison-showcase__header">
+    <div class="maison-showcase__eyebrow-row">
+      <span class="maison-showcase__kicker">Catalogue Raisonné</span>
+      <span class="maison-showcase__badge">11 Artifacts Active</span>
+    </div>
+    <h2 class="maison-showcase__title">The Working Kitchen</h2>
+    <p class="maison-showcase__lede">
+      Every vessel is engineered for an exact thermal behavior. Heavy carbon steel for sear and relay;
+      bell bronze for uniform slow radiation; refractory clay for gentle heat memory; hybrid cutlery for precision geometry.
+    </p>
+
+    <!-- Lineup Filter Bar -->
+    <div class="maison-showcase__filter-bar" role="tablist">
+      <button type="button" class="filter-tab is-active" data-filter="all">All Lineups</button>
+      <button type="button" class="filter-tab" data-filter="forge-hybrid">Forge Hybrid</button>
+      <button type="button" class="filter-tab" data-filter="terre-clay">Terre Clay</button>
+      <button type="button" class="filter-tab" data-filter="kuro-strip">Kuro Strip</button>
+      <button type="button" class="filter-tab" data-filter="forge-terre">Forge × Terre</button>
+    </div>
+  </header>
+
+  <!-- Product Grid -->
+  <div class="maison-showcase__grid">
+    {% for product in collections.all.products limit: 12 %}
+      {% liquid
+        assign lineup_tag = 'forge-hybrid'
+        if product.tags contains 'terre-clay' or product.handle contains 'kulhad' or product.handle contains 'chai' or product.handle contains 'platter'
+          assign lineup_tag = 'terre-clay'
+        elsif product.tags contains 'kuro-strip' or product.handle contains 'kuro' or product.handle contains 'knife'
+          assign lineup_tag = 'kuro-strip'
+        elsif product.tags contains 'forge-terre' or product.handle contains 'nested' or product.handle contains 'tongs'
+          assign lineup_tag = 'forge-terre'
+        endif
+      %}
+      <article class="maison-card" data-lineup="{{ lineup_tag }}">
+        <a href="{{ product.url }}" class="maison-card__media-link">
+          <div class="maison-card__image-wrap">
+            {% if product.featured_image %}
+              <img
+                src="{{ product.featured_image | image_url: width: 800 }}"
+                alt="{{ product.title | escape }}"
+                loading="lazy"
+                class="maison-card__image"
+                width="800"
+                height="600"
+              >
+            {% else %}
+              <div class="maison-card__placeholder">Artifact {{ forloop.index }}</div>
+            {% endif %}
+            <span class="maison-card__lineup-chip">{{ lineup_tag | replace: '-', ' ' | upcase }}</span>
+          </div>
+        </a>
+
+        <div class="maison-card__content">
+          <div class="maison-card__title-row">
+            <h3 class="maison-card__title">
+              <a href="{{ product.url }}">{{ product.title }}</a>
+            </h3>
+            <span class="maison-card__price">{{ product.price | money }}</span>
+          </div>
+
+          <p class="maison-card__spec">
+            {% if product.metafields.specs.material != blank %}
+              {{ product.metafields.specs.material.value }}
+            {% elsif product.handle contains 'kulhad' %}
+              99.8% Bell Bronze &amp; Refractory Clay
+            {% elsif product.handle contains 'skillet' %}
+              Dual-Mass Carbon Steel &amp; Bronze Rivets
+            {% elsif product.handle contains 'knife' %}
+              Damascus Clad &amp; Hybrid Geometry
+            {% else %}
+              Hand-Beaten Culinary Alloy
+            {% endif %}
+          </p>
+
+          <div class="maison-card__actions">
+            <a href="{{ product.url }}" class="card-action-link">View Artifact →</a>
+            <a href="{{ product.url }}?view=ucp" class="card-ucp-link" title="Inspect machine-readable UCP JSON endpoint" target="_blank">UCP Spec</a>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+  .maison-showcase {
+    padding-top: clamp(4rem, 8vw, 7rem);
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+    background-color: var(--limewash, #EFE8DC);
+    color: var(--soot, #14110F);
+  }
+
+  .maison-showcase__header {
+    max-width: 820px;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .maison-showcase__eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .maison-showcase__kicker {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--bell, #B8893A);
+    font-weight: 500;
+  }
+
+  .maison-showcase__badge {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.72rem;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid rgba(184, 137, 58, 0.4);
+    color: var(--bell, #B8893A);
+    border-radius: 2px;
+  }
+
+  .maison-showcase__title {
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0 0 1.25rem 0;
+    color: var(--soot, #14110F);
+  }
+
+  .maison-showcase__lede {
+    font-size: 1.1rem;
+    line-height: 1.65;
+    color: rgba(20, 17, 15, 0.8);
+    margin: 0 0 2rem 0;
+  }
+
+  /* Filter Bar */
+  .maison-showcase__filter-bar {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-tab {
+    background: transparent;
+    border: 1px solid rgba(20, 17, 15, 0.2);
+    color: var(--soot, #14110F);
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .filter-tab:hover {
+    border-color: var(--bell, #B8893A);
+    color: var(--bell, #B8893A);
+  }
+
+  .filter-tab.is-active {
+    background: var(--soot, #14110F);
+    color: var(--bone, #F7F2E9);
+    border-color: var(--soot, #14110F);
+  }
+
+  /* Grid */
+  .maison-showcase__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  /* Card */
+  .maison-card {
+    background: var(--bone, #F7F2E9);
+    border: 1px solid rgba(20, 17, 15, 0.08);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(.2, .8, .2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+
+  .maison-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--bell, #B8893A);
+    box-shadow: 0 16px 36px rgba(20, 17, 15, 0.08);
+  }
+
+  .maison-card__media-link {
+    text-decoration: none;
+    display: block;
+  }
+
+  .maison-card__image-wrap {
+    position: relative;
+    aspect-ratio: 4 / 3.3;
+    background: #E8E2D6;
+    overflow: hidden;
+  }
+
+  .maison-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(.2, .8, .2, 1);
+  }
+
+  .maison-card:hover .maison-card__image {
+    transform: scale(1.04);
+  }
+
+  .maison-card__lineup-chip {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    background: rgba(20, 17, 15, 0.85);
+    backdrop-filter: blur(4px);
+    color: var(--bone, #F7F2E9);
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.55rem;
+    border-radius: 2px;
+  }
+
+  .maison-card__content {
+    padding: 1.5rem 1.35rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .maison-card__title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .maison-card__title {
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: 1.25rem;
+    line-height: 1.25;
+    margin: 0;
+    font-weight: 400;
+  }
+
+  .maison-card__title a {
+    color: var(--soot, #14110F);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .maison-card__title a:hover {
+    color: var(--bell, #B8893A);
+  }
+
+  .maison-card__price {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--soot, #14110F);
+    white-space: nowrap;
+  }
+
+  .maison-card__spec {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.75rem;
+    color: #7A7268;
+    margin: 0 0 1.25rem 0;
+    line-height: 1.5;
+  }
+
+  .maison-card__actions {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(20, 17, 15, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-action-link {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--soot, #14110F);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .card-action-link:hover {
+    color: var(--bell, #B8893A);
+  }
+
+  .card-ucp-link {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.7rem;
+    color: var(--bell, #B8893A);
+    text-decoration: none;
+    border: 1px solid rgba(184, 137, 58, 0.4);
+    padding: 0.2rem 0.45rem;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+  }
+
+  .card-ucp-link:hover {
+    background: var(--bell, #B8893A);
+    color: var(--soot, #14110F);
+  }
+
+  @media (max-width: 960px) {
+    .maison-showcase__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .maison-showcase__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    var tabs = document.querySelectorAll('.maison-showcase .filter-tab');
+    var cards = document.querySelectorAll('.maison-card');
+
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        tabs.forEach(function(t) { t.classList.remove('is-active'); });
+        tab.classList.add('is-active');
+
+        var filter = tab.getAttribute('data-filter');
+        cards.forEach(function(card) {
+          if (filter === 'all' || card.getAttribute('data-lineup') === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Maison Collection Grid",
+  "settings": []
+}
+{% endschema %}

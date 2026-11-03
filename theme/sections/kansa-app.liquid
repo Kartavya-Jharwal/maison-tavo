@@ -41,52 +41,56 @@
     letter-spacing: 0.14em;
     text-transform: uppercase;
     padding: 0.25rem 0.65rem;
-    border: 1px solid var(--brand-color-aged-bronze, #8c7355);
-    color: var(--brand-color-aged-bronze, #8c7355);
+    border: 1px solid var(--bell, #B8893A);
+    color: var(--bell, #B8893A);
+    border-radius: 2px;
   }
 
   .kansa-badge--voice {
-    border-color: #22c55e;
-    color: #22c55e;
+    border-color: var(--ember, #E2552B);
+    color: var(--ember, #E2552B);
   }
 
   .kansa-shell__heading {
     margin: 0 0 0.85rem;
-    font-family: var(--font-fraunces--family, var(--font-heading--family));
-    font-size: clamp(2.2rem, 1.8rem + 1.8vw, 3.8rem);
-    font-weight: var(--font-heading--weight);
-    letter-spacing: 0.02em;
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
     line-height: 1.08;
+    color: var(--soot, #14110F);
   }
 
   .kansa-shell__subheading {
     margin: 0;
-    color: var(--color-foreground-muted);
-    font-size: 1.125rem;
+    color: rgba(20, 17, 15, 0.78);
+    font-size: 1.1rem;
     line-height: 1.6;
+    max-width: 54ch;
   }
 
   /* Kansa Container */
   .kansa-container {
-    background: #111317;
-    border: 1px solid #232832;
-    border-radius: 8px;
-    padding: 1.75rem;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    background: #14110F;
+    border: 1px solid rgba(184, 137, 58, 0.35);
+    border-radius: 4px;
+    padding: 2.25rem;
+    color: #F7F2E9;
+    box-shadow: 0 20px 50px rgba(20, 17, 15, 0.15);
   }
 
   .kansa-piece-selector {
-    margin-block-end: 1.75rem;
+    margin-block-end: 2rem;
   }
 
   .kansa-label {
     display: block;
     font-family: var(--font-mono--family, monospace);
-    font-size: 0.6875rem;
-    letter-spacing: 0.16em;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #94a3b8;
-    margin-block-end: 0.75rem;
+    color: #B8893A;
+    margin-block-end: 0.85rem;
   }
 
   .kansa-piece-buttons {
@@ -96,26 +100,27 @@
   }
 
   .kansa-piece-btn {
-    background: #191d24;
-    border: 1px solid #2e3544;
-    color: #cbd5e1;
-    font-size: 0.875rem;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
+    background: #1C1815;
+    border: 1px solid rgba(184, 137, 58, 0.3);
+    color: #C8BFB3;
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 0.85rem;
+    padding: 0.55rem 1.15rem;
+    border-radius: 2px;
     cursor: pointer;
     transition: all 0.2s ease;
   }
 
   .kansa-piece-btn:hover {
-    background: #252b38;
-    color: #fff;
-    border-color: #475569;
+    background: #241F1A;
+    color: #F7F2E9;
+    border-color: #B8893A;
   }
 
   .kansa-piece-btn.is-active {
-    background: #2a3445;
-    border-color: #c9a96e;
-    color: #f8fafc;
+    background: #B8893A;
+    border-color: #B8893A;
+    color: #14110F;
     font-weight: 600;
   }
 
@@ -124,78 +129,85 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    border-block-end: 1px solid #232832;
-    padding-block-end: 1rem;
-    margin-block-end: 2rem;
+    border-block-end: 1px solid rgba(184, 137, 58, 0.2);
+    padding-block-end: 1.25rem;
+    margin-block-end: 2.25rem;
   }
 
   .kansa-mode-btn {
     background: transparent;
     border: 1px solid transparent;
-    color: #94a3b8;
-    font-size: 0.9rem;
+    color: #A39B8F;
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     padding: 0.5rem 1.1rem;
-    border-radius: 4px;
+    border-radius: 2px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
   }
 
   .kansa-mode-btn:hover {
-    background: #191d24;
-    color: #f1f5f9;
+    color: #F7F2E9;
   }
 
   .kansa-mode-btn.is-active {
-    background: #1e2430;
-    color: #e2e8f0;
-    border-color: #38bdf8;
-    font-weight: 600;
+    background: #1C1815;
+    color: #B8893A;
+    border-color: rgba(184, 137, 58, 0.4);
+    font-weight: 500;
   }
 
   /* Voice Hero */
   .kansa-voice-hero {
     text-align: center;
-    padding-block: 1.5rem 1rem;
+    padding-block: 2rem 1.5rem;
   }
 
   .kansa-mic-action {
     display: inline-flex;
     align-items: center;
     gap: 0.85rem;
-    background: #1a1e27;
-    border: 1.5px solid #c9a96e;
-    color: #f8fafc;
-    padding: 1rem 2.2rem;
+    background: #1C1815;
+    border: 1.5px solid #B8893A;
+    color: #F7F2E9;
+    padding: 1rem 2.25rem;
     border-radius: 9999px;
-    font-size: 1.05rem;
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 18px rgba(201, 169, 110, 0.18);
+    transition: all 0.25s cubic-bezier(.2, .8, .2, 1);
+    box-shadow: 0 4px 20px rgba(184, 137, 58, 0.15);
   }
 
   .kansa-mic-action:hover {
-    background: #c9a96e;
-    color: #111;
-    transform: translateY(-1px);
+    background: #B8893A;
+    color: #14110F;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(184, 137, 58, 0.25);
   }
 
   .kansa-mic-action.is-listening {
-    border-color: #ef4444;
-    background: #ef4444;
+    border-color: #E2552B;
+    background: #E2552B;
     color: #fff;
     animation: kansa-pulse 1.4s infinite;
   }
 
   @keyframes kansa-pulse {
-    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
-    70% { box-shadow: 0 0 0 16px rgba(239, 68, 68, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(226, 85, 43, 0.5); }
+    70% { box-shadow: 0 0 0 16px rgba(226, 85, 43, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(226, 85, 43, 0); }
   }
 
   .kansa-caption {
-    margin-block-start: 0.85rem;
-    font-size: 0.8rem;
-    color: #64748b;
+    margin-block-start: 1rem;
+    font-size: 0.82rem;
+    color: #A39B8F;
+    font-family: var(--font-mono--family, monospace);
   }
 
   /* Form & Chips */
@@ -207,27 +219,39 @@
 
   .kansa-text-input {
     flex: 1;
-    background: #14171d;
-    border: 1px solid #2e3544;
-    padding: 0.75rem 1rem;
-    color: #f1f5f9;
+    background: #100E0C;
+    border: 1px solid rgba(184, 137, 58, 0.35);
+    padding: 0.85rem 1.15rem;
+    color: #F7F2E9;
+    font-family: var(--font-body--family, sans-serif);
     font-size: 0.95rem;
-    border-radius: 4px;
+    border-radius: 2px;
     outline: none;
+    transition: border-color 0.2s ease;
   }
 
   .kansa-text-input:focus {
-    border-color: #c9a96e;
+    border-color: #B8893A;
   }
 
   .kansa-send-btn {
-    background: #c9a96e;
-    color: #111;
+    background: #B8893A;
+    color: #14110F;
     border: none;
+    font-family: var(--font-body--family, sans-serif);
     font-weight: 600;
-    padding: 0 1.5rem;
-    border-radius: 4px;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0 1.6rem;
+    border-radius: 2px;
     cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .kansa-send-btn:hover {
+    background: #E2552B;
+    color: #fff;
   }
 
   .kansa-chips {
@@ -239,107 +263,115 @@
   }
 
   .kansa-chips-label {
-    font-size: 0.75rem;
-    color: #64748b;
+    font-size: 0.72rem;
+    color: #B8893A;
     font-family: var(--font-mono--family, monospace);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   .kansa-chip {
-    background: #171b22;
-    border: 1px solid #2a313d;
-    color: #94a3b8;
-    font-size: 0.775rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 3px;
+    background: #1C1815;
+    border: 1px solid rgba(184, 137, 58, 0.25);
+    color: #C8BFB3;
+    font-size: 0.78rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 2px;
     cursor: pointer;
+    transition: all 0.2s ease;
   }
 
   .kansa-chip:hover {
-    background: #252b37;
-    color: #e2e8f0;
+    border-color: #B8893A;
+    color: #F7F2E9;
   }
 
   .kansa-transcript {
-    background: #161a22;
-    padding: 0.75rem 1rem;
-    border-radius: 4px;
-    font-size: 0.875rem;
-    color: #94a3b8;
-    margin-block-end: 1rem;
+    background: #100E0C;
+    border: 1px solid rgba(184, 137, 58, 0.2);
+    padding: 0.85rem 1.15rem;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    color: #C8BFB3;
+    margin-block-end: 1.25rem;
   }
 
   .kansa-transcript-tag {
     font-family: var(--font-mono--family, monospace);
     font-size: 0.7rem;
-    color: #38bdf8;
+    color: #B8893A;
     margin-inline-end: 0.5rem;
   }
 
-  /* Answer card */
+  /* Answer Card */
   .kansa-answer-card {
-    background: #141820;
-    border-left: 3px solid #c9a96e;
-    padding: 1.25rem 1.5rem;
-    border-radius: 0 6px 6px 0;
-    margin-block-end: 1.25rem;
+    background: #1C1815;
+    border-left: 3px solid #B8893A;
+    padding: 1.5rem 1.75rem;
+    border-radius: 0 4px 4px 0;
+    margin-block-end: 1.5rem;
   }
 
   .kansa-answer-badge {
     font-family: var(--font-mono--family, monospace);
-    font-size: 0.6875rem;
+    font-size: 0.7rem;
     letter-spacing: 0.12em;
-    color: #c9a96e;
+    text-transform: uppercase;
+    color: #B8893A;
     margin-block-end: 0.5rem;
   }
 
   .kansa-answer-text {
-    font-size: 1rem;
+    font-size: 1.05rem;
     line-height: 1.7;
-    color: #f1f5f9;
+    color: #F7F2E9;
   }
 
   .kansa-replay-btn {
     margin-block-start: 1rem;
     background: transparent;
-    border: 1px solid #334155;
-    color: #94a3b8;
+    border: 1px solid rgba(184, 137, 58, 0.35);
+    color: #B8893A;
+    font-family: var(--font-mono--family, monospace);
     font-size: 0.75rem;
-    padding: 0.3rem 0.75rem;
-    border-radius: 3px;
+    padding: 0.35rem 0.85rem;
+    border-radius: 2px;
     cursor: pointer;
+    transition: all 0.2s ease;
   }
 
   .kansa-replay-btn:hover {
-    color: #fff;
-    border-color: #64748b;
+    background: #B8893A;
+    color: #14110F;
   }
 
   .kansa-error-banner {
-    background: #450a0a;
-    color: #fca5a5;
-    padding: 0.75rem 1rem;
-    font-size: 0.85rem;
-    border-radius: 4px;
+    background: rgba(226, 85, 43, 0.15);
+    border: 1px solid #E2552B;
+    color: #FFA590;
+    padding: 0.85rem 1.15rem;
+    font-size: 0.88rem;
+    border-radius: 2px;
   }
 
   /* Diagnostic Grid */
   .kansa-panel-heading {
     margin: 0 0 0.5rem;
-    font-family: var(--font-fraunces--family, var(--font-heading--family));
-    font-size: 1.35rem;
-    color: #f8fafc;
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: 1.45rem;
+    color: #F7F2E9;
   }
 
   .kansa-panel-sub {
-    margin: 0 0 1.5rem;
-    color: #94a3b8;
+    margin: 0 0 1.75rem;
+    color: #A39B8F;
     font-size: 0.95rem;
   }
 
   .kansa-remedy-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.25rem;
   }
 
   @media screen and (min-width: 750px) {
@@ -349,33 +381,34 @@
   }
 
   .kansa-remedy-card {
-    background: #14171d;
-    border: 1px solid #282f3c;
-    border-radius: 6px;
-    padding: 1.25rem;
+    background: #1C1815;
+    border: 1px solid rgba(184, 137, 58, 0.25);
+    border-radius: 3px;
+    padding: 1.5rem;
   }
 
   .kansa-remedy-title {
     margin: 0 0 0.5rem;
-    font-size: 1.05rem;
-    color: #c9a96e;
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: 1.15rem;
+    color: #B8893A;
   }
 
   .kansa-remedy-cause {
-    margin: 0 0 0.75rem;
-    font-size: 0.875rem;
-    color: #94a3b8;
-    line-height: 1.5;
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    color: #C8BFB3;
+    line-height: 1.55;
   }
 
   .kansa-remedy-fix {
-    font-size: 0.875rem;
-    color: #e2e8f0;
+    font-size: 0.88rem;
+    color: #F7F2E9;
     line-height: 1.6;
-    background: #191e27;
-    padding: 0.65rem 0.85rem;
-    border-radius: 4px;
-    border-left: 2px solid #38bdf8;
+    background: #100E0C;
+    padding: 0.85rem 1rem;
+    border-radius: 2px;
+    border-left: 2px solid #B8893A;
   }
 
   /* Spec Table */
@@ -387,23 +420,23 @@
 
   .kansa-spec-table th,
   .kansa-spec-table td {
-    padding: 0.85rem 1rem;
-    border-block-end: 1px solid #232832;
+    padding: 0.95rem 1.15rem;
+    border-block-end: 1px solid rgba(184, 137, 58, 0.15);
     text-align: left;
     font-size: 0.9rem;
   }
 
   .kansa-spec-table th {
-    color: #94a3b8;
+    color: #B8893A;
     width: 28%;
     font-family: var(--font-mono--family, monospace);
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
   }
 
   .kansa-spec-table td {
-    color: #f1f5f9;
+    color: #F7F2E9;
   }
 {% endstylesheet %}
 

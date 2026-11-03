@@ -1,361 +1,207 @@
 {% comment %}
-  Maison Tavo — The Sealed Gate (Thread S5)
-  "The forge, the kitchen, the temple bell."
-  Brass-plate gate for the password page with direct passphrase unlock,
-  Web Audio temple bell chime, and evaluator metadata badges.
+  Maison Tavo — Private Atelier Gate (Thread S5)
+  Art Direction: "The forge, the kitchen, the temple bell."
+  Restrained luxury, Fraunces serif, quiet Devanagari signature,
+  minimalist passphrase entry, zero tacky gimmicks.
 {% endcomment %}
 
-<div class="maison-gate-wrapper">
-  <!-- Audio Bell Synthesizer -->
-  <button type="button" class="maison-gate-sound-toggle" id="gateSoundToggle" title="Toggle sound">
-    <span class="bell-icon">🔔</span> <span class="sound-label">Temple Bell Tone</span>
-  </button>
-
-  <div class="maison-gate-card">
-    <div class="gate-rivet rivet-tl"></div>
-    <div class="gate-rivet rivet-tr"></div>
-    <div class="gate-rivet rivet-bl"></div>
-    <div class="gate-rivet rivet-br"></div>
-
-    <div class="maison-gate-header">
-      <p class="maison-gate-devanagari">कांसे की गूँज · रसोई की साधना</p>
-      <h1 class="maison-gate-title">MAISON TAVO</h1>
-      <p class="maison-gate-tagline">The forge, the kitchen, the temple bell.</p>
+<div class="atelier-gate">
+  <div class="atelier-gate__inner">
+    <div class="atelier-gate__brand">
+      <p class="atelier-gate__devanagari">कांसे की गूँज · रसोई की साधना</p>
+      <h1 class="atelier-gate__title">MAISON TAVO</h1>
+      <p class="atelier-gate__subhead">The forge, the kitchen, the temple bell.</p>
     </div>
 
-    <div class="maison-gate-manifesto">
-      <p>Modern heirlooms for the working kitchen — metallurgy you can parse, craft you can live with.</p>
-    </div>
+    <div class="atelier-gate__rule"></div>
 
-    {%- form 'storefront_password', class: 'maison-gate-form', id: 'gatePasswordForm' -%}
-      <div class="maison-input-row">
+    <p class="atelier-gate__manifesto">
+      Modern heirlooms for the working kitchen. Metallurgy you can parse, craft you can live with.
+      Enter the foundry passphrase to access the catalogue and machine commerce endpoints.
+    </p>
+
+    {%- form 'storefront_password', class: 'atelier-gate__form' -%}
+      <div class="atelier-gate__input-group">
+        <label for="gatePassword" class="visually-hidden">Passphrase</label>
         <input
           type="password"
           name="password"
-          id="gatePasswordInput"
-          class="maison-gate-input"
+          id="gatePassword"
+          class="atelier-gate__input"
           placeholder="Enter foundry passphrase"
           autocomplete="current-password"
           autofocus
           required
         >
-        <button type="submit" class="maison-gate-submit" id="gateSubmitBtn">
-          <span>Enter the Forge</span>
-          <span class="arrow">→</span>
+        <button type="submit" class="atelier-gate__submit">
+          <span>Enter Atelier</span>
+          <span class="atelier-gate__arrow">→</span>
         </button>
       </div>
 
       {%- if form.errors -%}
-        <div class="maison-gate-error" role="alert">
-          <span>⚠ Passphrase unverified. Please check your credentials.</span>
-        </div>
+        <p class="atelier-gate__error" role="alert">
+          Passphrase unverified. Please check your credentials.
+        </p>
       {%- endif -%}
     {%- endform -%}
 
-    <div class="maison-gate-pills">
-      <span class="gate-pill">✦ 11 Curated Artifacts</span>
-      <span class="gate-pill">✦ Universal Commerce Protocol (UCP)</span>
-      <span class="gate-pill">✦ Kansa Voice Companion</span>
-    </div>
-
-    <div class="maison-gate-footer-note">
-      <p>Native Shopify Liquid Storefront · maison-tavo.myshopify.com</p>
-    </div>
+    <footer class="atelier-gate__footer">
+      <span class="footer-spec">UCP Spec 2026-08-25</span>
+      <span class="footer-sep">·</span>
+      <span class="footer-spec">11 Active Artifacts</span>
+      <span class="footer-sep">·</span>
+      <span class="footer-spec">Kansa Atelier Online</span>
+    </footer>
   </div>
 </div>
 
 <style>
-  .maison-gate-wrapper {
+  .atelier-gate {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(circle at 50% 25%, #241D19 0%, #14110F 75%, #0B0908 100%);
+    background: #14110F;
     color: #F7F2E9;
-    padding: 2rem 1.5rem;
-    position: relative;
+    padding: 3rem 1.5rem;
     box-sizing: border-box;
     font-family: var(--font-body--family, 'Hanken Grotesk', -apple-system, sans-serif);
-    overflow: hidden;
   }
 
-  /* Paper and forged metal grain overlay */
-  .maison-gate-wrapper::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    opacity: 0.05;
-    background-image: radial-gradient(#B8893A 1px, transparent 1px);
-    background-size: 24px 24px;
-    pointer-events: none;
-  }
-
-  .maison-gate-sound-toggle {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    background: rgba(20, 17, 15, 0.7);
-    border: 1px solid rgba(184, 137, 58, 0.4);
-    color: #B8893A;
-    font-size: 0.78rem;
-    padding: 0.45rem 0.9rem;
-    border-radius: 999px;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    backdrop-filter: blur(6px);
-    z-index: 10;
-  }
-
-  .maison-gate-sound-toggle:hover {
-    border-color: #B8893A;
-    background: rgba(184, 137, 58, 0.15);
-    color: #F7F2E9;
-  }
-
-  .maison-gate-card {
-    background: #191513;
-    border: 1px solid rgba(184, 137, 58, 0.45);
-    border-radius: 4px;
-    max-width: 580px;
+  .atelier-gate__inner {
+    max-width: 520px;
     width: 100%;
-    padding: 3.5rem 2.75rem 2.75rem;
-    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65), 0 0 40px rgba(184, 137, 58, 0.08);
-    position: relative;
     text-align: center;
-    box-sizing: border-box;
   }
 
-  /* Brass Rivets */
-  .gate-rivet {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #F7E4B2, #B8893A 70%, #6E4F1B 100%);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.8);
-  }
-  .rivet-tl { top: 12px; left: 12px; }
-  .rivet-tr { top: 12px; right: 12px; }
-  .rivet-bl { bottom: 12px; left: 12px; }
-  .rivet-br { bottom: 12px; right: 12px; }
-
-  .maison-gate-devanagari {
+  .atelier-gate__devanagari {
     font-family: var(--font-devanagari--family, 'Noto Serif Devanagari', serif);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.18em;
     color: #B8893A;
-    letter-spacing: 0.08em;
-    margin: 0 0 0.75rem 0;
-    opacity: 0.95;
+    margin: 0 0 1rem 0;
   }
 
-  .maison-gate-title {
+  .atelier-gate__title {
     font-family: var(--font-heading--family, 'Fraunces', serif);
-    font-size: clamp(2.2rem, 5vw, 3.2rem);
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    margin: 0 0 0.5rem 0;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    margin: 0 0 0.75rem 0;
     color: #F7F2E9;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
   }
 
-  .maison-gate-tagline {
+  .atelier-gate__subhead {
     font-family: var(--font-heading--family, 'Fraunces', serif);
     font-style: italic;
     font-size: 1.05rem;
     color: #B8893A;
-    margin: 0 0 1.75rem 0;
+    margin: 0 0 2rem 0;
     letter-spacing: 0.02em;
   }
 
-  .maison-gate-manifesto {
-    border-top: 1px solid rgba(184, 137, 58, 0.2);
-    border-bottom: 1px solid rgba(184, 137, 58, 0.2);
-    padding: 1.1rem 0;
-    margin-bottom: 2rem;
+  .atelier-gate__rule {
+    width: 60px;
+    height: 1px;
+    background: rgba(184, 137, 58, 0.4);
+    margin: 0 auto 2rem auto;
   }
 
-  .maison-gate-manifesto p {
-    font-size: 0.92rem;
-    line-height: 1.6;
-    color: #C8BFB3;
-    margin: 0;
+  .atelier-gate__manifesto {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #BFB8AD;
+    margin: 0 0 2.5rem 0;
   }
 
-  .maison-gate-form {
-    margin-bottom: 2rem;
+  .atelier-gate__form {
+    margin-bottom: 3rem;
   }
 
-  .maison-input-row {
+  .atelier-gate__input-group {
     display: flex;
-    gap: 0.5rem;
-    background: #100E0C;
-    border: 1px solid rgba(184, 137, 58, 0.5);
-    border-radius: 4px;
-    padding: 0.35rem;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    border-bottom: 1px solid rgba(184, 137, 58, 0.45);
+    padding-bottom: 0.5rem;
+    transition: border-color 0.25s ease;
   }
 
-  .maison-input-row:focus-within {
+  .atelier-gate__input-group:focus-within {
     border-color: #B8893A;
-    box-shadow: 0 0 0 2px rgba(184, 137, 58, 0.25);
   }
 
-  .maison-gate-input {
+  .atelier-gate__input {
     flex: 1;
     background: transparent;
     border: none;
     color: #F7F2E9;
-    font-family: var(--font-mono--family, 'JetBrains Mono', monospace);
-    font-size: 0.9rem;
-    padding: 0.75rem 1rem;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.95rem;
+    padding: 0.5rem 0;
     outline: none;
-    min-width: 0;
   }
 
-  .maison-gate-input::placeholder {
-    color: #7A7268;
+  .atelier-gate__input::placeholder {
+    color: #6E675D;
     font-family: var(--font-body--family, sans-serif);
+    font-size: 0.9rem;
   }
 
-  .maison-gate-submit {
-    background: #B8893A;
-    color: #14110F;
+  .atelier-gate__submit {
+    background: transparent;
     border: none;
+    color: #B8893A;
     font-family: var(--font-body--family, sans-serif);
-    font-weight: 600;
-    font-size: 0.82rem;
-    letter-spacing: 0.06em;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    padding: 0.75rem 1.35rem;
-    border-radius: 3px;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    transition: background 0.2s cubic-bezier(.2, .8, .2, 1), transform 0.2s ease, box-shadow 0.2s ease;
-    white-space: nowrap;
+    gap: 0.4rem;
+    padding: 0.5rem 0.25rem;
+    transition: color 0.2s ease;
   }
 
-  .maison-gate-submit:hover {
-    background: #E2552B;
-    color: #fff;
-    box-shadow: 0 4px 16px rgba(226, 85, 43, 0.35);
+  .atelier-gate__submit:hover {
+    color: #E2552B;
   }
 
-  .maison-gate-submit .arrow {
-    font-size: 1.1rem;
+  .atelier-gate__arrow {
     transition: transform 0.2s ease;
   }
 
-  .maison-gate-submit:hover .arrow {
+  .atelier-gate__submit:hover .atelier-gate__arrow {
     transform: translateX(3px);
   }
 
-  .maison-gate-error {
+  .atelier-gate__error {
     color: #E2552B;
     font-size: 0.82rem;
-    margin-top: 0.85rem;
-    letter-spacing: 0.02em;
+    margin-top: 1rem;
+    text-align: left;
   }
 
-  .maison-gate-pills {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 1.75rem;
-  }
-
-  .gate-pill {
-    font-family: var(--font-mono--family, 'JetBrains Mono', monospace);
-    font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    color: #A39B8F;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(184, 137, 58, 0.2);
-    padding: 0.3rem 0.65rem;
-    border-radius: 999px;
-  }
-
-  .maison-gate-footer-note {
-    font-family: var(--font-mono--family, 'JetBrains Mono', monospace);
+  .atelier-gate__footer {
+    font-family: var(--font-mono--family, monospace);
     font-size: 0.7rem;
-    color: #6B6359;
-    letter-spacing: 0.06em;
-    margin: 0;
+    letter-spacing: 0.08em;
+    color: #6E675D;
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
   }
 
-  @media (max-width: 600px) {
-    .maison-gate-card {
-      padding: 2.5rem 1.5rem 1.75rem;
-    }
-    .maison-input-row {
-      flex-direction: column;
-    }
-    .maison-gate-submit {
-      justify-content: center;
-      width: 100%;
-    }
+  .footer-sep {
+    opacity: 0.5;
   }
 </style>
 
-<script>
-  (function() {
-    // Web Audio Synthesized Temple Bell Sound
-    function playTempleBell() {
-      try {
-        var AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtx) return;
-        var ctx = new AudioCtx();
-        if (ctx.state === 'suspended') ctx.resume();
-
-        var now = ctx.currentTime;
-        var freqs = [432, 864, 1296, 1728];
-        var gains = [0.35, 0.15, 0.08, 0.04];
-        var decays = [2.8, 1.8, 1.2, 0.7];
-
-        freqs.forEach(function(freq, i) {
-          var osc = ctx.createOscillator();
-          var gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now);
-
-          gain.gain.setValueAtTime(gains[i], now);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + decays[i]);
-
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-
-          osc.start(now);
-          osc.stop(now + decays[i]);
-        });
-      } catch (e) {
-        console.warn('Audio not allowed or supported', e);
-      }
-    }
-
-    var toggle = document.getElementById('gateSoundToggle');
-    if (toggle) {
-      toggle.addEventListener('click', function() {
-        playTempleBell();
-      });
-    }
-
-    var submitBtn = document.getElementById('gateSubmitBtn');
-    if (submitBtn) {
-      submitBtn.addEventListener('click', function() {
-        playTempleBell();
-      });
-    }
-  })();
-</script>
-
 {% schema %}
 {
-  "name": "Maison Sealed Gate",
+  "name": "Maison Atelier Gate",
   "settings": []
 }
 {% endschema %}

@@ -2014,3 +2014,41 @@ footer a:hover,
   color: var(--bell, #B8893A) !important;
   opacity: 1;
 }
+
+/* Maison Tavo Luxury Atelier Header */
+.header-wrapper,
+#header-component {
+  background-color: var(--limewash, #EFE8DC) !important;
+  border-bottom: 1px solid rgba(184, 137, 58, 0.25) !important;
+  padding-block: 0.75rem !important;
+}
+
+.header__heading-text,
+.header__heading-link,
+.header-logo {
+  font-family: var(--font-heading--family, 'Fraunces', serif) !important;
+  font-size: 1.55rem !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  color: var(--soot, #14110F) !important;
+}
+
+.header__menu .menu-list__link,
+.navigation-link,
+.header__nav a {
+  font-family: var(--font-body--family, sans-serif) !important;
+  font-size: 0.8rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  font-weight: 500 !important;
+  color: var(--soot, #14110F) !important;
+  padding: 0.5rem 0.85rem !important;
+  transition: color var(--dur-fast) var(--ease-strike) !important;
+}
+
+.header__menu .menu-list__link:hover,
+.navigation-link:hover,
+.header__nav a:hover {
+  color: var(--bell, #B8893A) !important;
+}
