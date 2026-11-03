@@ -1,0 +1,19 @@
+{% layout none %}
+{
+  "ucp_version": "2026-08-25",
+  "sku": "MT-{{ product.handle | upcase | slice: 0, 12 }}",
+  "handle": {{ product.handle | json }},
+  "title": {{ product.title | json }},
+  "vendor": {{ product.vendor | json }},
+  "product_type": {{ product.type | json }},
+  "price": {{ product.price | money_without_currency | json }},
+  "currency": {{ cart.currency.iso_code | json }},
+  "available": {{ product.available | json }},
+  "claim_status": "CONCEPT_SPEC",
+  "url": "https://maison-tavo.myshopify.com{{ product.url }}",
+  "tags": {{ product.tags | json }},
+  "companion_agent": {
+    "name": "Kansa",
+    "endpoint": "https://maison-tavo.myshopify.com/pages/kansa?piece={{ product.handle }}"
+  }
+}

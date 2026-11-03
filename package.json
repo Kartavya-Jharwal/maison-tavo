@@ -4,16 +4,14 @@
   "type": "module",
   "workspaces": [
     "theme",
-    "hydrogen",
     "packages/*",
     "apps/*"
   ],
   "scripts": {
-    "certs": "bun scripts/certs.ts",
+    "ship": "bun run theme:build && shopify theme push --path theme -e production --allow-live",
+    "deploy": "bun run ship",
     "dev:theme": "bun run --cwd theme dev",
     "dev:theme:https": "bun scripts/https-proxy.ts --target http://127.0.0.1:9292 --port 9443",
-    "dev:hydrogen": "bun run --cwd hydrogen dev",
-    "dev:hydrogen:https": "bun scripts/https-proxy.ts --target http://localhost:3000 --port 3443",
     "dev:agents": "bun --watch --env-file=apps/agents/.env apps/agents/src/server.ts",
     "tunnel:agents": "bunx cloudflared tunnel --url https://localhost:4443 --no-tls-verify",
     "typecheck": "bun run --filter '@maison-tavo/ucp' --filter '@maison-tavo/catalog' --filter '@maison-tavo/agents' typecheck",

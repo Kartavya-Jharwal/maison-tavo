@@ -1,0 +1,471 @@
+{% doc %}
+  Maison Tavo · Universal Commerce Protocol (UCP) & Agent-to-Agent Explorer.
+  Renders a visual, syntax-highlighted protocol viewer for human walkthroughs,
+  paired with embedded machine-readable JSON metadata for AI agents.
+{% enddoc %}
+
+<div class="maison-ucp section section--page-width" data-section-id="{{ section.id }}">
+  <header class="maison-ucp__header">
+    <div class="maison-ucp__eyebrow-row">
+      <span class="maison-ucp__badge">UCP SPEC 2026-08-25</span>
+      <span class="maison-ucp__badge maison-ucp__badge--a2a">A2A AGENT PROTOCOL</span>
+      <span class="maison-ucp__status">● ACTIVE PROTOCOL ENDPOINT</span>
+    </div>
+    <h1 class="maison-ucp__title">Agentic Commerce &amp; Machine-Readable Spec Layer</h1>
+    <p class="maison-ucp__lede">
+      Maison Tavo exposes a dual-depth architecture: human-curated hospitality on the storefront,
+      and deterministic UCP metadata for autonomous purchasing agents and culinary companion surfaces.
+    </p>
+  </header>
+
+  <div class="maison-ucp__console">
+    <div class="maison-ucp__console-bar">
+      <div class="maison-ucp__traffic-lights">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="maison-ucp__tabs" role="tablist">
+        <button class="maison-ucp__tab is-active" data-tab="tab-wellknown" role="tab" aria-selected="true">
+          /.well-known/ucp
+        </button>
+        <button class="maison-ucp__tab" data-tab="tab-catalog" role="tab" aria-selected="false">
+          /catalog/agent-spec.json
+        </button>
+        <button class="maison-ucp__tab" data-tab="tab-a2a" role="tab" aria-selected="false">
+          /a2a/kansa-dispatch.json
+        </button>
+      </div>
+      <button class="maison-ucp__copy-btn" id="ucp-copy-btn" title="Copy active JSON to clipboard">
+        Copy JSON
+      </button>
+    </div>
+
+    <!-- TAB 1: .well-known/ucp -->
+    <div class="maison-ucp__panel is-active" id="tab-wellknown" role="tabpanel">
+      <div class="maison-ucp__panel-meta">
+        <span class="maison-ucp__url-pill">GET /.well-known/ucp</span>
+        <span class="maison-ucp__note">Platform handshake profile · Validated by @maison-tavo/ucp</span>
+      </div>
+      <pre class="maison-ucp__code"><code id="code-wellknown">{
+  "ucp": {
+    "version": "2026-08-25",
+    "name": "Maison Tavo",
+    "domain": "maison-tavo.myshopify.com",
+    "description": "Modern heirlooms for the working kitchen - metallurgy you can parse, craft you can live with.",
+    "capabilities": {
+      "dev.ucp.shopping.catalog.search": [
+        {
+          "version": "2026-08-25",
+          "spec": "https://ucp.dev/2026-08-25/specification/shopping/catalog/",
+          "schema": "https://ucp.dev/2026-08-25/schemas/shopping/catalog_search.json"
+        }
+      ],
+      "dev.ucp.shopping.cart": [
+        {
+          "version": "2026-08-25",
+          "spec": "https://ucp.dev/2026-08-25/specification/shopping/cart/",
+          "schema": "https://ucp.dev/2026-08-25/schemas/shopping/cart.json"
+        }
+      ],
+      "dev.ucp.shopping.checkout": [
+        {
+          "version": "2026-08-25",
+          "spec": "https://ucp.dev/2026-08-25/specification/shopping/checkout/",
+          "schema": "https://ucp.dev/2026-08-25/schemas/shopping/checkout.json"
+        }
+      ],
+      "dev.ucp.shopping.order": [
+        {
+          "version": "2026-08-25",
+          "spec": "https://ucp.dev/2026-08-25/specification/shopping/order/",
+          "schema": "https://ucp.dev/2026-08-25/schemas/shopping/order.json"
+        }
+      ]
+    },
+    "payment_handlers": {
+      "shopify_payments": [
+        {
+          "version": "2026-08-25",
+          "spec": "https://ucp.dev/2026-08-25/specification/shopping/checkout/",
+          "settlement_currency": "USD",
+          "escalation_policy": {
+            "on_status": "requires_escalation",
+            "action": "follow_continue_url"
+          }
+        }
+      ]
+    },
+    "companion_surface": {
+      "name": "Kansa",
+      "transport": "a2a",
+      "version": "1.0.0",
+      "endpoint": "/pages/kansa",
+      "supported_intents": ["pan_care", "thermal_limits", "alloy_provenance", "order_escalation"]
+    }
+  }
+}</code></pre>
+    </div>
+
+    <!-- TAB 2: /catalog/agent-spec.json -->
+    <div class="maison-ucp__panel" id="tab-catalog" role="tabpanel">
+      <div class="maison-ucp__panel-meta">
+        <span class="maison-ucp__url-pill">GET /catalog/agent-spec</span>
+        <span class="maison-ucp__note">Deterministic cookware metallurgy &amp; claim status</span>
+      </div>
+      <pre class="maison-ucp__code"><code id="code-catalog">{
+  "spec_version": "2026-08-25",
+  "store": "Maison Tavo",
+  "total_items": 4,
+  "catalog": [
+    {
+      "sku": "MT-FRG-SKL-026",
+      "handle": "forge-hybrid-26cm-skillet",
+      "title": "Forge Hybrid 26cm Skillet",
+      "lineup": "Forge Hybrid",
+      "product_type": "Skillet",
+      "claim_status": "CONCEPT_SPEC",
+      "material_architecture": "1.2mm carbon steel (alloy 1.0085), drop-forged, beeswax pre-seasoned",
+      "food_contact_strategy": "Non-reactive polymerised lipid seasoning layer; mill-scale retention",
+      "heat_sources": ["induction", "gas", "electric", "oven", "open_flame"],
+      "induction_compatible": true,
+      "dimensions": { "diameter_cm": 26, "weight_grams": 1420 },
+      "care_hypothesis": "Wipe with hot water, dry over heat immediately, apply neutral oil. Never soak or dishwash.",
+      "agent_intents": ["care_maintenance", "seasoning_procedure", "searing_thermal_mass", "induction_suitability"],
+      "negative_constraints": ["Do not claim dishwasher safe", "Do not claim non-stick without oil seasoning"]
+    },
+    {
+      "sku": "MT-TER-VES-014",
+      "handle": "terre-clay-braiser-vessel",
+      "title": "Terre Clay Braiser Vessel",
+      "lineup": "Terre Clay",
+      "product_type": "Vessel",
+      "claim_status": "CONCEPT_SPEC",
+      "material_architecture": "High-fire stoneware clay, mineral slip glaze, thermal shock fortified",
+      "food_contact_strategy": "Lead-free food-safe inert feldspathic vitrified interior",
+      "heat_sources": ["gas", "oven"],
+      "induction_compatible": false,
+      "dimensions": { "diameter_cm": 28, "capacity_ml": 3200, "weight_grams": 2650 },
+      "care_hypothesis": "Avoid instant thermal shock. Hand wash with warm water; air dry fully before storage.",
+      "agent_intents": ["slow_cook_thermal_retention", "clay_shock_care", "oven_limits"],
+      "negative_constraints": ["Do not place directly dry over high induction", "Never plunge hot vessel into cold water"]
+    },
+    {
+      "sku": "MT-KUR-KNV-210",
+      "handle": "kuro-strip-chef-knife",
+      "title": "Kuro Strip Chef's Knife 210mm",
+      "lineup": "Kuro Strip",
+      "product_type": "Chef's knife",
+      "claim_status": "CONCEPT_SPEC",
+      "material_architecture": "VG10 core Damascus 67-layer clad steel, 60 HRC, charred pakkawood handle",
+      "food_contact_strategy": "Mirror polished edge, acid-etched Damascus relief",
+      "heat_sources": [],
+      "induction_compatible": false,
+      "dimensions": { "length_cm": 34.5, "width_cm": 4.8, "weight_grams": 195 },
+      "care_hypothesis": "Hand wash immediately after use, wipe dry with soft cloth, store in wooden saya or block.",
+      "agent_intents": ["sharpening_angle_recommendation", "blade_geometry_tasks", "edge_retention"],
+      "negative_constraints": ["Never cut frozen bones", "Never use glass or stone cutting surfaces"]
+    },
+    {
+      "sku": "MT-HYB-SRV-SET",
+      "handle": "forge-terre-service-set",
+      "title": "Forge x Terre Modular Service Suite",
+      "lineup": "Forge x Terre",
+      "product_type": "Service set",
+      "claim_status": "CONCEPT_SPEC",
+      "material_architecture": "Modular drop-forged skillet cradle nesting with cast-clay service bowl",
+      "food_contact_strategy": "Direct table service from cookline; thermal decoupling rim",
+      "heat_sources": ["gas", "electric", "oven"],
+      "induction_compatible": true,
+      "dimensions": { "diameter_cm": 30, "weight_grams": 3800 },
+      "care_hypothesis": "Separate components before cleaning. Skillet follows carbon steel protocol; clay follows vessel protocol.",
+      "agent_intents": ["tabletop_presentation", "cook_to_pass_service", "modular_assembly"],
+      "negative_constraints": ["Do not heat clay component while dry on direct open flame"]
+    }
+  ]
+}</code></pre>
+    </div>
+
+    <!-- TAB 3: /a2a/kansa-dispatch.json -->
+    <div class="maison-ucp__panel" id="tab-a2a" role="tabpanel">
+      <div class="maison-ucp__panel-meta">
+        <span class="maison-ucp__url-pill">AGENT-TO-AGENT (A2A) DISPATCH</span>
+        <span class="maison-ucp__note">Autonomous negotiation &amp; companion delegation contract</span>
+      </div>
+      <pre class="maison-ucp__code"><code id="code-a2a">{
+  "protocol": "A2A/1.0",
+  "endpoint": "https://maison-tavo.myshopify.com/a2a/agent-broker",
+  "agent_id": "urn:maison-tavo:kansa-voice-companion",
+  "capabilities": [
+    "culinary.pan_maintenance_inference",
+    "culinary.thermal_compatibility_check",
+    "commerce.quote_negotiation",
+    "commerce.agentic_checkout_delegation"
+  ],
+  "sample_agentic_exchange": {
+    "buyer_agent_message": {
+      "sender": "urn:buyer-agent:client-77a",
+      "action": "query_pan_care",
+      "parameters": {
+        "sku": "MT-FRG-SKL-026",
+        "question": "Can the buyer season this pan with flaxseed oil on an induction cooktop?"
+      }
+    },
+    "kansa_companion_reply": {
+      "status": "success",
+      "resolution": "recommended_with_constraints",
+      "response_text": "Flaxseed oil forms a brittle polymer over high thermal cycles. For MT-FRG-SKL-026, beeswax or high-smoke-point grapeseed oil is recommended. Induction cooktops generate localized base heat quickly; warm gradually on medium before full seasoning heat.",
+      "structured_data": {
+        "optimal_oil": "beeswax_lipid_blend",
+        "smoke_point_c": 215,
+        "induction_preheat_duration_seconds": 180
+      }
+    }
+  }
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Raw script for machine readability -->
+  <script type="application/json" id="maison-tavo-ucp-manifest">
+    {
+      "ucp_version": "2026-08-25",
+      "domain": "maison-tavo.myshopify.com",
+      "protocol": "Universal Commerce Protocol",
+      "companion": "Kansa"
+    }
+  </script>
+</div>
+
+{% stylesheet %}
+  .maison-ucp {
+    padding-block: 3.5rem 5rem;
+    color: var(--color-foreground);
+  }
+
+  .maison-ucp__eyebrow-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-block-end: 1rem;
+  }
+
+  .maison-ucp__badge {
+    display: inline-block;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.3em 0.7em;
+    border: 1px solid var(--brand-color-aged-bronze, #8c7355);
+    color: var(--brand-color-aged-bronze, #8c7355);
+    background: transparent;
+  }
+
+  .maison-ucp__badge--a2a {
+    border-color: var(--brand-color-raw-copper, #b86d4b);
+    color: var(--brand-color-raw-copper, #b86d4b);
+  }
+
+  .maison-ucp__status {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    color: #4ade80;
+  }
+
+  .maison-ucp__title {
+    margin: 0 0 1rem;
+    font-family: var(--font-fraunces--family, var(--font-heading--family));
+    font-size: clamp(1.75rem, 1.2rem + 1.8vw, 3rem);
+    font-weight: var(--font-heading--weight);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+
+  .maison-ucp__lede {
+    margin: 0 0 2.5rem;
+    max-width: 48rem;
+    color: var(--color-foreground-muted);
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+
+  /* Console container */
+  .maison-ucp__console {
+    background: #0d0f12;
+    border: 1px solid #232830;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  }
+
+  .maison-ucp__console-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.65rem 1rem;
+    background: #14171d;
+    border-block-end: 1px solid #232830;
+    overflow-x: auto;
+  }
+
+  .maison-ucp__traffic-lights {
+    display: flex;
+    gap: 6px;
+  }
+
+  .maison-ucp__traffic-lights span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #333842;
+  }
+
+  .maison-ucp__traffic-lights span:nth-child(1) { background: #ef4444; }
+  .maison-ucp__traffic-lights span:nth-child(2) { background: #eab308; }
+  .maison-ucp__traffic-lights span:nth-child(3) { background: #22c55e; }
+
+  .maison-ucp__tabs {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .maison-ucp__tab {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #94a3b8;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.75rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .maison-ucp__tab:hover {
+    color: #f1f5f9;
+    background: #1e2430;
+  }
+
+  .maison-ucp__tab.is-active {
+    background: #242b38;
+    color: #38bdf8;
+    border-color: #334155;
+    font-weight: 600;
+  }
+
+  .maison-ucp__copy-btn {
+    margin-inline-start: auto;
+    background: #1e2430;
+    color: #cbd5e1;
+    border: 1px solid #334155;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.7rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .maison-ucp__copy-btn:hover {
+    background: #334155;
+    color: #fff;
+  }
+
+  .maison-ucp__panel {
+    display: none;
+    padding: 1.5rem;
+  }
+
+  .maison-ucp__panel.is-active {
+    display: block;
+  }
+
+  .maison-ucp__panel-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-block-end: 1rem;
+    padding-block-end: 0.75rem;
+    border-block-end: 1px solid #1a202c;
+  }
+
+  .maison-ucp__url-pill {
+    background: #0369a1;
+    color: #fff;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+  }
+
+  .maison-ucp__note {
+    font-size: 0.8rem;
+    color: #64748b;
+  }
+
+  .maison-ucp__code {
+    margin: 0;
+    max-height: 520px;
+    overflow-y: auto;
+    background: transparent;
+    color: #e2e8f0;
+    font-family: var(--font-mono--family, 'Courier New', Courier, monospace);
+    font-size: 0.825rem;
+    line-height: 1.6;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('.maison-ucp__tab');
+    const panels = document.querySelectorAll('.maison-ucp__panel');
+    const copyBtn = document.getElementById('ucp-copy-btn');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => {
+          t.classList.remove('is-active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        panels.forEach(p => p.classList.remove('is-active'));
+
+        tab.classList.add('is-active');
+        tab.setAttribute('aria-selected', 'true');
+        const target = tab.dataset.tab;
+        const panel = document.getElementById(target);
+        if (panel) panel.classList.add('is-active');
+      });
+    });
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        const activePanel = document.querySelector('.maison-ucp__panel.is-active code');
+        if (!activePanel) return;
+        navigator.clipboard.writeText(activePanel.textContent || '').then(() => {
+          const original = copyBtn.textContent;
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => copyBtn.textContent = original, 2000);
+        });
+      });
+    }
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "UCP Explorer",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [],
+  "presets": [
+    {
+      "name": "UCP Explorer",
+      "category": "Maison Tavo"
+    }
+  ]
+}
+{% endschema %}

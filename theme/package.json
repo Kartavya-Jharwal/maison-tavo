@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "ship": "bun scripts/build.ts && shopify theme push -e production --allow-live",
+    "deploy": "bun run ship",
     "build": "bun scripts/build.ts",
     "dev": "shopify theme dev -e development",
     "pull": "shopify theme pull -e development",
@@ -19,6 +21,7 @@
   },
   "dependencies": {
     "motion": "^13.4.4",
+    "preact": "^11.1.1",
     "zustand": "^5.0.15"
   }
 }

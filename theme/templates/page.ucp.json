@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main_ucp": {
+      "type": "maison-ucp-viewer",
+      "settings": {}
+    }
+  },
+  "order": ["main_ucp"]
+}
