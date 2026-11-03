@@ -1,8 +1,3 @@
-/*
- * ------------------------------------------------------------
- * Maison Tavo collection template — lineup rooms (draft-safe).
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "lineups": {
@@ -45,7 +40,12 @@
           }
         }
       },
-      "block_order": ["forge_hybrid", "terre_clay", "kuro_strip", "forge_terre"],
+      "block_order": [
+        "forge_hybrid",
+        "terre_clay",
+        "kuro_strip",
+        "forge_terre"
+      ],
       "settings": {
         "eyebrow": "Lineage",
         "heading": "Also in the house",
@@ -259,9 +259,20 @@
         "padding-block-start": 8,
         "padding-block-end": 48
       }
+    },
+    "maison_collection_hero": {
+      "type": "maison-collection-hero",
+      "name": "Collection hero",
+      "settings": {
+        "kicker": "The room",
+        "overlay_enabled": true,
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
+    "maison_collection_hero",
     "section",
     "main",
     "lineups"

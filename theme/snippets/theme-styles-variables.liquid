@@ -168,7 +168,7 @@
     --font-subheading--style: {{ settings.type_subheading_font.style }};
     --font-subheading--weight: {{ settings.type_subheading_font.weight }};
     /* Luxury serif headings: self-hosted Fraunces (fonts.liquid) overrides the picker face */
-    --font-heading--family: var(--font-fraunces--family, {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }});
+    --font-heading--family: var(--font-libre-baskerville--family, {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }});
     --font-heading--style: {{ settings.type_heading_font.style }};
     --font-heading--weight: {{ settings.type_heading_font.weight }};
     --font-accent--family: {{ settings.type_accent_font.family }}, {{ settings.type_accent_font.fallback_families }};
@@ -207,11 +207,11 @@
     --layer-overlay: {{ settings.brand_z_overlay }};
     --layer-menu-drawer: {{ settings.brand_z_menu_drawer }};
     --layer-temporary: {{ settings.brand_z_temporary }};
-    --layer-splash: {{ settings.brand_z_splash }};
+    --layer-splash: {{ settings.brand_z_splash | default: 9999 }};
     --brand-z-base: var(--layer-base);
     --brand-z-sticky: var(--layer-sticky);
     --brand-z-overlay: var(--layer-overlay);
-    --brand-z-temporary: var(--layer-temporary);
+    --brand-z-temporary: var(--layer-temporary, 1000);
     --brand-z-splash: var(--layer-splash);
 
     /* Max-width / Measure */
@@ -715,7 +715,7 @@
     /* Component: splash */
     --splash-background: var(--brand-color-canvas, var(--color-background));
     --splash-foreground: var(--brand-color-ink, var(--color-foreground));
-    --splash-duration: {{ settings.splash_duration }}s;
+    --splash-duration: {{ settings.splash_duration | default: 3.5 }}s;
   }
 
   .custom-color-quick-add {

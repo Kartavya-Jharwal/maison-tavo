@@ -119,6 +119,60 @@
         "padding-block-end": 72
       }
     },
+    "lineups_maison": {
+      "type": "maison-lineups",
+      "blocks": {
+        "lineup_forge_hybrid": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Skillets",
+            "label": "Forge Hybrid",
+            "text": "Carbon-steel cookline concepts. Modular mass, hospitality service.",
+            "handle": "forge-hybrid"
+          }
+        },
+        "lineup_terre_clay": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Clay",
+            "label": "Terre Clay",
+            "text": "Cast clay vessels and table forms. Grain and heat memory as design story.",
+            "handle": "terre-clay"
+          }
+        },
+        "lineup_kuro_strip": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Knives",
+            "label": "Kuro Strip",
+            "text": "Strip and hybrid-edge blade concepts. Edge geometry as craft language.",
+            "handle": "kuro-strip"
+          }
+        },
+        "lineup_forge_terre": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Hybrids",
+            "label": "Forge × Terre",
+            "text": "Service sets and nested pieces for the shared kitchen spine.",
+            "handle": "forge-terre"
+          }
+        }
+      },
+      "block_order": [
+        "lineup_forge_hybrid",
+        "lineup_terre_clay",
+        "lineup_kuro_strip",
+        "lineup_forge_terre"
+      ],
+      "settings": {
+        "eyebrow": "Four lineups",
+        "heading": "The lineups",
+        "lede": "Forge Hybrid for skillets, Terre Clay for vessels, Kuro Strip for knives, Forge × Terre for hybrid service.",
+        "padding-block-start": 48,
+        "padding-block-end": 64
+      }
+    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -308,6 +362,7 @@
   },
   "order": [
     "hero_jVaWmY",
+    "lineups_maison",
     "product_list_fa6P9H"
   ]
 }

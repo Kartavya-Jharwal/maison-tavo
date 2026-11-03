@@ -1,12 +1,4 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */{
+{
   "sections": {
     "main": {
       "type": "product-information",
@@ -474,10 +466,106 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "maison_pdp_story": {
+      "type": "maison-pdp-story",
+      "blocks": {
+        "spec_origin": {
+          "type": "spec",
+          "settings": {
+            "label": "Origin",
+            "value": "Jaipur, Rajasthan"
+          }
+        },
+        "spec_material": {
+          "type": "spec",
+          "settings": {
+            "label": "Material",
+            "value": "1.2mm carbon steel (1.0085)"
+          }
+        },
+        "spec_method": {
+          "type": "spec",
+          "settings": {
+            "label": "Method",
+            "value": "Drop-forged, hand-finished"
+          }
+        },
+        "spec_surface": {
+          "type": "spec",
+          "settings": {
+            "label": "Surface",
+            "value": "Mill scale preserved, beeswax seasoned"
+          }
+        },
+        "spec_care": {
+          "type": "spec",
+          "settings": {
+            "label": "Care",
+            "value": "Wipe hot, oil light, never soak"
+          }
+        },
+        "narrative_1": {
+          "type": "narrative",
+          "settings": {
+            "text": "<p>The pan begins as a billet — not a blank. Mass is distributed before the form is struck, so the balance point sits in the hand, not the handle.</p>"
+          }
+        },
+        "tl_billet": {
+          "type": "timeline",
+          "settings": {
+            "step_label": "Billet",
+            "step_text": "Steel graded, cut to net weight."
+          }
+        },
+        "tl_forge": {
+          "type": "timeline",
+          "settings": {
+            "step_label": "Forge",
+            "step_text": "Struck at 1,100 °C. One heat, one form."
+          }
+        },
+        "tl_grind": {
+          "type": "timeline",
+          "settings": {
+            "step_label": "Grind",
+            "step_text": "Handle profile hand-ground. Mill scale intact."
+          }
+        },
+        "tl_season": {
+          "type": "timeline",
+          "settings": {
+            "step_label": "Season",
+            "step_text": "Beeswax applied hot. Ships ready to cook."
+          }
+        }
+      },
+      "block_order": [
+        "spec_origin",
+        "spec_material",
+        "spec_method",
+        "spec_surface",
+        "spec_care",
+        "narrative_1",
+        "tl_billet",
+        "tl_forge",
+        "tl_grind",
+        "tl_season"
+      ],
+      "name": "Product story",
+      "settings": {
+        "eyebrow": "Material provenance",
+        "heading": "How it is made",
+        "lede": "Each piece carries a material record. Origin, method, finish — not as marketing copy, but as a working spec.",
+        "attribution": "Maison Tavo · Kartavya Jharwal · London × Jaipur",
+        "padding-block-start": 64,
+        "padding-block-end": 80
+      }
     }
   },
   "order": [
     "main",
+    "maison_pdp_story",
     "product_recommendations_qggXJq"
   ]
 }

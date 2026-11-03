@@ -8,9 +8,16 @@
   if request.page_type == 'cart' or request.page_type == 'checkout' or template.name == 'cart' or template.name == 'checkout'
     assign splash_blocked = true
   endif
+  comment
+    Existing themes ignore new checkbox defaults (they stay false).
+    Use splash_mode select: blank or "on" shows splash; only "off" hides it.
+  endcomment
+  if settings.splash_mode == 'off'
+    assign splash_blocked = true
+  endif
 %}
 
-{% if settings.splash_enable and splash_blocked == false %}
+{% if splash_blocked == false %}
   {% liquid
     assign splash_heading = settings.splash_heading | strip
     if splash_heading == blank
@@ -18,19 +25,27 @@
     endif
     assign splash_skip = settings.splash_skip_label | strip
     if splash_skip == blank
-      assign splash_skip = 'Skip'
+      assign splash_skip = 'Enter'
     endif
     assign splash_logo_height = settings.logo_height | default: 36 | times: 2
-    assign splash_duration_s = settings.splash_duration | append: 's'
+    assign splash_duration = settings.splash_duration | default: 3.5
+    if splash_duration == blank
+      assign splash_duration = 3.5
+    endif
+    assign splash_duration_s = splash_duration | append: 's'
+    assign splash_storage = settings.splash_storage | default: 'session'
+    if splash_storage == blank
+      assign splash_storage = 'session'
+    endif
   %}
 
   <dialog
     id="SplashIntro"
     class="splash-intro"
     aria-labelledby="SplashIntroHeading"
-    data-duration="{{ settings.splash_duration }}"
-    data-storage="{{ settings.splash_storage }}"
-    data-once="{% if settings.splash_show_once %}true{% else %}false{% endif %}"
+    data-duration="{{ splash_duration }}"
+    data-storage="{{ splash_storage }}"
+    data-once="{% if settings.splash_show_once == false %}false{% else %}true{% endif %}"
     data-design-mode="{% if request.design_mode %}true{% else %}false{% endif %}"
     data-storage-key="maison-tavo-splash-seen"
     style="--splash-duration: {{ splash_duration_s }};"

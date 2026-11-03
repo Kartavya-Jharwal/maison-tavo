@@ -10,6 +10,10 @@ const jobs = [
     entry: `${themeRoot}/scripts/src/lookbook.js`,
     outfile: `${themeRoot}/assets/microapp-lookbook.js`,
   },
+  {
+    entry: `${themeRoot}/scripts/src/kansa.js`,
+    outfile: `${themeRoot}/assets/microapp-kansa.js`,
+  },
 ];
 
 for (const job of jobs) {
@@ -35,4 +39,4 @@ for (const job of jobs) {
   }
 }
 
-console.log('Bundled theme assets: maison-runtime.js, microapp-lookbook.js');
+console.log('Bundled theme assets: maison-runtime.js, microapp-lookbook.js, microapp-kansa.js');

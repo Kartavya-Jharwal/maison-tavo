@@ -117,7 +117,8 @@
     "maison_pages_header": "Storefront pages",
     "maison_pages_help": "Create matching pages and a Journal blog in Shopify Admin, then assign the templates documented in theme/PAGES.md. Native Shopify policies stay in the footer alongside house legal pages.",
     "maison_pages_templates": "Templates: page.about, page.story, page.building, page.privacy, page.terms, page.ipr, page.microapp. Blog: journal.",
-    "maison_provenance": "Three-place provenance",
+    "maison_provenance": "Three-place provenance",
+
     "popover": "Popover",
     "popover_position": "Popover position",
     "popup": "Popup",
@@ -169,8 +170,9 @@
     "app_required_for_ratings": "An app is required for product ratings. [Learn more](https://help.shopify.com/manual/apps)",
     "navigation": "Navigation",
     "maison_brand_palette": "Maison Tavo palette",
-    "maison_brand_palette_help": "Named brand colors. Wire into sections via CSS variables (--brand-color-raw-copper, etc.). Horizon color_palette still drives canvas/ink; map Cast Clay to background and Obsidian Charcoal to foreground in Theme settings Colors.",
-    "maison_brand_primitives": "Primitive aliases"
+    "maison_brand_palette_help": "Named brand colors. Semantic canvas/ink still come from Colors → color_palette.",
+    "maison_brand_primitives": "Utility colors",
+    "maison_brand_z_index": "Layering"
   },
   "html_defaults": {
     "join_our_email_list": "<h2>Join our email list</h2>",
@@ -259,7 +261,9 @@
     "media_type_info": "Features are populated from your menu links",
     "maison_journal_handle": "Must match the blog handle created in Admin (default: journal)",
     "maison_microapp_id": "Must match an id in theme/microapps/apps.json. Shopify assets are flat, so the file is assets/microapp-{id}.js. Optional page metafield: maison.microapp_id.",
-    "maison_collection_handle": "Used when no collection is picked. Catalog handles: forge-hybrid, terre-clay, kuro-strip, forge-terre."
+    "maison_collection_handle": "Used when no collection is picked. Catalog handles: forge-hybrid, terre-clay, kuro-strip, forge-terre.",
+    "splash_duration": "Auto-dismiss after this many seconds. Set 0 to wait for Enter or backdrop click.",
+    "splash_enable": "Set to Hide splash to turn the intro off. Existing themes ignore new checkbox defaults — use this select instead."
   },
   "names": {
     "column": "Column",
@@ -443,9 +447,14 @@
     "maison_journal_entry": "Journal entry",
     "maison_clause": "Clause",
     "maison_spec_table": "Spec table",
-    "brand_tokens": "Brand tokens"
+    "brand_tokens": "Brand tokens",
+    "splash_experience": "Splash intro"
   },
   "options": {
+    "splash_storage_session": "Once per browser session",
+    "splash_storage_local": "Until browser data is cleared",
+    "splash_mode_on": "Show splash",
+    "splash_mode_off": "Hide splash",
     "above_carousel": "Above carousel",
     "accent": "Accent",
     "all": "All",
@@ -1263,7 +1272,17 @@
     "brand_color_success": "Success",
     "brand_color_instock": "In stock",
     "brand_color_lowstock": "Low stock",
-    "brand_color_outofstock": "Out of stock"
+    "brand_color_outofstock": "Out of stock",
+    "brand_z_splash": "Splash z-index",
+    "brand_z_temporary": "Temporary UI z-index",
+    "splash_enable": "Show splash intro",
+    "splash_mode": "Splash intro",
+    "splash_heading": "Splash heading",
+    "splash_skip_label": "Enter button label",
+    "splash_show_logo": "Show logo on splash",
+    "splash_duration": "Auto-dismiss (seconds)",
+    "splash_show_once": "Show once per visit",
+    "splash_storage": "Remember dismissal in"
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",

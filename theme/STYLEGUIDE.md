@@ -44,11 +44,11 @@ Horizon `color_palette` mapping (do not change the dynamic-default *structure*):
 
 | Role | Face | How |
 | --- | --- | --- |
-| Headings / display | **Fraunces Variable** (self-hosted WOFF2) | `fonts.liquid` → `--font-fraunces--family`; remapped onto `--font-heading--family` in `theme-styles-variables.liquid` |
+| Headings / display | **Libre Baskerville** (transitional serif, self-hosted WOFF2) | `fonts.liquid` → `--font-libre-baskerville--family` / `--brand-font-heading` |
 | Body / UI | Inter (Shopify font picker) | `type_body_font` / `type_subheading_font` |
 | Specs / mono | **Anonymous Pro** | `type_accent_font` → `--font-mono--family` / `--brand-font-mono` |
 
-Font engineering: latin preload + latin-ext on demand, `font-display: swap`, Georgia metric override (`size-adjust` / `ascent-override`) for near-zero CLS.
+Font engineering: latin 400 preload; 700 + italic on demand; `font-display: swap`; Georgia metric override for near-zero CLS.
 
 ## Voice
 
@@ -72,8 +72,9 @@ Font engineering: latin preload + latin-ext on demand, `font-display: swap`, Geo
 | `brand/tokens.json` | Canonical bible |
 | `config/settings_schema.json` → `brand_tokens` | Named palette + primitive aliases |
 | `snippets/color-palette.liquid` | Semantic Horizon colors + brand palette CSS vars |
-| `snippets/theme-styles-variables.liquid` | Type ramp, Fraunces heading remap, mono alias |
-| `snippets/fonts.liquid` | Self-hosted Fraunces WOFF2 |
+| `snippets/theme-styles-variables.liquid` | Type ramp, heading/mono aliases, splash duration |
+| `snippets/fonts.liquid` | Self-hosted Libre Baskerville WOFF2 |
+| `config/settings_schema.json` → `splash_experience` | Splash mode (on/off) / heading / duration |
 | `assets/base.css` | Layout utilities; consumes `--*` only |
 
 ## Experience constraints (D10)

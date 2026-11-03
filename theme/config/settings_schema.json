@@ -2215,6 +2215,83 @@
         "id": "brand_color_outofstock",
         "label": "t:settings.brand_color_outofstock",
         "default": "#9A9B9E"
+      },
+      {
+        "type": "header",
+        "content": "t:content.maison_brand_z_index"
+      },
+      {
+        "type": "number",
+        "id": "brand_z_splash",
+        "label": "t:settings.brand_z_splash",
+        "default": 9999
+      },
+      {
+        "type": "number",
+        "id": "brand_z_temporary",
+        "label": "t:settings.brand_z_temporary",
+        "default": 1000
+      }
+    ]
+  },
+  {
+    "name": "t:names.splash_experience",
+    "settings": [
+      {
+        "type": "select",
+        "id": "splash_mode",
+        "label": "t:settings.splash_mode",
+        "options": [
+          { "value": "on", "label": "t:options.splash_mode_on" },
+          { "value": "off", "label": "t:options.splash_mode_off" }
+        ],
+        "default": "on",
+        "info": "t:info.splash_enable"
+      },
+      {
+        "type": "text",
+        "id": "splash_heading",
+        "label": "t:settings.splash_heading",
+        "default": "Maison Tavo"
+      },
+      {
+        "type": "text",
+        "id": "splash_skip_label",
+        "label": "t:settings.splash_skip_label",
+        "default": "Enter"
+      },
+      {
+        "type": "checkbox",
+        "id": "splash_show_logo",
+        "label": "t:settings.splash_show_logo",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "splash_duration",
+        "min": 0,
+        "max": 12,
+        "step": 0.5,
+        "unit": "s",
+        "label": "t:settings.splash_duration",
+        "default": 3.5,
+        "info": "t:info.splash_duration"
+      },
+      {
+        "type": "checkbox",
+        "id": "splash_show_once",
+        "label": "t:settings.splash_show_once",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "splash_storage",
+        "label": "t:settings.splash_storage",
+        "options": [
+          { "value": "session", "label": "t:options.splash_storage_session" },
+          { "value": "local", "label": "t:options.splash_storage_local" }
+        ],
+        "default": "session"
       }
     ]
   }

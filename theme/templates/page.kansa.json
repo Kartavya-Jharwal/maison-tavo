@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "kansa_app_main": {
+      "type": "kansa-app",
+      "settings": {
+        "heading": "Kansa",
+        "subheading": "Your piece, your guide."
+      }
+    }
+  },
+  "order": ["kansa_app_main"]
+}

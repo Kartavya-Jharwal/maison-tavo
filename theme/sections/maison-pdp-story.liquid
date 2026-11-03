@@ -1,0 +1,441 @@
+{% doc %}
+  Product story / material provenance panel.
+  Goes below the main product-information section on product.json.
+
+  Renders a two-column editorial block:
+  - Left: material spec table (origin, method, finish, care)
+  - Right: narrative paragraphs + a "craft lineage" timeline strip
+
+  All content is editable in the theme editor via section settings + blocks.
+  Falls back gracefully when fields are blank — zero output if all are empty.
+{% enddoc %}
+
+{% liquid
+  assign has_content = false
+  if section.settings.heading != blank or section.settings.lede != blank or section.blocks.size > 0
+    assign has_content = true
+  endif
+%}
+
+{% if has_content %}
+  <div
+    class="section section--page-width spacing-style maison-pdp-story"
+    style="{% render 'spacing-style', settings: section.settings %}"
+    data-section-id="{{ section.id }}"
+  >
+
+    {%- comment -%} ─── Header ─────────────────────────────────────────────── {%- endcomment -%}
+    <header class="maison-pdp-story__header">
+      {% if section.settings.eyebrow != blank %}
+        <p class="maison-pdp-story__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2 class="maison-pdp-story__heading">{{ section.settings.heading | escape }}</h2>
+      {% endif %}
+      {% if section.settings.lede != blank %}
+        <p class="maison-pdp-story__lede">{{ section.settings.lede | escape }}</p>
+      {% endif %}
+    </header>
+
+    {%- comment -%} ─── Body: spec table + narrative ──────────────────────── {%- endcomment -%}
+    <div class="maison-pdp-story__body">
+
+      {%- comment -%} Left: material spec table {%- endcomment -%}
+      {% assign spec_blocks = section.blocks | where: 'type', 'spec' %}
+      {% if spec_blocks.size > 0 %}
+        <dl class="maison-pdp-story__specs">
+          {% for block in spec_blocks %}
+            {% if block.settings.label != blank and block.settings.value != blank %}
+              <div class="maison-pdp-story__spec-row" {{ block.shopify_attributes }}>
+                <dt class="maison-pdp-story__spec-label">{{ block.settings.label | escape }}</dt>
+                <dd class="maison-pdp-story__spec-value">{{ block.settings.value | escape }}</dd>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </dl>
+      {% endif %}
+
+      {%- comment -%} Right: narrative + timeline {%- endcomment -%}
+      <div class="maison-pdp-story__narrative">
+        {% assign narrative_blocks = section.blocks | where: 'type', 'narrative' %}
+        {% if narrative_blocks.size > 0 %}
+          {% for block in narrative_blocks %}
+            {% if block.settings.text != blank %}
+              <div
+                class="maison-pdp-story__narrative-item"
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.text }}
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+        {%- comment -%} Craft lineage timeline {%- endcomment -%}
+        {% assign timeline_blocks = section.blocks | where: 'type', 'timeline' %}
+        {% if timeline_blocks.size > 0 %}
+          <ol class="maison-pdp-story__timeline list-unstyled" aria-label="Craft lineage">
+            {% for block in timeline_blocks %}
+              <li
+                class="maison-pdp-story__timeline-step"
+                style="--step-index: {{ forloop.index0 }};"
+                {{ block.shopify_attributes }}
+              >
+                <span class="maison-pdp-story__timeline-node" aria-hidden="true"></span>
+                <div class="maison-pdp-story__timeline-content">
+                  {% if block.settings.step_label != blank %}
+                    <p class="maison-pdp-story__timeline-label">{{ block.settings.step_label | escape }}</p>
+                  {% endif %}
+                  {% if block.settings.step_text != blank %}
+                    <p class="maison-pdp-story__timeline-text">{{ block.settings.step_text | escape }}</p>
+                  {% endif %}
+                </div>
+              </li>
+            {% endfor %}
+          </ol>
+        {% endif %}
+      </div>
+
+    </div>
+
+    {%- comment -%} ─── Closing attribution line ────────────────────────────── {%- endcomment -%}
+    {% if section.settings.attribution != blank %}
+      <p class="maison-pdp-story__attribution">{{ section.settings.attribution | escape }}</p>
+    {% endif %}
+
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  /* ── Container ─────────────────────────────────────────────────────────── */
+  .maison-pdp-story {
+    color: var(--color-foreground);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  /* ── Header ─────────────────────────────────────────────────────────────── */
+  .maison-pdp-story__header {
+    max-width: 42rem;
+    margin-block-end: 3rem;
+  }
+
+  .maison-pdp-story__eyebrow {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-heading--family);
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-pdp-story__heading {
+    margin: 0 0 0.875rem;
+    font-family: var(--font-fraunces--family, var(--font-heading--family));
+    font-weight: var(--font-heading--weight);
+    font-variation-settings: 'opsz' 144;
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+    letter-spacing: 0.03em;
+    line-height: 1.15;
+  }
+
+  .maison-pdp-story__lede {
+    margin: 0;
+    max-width: 40rem;
+    color: var(--color-foreground-muted);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+  }
+
+  /* ── Body: two-column ───────────────────────────────────────────────────── */
+  .maison-pdp-story__body {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media screen and (min-width: 750px) {
+    .maison-pdp-story__body {
+      grid-template-columns: 1fr 1.6fr;
+      align-items: start;
+      gap: 4rem;
+    }
+  }
+
+  /* ── Spec table ─────────────────────────────────────────────────────────── */
+  .maison-pdp-story__specs {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .maison-pdp-story__spec-row {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 0.5rem 1rem;
+    padding-block: 0.875rem;
+    border-block-end: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .maison-pdp-story__spec-label {
+    font-family: var(--font-heading--family);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+    align-self: start;
+    padding-block-start: 0.1em;
+  }
+
+  .maison-pdp-story__spec-value {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-foreground);
+  }
+
+  /* ── Narrative ──────────────────────────────────────────────────────────── */
+  .maison-pdp-story__narrative {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .maison-pdp-story__narrative-item {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-pdp-story__narrative-item p {
+    margin-block-start: 0;
+    margin-block-end: 1em;
+  }
+
+  .maison-pdp-story__narrative-item p:last-child {
+    margin-block-end: 0;
+  }
+
+  /* ── Timeline ───────────────────────────────────────────────────────────── */
+  .maison-pdp-story__timeline {
+    display: grid;
+    gap: 0;
+    border-inline-start: 1px solid var(--color-border);
+    margin: 0;
+    padding: 0;
+  }
+
+  .maison-pdp-story__timeline-step {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    gap: 0 0.875rem;
+    padding-block: 1rem;
+    position: relative;
+  }
+
+  .maison-pdp-story__timeline-node {
+    display: block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--brand-color-aged-bronze, var(--color-foreground));
+    position: absolute;
+    left: -4px;
+    top: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .maison-pdp-story__timeline-content {
+    padding-inline-start: 1.25rem;
+  }
+
+  .maison-pdp-story__timeline-label {
+    margin: 0 0 0.25rem;
+    font-family: var(--font-heading--family);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brand-color-aged-bronze, var(--color-foreground));
+  }
+
+  .maison-pdp-story__timeline-text {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-foreground-muted);
+  }
+
+  /* ── Attribution ────────────────────────────────────────────────────────── */
+  .maison-pdp-story__attribution {
+    margin-block-start: 3rem;
+    margin-block-end: 0;
+    font-family: var(--font-heading--family);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+    border-block-start: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
+    padding-block-start: 1.25rem;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product story",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Material provenance"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How it is made"
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "Lede",
+      "default": "Each piece carries a material record. Origin, method, finish — not as marketing copy, but as a working spec."
+    },
+    {
+      "type": "textarea",
+      "id": "attribution",
+      "label": "Attribution line",
+      "default": "Maison Tavo · Kartavya Jharwal · London × Jaipur"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "Material spec",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Origin"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "Jaipur, Rajasthan"
+        }
+      ]
+    },
+    {
+      "type": "narrative",
+      "name": "Narrative paragraph",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>The pan begins as a billet — not a blank. Mass is distributed before the form is struck, so the balance point sits in the hand, not the handle. The carbon content is verified before the forge run. If it is outside spec, the material is returned.</p>"
+        }
+      ]
+    },
+    {
+      "type": "timeline",
+      "name": "Craft step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "step_label",
+          "label": "Step",
+          "default": "Forge"
+        },
+        {
+          "type": "text",
+          "id": "step_text",
+          "label": "Detail",
+          "default": "Struck at 1,100 °C. One heat, one form — no secondary pressing."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product story",
+      "category": "Maison Tavo",
+      "blocks": [
+        {
+          "type": "spec",
+          "settings": { "label": "Origin", "value": "Jaipur, Rajasthan" }
+        },
+        {
+          "type": "spec",
+          "settings": { "label": "Material", "value": "1.2mm carbon steel (1.0085)" }
+        },
+        {
+          "type": "spec",
+          "settings": { "label": "Method", "value": "Drop-forged, hand-finished" }
+        },
+        {
+          "type": "spec",
+          "settings": { "label": "Surface", "value": "Mill scale preserved, beeswax seasoned" }
+        },
+        {
+          "type": "spec",
+          "settings": { "label": "Care", "value": "Wipe hot, oil light, never soak" }
+        },
+        {
+          "type": "narrative",
+          "settings": {
+            "text": "<p>The pan begins as a billet — not a blank. Mass is distributed before the form is struck, so the balance point sits in the hand, not the handle. The carbon content is verified before the forge run. If it is outside spec, the material is returned.</p><p>Mill scale is kept where the forging allows it. It is the pan's memory of heat — a patina that starts before you cook the first meal.</p>"
+          }
+        },
+        {
+          "type": "timeline",
+          "settings": { "step_label": "Billet", "step_text": "Steel graded, cut to net weight. No excess mass." }
+        },
+        {
+          "type": "timeline",
+          "settings": { "step_label": "Forge", "step_text": "Struck at 1,100 °C. One heat, one form." }
+        },
+        {
+          "type": "timeline",
+          "settings": { "step_label": "Grind", "step_text": "Handle profile hand-ground. Cooking surface left with mill scale intact." }
+        },
+        {
+          "type": "timeline",
+          "settings": { "step_label": "Season", "step_text": "Beeswax applied hot. Ships ready to cook." }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
