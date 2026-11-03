@@ -566,12 +566,18 @@
       "type": "maison-view-as",
       "name": "View-as (Human / Agent / Voice)",
       "settings": {}
+    },
+    "maison_care_ritual": {
+      "type": "maison-care-ritual",
+      "name": "Care Ritual Scroller (V5)",
+      "settings": {}
     }
   },
   "order": [
     "main",
     "maison_view_as",
     "maison_pdp_story",
+    "maison_care_ritual",
     "product_recommendations_qggXJq"
   ]
 }

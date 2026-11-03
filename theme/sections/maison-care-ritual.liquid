@@ -1,0 +1,238 @@
+{% doc %}
+  V5 Care Ritual Scroller (Thread S4 / B2 / B5).
+  Five-step ceremony: Season, Cook, Clean, Dry, Oil.
+  Bilingual Devanagari + English sub-headers with large fluid numerals.
+{% enddoc %}
+
+<div class="maison-ritual section section--page-width" data-section-id="{{ section.id }}">
+  <header class="maison-ritual__header">
+    <div class="maison-ritual__kicker-row">
+      <span class="maison-ritual__badge">V5 CEREMONY</span>
+      <span class="maison-ritual__kicker">LIFETIME DISCIPLINE · KANSA RITUAL</span>
+    </div>
+    <h2 class="maison-ritual__title">The Five Rites of Iron &amp; Clay</h2>
+    <p class="maison-ritual__lede">
+      Cookware without synthetic coatings demands an honest covenant. Five steps preserve the heirloom
+      across fifty years of fire.
+    </p>
+  </header>
+
+  <div class="maison-ritual__track">
+    <!-- Step 1: Season -->
+    <article class="maison-ritual__step" data-step="1">
+      <div class="maison-ritual__num">01</div>
+      <div class="maison-ritual__content">
+        <div class="maison-ritual__devanagari">संस्कार · Season</div>
+        <h3 class="maison-ritual__name">The Polymer Covenant</h3>
+        <p class="maison-ritual__desc">
+          Beeswax and heat bond directly to the open pores of 1.0085 carbon steel. Struck at 1,100 °C, the mill scale
+          locks in lipid molecules, creating a naturally slick patina that darkens with every service.
+        </p>
+        <span class="maison-ritual__tag">HIGH HEAT POLYMERIZATION</span>
+      </div>
+    </article>
+
+    <!-- Step 2: Cook -->
+    <article class="maison-ritual__step" data-step="2">
+      <div class="maison-ritual__num">02</div>
+      <div class="maison-ritual__content">
+        <div class="maison-ritual__devanagari">कर्म · Cook</div>
+        <h3 class="maison-ritual__name">Thermal Discipline</h3>
+        <p class="maison-ritual__desc">
+          Allow two minutes of dry pre-heat on medium heat before oil enters the pan. Dual-mass metallurgy prevents base
+          warping and maintains temperature the moment cold protein contacts the surface.
+        </p>
+        <span class="maison-ritual__tag">2-MIN GRADUAL PRE-HEAT</span>
+      </div>
+    </article>
+
+    <!-- Step 3: Clean -->
+    <article class="maison-ritual__step" data-step="3">
+      <div class="maison-ritual__num">03</div>
+      <div class="maison-ritual__content">
+        <div class="maison-ritual__devanagari">शुद्धि · Clean</div>
+        <h3 class="maison-ritual__name">Steam &amp; Stiff Bristle</h3>
+        <p class="maison-ritual__desc">
+          Deglaze residue with hot water while the pan is warm. Clean with a natural bristle brush or coarse kosher salt.
+          Never soak in a sink. Never expose to synthetic detergents or dishwashing cycles.
+        </p>
+        <span class="maison-ritual__tag">ZERO SOAP · NEVER SOAK</span>
+      </div>
+    </article>
+
+    <!-- Step 4: Dry -->
+    <article class="maison-ritual__step" data-step="4">
+      <div class="maison-ritual__num">04</div>
+      <div class="maison-ritual__content">
+        <div class="maison-ritual__devanagari">अग्नि · Dry</div>
+        <h3 class="maison-ritual__name">Flame Evaporation</h3>
+        <p class="maison-ritual__desc">
+          Towel drying leaves microscopic moisture trapped in iron grain boundaries. Place the pan on low heat for 60 seconds
+          until all surface moisture fully vaporizes, arresting rust before it can nucleate.
+        </p>
+        <span class="maison-ritual__tag">60S STOVETOP DRYING</span>
+      </div>
+    </article>
+
+    <!-- Step 5: Oil -->
+    <article class="maison-ritual__step" data-step="5">
+      <div class="maison-ritual__num">05</div>
+      <div class="maison-ritual__content">
+        <div class="maison-ritual__devanagari">स्नेह · Oil</div>
+        <h3 class="maison-ritual__name">The Resting Seal</h3>
+        <p class="maison-ritual__desc">
+          While still warm, buff a single drop of neutral high-smoke lipid across the cooking face until the steel looks bone dry.
+          Store in open air, ready for the next call at the pass.
+        </p>
+        <span class="maison-ritual__tag">RESTING LIPID MEMBRANE</span>
+      </div>
+    </article>
+  </div>
+</div>
+
+{% stylesheet %}
+  .maison-ritual {
+    padding-block: 4rem 5.5rem;
+    color: var(--color-foreground);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .maison-ritual__header {
+    max-width: 44rem;
+    margin-block-end: 3.5rem;
+  }
+
+  .maison-ritual__kicker-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-block-end: 0.75rem;
+  }
+
+  .maison-ritual__badge {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    padding: 0.2rem 0.55rem;
+    background: var(--bell, #b8893a);
+    color: #111;
+    font-weight: 700;
+    border-radius: 2px;
+  }
+
+  .maison-ritual__kicker {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brand-color-aged-bronze, #8c7355);
+  }
+
+  .maison-ritual__title {
+    margin: 0 0 1rem;
+    font-family: var(--font-fraunces--family, var(--font-heading--family));
+    font-size: clamp(2rem, 1.5rem + 2vw, 3.2rem);
+    font-weight: var(--font-heading--weight);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+
+  .maison-ritual__lede {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.65;
+    color: var(--color-foreground-muted);
+  }
+
+  /* 5-step grid / timeline */
+  .maison-ritual__track {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .maison-ritual__track {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  .maison-ritual__step {
+    background: #14171d;
+    border: 1px solid #232832;
+    border-radius: 6px;
+    padding: 1.75rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    transition: transform 0.25s var(--ease-strike), border-color 0.25s var(--ease-strike);
+  }
+
+  .maison-ritual__step:hover {
+    transform: translateY(-4px);
+    border-color: var(--bell, #b8893a);
+  }
+
+  .maison-ritual__num {
+    font-family: var(--font-fraunces--family, Georgia, serif);
+    font-size: 2.75rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--bell, #b8893a);
+    opacity: 0.8;
+    margin-block-end: 1rem;
+  }
+
+  .maison-ritual__devanagari {
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: #94a3b8;
+    text-transform: uppercase;
+    margin-block-end: 0.35rem;
+  }
+
+  .maison-ritual__name {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-fraunces--family, var(--font-heading--family));
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #f8fafc;
+    line-height: 1.25;
+  }
+
+  .maison-ritual__desc {
+    margin: 0 0 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: #94a3b8;
+  }
+
+  .maison-ritual__tag {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #334155;
+    color: #cbd5e1;
+    border-radius: 3px;
+    align-self: flex-start;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Care Ritual Scroller",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Care Ritual Scroller (V5)",
+      "category": "Maison Tavo"
+    }
+  ]
+}
+{% endschema %}

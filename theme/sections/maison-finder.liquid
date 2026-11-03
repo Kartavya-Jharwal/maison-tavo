@@ -1,0 +1,478 @@
+{% doc %}
+  V6 Finder as Ceremony (Thread S3).
+  Interactive 5-question culinary diagnostic.
+  Matches user cooking styles directly to Forge Hybrid, Terre Clay, or Kuro Strip pieces
+  with animated reasoning chips and Strike audio feedback.
+{% enddoc %}
+
+<div class="maison-finder section section--page-width" id="maison-finder-root">
+  <div class="maison-finder__container">
+    <header class="maison-finder__header">
+      <div class="maison-finder__kicker-row">
+        <span class="maison-finder__badge">V6 FINDER AS CEREMONY</span>
+        <span class="maison-finder__step-indicator" id="finder-progress-text">QUESTION 1 OF 5</span>
+      </div>
+      <h2 class="maison-finder__title">Which piece commands your pass?</h2>
+      <p class="maison-finder__lede">
+        Answer five tactile culinary inquiries. Our reasoning engine matches your heat source,
+        cooking rituals, and material affinity to the right Maison Tavo heirloom.
+      </p>
+      
+      <!-- Progress bell marks (5 rings) -->
+      <div class="maison-finder__progress-bells">
+        <span class="bell-mark is-active" data-step-idx="0">●</span>
+        <span class="bell-mark" data-step-idx="1">○</span>
+        <span class="bell-mark" data-step-idx="2">○</span>
+        <span class="bell-mark" data-step-idx="3">○</span>
+        <span class="bell-mark" data-step-idx="4">○</span>
+      </div>
+    </header>
+
+    <!-- QUESTIONS WRAPPER -->
+    <div class="maison-finder__questions" id="finder-questions-box">
+      <!-- Q1 -->
+      <div class="finder-q-card is-active" data-q="0">
+        <h3 class="finder-q-title">1. What is your primary cooking heat source?</h3>
+        <div class="finder-options">
+          <button class="finder-opt-btn" data-answer="induction" data-strike>
+            <span class="opt-label">Induction cooktop</span>
+            <span class="opt-sub">Requires magnetic iron base &amp; thermal distribution</span>
+          </button>
+          <button class="finder-opt-btn" data-answer="gas" data-strike>
+            <span class="opt-label">Open gas flame</span>
+            <span class="opt-sub">Flared flame heat wrapping the sides</span>
+          </button>
+          <button class="finder-opt-btn" data-answer="oven" data-strike>
+            <span class="opt-label">Oven &amp; hearth roasting</span>
+            <span class="opt-sub">Convection heat and radiant vessel soak</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="finder-q-card" data-q="1">
+        <h3 class="finder-q-title">2. What culinary ritual commands your kitchen?</h3>
+        <div class="finder-options">
+          <button class="finder-opt-btn" data-answer="dosa" data-strike>
+            <span class="opt-label">Dosa, roti, flatbreads &amp; pancakes</span>
+            <span class="opt-sub">Demands edge-to-edge heat uniformity &amp; natural non-stick</span>
+          </button>
+          <button class="finder-opt-btn" data-answer="sear" data-strike>
+            <span class="opt-label">High-heat searing &amp; pan-basting</span>
+            <span class="opt-sub">Needs heavy carbon mass to hold temperature</span>
+          </button>
+          <button class="finder-opt-btn" data-answer="braise" data-strike>
+            <span class="opt-label">Slow braising, curries &amp; biryani</span>
+            <span class="opt-sub">Earthenware thermal soak &amp; gentle steam retention</span>
+          </button>
+          <button class="finder-opt-btn" data-answer="prep" data-strike>
+            <span class="opt-label">Precision prep &amp; vegetable craft</span>
+            <span class="opt-sub">Blade geometry, edge retention, and balanced poise</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="finder-q-card" data-q="2">
+        <h3 class="finder-q-title">3. Which material calls to your hand?</h3>
+        <div class="finder-options">
+          <button class="finder-opt-btn" data-answer="steel" data-strike>
+            <span class="opt-label">1.0085 Drop-forged carbon steel</span>
+            <span class="opt-sub">Forged in fire, develops deep black patina</span>
+          </button>
+          <button class="finder-opt-btn" data-answer="clay" data-strike>
+            <span class="opt-label">Fired clay &amp; vitrified mineral slip</span>
+            <span class="opt-sub">Earthy texture, gentle heat memory, ancient craft</span>
+          </button>
+          <button class="finder-opt-btn" data-answer="damascus" data-strike>
+            <span class="opt-label">67-Layer Damascus clad alloy</span>
+            <span class="opt-sub">Acid-etched rippling grain, razor micro-bevel</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="finder-q-card" data-q="3">
+        <h3 class="finder-q-title">4. What is your typical service scale?</h3>
+        <div class="finder-options">
+          <button class="finder-opt-btn" data-answer="single" data-strike>
+            <span class="opt-label">Solo or intimate pairs (1–2 diners)</span>
+            <span class="opt-sub">Compact volume, focused execution</span>
+          </button>
+          <button class="finder-opt-btn" data-answer="family" data-strike>
+            <span class="opt-label">Shared table pass (3–5 diners)</span>
+            <span class="opt-sub">Generous capacity, tableside presence</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="finder-q-card" data-q="4">
+        <h3 class="finder-q-title">5. How do you view cookware maintenance?</h3>
+        <div class="finder-options">
+          <button class="finder-opt-btn" data-answer="ritual" data-strike>
+            <span class="opt-label">I revere seasoning rituals &amp; patina</span>
+            <span class="opt-sub">Wipe, dry over flame, oil light — a quiet meditation</span>
+          </button>
+          <button class="finder-opt-btn" data-answer="simple" data-strike>
+            <span class="opt-label">Simplicity and hygiene above all</span>
+            <span class="opt-sub">Wash, dry, and store without fuss</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS BOX -->
+    <div class="maison-finder__results" id="finder-results-box" style="display: none;">
+      <div class="finder-result-card">
+        <div class="finder-result-pill">MATCHED HEIRLOOM SPECIFICATION</div>
+        <h3 class="finder-result-title" id="result-title">Forge Relay Dual-Mass Skillet</h3>
+        <p class="finder-result-desc" id="result-desc">
+          26cm drop-forged 1.0085 carbon steel with dual-mass metallurgy. Struck in one heat to hold temperature
+          the instant your ingredients land.
+        </p>
+
+        <!-- Reasoning chips -->
+        <div class="finder-reasoning-chips" id="result-chips">
+          <span class="r-chip">✓ Induction &amp; Flame Certified</span>
+          <span class="r-chip">✓ Beeswax Lipid Seasoned</span>
+          <span class="r-chip">✓ Drop-Forged Balance</span>
+        </div>
+
+        <div class="finder-result-actions">
+          <a href="/products/forge-relay-dual-mass-skillet" class="finder-view-btn" id="result-link" data-strike>
+            View Piece Specification
+          </a>
+          <button class="finder-restart-btn" id="finder-restart-btn">Start Over</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .maison-finder {
+    padding-block: 4rem 5.5rem;
+    color: var(--color-foreground);
+    background: #0f1115;
+    border-block: 1px solid var(--color-border);
+  }
+
+  .maison-finder__container {
+    max-width: 48rem;
+    margin-inline: auto;
+  }
+
+  .maison-finder__header {
+    margin-block-end: 2.5rem;
+  }
+
+  .maison-finder__kicker-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-block-end: 0.75rem;
+  }
+
+  .maison-finder__badge {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    padding: 0.2rem 0.55rem;
+    background: var(--bell, #b8893a);
+    color: #111;
+    font-weight: 700;
+    border-radius: 2px;
+  }
+
+  .maison-finder__step-indicator {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.72rem;
+    color: #94a3b8;
+    letter-spacing: 0.1em;
+  }
+
+  .maison-finder__title {
+    margin: 0 0 0.85rem;
+    font-family: var(--font-fraunces--family, var(--font-heading--family));
+    font-size: clamp(2rem, 1.5rem + 1.8vw, 3rem);
+    font-weight: var(--font-heading--weight);
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+
+  .maison-finder__lede {
+    margin: 0 0 1.5rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #94a3b8;
+  }
+
+  .maison-finder__progress-bells {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: #475569;
+  }
+
+  .bell-mark.is-active {
+    color: var(--bell, #b8893a);
+  }
+
+  /* Questions */
+  .finder-q-card {
+    display: none;
+    animation: finder-fade-in 0.3s ease;
+  }
+
+  .finder-q-card.is-active {
+    display: block;
+  }
+
+  @keyframes finder-fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .finder-q-title {
+    margin: 0 0 1.5rem;
+    font-family: var(--font-fraunces--family, var(--font-heading--family));
+    font-size: 1.4rem;
+    color: #f8fafc;
+  }
+
+  .finder-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .finder-opt-btn {
+    background: #151921;
+    border: 1px solid #2a3242;
+    padding: 1.25rem 1.5rem;
+    border-radius: 6px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    transition: all 0.2s var(--ease-strike);
+  }
+
+  .finder-opt-btn:hover {
+    background: #202735;
+    border-color: var(--bell, #b8893a);
+    transform: translateX(4px);
+  }
+
+  .opt-label {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #f1f5f9;
+  }
+
+  .opt-sub {
+    font-size: 0.825rem;
+    color: #94a3b8;
+  }
+
+  /* Results Card */
+  .finder-result-card {
+    background: #141820;
+    border: 1.5px solid var(--bell, #b8893a);
+    border-radius: 8px;
+    padding: 2.25rem;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    animation: finder-fade-in 0.4s var(--ease-strike);
+  }
+
+  .finder-result-pill {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    color: var(--bell, #b8893a);
+    margin-block-end: 0.75rem;
+  }
+
+  .finder-result-title {
+    margin: 0 0 0.85rem;
+    font-family: var(--font-fraunces--family, var(--font-heading--family));
+    font-size: 2rem;
+    color: #f8fafc;
+  }
+
+  .finder-result-desc {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: #cbd5e1;
+    margin: 0 0 1.5rem;
+  }
+
+  .finder-reasoning-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-block-end: 2rem;
+  }
+
+  .r-chip {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    background: #1b222d;
+    border: 1px solid #334155;
+    color: #38bdf8;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+  }
+
+  .finder-result-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .finder-view-btn {
+    background: var(--bell, #b8893a);
+    color: #111;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 0.85rem 1.75rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    transition: background 0.2s;
+  }
+
+  .finder-view-btn:hover {
+    background: #d4a95d;
+  }
+
+  .finder-restart-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+
+  .finder-restart-btn:hover {
+    color: #f1f5f9;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', () => {
+    const root = document.getElementById('maison-finder-root');
+    if (!root) return;
+
+    let currentQ = 0;
+    const answers = {};
+
+    const qCards = root.querySelectorAll('.finder-q-card');
+    const bells = root.querySelectorAll('.bell-mark');
+    const progressText = document.getElementById('finder-progress-text');
+    const resultsBox = document.getElementById('finder-results-box');
+    const questionsBox = document.getElementById('finder-questions-box');
+
+    const resultTitle = document.getElementById('result-title');
+    const resultDesc = document.getElementById('result-desc');
+    const resultChips = document.getElementById('result-chips');
+    const resultLink = document.getElementById('result-link');
+    const restartBtn = document.getElementById('finder-restart-btn');
+
+    const RECOMMENDATIONS = {
+      forge: {
+        title: 'Forge Relay Dual-Mass Skillet (26cm)',
+        handle: 'forge-relay-dual-mass-skillet',
+        desc: '1.2mm carbon steel drop-forged in one heat with dual-mass base retention. Designed for aggressive high-searing and blistering flatbreads without warping.',
+        chips: ['✓ Certified Induction & Open Flame', '✓ Beeswax Sealed Patina', '✓ High Thermal Inertia']
+      },
+      plancha: {
+        title: 'Forge Split-Field Plancha (46cm)',
+        handle: 'forge-split-field-plancha',
+        desc: 'Massive 46cm carbon steel cookline plancha with zoned heat fields. Transition seamlessly between blistering high-heat searing and resting zones.',
+        chips: ['✓ Dual Heat Zone Topology', '✓ Broad Surface Capacity', '✓ Professional Cookline Mass']
+      },
+      terre: {
+        title: 'Terre Clay Braiser Vessel',
+        handle: 'terre-clay-braiser-vessel',
+        desc: 'High-fire stoneware clay with lead-free vitrified mineral slip. Radiates gentle thermal convection ideal for delicate slow-braises, stews, and table presentation.',
+        chips: ['✓ Thermal Convection Soak', '✓ Non-Reactive Vitrified Interior', '✓ Direct Table Presentation']
+      },
+      knife: {
+        title: "Kuro Strip 200 Chef's Knife",
+        handle: 'kuro-strip-200-chefs-knife',
+        desc: 'VG10 core surrounded by 67 layers of Damascus steel at 60 HRC. Balanced poise and hand-ground micro-bevel for razor precision vegetable and protein prep.',
+        chips: ['✓ 67-Layer Damascus Clad', '✓ Charred Pakkawood Poise', '✓ Hand-Machined Relief']
+      }
+    };
+
+    function updateView() {
+      qCards.forEach((c, idx) => c.classList.toggle('is-active', idx === currentQ));
+      bells.forEach((b, idx) => {
+        b.classList.toggle('is-active', idx <= currentQ);
+        b.textContent = idx <= currentQ ? '●' : '○';
+      });
+      if (progressText) progressText.textContent = `QUESTION ${currentQ + 1} OF 5`;
+    }
+
+    function calculateResult() {
+      questionsBox.style.display = 'none';
+      resultsBox.style.display = 'block';
+
+      let pick = RECOMMENDATIONS.forge;
+      if (answers[1] === 'prep' || answers[2] === 'damascus') {
+        pick = RECOMMENDATIONS.knife;
+      } else if (answers[1] === 'braise' || answers[2] === 'clay') {
+        pick = RECOMMENDATIONS.terre;
+      } else if (answers[3] === 'family' || answers[1] === 'dosa') {
+        pick = RECOMMENDATIONS.plancha;
+      }
+
+      if (resultTitle) resultTitle.textContent = pick.title;
+      if (resultDesc) resultDesc.textContent = pick.desc;
+      if (resultLink) resultLink.setAttribute('href', `/products/${pick.handle}`);
+      if (resultChips) {
+        resultChips.innerHTML = pick.chips.map(c => `<span class="r-chip">${c}</span>`).join('');
+      }
+    }
+
+    root.querySelectorAll('.finder-opt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        answers[currentQ] = btn.dataset.answer;
+        if (currentQ < 4) {
+          currentQ++;
+          updateView();
+        } else {
+          calculateResult();
+        }
+      });
+    });
+
+    if (restartBtn) {
+      restartBtn.addEventListener('click', () => {
+        currentQ = 0;
+        questionsBox.style.display = 'block';
+        resultsBox.style.display = 'none';
+        updateView();
+      });
+    }
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Finder as Ceremony",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Finder as Ceremony (V6)",
+      "category": "Maison Tavo"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,238 @@
+{% doc %}
+  V7 Last-Call Section (Thread B2 / S8 / S2).
+  Soot-black closing band with ember glow bleed, bell strike interaction,
+  and waitlist pre-order field for upcoming foundry heats.
+{% enddoc %}
+
+<div class="maison-last-call section" data-section-id="{{ section.id }}">
+  <div class="maison-last-call__inner section--page-width">
+    <!-- Bell Icon Strike Trigger -->
+    <div class="maison-last-call__bell-wrap">
+      <button class="maison-last-call__bell-btn" id="last-call-bell" aria-label="Strike the Temple Bell at Last Call" data-strike>
+        <span class="bell-glyph">🔔</span>
+        <span class="bell-ring-pulse"></span>
+      </button>
+      <span class="maison-last-call__devanagari">अंतिम पुकार · The Pass is Called</span>
+    </div>
+
+    <div class="maison-last-call__content">
+      <h2 class="maison-last-call__heading">The furnace cools. The next edition begins.</h2>
+      <p class="maison-last-call__copy">
+        Maison Tavo runs in limited craft heats between our foundries in Rajasthan and our kitchen workshop in London.
+        Register for the next drop allocation before the furnace strikes.
+      </p>
+
+      <!-- Pre-order / Waitlist Form -->
+      <form class="maison-last-call__form" id="last-call-waitlist-form">
+        <div class="maison-last-call__input-row">
+          <input
+            type="email"
+            class="maison-last-call__email"
+            placeholder="Enter your email for the next furnace allocation…"
+            required
+            aria-label="Email address for allocation"
+          />
+          <button type="submit" class="maison-last-call__submit-btn" data-strike>
+            Reserve Allocation
+          </button>
+        </div>
+        <p class="maison-last-call__note">
+          No marketing spam. Only single batch announcements with verified metallurgy reports.
+        </p>
+      </form>
+
+      <div class="maison-last-call__success" id="last-call-success" style="display: none;">
+        ✓ Your seat at the pass is recorded. We will signal when the next heat is struck.
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .maison-last-call {
+    background: var(--soot, #14110F);
+    color: #f7f2e9;
+    padding-block: 5rem 6rem;
+    position: relative;
+    overflow: hidden;
+    border-block-start: 1px solid #282420;
+  }
+
+  /* Ember glow bleed at the bottom */
+  .maison-last-call::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 120px;
+    background: radial-gradient(ellipse at bottom, rgba(226, 85, 43, 0.22) 0%, rgba(226, 85, 43, 0) 75%);
+    pointer-events: none;
+  }
+
+  .maison-last-call__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .maison-last-call__bell-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    margin-block-end: 2rem;
+  }
+
+  .maison-last-call__bell-btn {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #1f1b18;
+    border: 1.5px solid var(--bell, #B8893A);
+    color: var(--bell, #B8893A);
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: transform 0.25s var(--ease-strike), background 0.25s;
+    box-shadow: 0 0 24px rgba(184, 137, 58, 0.2);
+  }
+
+  .maison-last-call__bell-btn:hover {
+    transform: scale(1.08);
+    background: var(--bell, #B8893A);
+    color: #14110F;
+  }
+
+  .maison-last-call__devanagari {
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--bell, #B8893A);
+  }
+
+  .maison-last-call__content {
+    max-width: 44rem;
+  }
+
+  .maison-last-call__heading {
+    margin: 0 0 1rem;
+    font-family: var(--font-fraunces--family, var(--font-heading--family));
+    font-size: clamp(2.2rem, 1.8rem + 1.8vw, 3.4rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    color: var(--bone, #F7F2E9);
+  }
+
+  .maison-last-call__copy {
+    margin: 0 0 2.5rem;
+    font-size: 1.125rem;
+    line-height: 1.65;
+    color: #a8a29e;
+  }
+
+  /* Form */
+  .maison-last-call__form {
+    max-width: 34rem;
+    margin-inline: auto;
+  }
+
+  .maison-last-call__input-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  @media screen and (min-width: 600px) {
+    .maison-last-call__input-row {
+      flex-wrap: nowrap;
+    }
+  }
+
+  .maison-last-call__email {
+    flex: 1;
+    min-width: 240px;
+    background: #1c1815;
+    border: 1px solid #3d352e;
+    padding: 0.85rem 1.25rem;
+    color: #f7f2e9;
+    font-size: 0.95rem;
+    border-radius: 4px;
+    outline: none;
+  }
+
+  .maison-last-call__email:focus {
+    border-color: var(--bell, #B8893A);
+  }
+
+  .maison-last-call__submit-btn {
+    background: var(--ember, #E2552B);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    padding: 0.85rem 1.65rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s var(--ease-strike);
+  }
+
+  .maison-last-call__submit-btn:hover {
+    background: #ff6838;
+    transform: translateY(-2px);
+  }
+
+  .maison-last-call__note {
+    margin-block-start: 0.75rem;
+    font-size: 0.75rem;
+    color: #78716c;
+  }
+
+  .maison-last-call__success {
+    margin-block-start: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: #1f2e24;
+    border: 1px solid var(--verdigris, #4F7F72);
+    color: #86efac;
+    font-size: 0.95rem;
+    border-radius: 4px;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('last-call-waitlist-form');
+    const success = document.getElementById('last-call-success');
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        form.style.display = 'none';
+        if (success) success.style.display = 'block';
+      });
+    }
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Last-Call Band",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Last-Call (V7)",
+      "category": "Maison Tavo"
+    }
+  ]
+}
+{% endschema %}

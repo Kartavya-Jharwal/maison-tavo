@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "hero_jVaWmY": {
@@ -358,11 +349,29 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "maison_finder": {
+      "type": "maison-finder",
+      "name": "Finder as Ceremony (V6)",
+      "settings": {}
+    },
+    "maison_care_ritual": {
+      "type": "maison-care-ritual",
+      "name": "Care Ritual Scroller (V5)",
+      "settings": {}
+    },
+    "maison_last_call": {
+      "type": "maison-last-call",
+      "name": "Last-Call (V7)",
+      "settings": {}
     }
   },
   "order": [
     "hero_jVaWmY",
     "lineups_maison",
-    "product_list_fa6P9H"
+    "maison_finder",
+    "product_list_fa6P9H",
+    "maison_care_ritual",
+    "maison_last_call"
   ]
 }
