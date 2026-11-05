@@ -767,3 +767,191 @@
   section_id: 'badge-sold-out',
   preset: 'ui'
 %}
+
+{%- comment -%}
+  ═══════════════════════════════════════════════════════════════
+  MAISON TAVO — Brand Font & Colour Override
+  Placed LAST so it wins the cascade over all Horizon picker vars.
+  Fonts: Fraunces (display/heading) · Hanken Grotesk (body/UI)
+         JetBrains Mono (specs/prices/agent) · Noto Serif Devanagari
+  Colours: 9 canonical brand tokens. Never override with new hues.
+  ═══════════════════════════════════════════════════════════════
+{%- endcomment -%}
+{% style %}
+  :root {
+    /* ── Brand typefaces (override Shopify picker variables) ──────── */
+    --font-body--family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body--weight: 400;
+    --font-body--style: normal;
+    --font-subheading--family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-subheading--weight: 500;
+    --font-subheading--style: normal;
+    --font-heading--family: 'Fraunces', 'Libre Baskerville', Georgia, serif;
+    --font-heading--weight: 300;
+    --font-heading--style: normal;
+    --font-accent--family: 'JetBrains Mono', 'Anonymous Pro', monospace;
+    --font-accent--weight: 400;
+    --font-accent--style: normal;
+    --font-mono--family: 'JetBrains Mono', 'Anonymous Pro', monospace;
+    --font-mono--weight: 400;
+    --font-mono--style: normal;
+    --font-devanagari--family: 'Noto Serif Devanagari', 'Tiro Devanagari Hindi', serif;
+
+    /* ── Brand colour tokens ─────────────────────────────────────── */
+    --soot:      #14110F;
+    --limewash:  #EFE8DC;
+    --bone:      #F7F2E9;
+    --bell:      #B8893A;
+    --copper:    #C2703D;
+    --clay:      #8E4B35;
+    --steel:     #8C9094;
+    --verdigris: #4F7F72;
+    --ember:     #E2552B;
+
+    /* ── Easing & duration tokens ────────────────────────────────── */
+    --ease-strike: cubic-bezier(.2,.8,.2,1);
+    --dur-slow:    900ms;
+    --dur-mid:     420ms;
+    --dur-fast:    160ms;
+  }
+
+  /* Apply body font globally — highest specificity wins over theme selectors */
+  html, body {
+    font-family: var(--font-body--family) !important;
+    background-color: var(--limewash) !important;
+    color: var(--soot) !important;
+  }
+
+  /* Headings: Fraunces with optical sizing */
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6,
+  [class*="heading"],
+  .title, .product-title, .collection-title {
+    font-family: var(--font-heading--family) !important;
+    font-weight: 300 !important;
+    font-variation-settings: 'opsz' 72 !important;
+    letter-spacing: -0.02em !important;
+  }
+
+  h1, .h1 { font-variation-settings: 'opsz' 144 !important; letter-spacing: -0.03em !important; }
+  h2, .h2 { font-variation-settings: 'opsz' 72 !important; }
+  h3, .h3 { font-variation-settings: 'opsz' 36 !important; letter-spacing: -0.015em !important; }
+
+  /* Subheadings / UI labels: Hanken Grotesk medium */
+  .caption, .label, label,
+  nav, [class*="nav"],
+  [class*="menu"], [class*="menu-item"],
+  [class*="pill"], [class*="badge"],
+  [class*="eyebrow"], [class*="overline"],
+  .announcement-bar__message {
+    font-family: var(--font-subheading--family) !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  /* Mono: prices, specs, agent surfaces */
+  .price, .price-item, [class*="price"],
+  .sku, [class*="sku"],
+  [class*="spec"], [class*="mono"],
+  code, pre, .agent-view, .ucp-view {
+    font-family: var(--font-mono--family) !important;
+    font-variant-numeric: tabular-nums !important;
+  }
+
+  /* Devanagari wordmark */
+  .maison-devanagari, [lang="hi"], .kansa-script {
+    font-family: var(--font-devanagari--family) !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  /* ── Colour application ──────────────────────────────────────────── */
+  /* Header */
+  .header, header, [id="shopify-section-header"] {
+    background-color: var(--limewash) !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--bell) 30%, transparent) !important;
+    color: var(--soot) !important;
+  }
+
+  /* Primary buttons → soot bg, bone text, ember hover */
+  .button--primary, .btn-primary,
+  [class*="button--primary"], input[type="submit"],
+  button[name="add"] {
+    background-color: var(--soot) !important;
+    color: var(--bone) !important;
+    border: 1px solid var(--bell) !important;
+    font-family: var(--font-subheading--family) !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    font-size: 0.75rem !important;
+    transition: background-color var(--dur-mid) var(--ease-strike),
+                border-color var(--dur-mid) var(--ease-strike) !important;
+  }
+  .button--primary:hover, .btn-primary:hover,
+  button[name="add"]:hover {
+    background-color: var(--ember) !important;
+    border-color: var(--ember) !important;
+  }
+
+  /* Secondary buttons → transparent, bell border */
+  .button--secondary, .btn-secondary,
+  [class*="button--secondary"] {
+    background-color: transparent !important;
+    color: var(--soot) !important;
+    border: 1px solid var(--bell) !important;
+  }
+
+  /* Announcement bar → soot on bone */
+  .announcement-bar, [class*="announcement"] {
+    background-color: var(--soot) !important;
+    color: var(--bone) !important;
+  }
+
+  /* Product / collection cards */
+  .card-wrapper, .product-card, [class*="product-card"],
+  .collection-card, [class*="card-wrapper"] {
+    background-color: var(--bone) !important;
+    border: 1px solid transparent !important;
+    transition: border-color var(--dur-mid) var(--ease-strike) !important;
+  }
+  .card-wrapper:hover, .product-card:hover,
+  [class*="product-card"]:hover {
+    border-color: var(--bell) !important;
+  }
+
+  /* Footer → soot background */
+  .footer, footer, [id*="footer"],
+  [class*="footer"] {
+    background-color: var(--soot) !important;
+    color: var(--bone) !important;
+  }
+  .footer a, footer a, [class*="footer"] a {
+    color: color-mix(in srgb, var(--bone) 80%, var(--bell)) !important;
+  }
+
+  /* Links */
+  a:not([class*="button"]):not([class*="btn"]) {
+    color: inherit !important;
+  }
+  a:not([class*="button"]):not([class*="btn"]):hover {
+    color: var(--bell) !important;
+  }
+
+  /* Cart drawer */
+  .drawer, [class*="cart-drawer"] {
+    background-color: var(--bone) !important;
+    color: var(--soot) !important;
+  }
+
+  /* Inputs */
+  input, textarea, select {
+    font-family: var(--font-body--family) !important;
+    border-color: color-mix(in srgb, var(--bell) 40%, transparent) !important;
+    background-color: var(--bone) !important;
+    color: var(--soot) !important;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--bell) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--bell) 20%, transparent) !important;
+  }
+{% endstyle %}
