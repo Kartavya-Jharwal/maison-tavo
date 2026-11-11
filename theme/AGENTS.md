@@ -87,4 +87,21 @@ bun run theme:build
 | `assets/maison-runtime.js` | IIFE, sets `window.MaisonRuntime`. Loaded from `snippets/splash-intro.liquid` (`defer`). |
 | `assets/microapp-lookbook.js` | Lookbook island (Zustand + Motion). Loaded by `sections/maison-microapp.liquid` inside the sandboxed iframe. |
 
-Keep `assets/package.json` as `{ "type": "module" }` (Horizon ESM). `scripts/` is in `.shopifyignore`; the bundled files in `assets/` are what Shopify uploads. GSAP, Lenis, and React are not in this bundle — do not replace Horizon with a SPA.
+Keep `assets/package.json` as `{ "type": "module" }` (Horizon ESM). `scripts/` is in `.shopifyignore`; the bundled files in `assets/` are what Shopify uploads. Do not replace Horizon with a SPA; preserve server-rendered Liquid HTML and native Shopify commerce forms.
+
+## Awwwards SOTY 2026 Theme Implementation Rules
+
+Read [`../docs/awwwards-grand-plan.md`](../docs/awwwards-grand-plan.md) for the complete specification.
+
+1. **Accessibility & Screen Readers**:
+   - Every kinetic text reveal (`SplitType`) MUST maintain an `aria-label` on the parent container while split child words/characters carry `aria-hidden="true"`.
+   - Never remove visible focus indicators.
+2. **The 3-Mode Panopticon Card**:
+   - Product cards in collection grids and carousels implement a 3-way toggle button: `Human` (4K photography), `Engineer` (SVG CAD stratigraphy blueprint), and `Machine` (ASCII art + JSON-LD token view).
+3. **Multi-Modal Scroll Coordination**:
+   - Multi-input awareness: touch passthrough on mobile, 1:1 on trackpad, smoothed interpolation on mouse wheel, instant focus-jump on keyboard navigation.
+4. **Zero-Backend Profiler & Dev Purge**:
+   - The 45% exploration slide-up drawer saves preferences strictly in `localStorage`.
+   - Ensure the footer includes the `[ Reset Session & Storage ]` link that clears `localStorage` and `sessionStorage` for instant evaluator reset.
+5. **Password Template**:
+   - Keep Horizon password templates minimal. Scene 0 exhibition entry is the static wrapper at `../gate/index.html`, not a themed Shopify password page.

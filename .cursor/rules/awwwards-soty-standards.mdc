@@ -1,0 +1,40 @@
+---
+description: Awwwards SOTY 2026 Design Engineering Standards & Execution Rules
+globs: 
+alwaysApply: true
+---
+
+# Awwwards SOTY 2026 Design Engineering Directives
+
+When authoring or modifying code for Maison Tavo, you must adhere to the master blueprint documented in `docs/awwwards-grand-plan.md`.
+
+## Core Directives for Agents
+
+### 1. Jakob's Law & Usability First (30% Weight)
+- Do not build disorienting or overly complex sci-fi interfaces that break standard e-commerce mental models.
+- Product navigation, variant selection, cart drawers, and Shopify checkout forms must remain native, accessible, and frictionless.
+- Preserve Liquid server-side rendering; do not turn the theme into an un-crawlable SPA.
+
+### 2. 100/100 Lighthouse & W3C Accessibility (AA/AAA)
+- Kinetic text splitting (e.g. via `SplitType` or `splitting.js`) must always wrap the parent in `aria-label="<Full text>"` and mark the visual split spans with `aria-hidden="true"`.
+- Prevent all layout shift (CLS = 0) by using calibrated font-metric overrides (`size-adjust`, `ascent-override`) on self-hosted WOFF2 fonts.
+- Preserve keyboard navigation and high-contrast visible focus rings.
+
+### 3. Sourced Assets & High-Performance Pragmatism (20% Weight)
+- Do not attempt to hand-roll complex 3D metal roughness shaders or complex simulations from scratch.
+- Use sourced, tested open-source implementations for the 2D heat-diffusion canvas and sound design.
+- Only use verifiable self-hosted fonts: Instrument Serif / Cormorant Garamond, Libre Baskerville / Instrument Sans, Geist Mono / JetBrains Mono.
+
+### 4. The 3-Mode Panopticon Card
+- Product cards in collection carousels feature a 3-way toggle button:
+  - **Human**: Editorial 4K studio photography & living patina.
+  - **Engineer**: SVG CAD stratigraphy blueprint showing layer thickness (in mm) and thermal conductivity ratings.
+  - **Machine**: Clean ASCII art silhouette paired with Schema.org JSON-LD data block.
+
+### 5. Client-Side Profiler & Dev Purge Link
+- The 45% page exploration modal saves cooking preferences + optional email strictly into `localStorage` (zero-backend).
+- The footer must include the micro-hyperlink `[ Reset Session & Storage ]` to wipe `localStorage` and `sessionStorage` for instant developer and jury resets.
+
+### 6. Scene 0 Static Meta-Landing
+- Do not theme Shopify's development-store password gate — it is unthemeable platform chrome.
+- Scene 0 lives at `gate/index.html`: static exhibition invitation that copies the passcode and sends visitors into `maison-tavo.myshopify.com` for the system gate.
