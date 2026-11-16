@@ -1,0 +1,63 @@
+{
+  "sections": {
+    "room": {
+      "type": "maison-room",
+      "settings": {
+        "eyebrow": "Support",
+        "heading": "Delivery and returns",
+        "lede": "<p>When a piece ships, what checkout calculates, and how a return starts. Questions about washing and heat belong on <a href=\"/pages/kansa\">Kansa</a>.</p>",
+        "notice": "House draft. Publish Shopify shipping and refund policies before treating this page as the legal terms.",
+        "padding-block-start": 48,
+        "padding-block-end": 64
+      },
+      "blocks": {
+        "window": {
+          "type": "clause",
+          "settings": {
+            "heading": "Shipping window",
+            "text": "<p>Allocations open when a foundry heat is struck, measured, and ready. Lead time is the window on your confirmation, not a standing same-week promise. You will receive that window by email after the order is placed.</p>"
+          }
+        },
+        "rates": {
+          "type": "clause",
+          "settings": {
+            "heading": "Rates",
+            "text": "<p>Checkout calculates the rate from the address and the piece. Review the shipping method on the checkout step before you pay. This page does not quote a flat price.</p>"
+          }
+        },
+        "steps": {
+          "type": "clause",
+          "settings": {
+            "heading": "Return steps",
+            "text": "<p>1. Contact the house with the order number and photographs before you ship a piece back.</p><p>2. Wait for the return address. Do not post a piece without it.</p><p>3. Pack the piece dry, with its care card.</p><p>4. When a return is accepted, the refund goes to the original payment method after inspection.</p>"
+          }
+        },
+        "checkout": {
+          "type": "clause",
+          "settings": {
+            "heading": "Where this sits in the shop",
+            "text": "<p>The bag holds quantities, the subtotal, and any promo code. Checkout is the secure Shopify step after that: address, shipping method, payment, review, and confirmation. Order history lives in the account.</p>"
+          }
+        },
+        "contact": {
+          "type": "pathway",
+          "settings": {
+            "label": "Contact and locations",
+            "url": "/pages/contact",
+            "text": "Write before you send a piece back."
+          }
+        },
+        "faq": {
+          "type": "pathway",
+          "settings": {
+            "label": "FAQ",
+            "url": "/pages/faq",
+            "text": "Size, heat, and payment."
+          }
+        }
+      },
+      "block_order": ["window", "rates", "steps", "checkout", "contact", "faq"]
+    }
+  },
+  "order": ["room"]
+}

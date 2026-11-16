@@ -10,6 +10,12 @@
     {%- if section.settings.subheading != blank -%}
       <p class="kansa-shell__subheading">{{ section.settings.subheading | escape }}</p>
     {%- endif -%}
+    <p class="kansa-shell__room">
+      Kansa is its own room, not a collection.
+      <a href="{{ routes.collections_url }}">Catalogue</a>
+      <a href="/pages/care">Care</a>
+      <a href="/pages/faq">FAQ</a>
+    </p>
   </div>
 
   <div id="kansa-root"></div>
@@ -26,6 +32,23 @@
   .kansa-shell__header {
     margin-block-end: 2.5rem;
     max-width: 48rem;
+  }
+
+  .kansa-shell__room {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    margin: 1rem 0 0;
+    color: var(--color-foreground-muted, rgba(20, 17, 15, 0.7));
+  }
+
+  .kansa-shell__room a {
+    color: inherit;
+  }
+
+  .kansa-shell__room a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
   }
 
   .kansa-badge-row {
@@ -327,14 +350,21 @@
     color: #F7F2E9;
   }
 
+  .kansa-answer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-block-start: 1.25rem;
+  }
+
   .kansa-replay-btn {
-    margin-block-start: 1rem;
     background: transparent;
     border: 1px solid rgba(184, 137, 58, 0.35);
     color: #B8893A;
     font-family: var(--font-mono--family, monospace);
     font-size: 0.75rem;
-    padding: 0.35rem 0.85rem;
+    padding: 0.4rem 0.95rem;
     border-radius: 2px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -343,6 +373,40 @@
   .kansa-replay-btn:hover {
     background: #B8893A;
     color: #14110F;
+  }
+
+  .kansa-ritual-link {
+    background: rgba(184, 137, 58, 0.12);
+    border: 1px solid #B8893A;
+    color: #F7F2E9;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .kansa-ritual-link:hover {
+    background: #B8893A;
+    color: #14110F;
+  }
+
+  .kansa-triage-footer {
+    margin-block-start: 2rem;
+    padding-block-start: 1.5rem;
+    border-block-start: 1px solid rgba(184, 137, 58, 0.2);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .piece-indicator {
+    color: #B8893A;
+    margin-inline-end: 0.35rem;
+    font-size: 0.85rem;
   }
 
   .kansa-error-banner {

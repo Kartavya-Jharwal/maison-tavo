@@ -1,8 +1,8 @@
-{% doc %}
+{% comment %}
   V7 Last-Call Section (Thread B2 / S8 / S2).
   Soot-black closing band with ember glow bleed, bell strike interaction,
   and waitlist pre-order field for upcoming foundry heats.
-{% enddoc %}
+{% endcomment %}
 
 <div class="maison-last-call section" data-section-id="{{ section.id }}">
   <div class="maison-last-call__inner section--page-width">
@@ -160,17 +160,21 @@
   .maison-last-call__email {
     flex: 1;
     min-width: 240px;
-    background: #1c1815;
-    border: 1px solid #3d352e;
-    padding: 0.85rem 1.25rem;
-    color: #f7f2e9;
+    background: var(--glass-surface-dark, rgba(20, 17, 15, 0.75));
+    backdrop-filter: var(--glass-blur, blur(14px));
+    -webkit-backdrop-filter: var(--glass-blur, blur(14px));
+    border: 1px solid var(--glass-border-dark, rgba(247, 242, 233, 0.14));
+    padding: 0.85rem 1.4rem;
+    color: var(--bone, #f7f2e9);
     font-size: 0.95rem;
-    border-radius: 4px;
+    border-radius: var(--radius-pill, 62.5rem);
     outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .maison-last-call__email:focus {
     border-color: var(--bell, #B8893A);
+    box-shadow: 0 0 16px rgba(184, 137, 58, 0.3);
   }
 
   .maison-last-call__submit-btn {
@@ -178,16 +182,17 @@
     color: #fff;
     border: none;
     font-weight: 600;
-    padding: 0.85rem 1.65rem;
-    border-radius: 4px;
+    padding: 0.85rem 1.75rem;
+    border-radius: var(--radius-pill, 62.5rem);
     font-size: 0.95rem;
     cursor: pointer;
-    transition: background 0.2s, transform 0.2s var(--ease-strike);
+    transition: background 0.2s, transform 0.2s var(--ease-strike), box-shadow 0.2s;
   }
 
   .maison-last-call__submit-btn:hover {
     background: #ff6838;
     transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(226, 85, 43, 0.35);
   }
 
   .maison-last-call__note {

@@ -1,0 +1,925 @@
+{% comment %}
+  Maison Tavo — Architectural Wireframe Screens
+  Dual Depth Experience: The Aesthetic Curator Canvas × The Machine-Readable Spec Protocol.
+  Interactive viewport switcher showcasing the 4 architectural layers of the brand stack.
+{% endcomment %}
+
+<section
+  class="maison-screens section--page-width"
+  id="screens-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-component="maison-screens"
+>
+  <div class="maison-screens__container">
+    <header class="maison-screens__header inview">
+      <div class="maison-screens__kicker-row">
+        <span class="eyebrow">{{ section.settings.eyebrow | default: 'Dual Depth Architecture' | escape }}</span>
+        <span class="maison-screens__badge">4 SCREENS · 2 READING DEPTHS</span>
+      </div>
+      <h2 class="maison-screens__title stacked-title">
+        <span class="clip-line"><span>{{ section.settings.heading | default: 'The Wireframe System' | escape }}</span></span>
+      </h2>
+      <p class="maison-screens__lede">
+        {{ section.settings.lede | default: 'Maison Tavo serves two depths of attention: the aesthetic curator who seeks tactile provenance, and the culinary technologist whose software agents require deterministic machine-readable fields.' | escape }}
+      </p>
+    </header>
+
+    <!-- Screen Navigation Tabs -->
+    <div class="maison-screens__nav" role="tablist" aria-label="Storefront wireframe screens">
+      <button
+        class="maison-screens__tab is-active"
+        role="tab"
+        aria-selected="true"
+        aria-controls="screen-panel-curator"
+        id="tab-curator"
+        data-screen-target="curator"
+        data-strike
+      >
+        <span class="tab-index">01</span>
+        <span class="tab-title">Curator Canvas</span>
+        <span class="tab-sub">Human Editorial · Living Kitchen</span>
+      </button>
+
+      <button
+        class="maison-screens__tab"
+        role="tab"
+        aria-selected="false"
+        aria-controls="screen-panel-agent"
+        id="tab-agent"
+        data-screen-target="agent"
+        data-strike
+      >
+        <span class="tab-index">02</span>
+        <span class="tab-title">Spec Protocol</span>
+        <span class="tab-sub">UCP 2026 · Machine-Readable JSON</span>
+      </button>
+
+      <button
+        class="maison-screens__tab"
+        role="tab"
+        aria-selected="false"
+        aria-controls="screen-panel-voice"
+        id="tab-voice"
+        data-screen-target="voice"
+        data-strike
+      >
+        <span class="tab-index">03</span>
+        <span class="tab-title">Kansa Companion</span>
+        <span class="tab-sub">Acoustic Resonance · Care Rites</span>
+      </button>
+
+      <button
+        class="maison-screens__tab"
+        role="tab"
+        aria-selected="false"
+        aria-controls="screen-panel-pass"
+        id="tab-pass"
+        data-screen-target="pass"
+        data-strike
+      >
+        <span class="tab-index">04</span>
+        <span class="tab-title">Foundry Allocation</span>
+        <span class="tab-sub">Last Call · Single-Batch Ledger</span>
+      </button>
+    </div>
+
+    <!-- Active Screen Viewport -->
+    <div class="maison-screens__viewport glass-dark">
+      <!-- Chrome Bar -->
+      <div class="viewport-chrome">
+        <div class="viewport-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="viewport-address" id="screen-address">
+          https://maison-tavo.com/pdp/forge-relay-280#curator-view
+        </div>
+        <div class="viewport-meta" id="screen-meta">
+          <span class="meta-tag">DEPTH: HUMAN CURATOR</span>
+        </div>
+      </div>
+
+      <!-- Screen Panels -->
+      <div class="viewport-content">
+        <!-- 01: Curator Canvas -->
+        <div class="screen-panel is-active" id="screen-panel-curator" data-screen="curator">
+          <div class="screen-layout-curator">
+            <div class="curator-media">
+              <img
+                src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?q=85&w=900&auto=format&fit=crop"
+                alt="Forge Relay 280 Tava"
+                class="curator-img"
+                loading="lazy"
+                width="900"
+                height="650"
+              >
+              <div class="curator-tag glass-bronze">
+                <span class="curator-tag__spec">HAND-BEATEN BELL BRONZE RIVETS</span>
+                <span class="curator-tag__alloy">Alloy #78:22 · Rajasthan Sand Cast</span>
+              </div>
+            </div>
+
+            <div class="curator-story">
+              <span class="curator-kicker">ARTIFACT NO. 01 · FORGE HYBRID</span>
+              <h3 class="curator-title">Forge Relay 280</h3>
+              <p class="curator-desc">
+                Forged dual-mass carbon steel with hand-beaten bell bronze rivets. Balanced for the high-volume restaurant pass and the home hearth. Develops a glass-slick polymer patina across forty cooks.
+              </p>
+
+              <div class="curator-specs-grid">
+                <div class="spec-pill"><span>DIAMETER</span><strong>280 mm</strong></div>
+                <div class="spec-pill"><span>MASS</span><strong>2.45 kg</strong></div>
+                <div class="spec-pill"><span>HEAT SOURCE</span><strong>Induction · Flame · Hearth</strong></div>
+                <div class="spec-pill"><span>LINEAGE</span><strong>Jaipur Foundry · Paris Brigade</strong></div>
+              </div>
+
+              <div class="curator-actions">
+                <a href="#lineups" class="pill pill-light">Inspect Artifact →</a>
+                <span class="curator-provenance-note">✓ In-stock for Heat Edition #04</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02: Agent Spec Protocol -->
+        <div class="screen-panel" id="screen-panel-agent" data-screen="agent">
+          <div class="screen-layout-agent">
+            <div class="agent-terminal">
+              <div class="terminal-bar">
+                <span>GET /api/v1/ucp/catalogue/forge-relay-280.jsonld HTTP/1.1</span>
+                <span class="status-200">200 OK</span>
+              </div>
+              <pre class="terminal-code"><code>{
+  <span class="code-key">"@context"</span>: <span class="code-val">"https://schema.org"</span>,
+  <span class="code-key">"@type"</span>: [<span class="code-val">"Product"</span>, <span class="code-val">"KitchenUtensil"</span>],
+  <span class="code-key">"identifier"</span>: <span class="code-val">"MT-FR-280"</span>,
+  <span class="code-key">"name"</span>: <span class="code-val">"Forge Relay 280 Dual-Mass Tava"</span>,
+  <span class="code-key">"materialSpecification"</span>: {
+    <span class="code-key">"baseAlloy"</span>: <span class="code-val">"Dual-Mass Carbon Steel (99.2% Fe, 0.8% C)"</span>,
+    <span class="code-key">"rivetAlloy"</span>: <span class="code-val">"Traditional Kansa Bronze (78% Cu, 22% Sn)"</span>,
+    <span class="code-key">"thermalConductivity_W_mK"</span>: <span class="code-num">48.5</span>,
+    <span class="code-key">"inductionSusceptibility"</span>: <span class="code-val">"High (Ferromagnetic Core)"</span>,
+    <span class="code-key">"maxSurfaceTemp_C"</span>: <span class="code-num">650</span>
+  },
+  <span class="code-key">"ucp2026Protocol"</span>: {
+    <span class="code-key">"machineReadable"</span>: <span class="code-bool">true</span>,
+    <span class="code-key">"autonomousCheckoutSupported"</span>: <span class="code-bool">true</span>,
+    <span class="code-key">"agentNegotiationTiers"</span>: [<span class="code-val">"Simulated"</span>, <span class="code-val">"Standard"</span>, <span class="code-val">"Trade"</span>]
+  }
+}</code></pre>
+            </div>
+
+            <div class="agent-notes">
+              <span class="curator-kicker">MACHINE-READABLE SPEC LAYER</span>
+              <h3 class="curator-title">Why Machines Need Physics, Not Prose</h3>
+              <p class="curator-desc">
+                Across legacy cookware stores, critical metallurgy lives as unstructured HTML description text. Maison Tavo exposes deterministic JSON-LD 2026 schemas so culinary AI agents can verify stove fit, induction coil resonance, and heat distribution instantly.
+              </p>
+              <div class="agent-chips">
+                <span class="r-chip">UCP 2026 READY</span>
+                <span class="r-chip">ZERO SCRAPING AMBIGUITY</span>
+                <span class="r-chip">DETERMINISTIC ALLOY PROVENANCE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 03: Kansa Companion -->
+        <div class="screen-panel" id="screen-panel-voice" data-screen="voice">
+          <div class="screen-layout-voice">
+            <div class="voice-card glass-bronze">
+              <div class="voice-header">
+                <div class="voice-icon-circle">
+                  <span>🔔</span>
+                </div>
+                <div>
+                  <h4 class="voice-name">Kansa Resonance Analyzer</h4>
+                  <span class="voice-freq">Fundamental Chime: 880 Hz · Harmonic: 1320 Hz</span>
+                </div>
+              </div>
+
+              <!-- Animated Waveform -->
+              <div class="waveform-wrap">
+                <span class="wave-bar" style="height: 40%"></span>
+                <span class="wave-bar" style="height: 70%"></span>
+                <span class="wave-bar" style="height: 100%"></span>
+                <span class="wave-bar" style="height: 60%"></span>
+                <span class="wave-bar" style="height: 85%"></span>
+                <span class="wave-bar" style="height: 45%"></span>
+                <span class="wave-bar" style="height: 90%"></span>
+                <span class="wave-bar" style="height: 35%"></span>
+                <span class="wave-bar" style="height: 75%"></span>
+                <span class="wave-bar" style="height: 50%"></span>
+              </div>
+
+              <div class="voice-quote">
+                “Bell bronze vibrates with a pure tone only when the molecular crystalline structure has settled without interior crack faults. That same acoustic purity is what makes the vessel chemically inert for culinary service.”
+              </div>
+            </div>
+
+            <div class="voice-disciplines">
+              <span class="curator-kicker">LIFETIME COMPANION UTILITY</span>
+              <h3 class="curator-title">The Discipline of Care</h3>
+              <p class="curator-desc">
+                Kansa is our voice-guided companion. It diagnoses seasoning health, guides stove deglazing without soap, and interprets the visual patina of your cookware over years of heat cycles.
+              </p>
+              <div class="care-steps-mini">
+                <div class="mini-step"><strong>RITE 01</strong><span>Heat Striking</span></div>
+                <div class="mini-step"><strong>RITE 02</strong><span>Thin Lipid Coat</span></div>
+                <div class="mini-step"><strong>RITE 03</strong><span>Smoke Point Polymerization</span></div>
+                <div class="mini-step"><strong>RITE 04</strong><span>Water Deglaze · Zero Soap</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 04: Allocation Pass -->
+        <div class="screen-panel" id="screen-panel-pass" data-screen="pass">
+          <div class="screen-layout-pass">
+            <div class="pass-ledger glass">
+              <div class="ledger-header">
+                <span class="ledger-tag">BATCH ALLOCATION RECORD</span>
+                <span class="ledger-batch">HEAT EDITION #04</span>
+              </div>
+              <div class="ledger-body">
+                <div class="ledger-row">
+                  <span>FOUNDRY ORIGIN</span>
+                  <strong>Jodhpur Artisan Crucible 02</strong>
+                </div>
+                <div class="ledger-row">
+                  <span>POUR TEMPERATURE</span>
+                  <strong>1,400°C Refractory Melt</strong>
+                </div>
+                <div class="ledger-row">
+                  <span>UNITS CAST IN HEAT</span>
+                  <strong>120 Numbered Heats</strong>
+                </div>
+                <div class="ledger-row">
+                  <span>REMAINING ALLOCATION</span>
+                  <strong style="color: var(--ember, #E2552B)">18 Units Available</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="pass-narrative">
+              <span class="curator-kicker">LAST CALL CEREMONY</span>
+              <h3 class="curator-title">The Pass is Called</h3>
+              <p class="curator-desc">
+                Maison Tavo produces in small, deliberate heats. We do not maintain endless warehouse inventory. Each piece is registered to its buyer with a metallurgy certificate and foundry stamp before it enters the kitchen.
+              </p>
+              <a href="#care-ritual" class="pill pill-glass">Explore Ritual Protocols →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .maison-screens {
+    background-color: var(--limewash, #EFE8DC);
+    color: var(--soot, #14110F);
+    padding-block: clamp(4rem, 7vw, 7rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .maison-screens__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 clamp(1.5rem, 4vw, 4rem);
+  }
+
+  .maison-screens__header {
+    max-width: 52rem;
+    margin-bottom: 3rem;
+  }
+
+  .maison-screens__kicker-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .maison-screens__badge {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    background: var(--soot, #14110F);
+    color: var(--bone, #F7F2E9);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-pill, 62.5rem);
+  }
+
+  .maison-screens__title {
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0.5rem 0 1.25rem 0;
+    color: var(--soot, #14110F);
+  }
+
+  .maison-screens__lede {
+    font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+    line-height: 1.65;
+    color: rgba(20, 17, 15, 0.78);
+    margin: 0;
+  }
+
+  /* Nav Tabs */
+  .maison-screens__nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .maison-screens__nav {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .maison-screens__nav {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .maison-screens__tab {
+    background: var(--glass-surface-light, rgba(247, 242, 233, 0.72));
+    backdrop-filter: var(--glass-blur-sm, blur(8px));
+    -webkit-backdrop-filter: var(--glass-blur-sm, blur(8px));
+    border: 1px solid var(--glass-border-light-subtle, rgba(20, 17, 15, 0.12));
+    padding: 1.25rem 1.4rem;
+    border-radius: var(--radius-card-sm, 0.875rem);
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: all var(--dur-mid, 420ms) var(--ease-strike);
+  }
+
+  .maison-screens__tab:hover {
+    border-color: var(--bell, #B8893A);
+    transform: translateY(-2px);
+    background: #fff;
+  }
+
+  .maison-screens__tab.is-active {
+    background: var(--soot, #14110F);
+    color: var(--bone, #F7F2E9);
+    border-color: var(--soot, #14110F);
+    box-shadow: var(--glass-shadow, 0 10px 35px rgba(20, 17, 15, 0.12));
+  }
+
+  .tab-index {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--bell, #B8893A);
+  }
+
+  .tab-title {
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin: 0.2rem 0;
+  }
+
+  .tab-sub {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.68rem;
+    opacity: 0.7;
+    letter-spacing: 0.04em;
+  }
+
+  /* Viewport Container */
+  .maison-screens__viewport {
+    border-radius: var(--radius-card-lg, 2rem);
+    padding: 1.5rem;
+    background: var(--soot, #14110F);
+    color: var(--bone, #F7F2E9);
+    box-shadow: 0 24px 60px rgba(20, 17, 15, 0.25);
+    border: 1px solid rgba(247, 242, 233, 0.15);
+  }
+
+  .viewport-chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(247, 242, 233, 0.12);
+    margin-bottom: 2rem;
+    font-size: 0.8rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .viewport-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .viewport-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(247, 242, 233, 0.25);
+  }
+
+  .viewport-address {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.72rem;
+    color: rgba(247, 242, 233, 0.6);
+    background: rgba(0, 0, 0, 0.35);
+    padding: 0.35rem 1rem;
+    border-radius: var(--radius-pill, 62.5rem);
+    flex-grow: 1;
+    max-width: 32rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .viewport-meta .meta-tag {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--bell, #B8893A);
+  }
+
+  /* Screen Panels */
+  .screen-panel {
+    display: none;
+    animation: screen-fade-in 0.4s var(--ease-mask);
+  }
+
+  .screen-panel.is-active {
+    display: block;
+  }
+
+  @keyframes screen-fade-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Layout 01: Curator */
+  .screen-layout-curator {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .screen-layout-curator {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .curator-media {
+    position: relative;
+    border-radius: var(--radius-card, 1.5rem);
+    overflow: hidden;
+  }
+
+  .curator-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.95);
+  }
+
+  .curator-tag {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    padding: 0.85rem 1.15rem;
+    border-radius: var(--radius-card-sm, 0.875rem);
+  }
+
+  .curator-tag__spec {
+    display: block;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: var(--bell, #B8893A);
+  }
+
+  .curator-tag__alloy {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--bone, #F7F2E9);
+    margin-top: 0.2rem;
+  }
+
+  .curator-kicker {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    color: var(--bell, #B8893A);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .curator-title {
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin: 0 0 1rem 0;
+    color: var(--bone, #F7F2E9);
+  }
+
+  .curator-desc {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(247, 242, 233, 0.75);
+    margin: 0 0 1.75rem 0;
+  }
+
+  .curator-specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .spec-pill {
+    background: rgba(247, 242, 233, 0.06);
+    border: 1px solid rgba(247, 242, 233, 0.12);
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--radius-card-sm, 0.875rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .spec-pill span {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--bell, #B8893A);
+  }
+
+  .spec-pill strong {
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+
+  .curator-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .curator-provenance-note {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.75rem;
+    color: var(--verdigris, #4F7F72);
+  }
+
+  /* Layout 02: Agent */
+  .screen-layout-agent {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .screen-layout-agent {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .agent-terminal {
+    background: #080706;
+    border: 1px solid rgba(184, 137, 58, 0.3);
+    border-radius: var(--radius-card, 1.5rem);
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .terminal-bar {
+    background: #14110F;
+    padding: 0.65rem 1rem;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.72rem;
+    color: rgba(247, 242, 233, 0.65);
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(247, 242, 233, 0.1);
+  }
+
+  .status-200 {
+    color: var(--verdigris, #4F7F72);
+    font-weight: 700;
+  }
+
+  .terminal-code {
+    padding: 1.25rem 1.5rem;
+    margin: 0;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: #e2e8f0;
+    overflow-x: auto;
+  }
+
+  .code-key { color: #93c5fd; }
+  .code-val { color: #86efac; }
+  .code-num { color: #fde047; }
+  .code-bool { color: #f472b6; }
+
+  .agent-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1.5rem;
+  }
+
+  .r-chip {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(184, 137, 58, 0.12);
+    border: 1px solid rgba(184, 137, 58, 0.3);
+    border-radius: 9999px;
+    color: var(--bell, #B8893A);
+  }
+
+  /* Layout 03: Voice */
+  .screen-layout-voice {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .screen-layout-voice {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .voice-card {
+    padding: 2.25rem;
+    border-radius: var(--radius-card, 1.5rem);
+    border: 1px solid var(--glass-border-bronze);
+  }
+
+  .voice-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .voice-icon-circle {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: var(--bell, #B8893A);
+    color: var(--soot, #14110F);
+    display: grid;
+    place-items: center;
+    font-size: 1.4rem;
+    box-shadow: 0 0 24px rgba(184, 137, 58, 0.4);
+  }
+
+  .voice-name {
+    font-family: var(--font-heading--family, 'Fraunces', serif);
+    font-size: 1.35rem;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .voice-freq {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.75rem;
+    color: var(--bell, #B8893A);
+  }
+
+  .waveform-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 48px;
+    margin-bottom: 1.75rem;
+    padding-inline: 0.5rem;
+  }
+
+  .wave-bar {
+    width: 6px;
+    background: var(--bell, #B8893A);
+    border-radius: var(--radius-pill, 62.5rem);
+    animation: wave-pulse 1.4s ease-in-out infinite alternate;
+  }
+
+  .wave-bar:nth-child(2) { animation-delay: 0.15s; }
+  .wave-bar:nth-child(3) { animation-delay: 0.3s; }
+  .wave-bar:nth-child(4) { animation-delay: 0.45s; }
+  .wave-bar:nth-child(5) { animation-delay: 0.6s; }
+
+  @keyframes wave-pulse {
+    0% { transform: scaleY(0.4); }
+    100% { transform: scaleY(1); }
+  }
+
+  .voice-quote {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(247, 242, 233, 0.85);
+    font-style: italic;
+    border-left: 2px solid var(--bell, #B8893A);
+    padding-left: 1rem;
+  }
+
+  .care-steps-mini {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .mini-step {
+    background: rgba(247, 242, 233, 0.05);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-card-sm, 0.875rem);
+    border: 1px solid rgba(247, 242, 233, 0.1);
+  }
+
+  .mini-step strong {
+    display: block;
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.65rem;
+    color: var(--bell, #B8893A);
+    margin-bottom: 0.2rem;
+  }
+
+  .mini-step span {
+    font-size: 0.82rem;
+    color: var(--bone, #F7F2E9);
+  }
+
+  /* Layout 04: Pass */
+  .screen-layout-pass {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .screen-layout-pass {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .pass-ledger {
+    padding: 2.25rem;
+    border-radius: var(--radius-card, 1.5rem);
+    background: rgba(20, 17, 15, 0.85);
+    border: 1px solid var(--hairline-light);
+  }
+
+  .ledger-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(247, 242, 233, 0.12);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ledger-tag {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--bell, #B8893A);
+  }
+
+  .ledger-batch {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .ledger-row {
+    display: flex;
+    justify-content: space-between;
+    padding-block: 0.75rem;
+    border-bottom: 1px solid rgba(247, 242, 233, 0.06);
+    font-size: 0.88rem;
+  }
+
+  .ledger-row span {
+    color: rgba(247, 242, 233, 0.65);
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.75rem;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    const root = document.querySelector('[data-component="maison-screens"]');
+    if (!root || root.dataset.screensBound === 'true') return;
+    root.dataset.screensBound = 'true';
+
+    const tabs = root.querySelectorAll('.maison-screens__tab');
+    const panels = root.querySelectorAll('.screen-panel');
+    const address = root.querySelector('#screen-address');
+    const metaTag = root.querySelector('#screen-meta .meta-tag');
+
+    const addressMap = {
+      curator: 'https://maison-tavo.com/pdp/forge-relay-280#curator-canvas',
+      agent: 'https://maison-tavo.com/api/v1/ucp/catalogue/forge-relay-280.jsonld',
+      voice: 'https://maison-tavo.com/companion/kansa#acoustic-analyzer',
+      pass: 'https://maison-tavo.com/allocation/heat-04#foundry-ledger'
+    };
+
+    const metaMap = {
+      curator: 'DEPTH: HUMAN CURATOR · LIVING KITCHEN',
+      agent: 'DEPTH: UCP 2026 MACHINE SCHEMA · DETERMINISTIC',
+      voice: 'DEPTH: ACOUSTIC RESONANCE · 880HZ CHIME',
+      pass: 'DEPTH: SINGLE-BATCH FOUNDRY PASS · CERTIFIED'
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.screenTarget;
+
+        tabs.forEach((t) => {
+          t.classList.remove('is-active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        panels.forEach((p) => p.classList.remove('is-active'));
+
+        tab.classList.add('is-active');
+        tab.setAttribute('aria-selected', 'true');
+
+        const activePanel = root.querySelector(`.screen-panel[data-screen="${target}"]`);
+        if (activePanel) {
+          activePanel.classList.add('is-active');
+        }
+
+        if (address && addressMap[target]) {
+          address.textContent = addressMap[target];
+        }
+
+        if (metaTag && metaMap[target]) {
+          metaTag.textContent = metaMap[target];
+        }
+      });
+    });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Maison Wireframe Screens",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Dual Depth Architecture"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Wireframe System"
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "Lede",
+      "default": "Maison Tavo serves two depths of attention: the aesthetic curator who seeks tactile provenance, and the culinary technologist whose software agents require deterministic machine-readable fields."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison Wireframe Screens"
+    }
+  ]
+}
+{% endschema %}

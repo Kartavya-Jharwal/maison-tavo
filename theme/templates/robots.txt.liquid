@@ -1,0 +1,52 @@
+{%- comment -%}
+# robots.txt.liquid for Maison Tavo
+# SOTY 2026 AI Agent & W3C Semantic Crawl Discovery
+{%- endcomment -%}
+{% for group in robots.default_groups %}
+  {{- group.user_agent -}}
+
+  {% for rule in group.rules %}
+    {{- rule -}}
+  {% endfor %}
+
+  {%- if group.sitemap != blank -%}
+    {{ group.sitemap }}
+  {%- endif -%}
+{% endfor %}
+
+# ==============================================================================
+# Maison Tavo · Autonomous Culinary Agent & LLM Crawl Declarations
+# Universal Commerce Protocol (UCP 2026) & Deterministic Metallurgy Spec Layer
+# ==============================================================================
+
+User-agent: GPTBot
+Allow: /
+Allow: /pages/ucp
+Allow: /pages/kansa
+Allow: /products/
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /pages/ucp
+Allow: /pages/kansa
+Allow: /products/
+
+User-agent: Google-Extended
+Allow: /
+Allow: /pages/ucp
+Allow: /pages/kansa
+Allow: /products/
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /pages/ucp
+Allow: /pages/kansa
+Allow: /products/
+
+User-agent: Amazonbot
+Allow: /
+Allow: /pages/ucp
+Allow: /products/
+
+# Agent Manifest Reference
+# LLMs: {{ shop.url }}/pages/llms-txt

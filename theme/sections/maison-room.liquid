@@ -1,0 +1,329 @@
+{% comment %}
+  Editorial room for house pages: FAQ, policies, reviews, contact locations.
+  Copy is merchant-editable. Map embeds are city markers, not street claims.
+{% endcomment %}
+
+<div
+  class="section section--page-width spacing-style maison-room"
+  style="{% render 'spacing-style', settings: section.settings %}"
+>
+  <header class="maison-room__header">
+    {% if section.settings.eyebrow != blank %}
+      <p class="maison-room__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h1 class="maison-room__title">{{ section.settings.heading | escape }}</h1>
+    {% elsif page != blank %}
+      <h1 class="maison-room__title">{{ page.title | escape }}</h1>
+    {% endif %}
+    {% if section.settings.lede != blank %}
+      <div class="maison-room__lede rte">{{ section.settings.lede }}</div>
+    {% endif %}
+  </header>
+
+  {% if section.settings.notice != blank %}
+    <p class="maison-room__notice" role="note">{{ section.settings.notice | escape }}</p>
+  {% endif %}
+
+  <div class="maison-room__body">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'clause' %}
+          <section class="maison-room__clause" {{ block.shopify_attributes }}>
+            {% if block.settings.heading != blank %}
+              <h2>{{ block.settings.heading | escape }}</h2>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <div class="rte">{{ block.settings.text }}</div>
+            {% endif %}
+          </section>
+        {% when 'pathway' %}
+          <p class="maison-room__pathway" {{ block.shopify_attributes }}>
+            {% if block.settings.url != blank %}
+              <a href="{{ block.settings.url }}">{{ block.settings.label | escape }}</a>
+            {% elsif block.settings.label != blank %}
+              {{ block.settings.label | escape }}
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <span>{{ block.settings.text | escape }}</span>
+            {% endif %}
+          </p>
+        {% when 'place' %}
+          <article class="maison-room__place" {{ block.shopify_attributes }}>
+            {% if block.settings.heading != blank %}
+              <h2>{{ block.settings.heading | escape }}</h2>
+            {% endif %}
+            {% if block.settings.address != blank %}
+              <p>{{ block.settings.address | newline_to_br }}</p>
+            {% endif %}
+            {% if block.settings.note != blank %}
+              <p class="maison-room__note">{{ block.settings.note | escape }}</p>
+            {% endif %}
+            {% liquid
+              assign lat = block.settings.latitude | plus: 0
+              assign lng = block.settings.longitude | plus: 0
+            %}
+            {% if lat != 0 and lng != 0 %}
+              {% liquid
+                assign min_lng = lng | minus: 0.12
+                assign max_lng = lng | plus: 0.12
+                assign min_lat = lat | minus: 0.08
+                assign max_lat = lat | plus: 0.08
+              %}
+              <div class="maison-room__map">
+                <iframe
+                  title="Map of {{ block.settings.heading | escape }}"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox={{ min_lng }},{{ min_lat }},{{ max_lng }},{{ max_lat }}&layer=mapnik&marker={{ lat }},{{ lng }}"
+                  loading="lazy"
+                ></iframe>
+              </div>
+              <p>
+                <a
+                  href="https://www.openstreetmap.org/?mlat={{ lat }}&mlon={{ lng }}#map=12/{{ lat }}/{{ lng }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Open the city map</a>
+              </p>
+            {% endif %}
+          </article>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .maison-room {
+    color: var(--color-foreground);
+  }
+
+  .maison-room__header {
+    max-width: 42rem;
+    margin-block-end: 2rem;
+  }
+
+  .maison-room__eyebrow {
+    margin: 0;
+    font-family: var(--font-mono--family, ui-monospace, monospace);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-room__title {
+    margin: 0.5rem 0 1rem;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2rem, 1.4rem + 2vw, 3.5rem);
+    font-weight: 400;
+    line-height: 1.05;
+  }
+
+  .maison-room__lede {
+    max-width: 42rem;
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-room__notice {
+    max-width: 44rem;
+    margin: 0 0 2rem;
+    padding: 1rem 1.15rem;
+    border: 1px solid var(--color-border);
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-room__clause,
+  .maison-room__place {
+    max-width: 44rem;
+    padding-block: 1.25rem;
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .maison-room__clause h2,
+  .maison-room__place h2 {
+    margin: 0 0 0.6rem;
+    font-family: var(--font-heading--family);
+    font-size: 1.25rem;
+    font-weight: 400;
+  }
+
+  .maison-room__clause p,
+  .maison-room__place p,
+  .maison-room__lede p {
+    margin: 0 0 0.75rem;
+  }
+
+  .maison-room__note {
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-room__pathway {
+    display: grid;
+    gap: 0.2rem;
+    max-width: 44rem;
+    margin: 0;
+    padding-block: 0.9rem;
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .maison-room__pathway a {
+    color: inherit;
+    font-family: var(--font-heading--family);
+  }
+
+  .maison-room__pathway span {
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-room a:focus-visible {
+    outline: 2px solid var(--color-foreground);
+    outline-offset: 3px;
+  }
+
+  .maison-room__map {
+    margin-block-start: 0.75rem;
+    border: 1px solid var(--color-border);
+  }
+
+  .maison-room__map iframe {
+    display: block;
+    width: 100%;
+    height: 240px;
+    border: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.maison_room",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:settings.maison_eyebrow",
+      "default": "House"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading"
+    },
+    {
+      "type": "richtext",
+      "id": "lede",
+      "label": "Introduction"
+    },
+    {
+      "type": "text",
+      "id": "notice",
+      "label": "Notice"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "clause",
+      "name": "t:names.maison_clause",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:settings.heading"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:settings.content"
+        }
+      ]
+    },
+    {
+      "type": "pathway",
+      "name": "t:names.maison_pathway",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "t:settings.label"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "t:settings.link"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:settings.content"
+        }
+      ]
+    },
+    {
+      "type": "place",
+      "name": "t:names.maison_place",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:settings.heading"
+        },
+        {
+          "type": "textarea",
+          "id": "address",
+          "label": "Address"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Note"
+        },
+        {
+          "type": "text",
+          "id": "latitude",
+          "label": "Latitude",
+          "default": "0"
+        },
+        {
+          "type": "text",
+          "id": "longitude",
+          "label": "Longitude",
+          "default": "0"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.maison_room",
+      "category": "t:categories.text"
+    }
+  ]
+}
+{% endschema %}

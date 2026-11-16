@@ -1,4 +1,4 @@
-{% doc %}
+{% comment %}
   Product story / material provenance panel.
   Goes below the main product-information section on product.json.
 
@@ -8,7 +8,7 @@
 
   All content is editable in the theme editor via section settings + blocks.
   Falls back gracefully when fields are blank — zero output if all are empty.
-{% enddoc %}
+{% endcomment %}
 
 {% liquid
   assign has_content = false
@@ -174,8 +174,15 @@
     display: grid;
     grid-template-columns: 1fr 1.4fr;
     gap: 0.5rem 1rem;
-    padding-block: 0.875rem;
+    padding: 0.875rem 0.5rem;
     border-block-end: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
+    border-radius: var(--radius-card-sm, 0.875rem);
+    transition: background 0.25s ease, padding-left 0.25s ease;
+  }
+
+  .maison-pdp-story__spec-row:hover {
+    background: var(--glass-surface-light, rgba(247, 242, 233, 0.72));
+    padding-left: 0.85rem;
   }
 
   .maison-pdp-story__spec-label {

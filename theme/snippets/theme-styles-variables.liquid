@@ -138,6 +138,44 @@
     --dur-slow: 900ms;
     --dur-mid: 420ms;
     --dur-fast: 160ms;
+
+    /*
+      Glassmorphism Tokens & Kinetic Primitives
+      Attribution: [Abdughafur Khujzoda on CodePen](https://codepen.io/Abdughafur-Khujzoda)
+      Adapted for Maison Tavo: layer frosted glass plates over hammered, struck & fired tactile grounds
+    */
+    --glass-blur-sm: blur(8px);
+    --glass-blur: blur(14px);
+    --glass-blur-lg: blur(20px);
+
+    /* Light Frosted Glass (Limewash & Bone Atelier Grounds) */
+    --glass-surface-light: rgba(247, 242, 233, 0.72);
+    --glass-surface-light-elevated: rgba(255, 255, 255, 0.65);
+    --glass-border-light: rgba(255, 255, 255, 0.45);
+    --glass-border-light-subtle: rgba(20, 17, 15, 0.08);
+
+    /* Dark Frosted Glass (Soot Night Grounds & Furnace Sections) */
+    --glass-surface-dark: rgba(20, 17, 15, 0.75);
+    --glass-surface-dark-elevated: rgba(30, 26, 23, 0.82);
+    --glass-border-dark: rgba(247, 242, 233, 0.14);
+    --glass-border-bronze: rgba(184, 137, 58, 0.35);
+
+    /* Metallurgical Infused Glass */
+    --glass-surface-bronze: rgba(184, 137, 58, 0.16);
+    --glass-surface-ember: rgba(226, 85, 43, 0.18);
+
+    /* Elevation & Radius Primitives */
+    --glass-shadow: 0 10px 35px rgba(20, 17, 15, 0.12);
+    --glass-shadow-lg: 0 20px 50px rgba(20, 17, 15, 0.22);
+    --glass-shadow-glow: 0 0 30px rgba(184, 137, 58, 0.25);
+    --radius-card-sm: 0.875rem;
+    --radius-card: 1.5rem;
+    --radius-card-lg: 2rem;
+    --radius-pill: 62.5rem;
+
+    /* Text Reveal & Stagger Physics */
+    --ease-mask: cubic-bezier(0.16, 1, 0.3, 1);
+    --dur-reveal: 0.95s;
     /* Safe area insets — non-zero on notched devices because meta-tags.liquid sets viewport-fit=cover */
     --safe-area-inset-top: env(safe-area-inset-top, 0px);
     --safe-area-inset-right: env(safe-area-inset-right, 0px);

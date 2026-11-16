@@ -1,0 +1,158 @@
+{%- doc -%}
+  Machine lens: ASCII silhouette plus the Schema.org Product payload an agent reads.
+  The JSON is display text only; the crawlable JSON-LD stays in `maison-product-jsonld`.
+
+  @param {object} product - Product drop
+  @param {boolean} [full] - Show the full payload instead of the card summary
+{%- enddoc -%}
+
+{%- liquid
+  assign specs = product.metafields.specs
+  assign variant = product.selected_or_first_available_variant
+  assign key = specs.lineup.value | append: ' ' | append: product.handle | append: ' ' | append: product.type | downcase
+
+  if specs.heat_sources.value.first
+    assign heat = specs.heat_sources.value | join: ', '
+  else
+    assign heat = specs.heat_sources.value
+  endif
+-%}
+
+<div class="maison-machine{% if full %} maison-machine--full{% endif %}">
+  <pre class="maison-machine__ascii" aria-hidden="true">
+    {%- if key contains 'knife' or key contains 'blade' or key contains 'kuro' -%}
+{{ '
+             ______________________________
+   ________/                              \___
+  |########|                                  >
+   ‾‾‾‾‾‾‾‾\______________________________/‾‾‾
+' }}
+    {%- elsif key contains 'tagine' -%}
+{{ '
+            /\
+           /  \
+          /    \
+        _(______)_
+       (__________)
+' }}
+    {%- elsif key contains 'kadai' or key contains 'wok' -%}
+{{ '
+       __                      __
+     (o) \____________________/ (o)
+          \                  /
+           \  ::: 78:22 ::: /
+            \______________//
+' }}
+    {%- elsif key contains 'tava' -%}
+{{ '
+        ____________________
+      .´                    `.__________
+     (     TAVA  DISC         )_________)
+      `----------------------´
+' }}
+    {%- elsif key contains 'donabe' or key contains 'dutch' or key contains 'braiser' or key contains 'handi' -%}
+{{ '
+             .-----.
+          .-´       `-._
+        _(______________)-.
+       (  TERRE CLAY CORE  )
+        \_________________/
+' }}
+    {%- elsif key contains 'tumbler' or key contains 'jug' or key contains 'teapot' -%}
+{{ '
+           .--------.
+          /  KANSA   \
+         |   VESSEL   |
+         |    880Hz   |
+          \__________/
+' }}
+    {%- elsif key contains 'clay' or key contains 'terre' or key contains 'kulhad' or key contains 'chai' or key contains 'platter' or key contains 'bowl' or key contains 'plate' -%}
+{{ '
+       .-~~~~~~~~-.
+      (____________)
+       \          /
+        \  ::::  /
+         \______/
+' }}
+    {%- else -%}
+{{ '
+      _____________
+    .´             `.____________________
+   (  FORGE HYBRID   )___________________)
+    `._____________.´
+' }}
+    {%- endif -%}
+  </pre>
+  <pre class="maison-machine__json"><code>{
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "sku": {{ variant.sku | default: product.handle | json }},
+  "category": {{ product.type | json }},
+  "price": {{ variant.price | money_without_currency | remove: ',' | json }},
+  "priceCurrency": {{ cart.currency.iso_code | json }},
+  "availability": "{% if variant.available %}InStock{% else %}OutOfStock{% endif %}"
+  {%- if specs.lineup.value != blank %},
+  "lineup": {{ specs.lineup.value | json }}{% endif %}
+  {%- if specs.primary_material.value != blank %},
+  "primaryMaterial": {{ specs.primary_material.value | json }}{% endif %}
+  {%- if specs.dimensions_summary.value != blank %},
+  "dimensions": {{ specs.dimensions_summary.value | json }}{% endif %}
+  {%- if heat != blank %},
+  "heatSources": {{ heat | json }}{% endif %}
+  {%- if specs.dishwasher_suitability.value != blank %},
+  "dishwasher": {{ specs.dishwasher_suitability.value | json }}{% endif %}
+  {%- if specs.claim_status.value != blank %},
+  "claimStatus": {{ specs.claim_status.value | json }}{% endif %}
+  {%- if full and specs.lining_material.value != blank %},
+  "liningMaterial": {{ specs.lining_material.value | json }}{% endif %}
+  {%- if full and specs.food_contact_suitability.value != blank %},
+  "foodContactSuitability": {{ specs.food_contact_suitability.value | json }}{% endif %}
+  {%- if full and specs.care_instructions.value != blank %},
+  "careInstructions": {{ specs.care_instructions.value | json }}{% endif %}
+}</code></pre>
+</div>
+
+{% stylesheet %}
+  .maison-machine {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    overflow: hidden;
+    background: var(--brand-color-obsidian-charcoal, #121212);
+    color: #d8c79c;
+    font-family: var(--font-mono--family, ui-monospace, monospace);
+    font-variant-numeric: tabular-nums slashed-zero;
+  }
+
+  .maison-machine pre {
+    margin: 0;
+    font: inherit;
+    white-space: pre;
+  }
+
+  .maison-machine__ascii {
+    font-size: clamp(0.5rem, 1.4cqi, 0.75rem);
+    line-height: 1.15;
+    color: var(--bell, #b8893a);
+  }
+
+  .maison-machine__json {
+    font-size: 0.6875rem;
+    line-height: 1.45;
+    overflow: hidden;
+    color: #e9e2cf;
+  }
+
+  .maison-machine--full {
+    height: auto;
+    padding: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .maison-machine--full .maison-machine__json {
+    font-size: 0.8125rem;
+    overflow-x: auto;
+  }
+{% endstylesheet %}

@@ -1,9 +1,9 @@
-{% doc %}
+{% comment %}
   V6 Finder as Ceremony (Thread S3).
   Interactive 5-question culinary diagnostic.
   Matches user cooking styles directly to Forge Hybrid, Terre Clay, or Kuro Strip pieces
   with animated reasoning chips and Strike audio feedback.
-{% enddoc %}
+{% endcomment %}
 
 <div class="maison-finder section section--page-width" id="finder" data-root="maison-finder-root">
   <div class="maison-finder__container">
@@ -248,22 +248,26 @@
   }
 
   .finder-opt-btn {
-    background: #151921;
-    border: 1px solid #2a3242;
-    padding: 1.25rem 1.5rem;
-    border-radius: 6px;
+    background: var(--glass-surface-dark, rgba(20, 17, 15, 0.75));
+    backdrop-filter: var(--glass-blur, blur(14px));
+    -webkit-backdrop-filter: var(--glass-blur, blur(14px));
+    border: 1px solid var(--glass-border-dark, rgba(247, 242, 233, 0.14));
+    padding: 1.25rem 1.6rem;
+    border-radius: var(--radius-card-sm, 0.875rem);
     text-align: left;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    transition: all 0.2s var(--ease-strike);
+    transition: all 0.25s var(--ease-strike);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   }
 
   .finder-opt-btn:hover {
-    background: #202735;
+    background: var(--glass-surface-dark-elevated, rgba(30, 26, 23, 0.82));
     border-color: var(--bell, #b8893a);
-    transform: translateX(4px);
+    transform: translateX(6px);
+    box-shadow: var(--glass-shadow-glow, 0 0 30px rgba(184, 137, 58, 0.25));
   }
 
   .opt-label {
@@ -279,11 +283,14 @@
 
   /* Results Card */
   .finder-result-card {
-    background: #141820;
+    background: var(--glass-surface-dark, rgba(20, 17, 15, 0.75));
+    backdrop-filter: var(--glass-blur, blur(14px));
+    -webkit-backdrop-filter: var(--glass-blur, blur(14px));
     border: 1.5px solid var(--bell, #b8893a);
-    border-radius: 8px;
-    padding: 2.25rem;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    border-radius: var(--radius-card, 1.5rem);
+    padding: 2.5rem;
+    box-shadow: var(--glass-shadow-lg, 0 20px 50px rgba(20, 17, 15, 0.22)),
+                var(--glass-shadow-glow, 0 0 30px rgba(184, 137, 58, 0.25));
     animation: finder-fade-in 0.4s var(--ease-strike);
   }
 
@@ -320,11 +327,11 @@
     font-family: var(--font-mono--family, monospace);
     font-size: 0.75rem;
     letter-spacing: 0.08em;
-    background: #1b222d;
-    border: 1px solid #334155;
-    color: #38bdf8;
-    padding: 0.35rem 0.75rem;
-    border-radius: 4px;
+    background: var(--glass-surface-bronze, rgba(184, 137, 58, 0.16));
+    border: 1px solid var(--glass-border-bronze, rgba(184, 137, 58, 0.35));
+    color: var(--bell, #b8893a);
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-pill, 62.5rem);
   }
 
   .finder-result-actions {
@@ -338,14 +345,16 @@
     color: #111;
     font-weight: 700;
     text-decoration: none;
-    padding: 0.85rem 1.75rem;
-    border-radius: 4px;
+    padding: 0.85rem 1.85rem;
+    border-radius: var(--radius-pill, 62.5rem);
     font-size: 0.95rem;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.2s var(--ease-strike), box-shadow 0.2s;
   }
 
   .finder-view-btn:hover {
     background: #d4a95d;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(184, 137, 58, 0.35);
   }
 
   .finder-restart-btn {
@@ -384,28 +393,34 @@
 
     const RECOMMENDATIONS = {
       forge: {
-        title: 'Forge Relay Dual-Mass Skillet (26cm)',
+        title: 'Forge Relay Dual-Mass Skillet (26 cm)',
         handle: 'forge-relay-dual-mass-skillet',
-        desc: '1.2mm carbon steel drop-forged in one heat with dual-mass base retention. Designed for aggressive high-searing and blistering flatbreads without warping.',
-        chips: ['✓ Certified Induction & Open Flame', '✓ Beeswax Sealed Patina', '✓ High Thermal Inertia']
+        desc: 'Nitrided carbon-steel vessel with a removable cast-bronze thermal ring. Responsive on induction or gas, then holds table warmth when docked.',
+        chips: ['✓ Induction & Gas Target', '✓ Removable Bronze Thermal Ring', '✓ [CONCEPT_SPEC]']
       },
       plancha: {
-        title: 'Forge Split-Field Plancha (46cm)',
+        title: 'Forge Split-Field Plancha (46 × 28 cm)',
         handle: 'forge-split-field-plancha',
-        desc: 'Massive 46cm carbon steel cookline plancha with zoned heat fields. Transition seamlessly between blistering high-heat searing and resting zones.',
-        chips: ['✓ Dual Heat Zone Topology', '✓ Broad Surface Capacity', '✓ Professional Cookline Mass']
+        desc: 'Twin-burner plancha dividing active carbon-steel searing from a stainless-lined bronze service zone for tableside pass workflows.',
+        chips: ['✓ Dual-Zone Searing + Service', '✓ 46 × 28 cm Shared Pass', '✓ [CONCEPT_SPEC]']
+      },
+      tava: {
+        title: 'Forge Relay Wide Tava (30 cm)',
+        handle: 'forge-relay-tava-30',
+        desc: 'Heavy-gauge nitrided carbon-steel tava with sweeping perimeter access for crisp dosas, flatbreads, and smash searing across induction or gas.',
+        chips: ['✓ 30 cm Flatbread & Dosa Field', '✓ Bronze-Isolated Handle', '✓ [CONCEPT_SPEC]']
       },
       terre: {
-        title: 'Terre Clay Braiser Vessel',
-        handle: 'terre-clay-braiser-vessel',
-        desc: 'High-fire stoneware clay with lead-free vitrified mineral slip. Radiates gentle thermal convection ideal for delicate slow-braises, stews, and table presentation.',
-        chips: ['✓ Thermal Convection Soak', '✓ Non-Reactive Vitrified Interior', '✓ Direct Table Presentation']
+        title: 'Forge–Terre Shared Tagine (32 cm)',
+        handle: 'forge-terre-tagine-32',
+        desc: 'Clad 18/10 stainless induction base paired with a high-fired earthenware condensation cone for slow braises, biryanis, and shared table service.',
+        chips: ['✓ Induction Base + Earthenware Cone', '✓ Slow Vapour-Return Braising', '✓ [CONCEPT_SPEC]']
       },
       knife: {
         title: "Kuro Strip 200 Chef's Knife",
         handle: 'kuro-strip-200-chefs-knife',
-        desc: 'VG10 core surrounded by 67 layers of Damascus steel at 60 HRC. Balanced poise and hand-ground micro-bevel for razor precision vegetable and protein prep.',
-        chips: ['✓ 67-Layer Damascus Clad', '✓ Charred Pakkawood Poise', '✓ Hand-Machined Relief']
+        desc: 'Thin 200 mm chef blade formed from a single continuous strip of steel with an exposed handle loop and replaceable textured grip sleeve.',
+        chips: ['✓ 200 mm Continuous Steel Strip', '✓ Replaceable Grip Sleeve', '✓ [CONCEPT_SPEC]']
       }
     };
 
@@ -427,7 +442,9 @@
         pick = RECOMMENDATIONS.knife;
       } else if (answers[1] === 'braise' || answers[2] === 'clay') {
         pick = RECOMMENDATIONS.terre;
-      } else if (answers[3] === 'family' || answers[1] === 'dosa') {
+      } else if (answers[1] === 'dosa') {
+        pick = RECOMMENDATIONS.tava;
+      } else if (answers[3] === 'family') {
         pick = RECOMMENDATIONS.plancha;
       }
 

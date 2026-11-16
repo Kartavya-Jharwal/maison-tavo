@@ -1,236 +1,1254 @@
-{% doc %}
-  V5 Care Ritual Scroller (Thread S4 / B2 / B5).
-  Five-step ceremony: Season, Cook, Clean, Dry, Oil.
-  Bilingual Devanagari + English sub-headers with large fluid numerals.
-{% enddoc %}
+{% comment %}
+  V7 Care Ritual — Dual Track (Thread S4 / B2 / B9).
+  Two parallel material ceremonies:
+    Track A — Forge Hybrid carbon steel + Kuro Strip blades (metal)
+    Track B — Terre Clay vessels (fired earth)
+  Tabs switch between tracks. Each track has its own numbered rite sequence.
+  Placed below the Kansa companion section on the homepage.
+  Motion: inView stagger, Strike audio on tab switches.
+  Fully brand-token CSS — no hardcoded hex that conflicts with STYLEGUIDE.
+{% endcomment %}
 
-<div class="maison-ritual section section--page-width" data-section-id="{{ section.id }}">
-  <header class="maison-ritual__header">
-    <div class="maison-ritual__kicker-row">
-      <span class="maison-ritual__badge">V5 CEREMONY</span>
-      <span class="maison-ritual__kicker">LIFETIME DISCIPLINE · KANSA RITUAL</span>
+<section
+  class="maison-ritual-v7 section section--page-width"
+  data-section-id="{{ section.id }}"
+  id="care-ritual"
+  aria-label="Care Ritual — Material Ceremonies"
+>
+
+  {%- comment -%} ── Header ──────────────────────────────────────────── {%- endcomment -%}
+  <header class="maison-ritual-v7__header">
+    <div class="maison-ritual-v7__kicker-row">
+      <span class="maison-ritual-v7__badge">LIFETIME DISCIPLINE</span>
+      <span class="maison-ritual-v7__kicker">KANSA CARE PROTOCOLS · MATERIAL CEREMONIES</span>
     </div>
-    <h2 class="maison-ritual__title">The Five Rites of Iron &amp; Clay</h2>
-    <p class="maison-ritual__lede">
-      Cookware without synthetic coatings demands an honest covenant. Five steps preserve the heirloom
-      across fifty years of fire.
+    <h2 class="maison-ritual-v7__title">
+      {{ section.settings.heading | default: 'Covenant of the Kitchen' }}
+    </h2>
+    <p class="maison-ritual-v7__lede">
+      {{ section.settings.lede | default: 'Two materials. Two disciplines. One covenant that outlasts a generation of cooking. Choose your surface and follow the rites that keep it alive.' }}
     </p>
   </header>
 
-  <div class="maison-ritual__track">
-    <!-- Step 1: Season -->
-    <article class="maison-ritual__step" data-step="1">
-      <div class="maison-ritual__num">01</div>
-      <div class="maison-ritual__content">
-        <div class="maison-ritual__devanagari">संस्कार · Season</div>
-        <h3 class="maison-ritual__name">The Polymer Covenant</h3>
-        <p class="maison-ritual__desc">
-          Beeswax and heat bond directly to the open pores of 1.0085 carbon steel. Struck at 1,100 °C, the mill scale
-          locks in lipid molecules, creating a naturally slick patina that darkens with every service.
-        </p>
-        <span class="maison-ritual__tag">HIGH HEAT POLYMERIZATION</span>
-      </div>
-    </article>
-
-    <!-- Step 2: Cook -->
-    <article class="maison-ritual__step" data-step="2">
-      <div class="maison-ritual__num">02</div>
-      <div class="maison-ritual__content">
-        <div class="maison-ritual__devanagari">कर्म · Cook</div>
-        <h3 class="maison-ritual__name">Thermal Discipline</h3>
-        <p class="maison-ritual__desc">
-          Allow two minutes of dry pre-heat on medium heat before oil enters the pan. Dual-mass metallurgy prevents base
-          warping and maintains temperature the moment cold protein contacts the surface.
-        </p>
-        <span class="maison-ritual__tag">2-MIN GRADUAL PRE-HEAT</span>
-      </div>
-    </article>
-
-    <!-- Step 3: Clean -->
-    <article class="maison-ritual__step" data-step="3">
-      <div class="maison-ritual__num">03</div>
-      <div class="maison-ritual__content">
-        <div class="maison-ritual__devanagari">शुद्धि · Clean</div>
-        <h3 class="maison-ritual__name">Steam &amp; Stiff Bristle</h3>
-        <p class="maison-ritual__desc">
-          Deglaze residue with hot water while the pan is warm. Clean with a natural bristle brush or coarse kosher salt.
-          Never soak in a sink. Never expose to synthetic detergents or dishwashing cycles.
-        </p>
-        <span class="maison-ritual__tag">ZERO SOAP · NEVER SOAK</span>
-      </div>
-    </article>
-
-    <!-- Step 4: Dry -->
-    <article class="maison-ritual__step" data-step="4">
-      <div class="maison-ritual__num">04</div>
-      <div class="maison-ritual__content">
-        <div class="maison-ritual__devanagari">अग्नि · Dry</div>
-        <h3 class="maison-ritual__name">Flame Evaporation</h3>
-        <p class="maison-ritual__desc">
-          Towel drying leaves microscopic moisture trapped in iron grain boundaries. Place the pan on low heat for 60 seconds
-          until all surface moisture fully vaporizes, arresting rust before it can nucleate.
-        </p>
-        <span class="maison-ritual__tag">60S STOVETOP DRYING</span>
-      </div>
-    </article>
-
-    <!-- Step 5: Oil -->
-    <article class="maison-ritual__step" data-step="5">
-      <div class="maison-ritual__num">05</div>
-      <div class="maison-ritual__content">
-        <div class="maison-ritual__devanagari">स्नेह · Oil</div>
-        <h3 class="maison-ritual__name">The Resting Seal</h3>
-        <p class="maison-ritual__desc">
-          While still warm, buff a single drop of neutral high-smoke lipid across the cooking face until the steel looks bone dry.
-          Store in open air, ready for the next call at the pass.
-        </p>
-        <span class="maison-ritual__tag">RESTING LIPID MEMBRANE</span>
-      </div>
-    </article>
+  {%- comment -%} ── Material Tab Switcher ────────────────────────────── {%- endcomment -%}
+  <div class="maison-ritual-v7__tabs" role="tablist" aria-label="Material track">
+    <button
+      class="maison-ritual-v7__tab is-active"
+      role="tab"
+      aria-selected="true"
+      aria-controls="ritual-track-metal"
+      id="ritual-tab-metal"
+      data-track="metal"
+      data-strike
+    >
+      <span class="tab-icon">⚒</span>
+      <span class="tab-label">Metal</span>
+      <span class="tab-sub">Carbon Steel · Bell Bronze · Damascus Blade</span>
+    </button>
+    <button
+      class="maison-ritual-v7__tab"
+      role="tab"
+      aria-selected="false"
+      aria-controls="ritual-track-clay"
+      id="ritual-tab-clay"
+      data-track="clay"
+      data-strike
+    >
+      <span class="tab-icon">◉</span>
+      <span class="tab-label">Clay</span>
+      <span class="tab-sub">Terre Fired Stoneware · Refractory Vessel</span>
+    </button>
   </div>
-</div>
+
+  {%- comment -%} ═══════════════════════════════════════════════════════
+      TRACK A — METAL (Forge Hybrid + Kuro Strip)
+  ═══════════════════════════════════════════════════════ {%- endcomment -%}
+  <div
+    class="maison-ritual-v7__track is-active"
+    id="ritual-track-metal"
+    role="tabpanel"
+    aria-labelledby="ritual-tab-metal"
+  >
+
+    <div class="maison-ritual-v7__track-intro">
+      <div class="track-intro__lineups">
+        <span class="lineup-chip lineup-chip--forge">FORGE HYBRID</span>
+        <span class="lineup-chip lineup-chip--kuro">KURO STRIP</span>
+      </div>
+      <p class="track-intro__meta">
+        <span class="mono">1.0085 Carbon Steel · VG10 Damascus 60 HRC</span><br>
+        No synthetic coatings. No PTFE. No forgiveness. The metal remembers every cook.
+      </p>
+    </div>
+
+    <div class="maison-ritual-v7__rites" data-ritual-track="metal">
+
+      {%- comment -%} ── RITE 1: SEASON ── {%- endcomment -%}
+      <article class="ritual-rite" data-rite="1">
+        <div class="ritual-rite__num-col">
+          <span class="ritual-rite__numeral">01</span>
+          <div class="ritual-rite__connector" aria-hidden="true"></div>
+        </div>
+        <div class="ritual-rite__body">
+          <div class="ritual-rite__eyebrow">
+            <span class="ritual-rite__devanagari">संस्कार</span>
+            <span class="ritual-rite__dot" aria-hidden="true">·</span>
+            <span class="ritual-rite__rite-name-en">Season</span>
+          </div>
+          <h3 class="ritual-rite__title">The Polymer Covenant</h3>
+          <p class="ritual-rite__desc">
+            Carbon steel's pores are open. Struck at 1,100 °C, the mill scale receives a first baptism
+            of beeswax or grapeseed oil — heat polymerizes the lipid into a glass-hard molecular chain
+            bonded to the iron grain. This is not a coating. It is a transformation. Dark spots are progress;
+            even black is correct.
+          </p>
+          <div class="ritual-rite__specs">
+            <dl class="spec-dl">
+              <div class="spec-dl__row">
+                <dt>OIL</dt>
+                <dd>Grapeseed · Beeswax blend · Flaxseed</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>TEMP</dt>
+                <dd>Until wisps of smoke appear (~230 °C)</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>CYCLES</dt>
+                <dd>Minimum 2× before first use · 15× for full glass patina</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="ritual-rite__tags">
+            <span class="ritual-tag">HIGH-HEAT POLYMERIZATION</span>
+            <span class="ritual-tag">LIPID GLASS PATINA</span>
+          </div>
+          <div class="ritual-rite__kuro-note" aria-label="Kuro Strip note">
+            <span class="kuro-pill">KURO STRIP</span>
+            Blades do not season. Apply camellia mineral oil to the flat of the blade after every wash —
+            never heat the knife.
+          </div>
+        </div>
+      </article>
+
+      {%- comment -%} ── RITE 2: PRE-HEAT ── {%- endcomment -%}
+      <article class="ritual-rite" data-rite="2">
+        <div class="ritual-rite__num-col">
+          <span class="ritual-rite__numeral">02</span>
+          <div class="ritual-rite__connector" aria-hidden="true"></div>
+        </div>
+        <div class="ritual-rite__body">
+          <div class="ritual-rite__eyebrow">
+            <span class="ritual-rite__devanagari">तप</span>
+            <span class="ritual-rite__dot" aria-hidden="true">·</span>
+            <span class="ritual-rite__rite-name-en">Pre-heat</span>
+          </div>
+          <h3 class="ritual-rite__title">Thermal Discipline — The Two-Minute Rule</h3>
+          <p class="ritual-rite__desc">
+            Dual-mass metallurgy requires two minutes of gradual dry heat before oil enters the vessel.
+            Start on medium-low, raise to medium. Oil added too early to a cold pan polymerizes unevenly
+            and creates sticky patches. Oil added to a correctly pre-heated pan skates across the surface —
+            that is the signal to cook.
+          </p>
+          <div class="ritual-rite__specs">
+            <dl class="spec-dl">
+              <div class="spec-dl__row">
+                <dt>DURATION</dt>
+                <dd>2 min dry · raise to medium before oil</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>SIGNAL</dt>
+                <dd>Water droplets bead and dance (Leidenfrost)</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>CAUTION</dt>
+                <dd>No rapid full-blast on induction — thermal shock warps the base</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="ritual-rite__tags">
+            <span class="ritual-tag">2-MIN GRADUAL PRE-HEAT</span>
+            <span class="ritual-tag">LEIDENFROST TEST</span>
+          </div>
+        </div>
+      </article>
+
+      {%- comment -%} ── RITE 3: COOK ── {%- endcomment -%}
+      <article class="ritual-rite" data-rite="3">
+        <div class="ritual-rite__num-col">
+          <span class="ritual-rite__numeral">03</span>
+          <div class="ritual-rite__connector" aria-hidden="true"></div>
+        </div>
+        <div class="ritual-rite__body">
+          <div class="ritual-rite__eyebrow">
+            <span class="ritual-rite__devanagari">कर्म</span>
+            <span class="ritual-rite__dot" aria-hidden="true">·</span>
+            <span class="ritual-rite__rite-name-en">Cook</span>
+          </div>
+          <h3 class="ritual-rite__title">Acids, Fat, and the First 15 Cycles</h3>
+          <p class="ritual-rite__desc">
+            Acids strip a young patina. Avoid heavy acidic reductions — wine, vinegar, citrus — during
+            the first 15 cooking cycles. After the patina darkens to black glass, the iron is fully
+            polymerized and tolerates brief acid contact. Fat amplifies patina: cook with butter and high-smoke
+            oils, not water-based sauces, in early service.
+          </p>
+          <div class="ritual-rite__specs">
+            <dl class="spec-dl">
+              <div class="spec-dl__row">
+                <dt>AVOID</dt>
+                <dd>Wine · Vinegar · Lemon (first 15 cycles)</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>PREFER</dt>
+                <dd>Butter · Lard · Ghee · Grapeseed</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>SIGNAL</dt>
+                <dd>Surface darkens to even matte black = healthy seasoning</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="ritual-rite__tags">
+            <span class="ritual-tag">ACID EMBARGO · 15 CYCLES</span>
+            <span class="ritual-tag">FAT AMPLIFIES PATINA</span>
+          </div>
+          <div class="ritual-rite__kuro-note" aria-label="Kuro Strip note">
+            <span class="kuro-pill">KURO STRIP</span>
+            VG10 Damascus tolerates acidic food briefly. Wipe the flat of the blade immediately after
+            cutting citrus, tomatoes, or shallots — acid relief etching is cosmetic, not structural.
+          </div>
+        </div>
+      </article>
+
+      {%- comment -%} ── RITE 4: CLEAN ── {%- endcomment -%}
+      <article class="ritual-rite" data-rite="4">
+        <div class="ritual-rite__num-col">
+          <span class="ritual-rite__numeral">04</span>
+          <div class="ritual-rite__connector" aria-hidden="true"></div>
+        </div>
+        <div class="ritual-rite__body">
+          <div class="ritual-rite__eyebrow">
+            <span class="ritual-rite__devanagari">शुद्धि</span>
+            <span class="ritual-rite__dot" aria-hidden="true">·</span>
+            <span class="ritual-rite__rite-name-en">Clean</span>
+          </div>
+          <h3 class="ritual-rite__title">Zero Soap. Never Soak.</h3>
+          <p class="ritual-rite__desc">
+            While the pan is still warm (not raging hot) — deglaze with hot water. The residue lifts cleanly.
+            Scrub with a natural bristle pan brush or coarse kosher salt on a folded cotton cloth.
+            For stubborn fond, boil a small amount of water in the pan to lift it.
+            Soap destroys the lipid patina. The dishwasher kills the steel.
+          </p>
+          <div class="ritual-rite__specs">
+            <dl class="spec-dl">
+              <div class="spec-dl__row">
+                <dt>TOOLS</dt>
+                <dd>Natural bristle brush · Kosher salt · Hot water</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>FORBIDDEN</dt>
+                <dd>Dish soap · Steel wool · Dishwasher · Long soaking</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>RUST?</dt>
+                <dd>Salt + oil paste scrub → rinse → stovetop dry → re-season</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="ritual-rite__tags">
+            <span class="ritual-tag">ZERO SOAP</span>
+            <span class="ritual-tag">NEVER SOAK</span>
+            <span class="ritual-tag">BRISTLE & SALT ONLY</span>
+          </div>
+          <div class="ritual-rite__kuro-note" aria-label="Kuro Strip note">
+            <span class="kuro-pill">KURO STRIP</span>
+            Hand wash the knife with mild soap immediately after cutting — acid proteins on the blade
+            accelerate micro-pitting. Never put in the dishwasher. Dry with a lint-free cloth.
+          </div>
+        </div>
+      </article>
+
+      {%- comment -%} ── RITE 5: DRY ── {%- endcomment -%}
+      <article class="ritual-rite" data-rite="5">
+        <div class="ritual-rite__num-col">
+          <span class="ritual-rite__numeral">05</span>
+          <div class="ritual-rite__connector" aria-hidden="true"></div>
+        </div>
+        <div class="ritual-rite__body">
+          <div class="ritual-rite__eyebrow">
+            <span class="ritual-rite__devanagari">अग्नि</span>
+            <span class="ritual-rite__dot" aria-hidden="true">·</span>
+            <span class="ritual-rite__rite-name-en">Dry</span>
+          </div>
+          <h3 class="ritual-rite__title">Flame Evaporation — 60 Seconds</h3>
+          <p class="ritual-rite__desc">
+            Towel drying leaves water molecules trapped in the iron grain boundaries invisible to the eye.
+            Those molecules nucleate rust within hours. Place the cleaned pan over low heat for exactly 60 seconds.
+            Watch the surface go matte. That is the signal — all moisture has vaporized. The pan is safe
+            to oil and store.
+          </p>
+          <div class="ritual-rite__specs">
+            <dl class="spec-dl">
+              <div class="spec-dl__row">
+                <dt>HEAT</dt>
+                <dd>Low flame or induction level 2 · 60 seconds</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>SIGNAL</dt>
+                <dd>Surface transitions from wet sheen → uniform matte</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="ritual-rite__tags">
+            <span class="ritual-tag">60S STOVETOP DRY</span>
+            <span class="ritual-tag">RUST PREVENTION</span>
+          </div>
+        </div>
+      </article>
+
+      {%- comment -%} ── RITE 6: OIL & STORE ── {%- endcomment -%}
+      <article class="ritual-rite" data-rite="6">
+        <div class="ritual-rite__num-col">
+          <span class="ritual-rite__numeral">06</span>
+          <!-- no connector on last rite -->
+        </div>
+        <div class="ritual-rite__body">
+          <div class="ritual-rite__eyebrow">
+            <span class="ritual-rite__devanagari">स्नेह</span>
+            <span class="ritual-rite__dot" aria-hidden="true">·</span>
+            <span class="ritual-rite__rite-name-en">Oil & Store</span>
+          </div>
+          <h3 class="ritual-rite__title">The Resting Membrane</h3>
+          <p class="ritual-rite__desc">
+            While still warm: drop a single half-teaspoon of high-smoke oil onto the cooking face.
+            Buff it thoroughly with a folded cotton cloth — keep buffing until the surface looks bone dry.
+            If it looks greasy, you used too much; that oil will go rancid. Store in open air, never
+            sealed in a drawer without ventilation. Ready for the next call at the pass.
+          </p>
+          <div class="ritual-rite__specs">
+            <dl class="spec-dl">
+              <div class="spec-dl__row">
+                <dt>OIL</dt>
+                <dd>Half-teaspoon · Grapeseed, beeswax, or camellia mineral</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>TEST</dt>
+                <dd>Surface must look bone dry after buffing — not greasy</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>STORE</dt>
+                <dd>Open air · Avoid sealed drawers · Hang or rack preferred</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="ritual-rite__tags">
+            <span class="ritual-tag">RESTING LIPID MEMBRANE</span>
+            <span class="ritual-tag">BONE-DRY RULE</span>
+          </div>
+          <div class="ritual-rite__kuro-note" aria-label="Kuro Strip note">
+            <span class="kuro-pill">KURO STRIP</span>
+            Hone at 15° per side on a 1 000/6 000 ceramic whetstone when the blade drags on paper.
+            Apply a thin film of camellia mineral oil to the flat before storage. Never cut frozen food or hard bones.
+          </div>
+        </div>
+      </article>
+
+    </div>{%- comment -%} /rites metal {%- endcomment -%}
+  </div>{%- comment -%} /track metal {%- endcomment -%}
+
+
+  {%- comment -%} ═══════════════════════════════════════════════════════
+      TRACK B — CLAY (Terre Clay)
+  ═══════════════════════════════════════════════════════ {%- endcomment -%}
+  <div
+    class="maison-ritual-v7__track"
+    id="ritual-track-clay"
+    role="tabpanel"
+    aria-labelledby="ritual-tab-clay"
+    hidden
+  >
+
+    <div class="maison-ritual-v7__track-intro">
+      <div class="track-intro__lineups">
+        <span class="lineup-chip lineup-chip--terre">TERRE CLAY</span>
+      </div>
+      <p class="track-intro__meta">
+        <span class="mono">High-fire stoneware · Feldspathic glaze · Lead-free vitrified slip</span><br>
+        Clay remembers heat differently. Never shock it. Never rush it. The vessel is a living object — thermal patience is not optional.
+      </p>
+    </div>
+
+    <div class="maison-ritual-v7__rites" data-ritual-track="clay">
+
+      {%- comment -%} ── CLAY RITE 1: THE FIRST SOAK ── {%- endcomment -%}
+      <article class="ritual-rite ritual-rite--clay" data-rite="1">
+        <div class="ritual-rite__num-col">
+          <span class="ritual-rite__numeral">01</span>
+          <div class="ritual-rite__connector" aria-hidden="true"></div>
+        </div>
+        <div class="ritual-rite__body">
+          <div class="ritual-rite__eyebrow">
+            <span class="ritual-rite__devanagari">जल संस्कार</span>
+            <span class="ritual-rite__dot" aria-hidden="true">·</span>
+            <span class="ritual-rite__rite-name-en">First Soak</span>
+          </div>
+          <h3 class="ritual-rite__title">Seasoning the Earth — Water Cure</h3>
+          <p class="ritual-rite__desc">
+            Before first use: fully submerge the vessel in cold water for 15 minutes. The unglazed exterior
+            and base absorb water into the fired clay matrix. This creates a thermal buffer — the absorbed moisture
+            vaporizes slowly during cooking, distributing heat evenly and preventing micro-fracture from localised
+            thermal stress. This is the clay's equivalent of seasoning.
+          </p>
+          <div class="ritual-rite__specs">
+            <dl class="spec-dl">
+              <div class="spec-dl__row">
+                <dt>WATER</dt>
+                <dd>Cold, still · Full submersion · 15 minutes</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>REPEAT</dt>
+                <dd>Before every cooking session for the first 5 uses</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>WHY</dt>
+                <dd>Thermal buffer prevents micro-fracture nucleation under heat</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="ritual-rite__tags">
+            <span class="ritual-tag ritual-tag--clay">WATER CURE</span>
+            <span class="ritual-tag ritual-tag--clay">THERMAL BUFFER</span>
+          </div>
+        </div>
+      </article>
+
+      {%- comment -%} ── CLAY RITE 2: SLOW HEAT ── {%- endcomment -%}
+      <article class="ritual-rite ritual-rite--clay" data-rite="2">
+        <div class="ritual-rite__num-col">
+          <span class="ritual-rite__numeral">02</span>
+          <div class="ritual-rite__connector" aria-hidden="true"></div>
+        </div>
+        <div class="ritual-rite__body">
+          <div class="ritual-rite__eyebrow">
+            <span class="ritual-rite__devanagari">धीरे-धीरे</span>
+            <span class="ritual-rite__dot" aria-hidden="true">·</span>
+            <span class="ritual-rite__rite-name-en">Slow Heat</span>
+          </div>
+          <h3 class="ritual-rite__title">Thermal Patience — Never Shock the Earth</h3>
+          <p class="ritual-rite__desc">
+            Clay cannot absorb thermal shock. Place the vessel into a cold oven and raise temperature gradually —
+            or use a heat diffuser on a gas flame. Never place a cold vessel on a high flame or into a raging oven.
+            Start from ambient. Raise by 50 °C increments every 5 minutes. The clay will sing to you as it settles —
+            hairline pops are normal expansion sounds, not cracking.
+          </p>
+          <div class="ritual-rite__specs">
+            <dl class="spec-dl">
+              <div class="spec-dl__row">
+                <dt>GAS</dt>
+                <dd>Always with a heat diffuser plate · Start on minimum flame</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>OVEN</dt>
+                <dd>Cold start · Max 260 °C · Raise slowly</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>FORBIDDEN</dt>
+                <dd>Induction · High direct heat · Broiler element</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="ritual-rite__tags">
+            <span class="ritual-tag ritual-tag--clay">GRADUAL HEAT ONLY</span>
+            <span class="ritual-tag ritual-tag--clay">MAX 260 °C</span>
+            <span class="ritual-tag ritual-tag--clay">DIFFUSER ON GAS</span>
+          </div>
+        </div>
+      </article>
+
+      {%- comment -%} ── CLAY RITE 3: COOK ── {%- endcomment -%}
+      <article class="ritual-rite ritual-rite--clay" data-rite="3">
+        <div class="ritual-rite__num-col">
+          <span class="ritual-rite__numeral">03</span>
+          <div class="ritual-rite__connector" aria-hidden="true"></div>
+        </div>
+        <div class="ritual-rite__body">
+          <div class="ritual-rite__eyebrow">
+            <span class="ritual-rite__devanagari">पकाना</span>
+            <span class="ritual-rite__dot" aria-hidden="true">·</span>
+            <span class="ritual-rite__rite-name-en">Cook</span>
+          </div>
+          <h3 class="ritual-rite__title">Convection Braise — The Clay's Native Element</h3>
+          <p class="ritual-rite__desc">
+            Terre Clay vessels excel at slow thermal convection. Braises, dals, tagines, slow roasts, and
+            fermentation vessels are the ideal use. The feldspathic glaze interior is non-reactive and highly
+            acid-resistant — wine, tomato, and citrus braises are encouraged and will not damage the vitrified surface.
+            Never attempt a dry sear or high-heat reduction inside the vessel.
+          </p>
+          <div class="ritual-rite__specs">
+            <dl class="spec-dl">
+              <div class="spec-dl__row">
+                <dt>IDEAL</dt>
+                <dd>Braises · Dals · Tagines · Slow roasts · Ferments</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>ACIDS</dt>
+                <dd>Wine · Tomato · Citrus — all safe on glazed interior</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>AVOID</dt>
+                <dd>Dry sear · Rapid reduction · Empty vessel over heat</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="ritual-rite__tags">
+            <span class="ritual-tag ritual-tag--clay">SLOW CONVECTION</span>
+            <span class="ritual-tag ritual-tag--clay">ACID-SAFE GLAZE</span>
+          </div>
+        </div>
+      </article>
+
+      {%- comment -%} ── CLAY RITE 4: COOL ── {%- endcomment -%}
+      <article class="ritual-rite ritual-rite--clay" data-rite="4">
+        <div class="ritual-rite__num-col">
+          <span class="ritual-rite__numeral">04</span>
+          <div class="ritual-rite__connector" aria-hidden="true"></div>
+        </div>
+        <div class="ritual-rite__body">
+          <div class="ritual-rite__eyebrow">
+            <span class="ritual-rite__devanagari">ठंडा होना</span>
+            <span class="ritual-rite__dot" aria-hidden="true">·</span>
+            <span class="ritual-rite__rite-name-en">Cool</span>
+          </div>
+          <h3 class="ritual-rite__title">Patience After Service — Room Temperature Return</h3>
+          <p class="ritual-rite__desc">
+            After cooking, allow the vessel to return to room temperature entirely before washing.
+            Never plunge a hot clay vessel into cold water — the thermal shock will induce tensile stress
+            fractures that may not be visible for weeks before they become catastrophic. Rest the vessel
+            on a wooden surface or trivet; avoid placing it directly on a cold stone countertop.
+          </p>
+          <div class="ritual-rite__specs">
+            <dl class="spec-dl">
+              <div class="spec-dl__row">
+                <dt>RULE</dt>
+                <dd>Always cool to room temperature before washing · No exceptions</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>REST ON</dt>
+                <dd>Wooden trivet · Cloth · Never cold stone or metal</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>FORBIDDEN</dt>
+                <dd>Cold water plunge · Refrigerator direct from flame</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="ritual-rite__tags">
+            <span class="ritual-tag ritual-tag--clay">ROOM-TEMP RETURN</span>
+            <span class="ritual-tag ritual-tag--clay">NO THERMAL SHOCK</span>
+          </div>
+        </div>
+      </article>
+
+      {%- comment -%} ── CLAY RITE 5: WASH ── {%- endcomment -%}
+      <article class="ritual-rite ritual-rite--clay" data-rite="5">
+        <div class="ritual-rite__num-col">
+          <span class="ritual-rite__numeral">05</span>
+          <div class="ritual-rite__connector" aria-hidden="true"></div>
+        </div>
+        <div class="ritual-rite__body">
+          <div class="ritual-rite__eyebrow">
+            <span class="ritual-rite__devanagari">धोना</span>
+            <span class="ritual-rite__dot" aria-hidden="true">·</span>
+            <span class="ritual-rite__rite-name-en">Wash</span>
+          </div>
+          <h3 class="ritual-rite__title">Warm Water & Soft Sponge Only</h3>
+          <p class="ritual-rite__desc">
+            Wash with warm water and a soft natural sponge. Mild soap is permissible on the
+            vitrified interior glaze. The unglazed exterior base absorbs soap if soaked — keep the base dry
+            and wash the cooking interior only. Scrub pads and abrasive cleaners will scratch the glaze
+            and compromise its non-reactive surface over time.
+          </p>
+          <div class="ritual-rite__specs">
+            <dl class="spec-dl">
+              <div class="spec-dl__row">
+                <dt>TOOLS</dt>
+                <dd>Soft sponge · Warm water · Mild soap (interior only)</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>FORBIDDEN</dt>
+                <dd>Abrasive pads · Dishwasher · Prolonged soaking of base</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>EXTERIOR</dt>
+                <dd>Wipe unglazed base dry — do not soap-soak it</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="ritual-rite__tags">
+            <span class="ritual-tag ritual-tag--clay">SOFT SPONGE ONLY</span>
+            <span class="ritual-tag ritual-tag--clay">NO DISHWASHER</span>
+          </div>
+        </div>
+      </article>
+
+      {%- comment -%} ── CLAY RITE 6: STORE ── {%- endcomment -%}
+      <article class="ritual-rite ritual-rite--clay" data-rite="6">
+        <div class="ritual-rite__num-col">
+          <span class="ritual-rite__numeral">06</span>
+          <!-- no connector -->
+        </div>
+        <div class="ritual-rite__body">
+          <div class="ritual-rite__eyebrow">
+            <span class="ritual-rite__devanagari">भंडारण</span>
+            <span class="ritual-rite__dot" aria-hidden="true">·</span>
+            <span class="ritual-rite__rite-name-en">Store</span>
+          </div>
+          <h3 class="ritual-rite__title">Open Air — Lid Ajar</h3>
+          <p class="ritual-rite__desc">
+            Store the Terre vessel completely dry. Store with the lid slightly ajar — a closed sealed lid traps
+            residual moisture in the clay body and encourages mould in the porous base over time.
+            Never seal the vessel inside a closed cabinet immediately after washing.
+            Store in open air on a shelf where air can circulate freely.
+          </p>
+          <div class="ritual-rite__specs">
+            <dl class="spec-dl">
+              <div class="spec-dl__row">
+                <dt>RULE</dt>
+                <dd>Completely dry before storage</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>LID</dt>
+                <dd>Always store slightly ajar — never sealed</dd>
+              </div>
+              <div class="spec-dl__row">
+                <dt>LOCATION</dt>
+                <dd>Open shelf · Circulating air · Away from cold damp surfaces</dd>
+              </div>
+            </dl>
+          </div>
+          <div class="ritual-rite__tags">
+            <span class="ritual-tag ritual-tag--clay">LID AJAR</span>
+            <span class="ritual-tag ritual-tag--clay">BONE DRY STORAGE</span>
+          </div>
+        </div>
+      </article>
+
+    </div>{%- comment -%} /rites clay {%- endcomment -%}
+  </div>{%- comment -%} /track clay {%- endcomment -%}
+
+  {%- comment -%} ── Closing covenant footer ───────────────────────── {%- endcomment -%}
+  <footer class="maison-ritual-v7__covenant">
+    <div class="covenant__rule" aria-hidden="true"></div>
+    <p class="covenant__copy">
+      Maison Tavo cookware carries no synthetic coatings and no disposable lifecycle.
+      Every rite in this protocol is a practice, not a burden — the vessel improves with every cook.
+      <strong>Care is the product.</strong>
+    </p>
+    <div class="covenant__links">
+      <a href="#finder" class="covenant-link" data-strike>Find your material →</a>
+      <a href="{{ section.settings.kansa_url | default: '#' }}" class="covenant-link" data-strike>Ask Kansa a care question →</a>
+    </div>
+  </footer>
+
+</section>
+
+{%- comment -%} ── Tab interaction script ───────────────────────────────── {%- endcomment -%}
+<script>
+(function () {
+  var section = document.querySelector('[data-section-id="{{ section.id }}"]');
+  if (!section) return;
+
+  var tabs = section.querySelectorAll('.maison-ritual-v7__tab');
+  var tracks = section.querySelectorAll('.maison-ritual-v7__track');
+  var rites = section.querySelectorAll('.ritual-rite');
+
+  // --- Tab switch ---
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var target = tab.dataset.track;
+
+      tabs.forEach(function (t) {
+        t.classList.remove('is-active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('is-active');
+      tab.setAttribute('aria-selected', 'true');
+
+      tracks.forEach(function (track) {
+        if (track.id === 'ritual-track-' + target) {
+          track.classList.add('is-active');
+          track.removeAttribute('hidden');
+          // Stagger-animate rites in view
+          if (window.MaisonRuntime && window.MaisonRuntime.animate) {
+            var activeRites = track.querySelectorAll('.ritual-rite');
+            activeRites.forEach(function (rite, i) {
+              rite.style.opacity = '0';
+              rite.style.transform = 'translateY(1.2rem)';
+              window.setTimeout(function () {
+                window.MaisonRuntime.animate(
+                  rite,
+                  { opacity: [0, 1], transform: ['translateY(1.2rem)', 'none'] },
+                  { duration: 0.4, easing: [0.16, 1, 0.3, 1] }
+                );
+              }, i * 60);
+            });
+          }
+        } else {
+          track.classList.remove('is-active');
+          track.setAttribute('hidden', '');
+        }
+      });
+    });
+  });
+
+  // --- inView stagger on page load ---
+  if (window.MaisonRuntime && window.MaisonRuntime.inView) {
+    window.MaisonRuntime.inView(
+      '[data-ritual-track="metal"] .ritual-rite',
+      function (el) {
+        window.MaisonRuntime.animate(
+          el,
+          { opacity: [0, 1], transform: ['translateX(-1rem)', 'none'] },
+          { duration: 0.5, easing: [0.16, 1, 0.3, 1] }
+        );
+      },
+      { amount: 0.15 }
+    );
+  }
+})();
+</script>
 
 {% stylesheet %}
-  .maison-ritual {
-    padding-block: 4rem 5.5rem;
-    color: var(--color-foreground);
-    border-block-start: 1px solid var(--color-border);
+  /* ── Root overrides ─────────────────────────────────── */
+  .maison-ritual-v7 {
+    padding-block: clamp(4rem, 7vw, 7rem) clamp(5rem, 9vw, 9rem);
+    border-block-start: 1px solid var(--color-border, rgba(26,23,20,0.12));
+    --ritual-metal-accent: var(--brand-color-raw-copper, #C4784A);
+    --ritual-clay-accent:  var(--brand-color-aged-bronze, #6E5A3D);
+    --ritual-ink:          var(--brand-color-obsidian-charcoal, #1A1714);
+    --ritual-canvas:       var(--brand-color-cast-clay, #E8DFD4);
+    --ritual-silver:       var(--brand-color-damascus-silver, #9A9B9E);
   }
 
-  .maison-ritual__header {
-    max-width: 44rem;
-    margin-block-end: 3.5rem;
+  /* ── Header ─────────────────────────────────────────── */
+  .maison-ritual-v7__header {
+    max-width: 54rem;
+    margin-block-end: 3rem;
   }
 
-  .maison-ritual__kicker-row {
+  .maison-ritual-v7__kicker-row {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin-block-end: 0.75rem;
+    margin-block-end: 1rem;
+    flex-wrap: wrap;
   }
 
-  .maison-ritual__badge {
+  .maison-ritual-v7__badge {
     font-family: var(--font-mono--family, monospace);
     font-size: 0.65rem;
     letter-spacing: 0.14em;
-    padding: 0.2rem 0.55rem;
-    background: var(--bell, #b8893a);
-    color: #111;
+    padding: 0.22rem 0.6rem;
+    background: var(--ritual-metal-accent);
+    color: var(--ritual-canvas);
     font-weight: 700;
     border-radius: 2px;
   }
 
-  .maison-ritual__kicker {
+  .maison-ritual-v7__kicker {
     font-family: var(--font-mono--family, monospace);
     font-size: 0.7rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--brand-color-aged-bronze, #8c7355);
+    color: var(--ritual-silver);
   }
 
-  .maison-ritual__title {
-    margin: 0 0 1rem;
-    font-family: var(--font-fraunces--family, var(--font-heading--family));
-    font-size: clamp(2rem, 1.5rem + 2vw, 3.2rem);
-    font-weight: var(--font-heading--weight);
-    letter-spacing: 0.02em;
-    line-height: 1.1;
+  .maison-ritual-v7__title {
+    margin: 0 0 0.75rem;
+    font-family: var(--brand-font-heading, var(--font-heading--family));
+    font-size: clamp(2rem, 1.4rem + 2.5vw, 3.5rem);
+    font-weight: var(--font-heading--weight, 400);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    color: var(--color-foreground);
   }
 
-  .maison-ritual__lede {
+  .maison-ritual-v7__lede {
     margin: 0;
-    font-size: 1.125rem;
+    font-size: clamp(1rem, 0.9rem + 0.3vw, 1.2rem);
     line-height: 1.65;
-    color: var(--color-foreground-muted);
+    color: var(--color-foreground-muted, rgba(26,23,20,0.7));
+    max-width: 52ch;
   }
 
-  /* 5-step grid / timeline */
-  .maison-ritual__track {
+  /* ── Tabs ────────────────────────────────────────────── */
+  .maison-ritual-v7__tabs {
+    display: flex;
+    gap: 0;
+    margin-block-end: 3rem;
+    border-bottom: 2px solid var(--color-border, rgba(26,23,20,0.12));
+  }
+
+  .maison-ritual-v7__tab {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    padding: 1rem 2rem 1rem 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    color: var(--color-foreground-muted, rgba(26,23,20,0.5));
+    transition: color 0.25s ease, border-color 0.25s ease;
+    text-align: left;
+  }
+
+  .maison-ritual-v7__tab.is-active {
+    color: var(--color-foreground);
+    border-bottom-color: var(--ritual-metal-accent);
+  }
+
+  .maison-ritual-v7__tab[data-track="clay"].is-active {
+    border-bottom-color: var(--ritual-clay-accent);
+  }
+
+  .tab-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+    margin-bottom: 0.1rem;
+  }
+
+  .tab-label {
+    font-family: var(--brand-font-heading, var(--font-heading--family));
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+
+  .tab-sub {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  /* ── Track intro ─────────────────────────────────────── */
+  .maison-ritual-v7__track-intro {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-block-end: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .track-intro__lineups {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .lineup-chip {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 0.3rem 0.7rem;
+    border-radius: 2px;
+  }
+
+  .lineup-chip--forge {
+    background: var(--ritual-ink);
+    color: var(--ritual-metal-accent);
+  }
+
+  .lineup-chip--kuro {
+    background: var(--ritual-silver, #9A9B9E);
+    color: var(--ritual-ink);
+  }
+
+  .lineup-chip--terre {
+    background: var(--ritual-clay-accent, #6E5A3D);
+    color: var(--ritual-canvas, #E8DFD4);
+  }
+
+  .track-intro__meta {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-foreground-muted, rgba(26,23,20,0.65));
+    margin: 0;
+  }
+
+  .mono {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Rites list ──────────────────────────────────────── */
+  .maison-ritual-v7__rites {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 0;
   }
 
-  @media screen and (min-width: 750px) {
-    .maison-ritual__track {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 1.5rem;
+  .ritual-rite {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 2rem;
+    padding: 2.25rem 1.25rem;
+    border-bottom: 1px solid var(--color-border, rgba(26,23,20,0.08));
+    border-radius: var(--radius-card-sm, 0.875rem);
+    transition: background 0.3s ease, transform var(--dur-mid, 420ms) var(--ease-strike, cubic-bezier(.2, .8, .2, 1)), box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateX(-1rem);
+    animation: ritual-rite-in 0.5s var(--brand-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)) both;
+  }
+
+  .ritual-rite:hover {
+    background: var(--glass-surface-light, rgba(247, 242, 233, 0.72));
+    backdrop-filter: var(--glass-blur-sm, blur(8px));
+    -webkit-backdrop-filter: var(--glass-blur-sm, blur(8px));
+    box-shadow: var(--glass-shadow, 0 10px 35px rgba(20, 17, 15, 0.08));
+  }
+
+  /* Stagger each rite */
+  .ritual-rite[data-rite="1"] { animation-delay: 0.05s; }
+  .ritual-rite[data-rite="2"] { animation-delay: 0.12s; }
+  .ritual-rite[data-rite="3"] { animation-delay: 0.19s; }
+  .ritual-rite[data-rite="4"] { animation-delay: 0.26s; }
+  .ritual-rite[data-rite="5"] { animation-delay: 0.33s; }
+  .ritual-rite[data-rite="6"] { animation-delay: 0.40s; }
+
+  @keyframes ritual-rite-in {
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ritual-rite {
+      animation: none;
+      opacity: 1;
+      transform: none;
     }
   }
 
-  .maison-ritual__step {
-    background: #14171d;
-    border: 1px solid #232832;
-    border-radius: 6px;
-    padding: 1.75rem 1.25rem;
+  .ritual-rite:last-child {
+    border-bottom: none;
+  }
+
+  /* ── Num column ──────────────────────────────────────── */
+  .ritual-rite__num-col {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    transition: transform 0.25s var(--ease-strike), border-color 0.25s var(--ease-strike);
+    align-items: flex-end;
+    padding-top: 0.1rem;
+    gap: 0;
   }
 
-  .maison-ritual__step:hover {
-    transform: translateY(-4px);
-    border-color: var(--bell, #b8893a);
-  }
-
-  .maison-ritual__num {
-    font-family: var(--font-fraunces--family, Georgia, serif);
-    font-size: 2.75rem;
+  .ritual-rite__numeral {
+    font-family: var(--brand-font-heading, Georgia, serif);
+    font-size: clamp(2.5rem, 1.5rem + 2vw, 4rem);
     font-weight: 300;
-    line-height: 1;
-    color: var(--bell, #b8893a);
-    opacity: 0.8;
-    margin-block-end: 1rem;
+    line-height: 0.9;
+    color: var(--ritual-metal-accent);
+    opacity: 0.75;
+    display: block;
   }
 
-  .maison-ritual__devanagari {
+  .ritual-rite--clay .ritual-rite__numeral {
+    color: var(--ritual-clay-accent);
+  }
+
+  .ritual-rite__connector {
+    flex: 1;
+    width: 1px;
+    background: var(--color-border, rgba(26,23,20,0.1));
+    margin-block: 0.6rem 0;
+    margin-inline-end: 0.5rem;
+    min-height: 1.5rem;
+  }
+
+  /* ── Body ────────────────────────────────────────────── */
+  .ritual-rite__body {
+    padding-block: 0.1rem 0.5rem;
+  }
+
+  .ritual-rite__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-block-end: 0.5rem;
+  }
+
+  .ritual-rite__devanagari {
     font-family: var(--font-body--family, sans-serif);
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    color: #94a3b8;
-    text-transform: uppercase;
-    margin-block-end: 0.35rem;
+    font-size: 1rem;
+    color: var(--ritual-metal-accent);
+    letter-spacing: 0.02em;
   }
 
-  .maison-ritual__name {
+  .ritual-rite--clay .ritual-rite__devanagari {
+    color: var(--ritual-clay-accent);
+  }
+
+  .ritual-rite__dot {
+    color: var(--ritual-silver);
+    font-size: 0.75rem;
+  }
+
+  .ritual-rite__rite-name-en {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ritual-silver);
+  }
+
+  .ritual-rite__title {
     margin: 0 0 0.75rem;
-    font-family: var(--font-fraunces--family, var(--font-heading--family));
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: #f8fafc;
+    font-family: var(--brand-font-heading, var(--font-heading--family));
+    font-size: clamp(1.1rem, 0.9rem + 0.5vw, 1.4rem);
+    font-weight: 400;
+    color: var(--color-foreground);
     line-height: 1.25;
   }
 
-  .maison-ritual__desc {
+  .ritual-rite__desc {
     margin: 0 0 1.25rem;
-    font-size: 0.875rem;
-    line-height: 1.65;
-    color: #94a3b8;
+    font-size: 0.95rem;
+    line-height: 1.72;
+    color: var(--color-foreground-muted, rgba(26,23,20,0.7));
+    max-width: 70ch;
   }
 
-  .maison-ritual__tag {
+  /* ── Spec DL ─────────────────────────────────────────── */
+  .spec-dl {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    margin: 0 0 1.25rem;
+    padding: 1.1rem 1.35rem;
+    background: var(--glass-surface-light, rgba(247, 242, 233, 0.72));
+    backdrop-filter: var(--glass-blur-sm, blur(8px));
+    -webkit-backdrop-filter: var(--glass-blur-sm, blur(8px));
+    border: 1px solid var(--glass-border-light-subtle, rgba(20, 17, 15, 0.08));
+    border-left: 3px solid var(--ritual-metal-accent);
+    border-radius: var(--radius-card-sm, 0.875rem);
+    box-shadow: 0 4px 16px rgba(20, 17, 15, 0.04);
+  }
+
+  .ritual-rite--clay .spec-dl {
+    border-left-color: var(--ritual-clay-accent);
+  }
+
+  .spec-dl__row {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  .spec-dl__row dt {
     font-family: var(--font-mono--family, monospace);
     font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ritual-metal-accent);
+    padding-top: 0.1rem;
+    white-space: nowrap;
+  }
+
+  .ritual-rite--clay .spec-dl__row dt {
+    color: var(--ritual-clay-accent);
+  }
+
+  .spec-dl__row dd {
+    margin: 0;
+    color: var(--color-foreground-muted, rgba(26,23,20,0.75));
+  }
+
+  /* ── Tags ────────────────────────────────────────────── */
+  .ritual-rite__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-block-end: 1rem;
+  }
+
+  .ritual-tag {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.62rem;
     letter-spacing: 0.1em;
-    padding: 0.25rem 0.5rem;
-    border: 1px solid #334155;
-    color: #cbd5e1;
-    border-radius: 3px;
-    align-self: flex-start;
+    padding: 0.28rem 0.65rem;
+    border: 1px solid var(--ritual-metal-accent);
+    color: var(--ritual-metal-accent);
+    background: var(--glass-surface-light, rgba(247, 242, 233, 0.72));
+    border-radius: var(--radius-pill, 62.5rem);
+    text-transform: uppercase;
+    transition: transform 0.2s ease;
+  }
+
+  .ritual-tag:hover {
+    transform: translateY(-1px);
+  }
+
+  .ritual-tag--clay {
+    border-color: var(--ritual-clay-accent);
+    color: var(--ritual-clay-accent);
+  }
+
+  /* ── Kuro Strip cross-note ───────────────────────────── */
+  .ritual-rite__kuro-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: rgba(154,155,158,0.08);
+    border-left: 2px solid var(--ritual-silver, #9A9B9E);
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--color-foreground-muted, rgba(26,23,20,0.65));
+    border-radius: 0 2px 2px 0;
+  }
+
+  .kuro-pill {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 0.2rem 0.45rem;
+    background: var(--ritual-silver, #9A9B9E);
+    color: var(--ritual-ink, #1A1714);
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  /* ── Covenant footer ─────────────────────────────────── */
+  .maison-ritual-v7__covenant {
+    margin-block-start: 4rem;
+    padding-block-start: 2.5rem;
+    border-block-start: 1px solid var(--color-border, rgba(26,23,20,0.1));
+  }
+
+  .covenant__rule {
+    width: 3rem;
+    height: 2px;
+    background: var(--ritual-metal-accent);
+    margin-block-end: 1.5rem;
+  }
+
+  .covenant__copy {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--color-foreground-muted, rgba(26,23,20,0.7));
+    max-width: 55ch;
+    margin: 0 0 1.5rem;
+  }
+
+  .covenant__copy strong {
+    color: var(--color-foreground);
+    font-weight: 600;
+  }
+
+  .covenant__links {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .covenant-link {
+    font-family: var(--font-mono--family, monospace);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ritual-metal-accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .covenant-link:hover {
+    border-bottom-color: var(--ritual-metal-accent);
+  }
+
+  /* ── Responsive ──────────────────────────────────────── */
+  @media (max-width: 749px) {
+    .ritual-rite {
+      grid-template-columns: 3.5rem 1fr;
+      gap: 1rem;
+    }
+
+    .ritual-rite__numeral {
+      font-size: 2rem;
+    }
+
+    .spec-dl__row {
+      grid-template-columns: 4rem 1fr;
+    }
+
+    .maison-ritual-v7__tab {
+      padding-inline-end: 1rem;
+    }
+
+    .tab-sub {
+      display: none;
+    }
+
+    .ritual-rite__kuro-note {
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .ritual-rite {
+      grid-template-columns: 1fr;
+    }
+
+    .ritual-rite__num-col {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .ritual-rite__connector {
+      display: none;
+    }
   }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "Care Ritual Scroller",
+  "name": "Care Ritual V7",
   "tag": "section",
   "class": "section-wrapper",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Covenant of the Kitchen"
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "Lede paragraph",
+      "default": "Two materials. Two disciplines. One covenant that outlasts a generation of cooking. Choose your surface and follow the rites that keep it alive."
+    },
+    {
+      "type": "url",
+      "id": "kansa_url",
+      "label": "Link for 'Ask Kansa' (default #)"
+    }
+  ],
   "presets": [
     {
-      "name": "Care Ritual Scroller (V5)",
+      "name": "Care Ritual V7 — Dual Track",
       "category": "Maison Tavo"
     }
   ]

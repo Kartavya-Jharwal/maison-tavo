@@ -1,5 +1,29 @@
 import { animate, inView, scroll, stagger } from 'motion';
 import { createStore } from 'zustand/vanilla';
+import { initHorizonScroll } from './horizon-scroll.js';
+
+/**
+ * Lightweight Spring Physics Helper
+ * Attribution & Inspiration: [Abdughafur Khujzoda on CodePen](https://codepen.io/Abdughafur-Khujzoda)
+ */
+function spring(element, property, target, options = {}) {
+  const tension = options.tension || 210;
+  const friction = options.friction || 24;
+  const state = spring.states || (spring.states = new WeakMap());
+  let data = state.get(element);
+  if (!data) data = {};
+  if (!data[property]) data[property] = { value: 0, velocity: 0, target: 0 };
+  const s = data[property];
+  s.target = target;
+  state.set(element, data);
+  function tick(dt) {
+    const acceleration = -tension * (s.value - s.target) - friction * s.velocity;
+    s.velocity += acceleration * dt;
+    s.value += s.velocity * dt;
+    return Math.abs(s.value - s.target) < 0.001 && Math.abs(s.velocity) < 0.001;
+  }
+  return { state: s, tick };
+}
 
 /**
  * Vanilla storefront runtime for Liquid islands.
@@ -11,6 +35,7 @@ const MaisonRuntime = {
   inView,
   scroll,
   createStore,
+  spring,
 };
 
 globalThis.MaisonRuntime = MaisonRuntime;
@@ -74,7 +99,185 @@ function triggerStrike(e) {
   playTempleBell();
 }
 
+const PROFILE_KEY = 'mt_user_profile';
+const SOUND_KEY = 'maison:sound-enabled';
+const PROFILER_LATER_KEY = 'mt_profiler_later';
+const VIEWS_KEY = 'mt_product_views';
+
+// Horizon scrolls `.page-wrapper` instead of the window from 990px up.
+function getScroller() {
+  const wrapper = document.querySelector('.page-wrapper');
+  if (wrapper && wrapper.scrollHeight > wrapper.clientHeight + 1) return wrapper;
+  return document.scrollingElement || document.documentElement;
+}
+
+function readProfile() {
+  try {
+    return JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null');
+  } catch {
+    return null;
+  }
+}
+
+function soundEnabled() {
+  try {
+    return localStorage.getItem(SOUND_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+const FIT_COPY = {
+  induction: 'Ideal for your induction stove',
+  flame: 'Made for your open flame',
+  sear: 'Built for high-heat searing',
+  simmer: 'Suited to your slow simmer',
+};
+
+function tagProfileFits(root = document) {
+  const profile = readProfile();
+  root.querySelectorAll('[data-mt-heat]').forEach((card) => {
+    const chip = card.querySelector('[data-mt-fit]');
+    if (!chip) return;
+    if (!profile) {
+      chip.hidden = true;
+      return;
+    }
+    const heat = card.dataset.mtHeat || '';
+    const lineup = card.dataset.mtLineup || '';
+    let copy = '';
+    if (profile.heat === 'induction' && heat.includes('induction')) copy = FIT_COPY.induction;
+    else if (profile.heat === 'flame' && /gas|flame|charcoal/.test(heat)) copy = FIT_COPY.flame;
+    else if (profile.style === 'sear' && lineup.includes('forge')) copy = FIT_COPY.sear;
+    else if (profile.style === 'simmer' && /terre|clay/.test(lineup)) copy = FIT_COPY.simmer;
+    if (chip.textContent !== copy) chip.textContent = copy;
+    if (chip.hidden !== !copy) chip.hidden = !copy;
+  });
+}
+
+function initProfiler() {
+  const drawer = document.querySelector('[data-mt-profiler]');
+  if (!drawer) return;
+  const form = drawer.querySelector('[data-mt-profiler-form]');
+  let returnFocus = null;
+
+  if (document.getElementById('MainContent')?.dataset.template?.startsWith('product')) {
+    sessionStorage.setItem(VIEWS_KEY, String(Number(sessionStorage.getItem(VIEWS_KEY) || 0) + 1));
+  }
+
+  const eligible = () =>
+    !readProfile() && !sessionStorage.getItem(PROFILER_LATER_KEY) && drawer.hidden;
+
+  const open = () => {
+    if (!eligible()) return;
+    returnFocus = document.activeElement;
+    drawer.hidden = false;
+    drawer.querySelector('input')?.focus({ preventScroll: true });
+    window.removeEventListener('scroll', onScroll, { capture: true });
+  };
+
+  const close = () => {
+    drawer.hidden = true;
+    sessionStorage.setItem(PROFILER_LATER_KEY, '1');
+    if (returnFocus instanceof HTMLElement) returnFocus.focus({ preventScroll: true });
+  };
+
+  const onScroll = () => {
+    const scroller = getScroller();
+    const max = scroller.scrollHeight - scroller.clientHeight;
+    if (max > 0 && scroller.scrollTop / max >= 0.45) open();
+  };
+
+  if (!eligible()) return;
+  window.addEventListener('scroll', onScroll, { passive: true, capture: true });
+  setTimeout(() => {
+    if (Number(sessionStorage.getItem(VIEWS_KEY) || 0) >= 2) open();
+  }, 45000);
+
+  drawer.querySelector('[data-mt-profiler-later]').addEventListener('click', close);
+  drawer.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') close();
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    localStorage.setItem(
+      PROFILE_KEY,
+      JSON.stringify({
+        heat: data.get('heat'),
+        style: data.get('style'),
+        email: data.get('email') || null,
+        savedAt: new Date().toISOString(),
+      }),
+    );
+    drawer.hidden = true;
+    tagProfileFits();
+    if (returnFocus instanceof HTMLElement) returnFocus.focus({ preventScroll: true });
+  });
+}
+
+function initStorageReset() {
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('[data-mt-reset]')) return;
+    event.preventDefault();
+    localStorage.clear();
+    sessionStorage.clear();
+    document.cookie.split(';').forEach((cookie) => {
+      const name = cookie.split('=')[0].trim();
+      if (name.startsWith('mt_')) document.cookie = `${name}=; Max-Age=0; path=/`;
+    });
+    window.location.reload();
+  });
+}
+
+function initReducedMotionPreference() {
+  const toggleBtn = document.querySelector('[data-mt-reduced-motion-toggle]');
+  const label = document.querySelector('[data-mt-motion-label]');
+  
+  const saved = localStorage.getItem('mt_reduced_motion');
+  const isReduced = saved === 'true' || (saved === null && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  if (isReduced) {
+    document.documentElement.dataset.reducedMotion = 'true';
+    if (toggleBtn) toggleBtn.setAttribute('aria-pressed', 'true');
+    if (label) label.textContent = 'ON';
+  }
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      const current = document.documentElement.dataset.reducedMotion === 'true';
+      const next = !current;
+      document.documentElement.dataset.reducedMotion = String(next);
+      localStorage.setItem('mt_reduced_motion', String(next));
+      toggleBtn.setAttribute('aria-pressed', String(next));
+      if (label) label.textContent = next ? 'ON' : 'OFF';
+    });
+  }
+}
+
+function initConsentBar() {
+  const bar = document.querySelector('[data-mt-consent-bar]');
+  if (!bar) return;
+  const existingTier = localStorage.getItem('mt_cookie_tier');
+  if (!existingTier) {
+    setTimeout(() => {
+      if (!localStorage.getItem('mt_cookie_tier')) {
+        bar.hidden = false;
+      }
+    }, 1500);
+  }
+
+  bar.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-mt-consent-action]');
+    if (!btn) return;
+    const tier = btn.dataset.mtConsentAction;
+    localStorage.setItem('mt_cookie_tier', tier);
+    bar.hidden = true;
+  });
+}
+
 function playTempleBell() {
+  if (!soundEnabled()) return;
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
@@ -107,9 +310,91 @@ function playTempleBell() {
 
 if (typeof document !== 'undefined') {
   document.addEventListener('pointerdown', (e) => {
-    const target = e.target.closest('[data-strike], .button-primary, .kansa-mic-action, .maison-view-as__seg-btn, .maison-collection-hero__cta');
+    const target = e.target.closest('[data-strike], .kansa-mic-action, .maison-lens__option, .maison-collection-hero__cta');
     if (target) {
       triggerStrike(e);
     }
+  });
+
+  /**
+   * Staggered Text Mask & Element Reveals
+   * Attribution & Inspiration: [Abdughafur Khujzoda on CodePen](https://codepen.io/Abdughafur-Khujzoda)
+   */
+  function initInViewReveals() {
+    if (typeof IntersectionObserver === 'undefined') return;
+
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const delay = Number(el.dataset.delay || 0);
+          setTimeout(() => {
+            el.classList.add('revealed', 'is-visible', 'visible');
+          }, delay);
+          revealObserver.unobserve(el);
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    document.querySelectorAll('.clip-line, .inview, .inview-scale, .stacked-title, [data-reveal]').forEach((el) => {
+      revealObserver.observe(el);
+    });
+
+    // Auto-reveal hero headline on load
+    const hero = document.querySelector('.maison-hero');
+    if (hero) {
+      setTimeout(() => {
+        hero.classList.add('is-revealed', 'revealed');
+      }, 120);
+    }
+  }
+
+  /**
+   * Ambient Parallax Drift for Ghost Metallurgy Typography
+   * Attribution & Inspiration: [Abdughafur Khujzoda on CodePen](https://codepen.io/Abdughafur-Khujzoda)
+   */
+  function initGhostParallax() {
+    // Owned by horizon-scroll.js (GSAP ScrollTrigger on the Horizon scroller).
+  }
+
+  MaisonRuntime.initInViewReveals = initInViewReveals;
+  MaisonRuntime.initGhostParallax = initGhostParallax;
+
+  MaisonRuntime.tagProfileFits = tagProfileFits;
+
+  const boot = () => {
+    initReducedMotionPreference();
+    initConsentBar();
+    initInViewReveals();
+    initGhostParallax();
+    initHorizonScroll();
+    initProfiler();
+    initStorageReset();
+    tagProfileFits();
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+
+  // Shopify Theme Editor dynamic section reload support
+  document.addEventListener('shopify:section:load', (event) => {
+    initInViewReveals();
+    initGhostParallax();
+    tagProfileFits(event.target);
+  });
+
+  // Horizon re-renders cards on filter, sort, and pagination.
+  let fitFrame = 0;
+  new MutationObserver(() => {
+    cancelAnimationFrame(fitFrame);
+    fitFrame = requestAnimationFrame(() => tagProfileFits());
+  }).observe(document.getElementById('MainContent') || document.body, {
+    childList: true,
+    subtree: true,
   });
 }

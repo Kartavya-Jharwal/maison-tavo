@@ -20,13 +20,11 @@
   >
     {% content_for 'blocks' %}
   </div>
-  <div style="font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.75; text-align: center; padding-block: 0.75rem; font-family: monospace; display: flex; justify-content: center; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
-    <a href="/pages/kansa" style="color: inherit; text-decoration: underline; text-underline-offset: 3px;">🎙️ Kansa Companion</a>
-    <span>·</span>
-    <a href="/pages/ucp" style="color: inherit; text-decoration: underline; text-underline-offset: 3px;">⚡ UCP Protocol Spec</a>
-    <span>·</span>
-    <span>Live Build · 2026-11-03 01:35 UTC</span>
-  </div>
+  <ul class="utilities__micro" role="list">
+    <li><a href="/pages/kansa">Kansa companion</a></li>
+    <li><a href="/pages/ucp">UCP protocol</a></li>
+    <li><button type="button" class="mt-reset" data-mt-reset>[ Reset Session &amp; Storage ]</button></li>
+  </ul>
 </div>
 
 {% stylesheet %}
@@ -48,6 +46,34 @@
       align-items: center;
       text-align: start;
     }
+  }
+
+  .utilities__micro {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.5rem;
+    margin: 0;
+    padding: 0.75rem 0 0;
+    list-style: none;
+    font-family: var(--font-mono--family, ui-monospace, monospace);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+
+  .utilities__micro a,
+  .utilities__micro button,
+  .mt-reset {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .utilities a,

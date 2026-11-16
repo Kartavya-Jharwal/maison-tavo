@@ -1,0 +1,127 @@
+{%- doc -%}
+  Engineer lens: SVG cross-section of a product's material layers.
+  Reads `specs.stratigraphy` (JSON list of { "name", "mm", "k" }) when set; otherwise
+  falls back to the lineup's design-target build-up, labelled as such.
+
+  @param {object} product - Product drop
+  @param {string} [id_prefix] - Unique prefix for SVG ids
+{%- enddoc -%}
+
+{%- liquid
+  assign specs = product.metafields.specs
+  assign source = 'DESIGN TARGET'
+  assign layers = ''
+
+  if specs.stratigraphy.value != blank
+    for layer in specs.stratigraphy.value
+      assign layers = layers | append: layer.name | append: '|' | append: layer.mm | append: '|' | append: layer.k | append: ';'
+    endfor
+    assign source = specs.claim_status.value | default: 'SPEC SHEET' | replace: '_', ' '
+  endif
+
+  if layers == blank
+    assign key = specs.lineup.value | append: ' ' | append: product.handle | append: ' ' | append: product.type | downcase
+    if key contains 'knife' or key contains 'blade' or key contains 'kuro'
+      assign layers = 'Damascus cladding|0.8|28;Hybrid core steel|1.2|42;Damascus cladding|0.8|28;'
+    elsif key contains 'kansa' or key contains 'kadai' or key contains 'saucepan' or key contains 'thali' or key contains 'katori' or key contains 'tumbler' or key contains 'jug'
+      assign layers = 'Hand-beaten 78:22 bronze|3.2|68;Tin-bronze crystalline core|1.8|64;Living acoustic patina|0.2|52;'
+    elsif key contains 'clay' or key contains 'terre' or key contains 'donabe' or key contains 'tagine' or key contains 'handi' or key contains 'kulhad'
+      assign layers = 'Porous refractory clay wall|6.0|1.1;Burnished slip liner|0.8|0.9;Natural reduction skin|0.3|0.8;'
+    else
+      assign layers = 'Forged carbon steel base|2.8|54;Dual-mass induction plate|1.2|50;Polymerized lipid patina|0.1|0.2;'
+    endif
+  endif
+
+  assign rows = layers | split: ';'
+  assign total = 0.0
+  for row in rows
+    assign parts = row | split: '|'
+    assign total = total | plus: parts[1]
+  endfor
+  assign scale = 240.0 | divided_by: total
+  assign y = 130.0
+  assign uid = id_prefix | default: product.id
+-%}
+
+<figure class="maison-strata" aria-label="Cross-section of {{ product.title | escape }}: {% for row in rows %}{% assign p = row | split: '|' %}{{ p[0] }} {{ p[1] }} mm{% unless forloop.last %}, {% endunless %}{% endfor %}">
+  <svg viewBox="0 0 400 500" role="img" aria-hidden="true" focusable="false">
+    <defs>
+      <pattern id="strata-grid-{{ uid }}" width="20" height="20" patternUnits="userSpaceOnUse">
+        <path d="M20 0H0V20" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+      </pattern>
+      <pattern id="strata-hatch-{{ uid }}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-opacity="0.35" stroke-width="1"/>
+      </pattern>
+    </defs>
+    <rect width="400" height="500" fill="url(#strata-grid-{{ uid }})"/>
+    <text x="24" y="40" class="maison-strata__mono">SECTION A–A · {{ product.handle | upcase | truncate: 22, '' }}</text>
+    <text x="24" y="60" class="maison-strata__mono maison-strata__mono--muted">SCALE {{ scale | round: 0 }}:1 · TOTAL {{ total | round: 1 }} MM</text>
+
+    {%- for row in rows -%}
+      {%- assign p = row | split: '|' -%}
+      {%- assign h = p[1] | times: scale -%}
+      {%- assign mid = h | divided_by: 2 | plus: y -%}
+      {%- assign tone = forloop.index0 | modulo: 3 -%}
+      <rect
+        x="40" y="{{ y | round: 2 }}" width="180" height="{{ h | round: 2 }}"
+        class="maison-strata__layer maison-strata__layer--{{ tone }}"
+      />
+      {%- if tone == 1 -%}
+        <rect x="40" y="{{ y | round: 2 }}" width="180" height="{{ h | round: 2 }}" fill="url(#strata-hatch-{{ uid }})"/>
+      {%- endif -%}
+      <line x1="220" y1="{{ mid | round: 2 }}" x2="244" y2="{{ mid | round: 2 }}" class="maison-strata__leader"/>
+      <text x="250" y="{{ mid | minus: 4 | round: 2 }}" class="maison-strata__label">{{ p[0] | escape }}</text>
+      <text x="250" y="{{ mid | plus: 12 | round: 2 }}" class="maison-strata__mono maison-strata__mono--muted">{{ p[1] }} mm · k {{ p[2] }} W/m·K</text>
+      {%- assign y = y | plus: h -%}
+    {%- endfor -%}
+
+    <line x1="28" y1="130" x2="28" y2="{{ y | round: 2 }}" class="maison-strata__dim"/>
+    <line x1="22" y1="130" x2="34" y2="130" class="maison-strata__dim"/>
+    <line x1="22" y1="{{ y | round: 2 }}" x2="34" y2="{{ y | round: 2 }}" class="maison-strata__dim"/>
+    <text x="24" y="468" class="maison-strata__mono maison-strata__mono--accent">[{{ source | upcase }}]</text>
+  </svg>
+</figure>
+
+{% stylesheet %}
+  .maison-strata {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--color-foreground);
+    background: rgb(var(--color-foreground-rgb) / 0.03);
+  }
+
+  .maison-strata svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .maison-strata__layer--0 { fill: var(--brand-color-obsidian-charcoal, #121212); }
+  .maison-strata__layer--1 { fill: var(--brand-color-cast-clay, #a45a3d); }
+  .maison-strata__layer--2 { fill: var(--bell, #b8893a); }
+
+  .maison-strata__leader,
+  .maison-strata__dim {
+    stroke: currentColor;
+    stroke-width: 1;
+    stroke-opacity: 0.6;
+  }
+
+  .maison-strata__label {
+    font-family: var(--font-heading--family);
+    font-size: 15px;
+    fill: currentColor;
+  }
+
+  .maison-strata__mono {
+    font-family: var(--font-mono--family, ui-monospace, monospace);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums slashed-zero;
+    fill: currentColor;
+  }
+
+  .maison-strata__mono--muted { fill-opacity: 0.65; }
+  .maison-strata__mono--accent { fill: var(--brand-color-raw-copper, var(--bell, #b8893a)); }
+{% endstylesheet %}

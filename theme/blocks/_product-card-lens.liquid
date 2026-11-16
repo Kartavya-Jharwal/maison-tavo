@@ -1,0 +1,206 @@
+{%- doc -%}
+  Panopticon lens for Horizon product cards: Human (native gallery), Engineer (stratigraphy),
+  Machine (ASCII + Schema.org). Overlays the card gallery so switching never shifts layout.
+  Place directly after the card gallery block.
+{%- enddoc -%}
+
+{%- liquid
+  assign product = closest.product
+  assign specs = product.metafields.specs
+  if specs.heat_sources.value.first
+    assign heat = specs.heat_sources.value | join: ','
+  else
+    assign heat = specs.heat_sources.value
+  endif
+  assign uid = block.id | append: '-' | append: product.id
+-%}
+
+{%- if product != blank -%}
+  <maison-lens
+    class="maison-lens"
+    data-lens="human"
+    data-mt-heat="{{ heat | downcase | escape }}"
+    data-mt-lineup="{{ specs.lineup.value | handleize }}"
+    style="--lens-ratio: {{ block.settings.aspect_ratio }};"
+    {{ block.shopify_attributes }}
+  >
+    <div class="maison-lens__stage" data-lens-panel="engineer" hidden>
+      {% render 'maison-stratigraphy', product: product, id_prefix: uid %}
+    </div>
+    <div class="maison-lens__stage" data-lens-panel="machine" hidden>
+      {% render 'maison-machine-view', product: product %}
+    </div>
+
+    <div class="maison-lens__bar" role="group" aria-label="View {{ product.title | escape }} as">
+      <button type="button" class="maison-lens__option" data-lens-option="human" aria-pressed="true">Human</button>
+      <button type="button" class="maison-lens__option" data-lens-option="engineer" aria-pressed="false">Engineer</button>
+      <button type="button" class="maison-lens__option" data-lens-option="machine" aria-pressed="false">Machine</button>
+    </div>
+
+    <p class="maison-lens__fit" data-mt-fit hidden></p>
+  </maison-lens>
+{%- elsif request.design_mode -%}
+  <div class="maison-lens maison-lens--placeholder" {{ block.shopify_attributes }}>
+    <div class="maison-lens__bar">
+      <span class="maison-lens__option" aria-pressed="true">Human</span>
+      <span class="maison-lens__option">Engineer</span>
+      <span class="maison-lens__option">Machine</span>
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .product-card__content:has(> .maison-lens) {
+    container-type: inline-size;
+  }
+
+  .maison-lens {
+    display: contents;
+  }
+
+  .maison-lens__stage {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 1;
+    aspect-ratio: var(--lens-ratio, 4 / 5);
+    overflow: hidden;
+  }
+
+  .maison-lens__stage[hidden] {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .maison-lens__stage:not([hidden]) {
+      animation: maison-lens-in 280ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  }
+
+  @keyframes maison-lens-in {
+    from { opacity: 0; clip-path: inset(0 0 100% 0); }
+    to { opacity: 1; clip-path: inset(0); }
+  }
+
+  .maison-lens__bar {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-self: flex-start;
+    gap: 2px;
+    padding: 2px;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.18);
+    border-radius: var(--style-border-radius-pills, 999px);
+  }
+
+  .maison-lens__option {
+    min-height: 32px;
+    padding: 0 0.75rem;
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+    font-family: var(--font-mono--family, ui-monospace, monospace);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .maison-lens__option:hover {
+    color: var(--color-foreground);
+  }
+
+  .maison-lens__option[aria-pressed='true'] {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  .maison-lens__option:focus-visible {
+    outline: 2px solid var(--bell, #b8893a);
+    outline-offset: 2px;
+  }
+
+  .maison-lens__fit {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    font-family: var(--font-mono--family, ui-monospace, monospace);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    color: var(--brand-color-aged-bronze, #5a6b5c);
+  }
+
+  .maison-lens__fit::before {
+    content: '● ';
+    color: var(--bell, #b8893a);
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('maison-lens')) {
+    customElements.define(
+      'maison-lens',
+      class MaisonLens extends HTMLElement {
+        connectedCallback() {
+          this.options = [...this.querySelectorAll('[data-lens-option]')];
+          this.addEventListener('click', this.onClick);
+          this.addEventListener('keydown', this.onKeydown);
+        }
+
+        disconnectedCallback() {
+          this.removeEventListener('click', this.onClick);
+          this.removeEventListener('keydown', this.onKeydown);
+        }
+
+        onClick = (event) => {
+          const option = event.target.closest('[data-lens-option]');
+          if (!option) return;
+          event.preventDefault();
+          this.setLens(option.dataset.lensOption);
+        };
+
+        onKeydown = (event) => {
+          if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+          const index = this.options.indexOf(document.activeElement);
+          if (index < 0) return;
+          const step = event.key === 'ArrowRight' ? 1 : -1;
+          const next = this.options[(index + step + this.options.length) % this.options.length];
+          next.focus();
+          this.setLens(next.dataset.lensOption);
+        };
+
+        setLens(lens) {
+          this.dataset.lens = lens;
+          this.options.forEach((option) => {
+            option.setAttribute('aria-pressed', String(option.dataset.lensOption === lens));
+          });
+          this.querySelectorAll('[data-lens-panel]').forEach((panel) => {
+            panel.hidden = panel.dataset.lensPanel !== lens;
+          });
+          this.dispatchEvent(new CustomEvent('maison:lens', { bubbles: true, detail: { lens } }));
+        }
+      }
+    );
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Panopticon lens",
+  "tag": null,
+  "settings": [
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "label": "Match gallery ratio",
+      "options": [
+        { "value": "4 / 5", "label": "Portrait" },
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "16 / 9", "label": "Landscape" }
+      ],
+      "default": "4 / 5"
+    }
+  ]
+}
+{% endschema %}

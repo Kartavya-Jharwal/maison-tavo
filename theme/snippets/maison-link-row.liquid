@@ -1,0 +1,34 @@
+{% doc %}
+  Labelled row of storefront links. Entries are comma-separated `Label|url|key` triples.
+  @param {string} label - Row heading
+  @param {string} items - Comma-separated Label|url|key entries
+  @param {string} [active] - Key of the current entry
+{% enddoc %}
+
+{% liquid
+  assign rows = items | split: ','
+%}
+{% if items != blank and rows.size > 0 %}
+  <div class="maison-tree__group">
+    <h3 class="maison-tree__label">{{ label | escape }}</h3>
+    <ul class="maison-tree__list" role="list">
+      {% for row in rows %}
+        {% liquid
+          assign parts = row | split: '|'
+          assign row_label = parts[0] | strip
+          assign row_url = parts[1] | strip
+          assign row_key = parts[2] | strip
+          assign is_current = false
+          if active != blank and row_key == active
+            assign is_current = true
+          endif
+        %}
+        {% if row_label != blank and row_url != blank %}
+          <li>
+            <a href="{{ row_url }}"{% if is_current %} aria-current="page"{% endif %}>{{ row_label | escape }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

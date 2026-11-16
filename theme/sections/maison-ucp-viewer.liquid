@@ -1,8 +1,8 @@
-{% doc %}
+{% comment %}
   Maison Tavo · Universal Commerce Protocol (UCP) & Agent-to-Agent Explorer.
   Renders a visual, syntax-highlighted protocol viewer for human walkthroughs,
   paired with embedded machine-readable JSON metadata for AI agents.
-{% enddoc %}
+{% endcomment %}
 
 <div class="maison-ucp section section--page-width" id="ucp" data-section-id="{{ section.id }}">
   <header class="maison-ucp__header">
@@ -34,6 +34,9 @@
         <button class="maison-ucp__tab" data-tab="tab-a2a" role="tab" aria-selected="false">
           /a2a/kansa-dispatch.json
         </button>
+        <button class="maison-ucp__tab" data-tab="tab-molbhav" role="tab" aria-selected="false">
+          /a2a/mol-bhav-trace.json
+        </button>
       </div>
       <button class="maison-ucp__copy-btn" id="ucp-copy-btn" title="Copy active JSON to clipboard">
         Copy Spec
@@ -58,6 +61,20 @@
           "version": "2026-08-25",
           "spec": "https://ucp.dev/2026-08-25/specification/shopping/catalog/",
           "schema": "https://ucp.dev/2026-08-25/schemas/shopping/catalog_search.json"
+        }
+      ],
+      "dev.ucp.shopping.catalog.lookup": [
+        {
+          "version": "2026-08-25",
+          "spec": "https://ucp.dev/2026-08-25/specification/shopping/catalog/",
+          "schema": "https://ucp.dev/2026-08-25/schemas/shopping/catalog_lookup.json"
+        }
+      ],
+      "dev.shopify.catalog": [
+        {
+          "version": "2026-08-25",
+          "spec": "https://shopify.dev/docs/agents/catalog/storefront-catalog",
+          "schema": "https://shopify.dev/ucp/schemas/2026-08-25/shopify_catalog.json"
         }
       ],
       "dev.ucp.shopping.cart": [
@@ -109,78 +126,48 @@
     <!-- TAB 2: /catalog/agent-spec.json -->
     <div class="maison-ucp__panel" id="tab-catalog" role="tabpanel">
       <div class="maison-ucp__panel-meta">
-        <span class="maison-ucp__url-pill">GET /catalog/agent-spec</span>
-        <span class="maison-ucp__note">Deterministic cookware metallurgy &amp; claim status</span>
+        <span class="maison-ucp__url-pill">POST /api/ucp/mcp · search_catalog / lookup_catalog / get_product</span>
+        <span class="maison-ucp__note">Live 25-SKU storefront catalog projected from Shopify Admin + specs.* metafields</span>
       </div>
+      {%- assign live_all = collections['all'] -%}
       <pre class="maison-ucp__code"><code id="code-catalog">{
   "spec_version": "2026-08-25",
-  "store": "Maison Tavo",
-  "total_items": 4,
+  "store": {{ shop.name | default: 'Maison Tavo' | json }},
+  "storefront_mcp_endpoint": "https://maison-tavo.myshopify.com/api/ucp/mcp",
+  "total_items": {{ live_all.all_products_count | default: 25 }},
   "catalog": [
+{%- if live_all != blank and live_all.products_count > 0 -%}
+  {%- for p in live_all.products limit: 25 -%}
+    {%- assign ps = p.metafields.specs -%}
+    {%- assign pv = p.selected_or_first_available_variant -%}
     {
-      "sku": "MT-FRG-SKL-026",
-      "handle": "forge-hybrid-26cm-skillet",
-      "title": "Forge Hybrid 26cm Skillet",
+      "id": {{ 'gid://shopify/Product/' | append: p.id | json }},
+      "sku": {{ pv.sku | default: p.handle | json }},
+      "handle": {{ p.handle | json }},
+      "title": {{ p.title | json }},
+      "lineup": {{ ps.lineup.value | default: p.vendor | json }},
+      "product_type": {{ p.type | json }},
+      "price_minor_usd": {{ pv.price | json }},
+      "available": {{ pv.available | json }},
+      "claim_status": {{ ps.claim_status.value | default: 'CONCEPT_SPEC' | json }},
+      "primary_material": {{ ps.primary_material.value | default: ps.material_architecture.value | json }},
+      "lining_material": {{ ps.lining_material.value | json }},
+      "dimensions": {{ ps.dimensions_summary.value | json }},
+      "dishwasher_suitability": {{ ps.dishwasher_suitability.value | json }},
+      "heat_compatibility": {{ ps.heat_compatibility.value | json }}
+    }{%- unless forloop.last -%},{%- endunless %}
+  {%- endfor -%}
+{%- else -%}
+    {
+      "sku": "MT-FOR-RLY-26",
+      "handle": "forge-relay-dual-mass-skillet",
+      "title": "Forge Relay Dual-Mass Skillet",
       "lineup": "Forge Hybrid",
       "product_type": "Skillet",
       "claim_status": "CONCEPT_SPEC",
-      "material_architecture": "1.2mm carbon steel (alloy 1.0085), drop-forged, beeswax pre-seasoned",
-      "food_contact_strategy": "Non-reactive polymerised lipid seasoning layer; mill-scale retention",
-      "heat_sources": ["induction", "gas", "electric", "oven", "open_flame"],
-      "induction_compatible": true,
-      "dimensions": { "diameter_cm": 26, "weight_grams": 1420 },
-      "care_hypothesis": "Wipe with hot water, dry over heat immediately, apply neutral oil. Never soak or dishwash.",
-      "agent_intents": ["care_maintenance", "seasoning_procedure", "searing_thermal_mass", "induction_suitability"],
-      "negative_constraints": ["Do not claim dishwasher safe", "Do not claim non-stick without oil seasoning"]
-    },
-    {
-      "sku": "MT-TER-VES-014",
-      "handle": "terre-clay-braiser-vessel",
-      "title": "Terre Clay Braiser Vessel",
-      "lineup": "Terre Clay",
-      "product_type": "Vessel",
-      "claim_status": "CONCEPT_SPEC",
-      "material_architecture": "High-fire stoneware clay, mineral slip glaze, thermal shock fortified",
-      "food_contact_strategy": "Lead-free food-safe inert feldspathic vitrified interior",
-      "heat_sources": ["gas", "oven"],
-      "induction_compatible": false,
-      "dimensions": { "diameter_cm": 28, "capacity_ml": 3200, "weight_grams": 2650 },
-      "care_hypothesis": "Avoid instant thermal shock. Hand wash with warm water; air dry fully before storage.",
-      "agent_intents": ["slow_cook_thermal_retention", "clay_shock_care", "oven_limits"],
-      "negative_constraints": ["Do not place directly dry over high induction", "Never plunge hot vessel into cold water"]
-    },
-    {
-      "sku": "MT-KUR-KNV-210",
-      "handle": "kuro-strip-chef-knife",
-      "title": "Kuro Strip Chef's Knife 210mm",
-      "lineup": "Kuro Strip",
-      "product_type": "Chef's knife",
-      "claim_status": "CONCEPT_SPEC",
-      "material_architecture": "VG10 core Damascus 67-layer clad steel, 60 HRC, charred pakkawood handle",
-      "food_contact_strategy": "Mirror polished edge, acid-etched Damascus relief",
-      "heat_sources": [],
-      "induction_compatible": false,
-      "dimensions": { "length_cm": 34.5, "width_cm": 4.8, "weight_grams": 195 },
-      "care_hypothesis": "Hand wash immediately after use, wipe dry with soft cloth, store in wooden saya or block.",
-      "agent_intents": ["sharpening_angle_recommendation", "blade_geometry_tasks", "edge_retention"],
-      "negative_constraints": ["Never cut frozen bones", "Never use glass or stone cutting surfaces"]
-    },
-    {
-      "sku": "MT-HYB-SRV-SET",
-      "handle": "forge-terre-service-set",
-      "title": "Forge x Terre Modular Service Suite",
-      "lineup": "Forge x Terre",
-      "product_type": "Service set",
-      "claim_status": "CONCEPT_SPEC",
-      "material_architecture": "Modular drop-forged skillet cradle nesting with cast-clay service bowl",
-      "food_contact_strategy": "Direct table service from cookline; thermal decoupling rim",
-      "heat_sources": ["gas", "electric", "oven"],
-      "induction_compatible": true,
-      "dimensions": { "diameter_cm": 30, "weight_grams": 3800 },
-      "care_hypothesis": "Separate components before cleaning. Skillet follows carbon steel protocol; clay follows vessel protocol.",
-      "agent_intents": ["tabletop_presentation", "cook_to_pass_service", "modular_assembly"],
-      "negative_constraints": ["Do not heat clay component while dry on direct open flame"]
+      "note": "Publish products to the Online Store channel to stream all 25 live SKUs here."
     }
+{%- endif -%}
   ]
 }</code></pre>
     </div>
@@ -221,6 +208,79 @@
       }
     }
   }
+}</code></pre>
+    </div>
+
+    <!-- TAB 4: /a2a/mol-bhav-trace.json -->
+    <div class="maison-ucp__panel" id="tab-molbhav" role="tabpanel">
+      <div class="maison-ucp__panel-meta">
+        <span class="maison-ucp__url-pill" style="background: var(--bell, #B8893A); color: #14110F; font-weight: 700;">MOL-BHAV · 7-AGENT BAZAAR PROTOCOL</span>
+        <span class="maison-ucp__note">GrogBot syndicate vs. Maison Tavo Foundry Allocator · Margin-bounded algorithmic settlement</span>
+      </div>
+      <pre class="maison-ucp__code"><code id="code-molbhav">{
+  "session_id": "a2a_molbhav_20261116_7x9q",
+  "protocol": "UCP/A2A-MolBhav-2.0",
+  "bazaar_negotiation_engine": {
+    "buyer_orchestrator": "urn:agent:grogbot-syndicate-alpha",
+    "seller_broker": "urn:maison-tavo:foundry-allocator-v1",
+    "subagent_cluster_size": 7,
+    "cluster_roles": [
+      "metallurgy_verifier",
+      "induction_frequency_auditor",
+      "shipping_logistics_agent",
+      "artisan_wage_compliance_sentinel",
+      "escrow_validator",
+      "currency_settler",
+      "order_payload_assembler"
+    ]
+  },
+  "inquiry": {
+    "intent": "commercial_brigade_outfit",
+    "requested_items": [
+      { "sku": "MT-CK-01", "name": "78:22 Kansa Kadai (28cm)", "quantity": 12 },
+      { "sku": "MT-CK-02", "name": "Forge Hybrid Tava (30cm)", "quantity": 12 },
+      { "sku": "MT-CK-05", "name": "Forge Hybrid Sauté Pan (28cm)", "quantity": 8 }
+    ],
+    "target_budget_eur": 5800.00,
+    "catalog_list_price_eur": 6840.00
+  },
+  "negotiation_trace": [
+    {
+      "round": 1,
+      "actor": "buyer_orchestrator",
+      "bid_eur": 5472.00,
+      "delta_pct": -20.0,
+      "justification": "Volume commitment for Michelin pass brigade outfit (Paris 11e)"
+    },
+    {
+      "round": 2,
+      "actor": "seller_broker",
+      "counter_eur": 6156.00,
+      "delta_pct": -10.0,
+      "constraints_checked": {
+        "alloy_cost_copper_tin_fixed": true,
+        "crucible_melt_batch_limit": "24 units max per heat",
+        "minimum_sustainable_artisan_wage_respected": true
+      },
+      "added_value": "Includes 12 complimentary Solid Copper Chainmail Scrubbers (MT-CR-04)"
+    },
+    {
+      "round": 3,
+      "actor": "buyer_orchestrator",
+      "settlement_offer_eur": 5990.00,
+      "delta_pct": -12.4,
+      "stipulation": "Expedited air dispatch from Rajasthan foundry directly to brigade kitchen"
+    },
+    {
+      "round": 4,
+      "actor": "seller_broker",
+      "status": "ACCEPTED_AND_LOCKED",
+      "final_total_eur": 5990.00,
+      "escrow_contract": "0x7822c58b...9f8b",
+      "foundry_allocation_id": "HEAT-2026-NOV-24",
+      "signature": "sig_ed25519_mt_foundry_verified_880hz"
+    }
+  ]
 }</code></pre>
     </div>
   </div>

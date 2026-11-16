@@ -209,13 +209,33 @@
       {%- endif -%}
     </a>
   {% elsif product != blank and product.media.size == 0 %}
-    <div class="product-card-gallery__title-placeholder">
+    {% liquid
+      assign p_specs = product.metafields.specs
+      assign p_lineup = p_specs.lineup.value | default: product.vendor
+      assign p_claim = p_specs.claim_status.value | default: 'CONCEPT_SPEC'
+      assign p_sku = product.selected_or_first_available_variant.sku | default: product.handle | upcase
+      assign p_dim = p_specs.dimensions_summary.value | default: product.type
+    %}
+    <div class="product-card-gallery__title-placeholder maison-spec-plate">
       <a
         class="contents"
         ref="cardGalleryLink"
         href="{{ product.url }}"
       >
-        <span class="title-text">{{- product.title -}}</span>
+        <div class="maison-spec-plate__inner">
+          <div class="maison-spec-plate__top">
+            <span class="maison-spec-plate__sku">{{ p_sku | escape }}</span>
+            <span class="maison-spec-plate__badge">[{{ p_claim | replace: '_', ' ' | escape }}]</span>
+          </div>
+          <div class="maison-spec-plate__center">
+            <span class="maison-spec-plate__lineup">{{ p_lineup | escape }}</span>
+            <span class="title-text maison-spec-plate__title">{{- product.title -}}</span>
+          </div>
+          <div class="maison-spec-plate__bottom">
+            <span>{{ p_dim | escape }}</span>
+            <span>PHOTOGRAPHY PENDING</span>
+          </div>
+        </div>
       </a>
     </div>
   {% elsif product == blank %}
@@ -268,11 +288,59 @@
     font-size: var(--font-size--2xl);
     line-height: var(--line-height--display-loose);
     word-break: break-word;
-    color: var(--color-foreground);
-    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-5));
+    color: #f7f5f0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 15%, rgba(197, 139, 67, 0.18), transparent 70%),
+      linear-gradient(180deg, #171412 0%, #100e0c 100%);
+    border: 1px solid rgba(197, 139, 67, 0.28);
     aspect-ratio: var(--gallery-aspect-ratio);
     border-radius: var(--product-corner-radius);
     display: block;
+  }
+
+  .maison-spec-plate__inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .maison-spec-plate__top,
+  .maison-spec-plate__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.35rem;
+    font-family: var(--font-mono--family, ui-monospace, monospace);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(247, 245, 240, 0.65);
+  }
+
+  .maison-spec-plate__badge,
+  .maison-spec-plate__lineup {
+    color: var(--bell, #c58b43);
+  }
+
+  .maison-spec-plate__center {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .maison-spec-plate__lineup {
+    font-family: var(--font-mono--family, ui-monospace, monospace);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .maison-spec-plate__title {
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.15rem, 4.5cqi, 1.55rem);
+    line-height: 1.2;
+    color: #f7f5f0;
   }
 
   .product-card-gallery__title-placeholder .title-text {

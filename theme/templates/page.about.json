@@ -1,6 +1,71 @@
 {
   "sections": {
-    "about": {
+    "story_hero": {
+      "type": "maison-story",
+      "blocks": {
+        "chapter_origin": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "I",
+            "heading": "The Hearth and The Moving Day Diagnostic",
+            "text": "<p>Your grandmother never measured thermal conductivity in Watts per meter-Kelvin. She tapped the rim of the bronze alloy with a wooden ladle, listening for the sustained acoustic decay that proved the casting was free of microscopic voids. She knew the surface was seasoned when the aroma of black mustard seeds bloomed without smoking. In her home, a tava or bell-metal degchi was an Ayurvedic heirloom—seasoned over thirty years, gifted at weddings, and passed down as a sacred instrument. Maison Tavo was born when that heirloom met a modern kitchen move. Unpacking an unlabelled pan, the founder could not determine whether its base would couple with the induction coil or whether its rivets were food-safe tin-bronze. Across seven leading cookware competitors, alloy composition, base mass, and induction compatibility were buried in marketing prose or completely absent. The problem was not a lack of cookware; it was the failure of tools to explain their own construction.</p>"
+          }
+        },
+        "chapter_name": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "II",
+            "heading": "Maison × Tavo",
+            "text": "<p>“Maison” references the discipline of the French kitchen brigade, Parisian copperware, and Auguste Escoffier’s uncompromising standard of the restaurant pass—where heat is calculated, time is sacred, and every gesture is stripped of ornamentation. “Tavo” preserves an audible, physical link to the tava (तवा) — the ancient round griddle that has anchored Indian hearths and flatbread traditions for three millennia. The synthesis is deliberate: Parisian architectural restraint paired with regional metallurgical heritage. A house where cold-forged precision meets Rajasthan sand-cast bronze.</p>"
+          }
+        },
+        "chapter_craft": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "III",
+            "heading": "The Object Before Software",
+            "text": "<p>We build the physical heirloom first: dual-mass carbon steel that retains thermal energy like cast iron but handles with the agility of cold-rolled sheet; refractory cast clay that breathes with thermal shock resistance; and hand-beaten bell bronze (78% copper, 22% tin) that rings true at 880 Hz. In ancestral Ayurveda, bell metal (kansa) was revered because high-tin bronze is naturally non-reactive to food acids and imparts gentle alkaline balance to slow-simmered dishes. Software, 2D heat simulations, and machine-readable protocols exist solely to serve the physical object, never to replace it.</p>"
+          }
+        },
+        "chapter_pass": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "IV",
+            "heading": "The Living Pass",
+            "text": "<p>Between our foundry partners in Rajasthan and our kitchen workshop in London, Maison Tavo operates with the discipline of a restaurant pass. We do not manufacture infinite warehouse inventory on an arbitrary calendar of drops. We open allocations only when a foundry heat is struck, measured, and verified. Each piece carries its serial ledger and metallurgical profile—built not for a season, but to outlast the hand that cooks with it.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "chapter_origin",
+        "chapter_name",
+        "chapter_craft",
+        "chapter_pass"
+      ],
+      "settings": {
+        "eyebrow": "L’Atelier & Fonderie · जयपुर से लन्दन",
+        "heading": "The tool that outlasts the hand",
+        "lede": "Maison Tavo was born from a concrete moment in a working kitchen: the failure of conventional cookware to explain its own metallurgy. We build modern heirlooms for people who cook, and structured specs for machines that assist them.",
+        "provenance_eyebrow": "Three Places of Lineage",
+        "place_1_label": "Rajasthan Foundries",
+        "place_1_text": "Hand-beaten 78:22 bell bronze, sand casting, and the acoustic bell resonance test.",
+        "place_2_label": "Japanese Forging",
+        "place_2_text": "Echizen & Sanjo blade geometry, laminated clad steel, and edge retention.",
+        "place_3_label": "European Brigade Rooms",
+        "place_3_text": "Escoffier's pass discipline, restaurant heat cycling, and quiet editorial restraint.",
+        "padding-block-start": 56,
+        "padding-block-end": 64
+      }
+    },
+    "wireframe_screens": {
+      "type": "maison-wireframe-screens",
+      "settings": {
+        "eyebrow": "Dual Depth Architecture",
+        "heading": "The Wireframe System",
+        "lede": "Every surface in Maison Tavo is engineered for both the aesthetic curator and the culinary technologist. Switch between the architectural wireframe screens to inspect how human craft and machine protocols live together."
+      }
+    },
+    "diagnostic_audit": {
       "type": "maison-about",
       "blocks": {
         "claim_verified": {
@@ -28,54 +93,78 @@
           }
         }
       },
-      "block_order": ["claim_verified", "claim_observed", "claim_hypothesis"],
+      "block_order": [
+        "claim_verified",
+        "claim_observed",
+        "claim_hypothesis"
+      ],
       "settings": {
-        "eyebrow": "Section 1 diagnostic",
+        "eyebrow": "Verified Diagnostic",
         "heading": "Why the catalog is machine-readable",
         "lede": "Maison Tavo is cookware you can live with and a catalog an agent can reason about. We do not claim to be first in agentic commerce — that bar is already Shopify platform default. The defensible claim: first in cookware to make the product spec layer machine-readable.",
-        "closing": "Evidence tiers on this page map to the competitor audit in the engagement docs. CONCEPT_SPEC products stay flagged as concept — no unverified performance numbers in customer-facing copy. Dual depth: the curator reads craft and provenance; the technologist reads alloy, heat sources, and structured fields.",
+        "closing": "Evidence tiers on this page map to the competitor audit in the engagement docs. Dual depth: the curator reads craft and provenance; the technologist reads alloy, heat sources, and structured fields.",
         "padding-block-start": 48,
         "padding-block-end": 48
       }
     },
-    "house": {
-      "type": "maison-about",
+    "foundry_stats": {
+      "type": "maison-stats",
       "blocks": {
-        "craft": {
-          "type": "pillar",
+        "stat_alloy": {
+          "type": "stat",
           "settings": {
-            "evidence_tier": "none",
-            "heading": "Three-place texture",
-            "text": "<p>Indian casting, Japanese forging, and European design language are carried as one deliberate synthesis — not borrowed prestige. The object layer of the brand stack (cookware as craft and heirloom) is what the hospitality kitchen actually holds.</p>"
+            "figure": "78:22",
+            "label": "Bell Bronze Formulation",
+            "caption": "Traditional Rajasthan alloy: 78% copper, 22% tin for pure bell resonance and non-reactive food safety."
           }
         },
-        "material": {
-          "type": "pillar",
+        "stat_heat": {
+          "type": "stat",
           "settings": {
-            "evidence_tier": "none",
-            "heading": "Technologist + curator",
-            "text": "<p>One surface, two reading depths: engineering specs and agent-ready data for the culinary technologist; staging, provenance, and quiet hospitality for the aesthetic curator. Nothing is deprioritized — the blend is the hospitality-chef persona.</p>"
+            "figure": "1400°C",
+            "label": "Furnace Melt Point",
+            "caption": "Refractory crucible casting temperature ensuring zero air voids and dense crystalline molecular packing."
           }
         },
-        "quiet": {
-          "type": "pillar",
+        "stat_skus": {
+          "type": "stat",
           "settings": {
-            "evidence_tier": "none",
-            "heading": "Kitchen before spectacle",
-            "text": "<p>Between London and Jaipur — hotel kitchens, restaurant menus, and the discipline of a well-run pass. The house opens when the edition is ready, not on a calendar of drops.</p>"
+            "figure": "25",
+            "label": "Curated Heirloom SKUs",
+            "caption": "Three disciplined families: Forge Hybrid carbon steel, Terre refractory clay, and Kuro cutlery."
+          }
+        },
+        "stat_schema": {
+          "type": "stat",
+          "settings": {
+            "figure": "100%",
+            "label": "Machine-Readable Specs",
+            "caption": "Every specification exposed as structured UCP JSON-LD for autonomous culinary agent procurement."
           }
         }
       },
-      "block_order": ["craft", "material", "quiet"],
+      "block_order": [
+        "stat_alloy",
+        "stat_heat",
+        "stat_skus",
+        "stat_schema"
+      ],
       "settings": {
-        "eyebrow": "The house",
-        "heading": "Maison Tavo",
-        "lede": "Modern heirlooms for the working kitchen. Kartavya Jharwal builds the brand as object, software layer, and protocol — cookware, intelligent companion surfaces, and agent-native commerce in one MECE stack.",
-        "closing": "This storefront is designed and developed at kartavya.tech. The house itself remains a product house for food.",
-        "padding-block-start": 24,
-        "padding-block-end": 80
+        "eyebrow": "By the numbers",
+        "heading": "Metallurgy that keeps score",
+        "lede": "Every vessel carries verifiable data: alloy ratios, crucible pour temperatures, and deterministic schema fields for kitchen longevity."
       }
+    },
+    "last_call_pass": {
+      "type": "maison-last-call",
+      "settings": {}
     }
   },
-  "order": ["about", "house"]
+  "order": [
+    "story_hero",
+    "wireframe_screens",
+    "diagnostic_audit",
+    "foundry_stats",
+    "last_call_pass"
+  ]
 }

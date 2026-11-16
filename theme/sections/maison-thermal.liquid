@@ -1,0 +1,328 @@
+{% comment %}
+  2D heat-diffusion comparison of a pan base seen from above: Maison composite vs thin steel.
+  Explicit FTCS solution of the heat equation on a 64×64 grid; runs only while in view.
+{% endcomment %}
+
+<div class="maison-thermal section section--page-width">
+  <header class="maison-thermal__header" data-mt-scroll>
+    <p class="maison-thermal__kicker">{{ section.settings.kicker | escape }}</p>
+    <h2 class="maison-thermal__heading">{{ section.settings.heading | escape }}</h2>
+    <p class="maison-thermal__lede">{{ section.settings.lede | escape }}</p>
+  </header>
+
+  <maison-thermal class="maison-thermal__app">
+    <fieldset class="maison-thermal__sources">
+      <legend class="visually-hidden">Heat source</legend>
+      <label><input type="radio" name="thermal-{{ section.id }}" value="induction" checked> Induction coil · 2.4 kW</label>
+      <label><input type="radio" name="thermal-{{ section.id }}" value="gas"> High gas flame · 15k BTU</label>
+      <label><input type="radio" name="thermal-{{ section.id }}" value="charcoal"> Charcoal</label>
+    </fieldset>
+
+    <div class="maison-thermal__plates">
+      <figure class="maison-thermal__plate">
+        <canvas width="64" height="64" data-plate="composite" role="img" aria-label="Simulated heat map of the kansa and clay composite base"></canvas>
+        <figcaption>
+          <span>Kansa × clay composite</span>
+          <output data-spread="composite">—</output>
+        </figcaption>
+      </figure>
+      <figure class="maison-thermal__plate">
+        <canvas width="64" height="64" data-plate="steel" role="img" aria-label="Simulated heat map of a thin commercial steel base"></canvas>
+        <figcaption>
+          <span>1 mm commercial steel</span>
+          <output data-spread="steel">—</output>
+        </figcaption>
+      </figure>
+    </div>
+    <p class="maison-thermal__note">[HYPOTHESIS] Simulated surface spread. Illustrative model, not a lab measurement.</p>
+  </maison-thermal>
+</div>
+
+{% stylesheet %}
+  .maison-thermal {
+    padding-block: clamp(3rem, 6vw, 6rem);
+  }
+
+  .maison-thermal__header {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 44rem;
+    margin-block-end: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .maison-thermal__kicker,
+  .maison-thermal__note,
+  .maison-thermal__plate figcaption {
+    margin: 0;
+    font-family: var(--font-mono--family, ui-monospace, monospace);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .maison-thermal__heading {
+    margin: 0;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.75rem);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .maison-thermal__lede {
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  .maison-thermal__sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    border: 0;
+  }
+
+  .maison-thermal__sources label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 1rem;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
+    border-radius: 999px;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  .maison-thermal__sources label:has(:checked) {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  .maison-thermal__sources label:has(:focus-visible) {
+    outline: 2px solid var(--bell, #b8893a);
+    outline-offset: 2px;
+  }
+
+  .maison-thermal__sources input {
+    accent-color: var(--bell, #b8893a);
+  }
+
+  .maison-thermal__plates {
+    display: grid;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 26rem));
+    justify-content: center;
+  }
+
+  .maison-thermal__plate {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .maison-thermal__plate canvas {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--brand-color-obsidian-charcoal, #121212);
+  }
+
+  .maison-thermal__plate figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .maison-thermal__note {
+    margin-block-start: 1.25rem;
+    letter-spacing: 0.08em;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('maison-thermal')) {
+    const N = 64;
+    const RAMP = [
+      [18, 18, 18],
+      [90, 40, 30],
+      [164, 90, 61],
+      [197, 139, 67],
+      [247, 245, 240],
+    ];
+    const MATERIALS = {
+      composite: { alpha: 0.24, loss: 0.0016 },
+      steel: { alpha: 0.035, loss: 0.0016 },
+    };
+
+    function sourceMap(kind) {
+      const map = new Float32Array(N * N);
+      const c = (N - 1) / 2;
+      for (let y = 0; y < N; y++) {
+        for (let x = 0; x < N; x++) {
+          const r = Math.hypot(x - c, y - c) / c;
+          const a = Math.atan2(y - c, x - c);
+          let q = 0;
+          if (kind === 'induction') q = Math.exp(-((r - 0.45) ** 2) / 0.012);
+          if (kind === 'gas') q = Math.exp(-((r - 0.28) ** 2) / 0.004) * (0.55 + 0.45 * Math.cos(a * 12));
+          if (kind === 'charcoal') q = Math.exp(-(r ** 2) / 0.05) * (0.7 + 0.3 * Math.sin(x * 1.7) * Math.cos(y * 1.3));
+          map[y * N + x] = r <= 1 ? Math.max(0, q) * 0.02 : 0;
+        }
+      }
+      return map;
+    }
+
+    function inside(x, y) {
+      const c = (N - 1) / 2;
+      return Math.hypot(x - c, y - c) <= c;
+    }
+
+    customElements.define(
+      'maison-thermal',
+      class MaisonThermal extends HTMLElement {
+        connectedCallback() {
+          this.reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+          this.plates = [...this.querySelectorAll('canvas[data-plate]')].map((canvas) => ({
+            canvas,
+            ctx: canvas.getContext('2d'),
+            image: canvas.getContext('2d').createImageData(N, N),
+            material: MATERIALS[canvas.dataset.plate],
+            output: this.querySelector(`[data-spread="${canvas.dataset.plate}"]`),
+            t: new Float32Array(N * N),
+            next: new Float32Array(N * N),
+          }));
+          this.setSource(this.querySelector('input:checked')?.value || 'induction');
+          this.addEventListener('change', (event) => this.setSource(event.target.value));
+
+          this.observer = new IntersectionObserver(([entry]) => {
+            this.visible = entry.isIntersecting;
+            if (this.visible) this.start();
+          });
+          this.observer.observe(this);
+        }
+
+        disconnectedCallback() {
+          this.observer?.disconnect();
+          cancelAnimationFrame(this.frame);
+        }
+
+        setSource(kind) {
+          this.source = sourceMap(kind);
+          this.plates.forEach((plate) => plate.t.fill(0));
+          if (this.reduced) {
+            for (let i = 0; i < 600; i++) this.step();
+            this.draw();
+          } else {
+            this.start();
+          }
+        }
+
+        start() {
+          if (this.reduced || this.running || !this.visible) return;
+          this.running = true;
+          this.ticks = 0;
+          const loop = () => {
+            for (let i = 0; i < 4; i++) this.step();
+            this.draw();
+            this.ticks++;
+            if (this.visible && this.ticks < 900) {
+              this.frame = requestAnimationFrame(loop);
+            } else {
+              this.running = false;
+            }
+          };
+          this.frame = requestAnimationFrame(loop);
+        }
+
+        step() {
+          for (const plate of this.plates) {
+            const { t, next, material } = plate;
+            for (let y = 1; y < N - 1; y++) {
+              for (let x = 1; x < N - 1; x++) {
+                const i = y * N + x;
+                if (!inside(x, y)) {
+                  next[i] = 0;
+                  continue;
+                }
+                const lap = t[i - 1] + t[i + 1] + t[i - N] + t[i + N] - 4 * t[i];
+                next[i] = t[i] + material.alpha * lap + this.source[i] - material.loss * t[i];
+              }
+            }
+            plate.t = next;
+            plate.next = t;
+          }
+        }
+
+        draw() {
+          let peak = 1e-6;
+          for (const plate of this.plates) {
+            for (let i = 0; i < N * N; i++) if (plate.t[i] > peak) peak = plate.t[i];
+          }
+          for (const plate of this.plates) {
+            const { t, image, ctx, output } = plate;
+            let min = Infinity;
+            let max = 0;
+            for (let y = 0; y < N; y++) {
+              for (let x = 0; x < N; x++) {
+                if (!inside(x, y) || Math.hypot(x - 31.5, y - 31.5) > 28) continue;
+                const v = t[y * N + x];
+                if (v < min) min = v;
+                if (v > max) max = v;
+              }
+            }
+            for (let i = 0; i < N * N; i++) {
+              const v = Math.min(1, t[i] / peak) * (RAMP.length - 1);
+              const k = Math.min(RAMP.length - 2, Math.floor(v));
+              const f = v - k;
+              const a = RAMP[k];
+              const b = RAMP[k + 1];
+              image.data[i * 4] = a[0] + (b[0] - a[0]) * f;
+              image.data[i * 4 + 1] = a[1] + (b[1] - a[1]) * f;
+              image.data[i * 4 + 2] = a[2] + (b[2] - a[2]) * f;
+              image.data[i * 4 + 3] = 255;
+            }
+            ctx.putImageData(image, 0, 0);
+            if (output && Number.isFinite(min)) output.value = `ΔT ${Math.round(((max - min) / peak) * 120)} °C`;
+          }
+        }
+      }
+    );
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Thermal diffusion",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Heat, made visible"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why it doesn't scorch"
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "Lede",
+      "default": "Pick a flame. The bronze shell carries heat sideways before the clay core releases it upward, so the cooking surface evens out while thin steel keeps every hotspot."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Thermal diffusion",
+      "category": "Maison Tavo"
+    }
+  ]
+}
+{% endschema %}

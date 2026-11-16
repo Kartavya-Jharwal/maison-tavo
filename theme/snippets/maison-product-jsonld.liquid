@@ -1,6 +1,8 @@
 {%- doc -%}
-  Enriched Product JSON-LD beyond stock `structured_data`: adds additionalProperty
-  for catalog spec metafields and GTIN when present (M4 machine-readability claim).
+  Enriched Product JSON-LD beyond stock `structured_data`: emits repeatable
+  structured spec metafields (material, lining, capacity, dimensions, care,
+  dishwasher/microwave/food-contact suitability, heat compatibility) and GTIN
+  when present (D4 machine-readability claim).
 
   @param {object} product - Product drop
 {%- enddoc -%}
@@ -20,10 +22,14 @@
   "description": {{ product.description | strip_html | truncate: 5000 | json }},
   "url": {{ request.origin | append: product.url | json }},
   "sku": {{ variant.sku | json }},
+  "category": {{ product.type | json }},
   "brand": {
     "@type": "Brand",
     "name": {{ product.vendor | default: shop.name | json }}
   }
+  {%- if specs.primary_material.value != blank -%}
+  ,"material": {{ specs.primary_material.value | json }}
+  {%- endif -%}
   {%- if barcode != blank -%}
     {%- if barcode_len == 13 -%}
   ,"gtin13": {{ barcode | json }}
@@ -37,7 +43,9 @@
   ,"gtin": {{ barcode | json }}
     {%- endif -%}
   {%- endif -%}
-  {%- if product.featured_media -%}
+  {%- if variant.featured_media -%}
+  ,"image": {{ variant.featured_media | image_url: width: 1200 | prepend: 'https:' | json }}
+  {%- elsif product.featured_media -%}
   ,"image": {{ product.featured_media | image_url: width: 1200 | prepend: 'https:' | json }}
   {%- endif -%}
   {%- if variant.weight > 0 -%}
@@ -49,7 +57,7 @@
   {%- endif -%}
   ,"offers": {
     "@type": "Offer",
-    "url": {{ request.origin | append: product.url | json }},
+    "url": {{ request.origin | append: variant.url | json }},
     "priceCurrency": {{ cart.currency.iso_code | json }},
     "price": {{ price_amount | json }},
     "availability": "{% if variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
@@ -63,9 +71,45 @@
     {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
     {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"lineup","value":{{ specs.lineup.value | json }}}{%- endcapture -%}
   {%- endif -%}
-  {%- if specs.material_architecture.value != blank -%}
+  {%- if specs.primary_material.value != blank -%}
     {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
-    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"materialArchitecture","value":{{ specs.material_architecture.value | json }}}{%- endcapture -%}
+    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"primaryMaterial","value":{{ specs.primary_material.value | json }}}{%- endcapture -%}
+  {%- endif -%}
+  {%- if specs.lining_material.value != blank -%}
+    {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
+    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"liningMaterial","value":{{ specs.lining_material.value | json }}}{%- endcapture -%}
+  {%- endif -%}
+  {%- if specs.capacity_ml.value != blank -%}
+    {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
+    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"capacityMl","value":{{ specs.capacity_ml.value | json }},"unitCode":"MLT"}{%- endcapture -%}
+  {%- endif -%}
+  {%- if specs.dimensions_summary.value != blank -%}
+    {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
+    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"dimensions","value":{{ specs.dimensions_summary.value | json }}}{%- endcapture -%}
+  {%- endif -%}
+  {%- if specs.dishwasher_suitability.value != blank -%}
+    {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
+    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"dishwasherSuitability","value":{{ specs.dishwasher_suitability.value | json }}}{%- endcapture -%}
+  {%- endif -%}
+  {%- if specs.microwave_suitability.value != blank -%}
+    {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
+    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"microwaveSuitability","value":{{ specs.microwave_suitability.value | json }}}{%- endcapture -%}
+  {%- endif -%}
+  {%- if specs.food_contact_suitability.value != blank -%}
+    {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
+    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"foodContactSuitability","value":{{ specs.food_contact_suitability.value | json }}}{%- endcapture -%}
+  {%- endif -%}
+  {%- if specs.care_instructions.value != blank -%}
+    {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
+    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"careInstructions","value":{{ specs.care_instructions.value | json }}}{%- endcapture -%}
+  {%- endif -%}
+  {%- if specs.heat_compatibility.value != blank -%}
+    {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
+    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"heatCompatibility","value":{{ specs.heat_compatibility.value | json }}}{%- endcapture -%}
+  {%- endif -%}
+  {%- if specs.induction_compatible.value != nil -%}
+    {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
+    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"inductionCompatible","value":{{ specs.induction_compatible.value | json }}}{%- endcapture -%}
   {%- endif -%}
   {%- if specs.heat_sources.value != blank -%}
     {%- liquid
@@ -78,17 +122,9 @@
     {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
     {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"heatSources","value":{{ heat_value | json }}}{%- endcapture -%}
   {%- endif -%}
-  {%- if specs.food_contact_strategy.value != blank -%}
+  {%- if specs.material_architecture.value != blank -%}
     {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
-    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"foodContactStrategy","value":{{ specs.food_contact_strategy.value | json }}}{%- endcapture -%}
-  {%- endif -%}
-  {%- if specs.fabrication_route.value != blank -%}
-    {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
-    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"fabricationRoute","value":{{ specs.fabrication_route.value | json }}}{%- endcapture -%}
-  {%- endif -%}
-  {%- if specs.care_hypothesis.value != blank -%}
-    {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}
-    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"careHypothesis","value":{{ specs.care_hypothesis.value | json }}}{%- endcapture -%}
+    {%- capture prop_parts -%}{{ prop_parts }}{"@type":"PropertyValue","name":"materialArchitecture","value":{{ specs.material_architecture.value | json }}}{%- endcapture -%}
   {%- endif -%}
   {%- if specs.concept_thesis.value != blank -%}
     {%- if prop_parts != blank -%}{%- assign prop_parts = prop_parts | append: ',' -%}{%- endif -%}

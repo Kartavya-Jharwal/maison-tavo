@@ -1,59 +1,5 @@
 {
   "sections": {
-    "lineups": {
-      "type": "maison-lineups",
-      "blocks": {
-        "forge_hybrid": {
-          "type": "lineup",
-          "settings": {
-            "kicker": "Skillets",
-            "label": "Forge Hybrid",
-            "text": "Carbon-steel cookline concepts. Modular mass for the pass — catalog still in draft.",
-            "handle": "forge-hybrid"
-          }
-        },
-        "terre_clay": {
-          "type": "lineup",
-          "settings": {
-            "kicker": "Clay",
-            "label": "Terre Clay",
-            "text": "Cast clay vessels and table forms. Grain and heat memory as design story, not a performance claim.",
-            "handle": "terre-clay"
-          }
-        },
-        "kuro_strip": {
-          "type": "lineup",
-          "settings": {
-            "kicker": "Knives",
-            "label": "Kuro Strip",
-            "text": "Strip and hybrid-edge blade concepts. Edge geometry as craft language.",
-            "handle": "kuro-strip"
-          }
-        },
-        "forge_terre": {
-          "type": "lineup",
-          "settings": {
-            "kicker": "Hybrids",
-            "label": "Forge × Terre",
-            "text": "Forge × Terre service sets and nested pieces for the shared kitchen spine.",
-            "handle": "forge-terre"
-          }
-        }
-      },
-      "block_order": [
-        "forge_hybrid",
-        "terre_clay",
-        "kuro_strip",
-        "forge_terre"
-      ],
-      "settings": {
-        "eyebrow": "Lineage",
-        "heading": "Also in the house",
-        "lede": "Move between Forge Hybrid, Terre Clay, Kuro Strip, and Forge × Terre.",
-        "padding-block-start": 24,
-        "padding-block-end": 16
-      }
-    },
     "section": {
       "type": "section",
       "blocks": {
@@ -192,6 +138,13 @@
               },
               "blocks": {}
             },
+            "lens": {
+              "type": "_product-card-lens",
+              "settings": {
+                "aspect_ratio": "4 / 5"
+              },
+              "blocks": {}
+            },
             "product_title_4nY4eT": {
               "type": "product-title",
               "name": "t:names.product_title",
@@ -236,12 +189,34 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "swatches": {
+              "type": "swatches",
+              "settings": {
+                "product_swatches_alignment": "flex-start",
+                "product_swatches_alignment_mobile": "flex-start"
+              },
+              "blocks": {}
+            },
+            "review": {
+              "type": "review",
+              "settings": {
+                "stars_style": "shaded",
+                "show_number": true,
+                "type_preset": "paragraph",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "card-gallery",
+            "lens",
             "product_title_4nY4eT",
-            "price_EzJzMm"
+            "price_EzJzMm",
+            "swatches",
+            "review"
           ]
         }
       },
@@ -260,6 +235,13 @@
         "padding-block-end": 48
       }
     },
+    "collection_tree": {
+      "type": "maison-collection-tree",
+      "settings": {
+        "padding-block-start": 8,
+        "padding-block-end": 8
+      }
+    },
     "maison_collection_hero": {
       "type": "maison-collection-hero",
       "name": "Collection hero",
@@ -274,7 +256,7 @@
   "order": [
     "maison_collection_hero",
     "section",
-    "main",
-    "lineups"
+    "collection_tree",
+    "main"
   ]
 }

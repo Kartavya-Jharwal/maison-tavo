@@ -1,6 +1,7 @@
 {%- doc -%}
   Industrial mono spec table for product `specs.*` metafields.
-  Surfaces claim_status first so CONCEPT_SPEC rows are never read as verified fact.
+  Surfaces claim_status first so CONCEPT_SPEC rows are never read as verified fact,
+  and renders repeatable material, lining, capacity, dimensions, suitability, and heat rows.
 {%- enddoc -%}
 
 {% liquid
@@ -9,14 +10,25 @@
   assign claim = specs.claim_status.value
   assign lineup = specs.lineup.value
   assign thesis = specs.concept_thesis.value
+  assign primary_material = specs.primary_material.value
+  assign lining_material = specs.lining_material.value
+  assign capacity_ml = specs.capacity_ml.value
+  assign dimensions_summary = specs.dimensions_summary.value
+  assign dishwasher = specs.dishwasher_suitability.value
+  assign microwave = specs.microwave_suitability.value
+  assign food_contact_suitability = specs.food_contact_suitability.value
+  assign care_instructions = specs.care_instructions.value
+  assign heat_compatibility = specs.heat_compatibility.value
   assign material = specs.material_architecture.value
   assign food_contact = specs.food_contact_strategy.value
   assign fabrication = specs.fabrication_route.value
   assign care = specs.care_hypothesis.value
   assign heat = specs.heat_sources.value
+  assign risks = specs.engineering_risks.value
+  assign tests = specs.required_prototype_tests.value
   assign barcode = product_resource.selected_or_first_available_variant.barcode
   assign has_specs = false
-  if claim != blank or lineup != blank or material != blank or heat != blank or thesis != blank or food_contact != blank or fabrication != blank or care != blank or barcode != blank
+  if claim != blank or lineup != blank or primary_material != blank or material != blank or heat != blank or thesis != blank or food_contact != blank or fabrication != blank or care != blank or barcode != blank
     assign has_specs = true
   endif
   assign is_concept = false
@@ -40,6 +52,10 @@
         <span class="maison-spec-table__badge maison-spec-table__badge--{{ claim | handleize }}">
           {{- claim | escape -}}
         </span>
+        {% if product_resource.type != blank %}
+          <span class="maison-spec-table__label">· Object type</span>
+          <span class="maison-spec-table__badge">{{ product_resource.type | escape }}</span>
+        {% endif %}
       </p>
       {% if is_concept %}
         <p class="maison-spec-table__notice">
@@ -58,23 +74,40 @@
       <tbody>
         {% if lineup != blank %}
           <tr>
-            <th scope="row">Lineup</th>
+            <th scope="row">Brand range</th>
             <td>{{ lineup | escape }}</td>
           </tr>
         {% endif %}
-        {% if thesis != blank %}
+        {% if primary_material != blank %}
           <tr>
-            <th scope="row">Concept thesis</th>
-            <td>{{ thesis | escape | newline_to_br }}</td>
+            <th scope="row">Primary material</th>
+            <td>{{ primary_material | escape }}</td>
           </tr>
         {% endif %}
-        {% if material != blank %}
+        {% if lining_material != blank %}
           <tr>
-            <th scope="row">Material architecture</th>
-            <td>{{ material | escape | newline_to_br }}</td>
+            <th scope="row">Lining / interface</th>
+            <td>{{ lining_material | escape }}</td>
           </tr>
         {% endif %}
-        {% if heat != blank %}
+        {% if capacity_ml != blank %}
+          <tr>
+            <th scope="row">Nominal capacity</th>
+            <td>{{ capacity_ml | escape }} ml</td>
+          </tr>
+        {% endif %}
+        {% if dimensions_summary != blank %}
+          <tr>
+            <th scope="row">Dimensions</th>
+            <td>{{ dimensions_summary | escape }}</td>
+          </tr>
+        {% endif %}
+        {% if heat_compatibility != blank %}
+          <tr>
+            <th scope="row">Heat compatibility</th>
+            <td>{{ heat_compatibility | escape }}</td>
+          </tr>
+        {% elsif heat != blank %}
           <tr>
             <th scope="row">Heat sources</th>
             <td>
@@ -86,10 +119,50 @@
             </td>
           </tr>
         {% endif %}
-        {% if food_contact != blank %}
+        {% if dishwasher != blank %}
+          <tr>
+            <th scope="row">Dishwasher</th>
+            <td>{{ dishwasher | replace: '_', ' ' | capitalize | escape }}</td>
+          </tr>
+        {% endif %}
+        {% if microwave != blank %}
+          <tr>
+            <th scope="row">Microwave</th>
+            <td>{{ microwave | replace: '_', ' ' | capitalize | escape }}</td>
+          </tr>
+        {% endif %}
+        {% if food_contact_suitability != blank %}
+          <tr>
+            <th scope="row">Food-contact suitability</th>
+            <td>{{ food_contact_suitability | escape | newline_to_br }}</td>
+          </tr>
+        {% elsif food_contact != blank %}
           <tr>
             <th scope="row">Food-contact strategy</th>
             <td>{{ food_contact | escape | newline_to_br }}</td>
+          </tr>
+        {% endif %}
+        {% if care_instructions != blank %}
+          <tr>
+            <th scope="row">Care instructions</th>
+            <td>{{ care_instructions | escape | newline_to_br }}</td>
+          </tr>
+        {% elsif care != blank %}
+          <tr>
+            <th scope="row">Care hypothesis</th>
+            <td>{{ care | escape | newline_to_br }}</td>
+          </tr>
+        {% endif %}
+        {% if material != blank %}
+          <tr>
+            <th scope="row">Material stack</th>
+            <td>{{ material | escape | newline_to_br }}</td>
+          </tr>
+        {% endif %}
+        {% if thesis != blank %}
+          <tr>
+            <th scope="row">Concept thesis</th>
+            <td>{{ thesis | escape | newline_to_br }}</td>
           </tr>
         {% endif %}
         {% if fabrication != blank %}
@@ -98,10 +171,28 @@
             <td>{{ fabrication | escape | newline_to_br }}</td>
           </tr>
         {% endif %}
-        {% if care != blank %}
+        {% if risks != blank %}
           <tr>
-            <th scope="row">Care hypothesis</th>
-            <td>{{ care | escape | newline_to_br }}</td>
+            <th scope="row">Engineering risks</th>
+            <td>
+              {%- if risks.first -%}
+                {{ risks | join: '; ' | escape }}
+              {%- else -%}
+                {{ risks | escape }}
+              {%- endif -%}
+            </td>
+          </tr>
+        {% endif %}
+        {% if tests != blank %}
+          <tr>
+            <th scope="row">Prototype test gates</th>
+            <td>
+              {%- if tests.first -%}
+                {{ tests | join: '; ' | escape }}
+              {%- else -%}
+                {{ tests | escape }}
+              {%- endif -%}
+            </td>
           </tr>
         {% endif %}
         {% if barcode != blank %}
@@ -205,8 +296,8 @@
   }
 
   .maison-spec-table__grid th {
-    width: 32%;
-    min-width: 8rem;
+    width: 34%;
+    min-width: 8.5rem;
     font-family: var(--font-mono--family, var(--font-accent--family));
     font-size: 0.75rem;
     font-weight: 400;
@@ -226,15 +317,6 @@
     .maison-spec-table__grid tbody tr {
       animation: maison-spec-fade 0.5s ease both;
     }
-
-    .maison-spec-table__grid tbody tr:nth-child(1) { animation-delay: 0.05s; }
-    .maison-spec-table__grid tbody tr:nth-child(2) { animation-delay: 0.1s; }
-    .maison-spec-table__grid tbody tr:nth-child(3) { animation-delay: 0.15s; }
-    .maison-spec-table__grid tbody tr:nth-child(4) { animation-delay: 0.2s; }
-    .maison-spec-table__grid tbody tr:nth-child(5) { animation-delay: 0.25s; }
-    .maison-spec-table__grid tbody tr:nth-child(6) { animation-delay: 0.3s; }
-    .maison-spec-table__grid tbody tr:nth-child(7) { animation-delay: 0.35s; }
-    .maison-spec-table__grid tbody tr:nth-child(8) { animation-delay: 0.4s; }
   }
 
   @keyframes maison-spec-fade {

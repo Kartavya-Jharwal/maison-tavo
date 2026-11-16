@@ -1,0 +1,84 @@
+{
+  "sections": {
+    "room": {
+      "type": "maison-room",
+      "settings": {
+        "eyebrow": "Support",
+        "heading": "Frequently asked questions",
+        "lede": "<p>Shipping, size, heat, and payment. Care of a piece you already hold lives with <a href=\"/pages/kansa\">Kansa</a>.</p>",
+        "notice": "House answers for the catalogue. A published Shopify policy overrides this page where the two differ.",
+        "padding-block-start": 48,
+        "padding-block-end": 64
+      },
+      "blocks": {
+        "delivery": {
+          "type": "clause",
+          "settings": {
+            "heading": "How long does delivery take?",
+            "text": "<p>Pieces leave when the current foundry heat is ready. Maison Tavo does not keep a standing warehouse of every specification. The order confirmation states the window for that allocation.</p>"
+          }
+        },
+        "rates": {
+          "type": "clause",
+          "settings": {
+            "heading": "How are shipping rates calculated?",
+            "text": "<p>At checkout, from the delivery address and the piece. A kadai and a kulhad do not travel the same way, so this page does not print a flat rate.</p>"
+          }
+        },
+        "returns": {
+          "type": "clause",
+          "settings": {
+            "heading": "How do I return a piece?",
+            "text": "<p>Write through the contact form with the order number and photographs before you post anything. Wait for the return address. Pack the piece dry, with its care card. Accepted refunds go back to the original payment method after inspection. The step-by-step page is <a href=\"/pages/delivery-returns\">Delivery and returns</a>.</p>"
+          }
+        },
+        "size": {
+          "type": "clause",
+          "settings": {
+            "heading": "How do I choose a size?",
+            "text": "<p>Diameters are in centimetres on the piece page, next to the material and the heat sources. The title carries the nominal size, such as 26 cm or 28 cm. If two sizes share a form, choose from the selector on that page.</p>"
+          }
+        },
+        "heat": {
+          "type": "clause",
+          "settings": {
+            "heading": "Which heat sources can I use?",
+            "text": "<p>Each piece lists its heat sources. Induction, gas, and oven are not implied by the metal. Read the specification before the first firing. Kansa can talk through heat and care for a piece you already own.</p>"
+          }
+        },
+        "kansa": {
+          "type": "clause",
+          "settings": {
+            "heading": "What is the Kansa page?",
+            "text": "<p>Kansa is its own room, not a collection. It is the companion for bell bronze and the wider care questions: seasoning, soap, acid, and heat. Open it at <a href=\"/pages/kansa\">/pages/kansa</a>.</p>"
+          }
+        },
+        "payment": {
+          "type": "clause",
+          "settings": {
+            "heading": "How do I pay?",
+            "text": "<p>Payment is taken on Shopify checkout after the bag: shipping address, shipping method, payment, then review. Promo codes are entered in the bag before checkout.</p>"
+          }
+        },
+        "orders": {
+          "type": "clause",
+          "settings": {
+            "heading": "Where is my order history?",
+            "text": "<p>Open <a href=\"/account/login\">Account</a> for orders, saved addresses, and profile details. The bag is only the active selection.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "delivery",
+        "rates",
+        "returns",
+        "size",
+        "heat",
+        "kansa",
+        "payment",
+        "orders"
+      ]
+    }
+  },
+  "order": ["room"]
+}

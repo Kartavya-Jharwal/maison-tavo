@@ -27,15 +27,19 @@
   {% if section.blocks.size > 0 %}
     <ul class="maison-lineups__grid list-unstyled" role="list">
       {% for block in section.blocks %}
-        {% liquid
-          assign lineup_url = block.settings.link
-          if block.settings.collection != blank
-            assign lineup_url = block.settings.collection.url
-          endif
-          if lineup_url == blank and block.settings.handle != blank
-            assign lineup_url = '/collections/' | append: block.settings.handle
-          endif
-        %}
+          {% liquid
+            assign target_col = block.settings.collection
+            if target_col == blank and block.settings.handle != blank
+              assign target_col = collections[block.settings.handle]
+            endif
+            assign lineup_url = block.settings.link
+            if target_col != blank
+              assign lineup_url = target_col.url
+            endif
+            if lineup_url == blank and block.settings.handle != blank
+              assign lineup_url = '/collections/' | append: block.settings.handle
+            endif
+          %}
         <li
           class="maison-lineups__item"
           data-maison-reveal
@@ -47,9 +51,14 @@
           {% else %}
             <div class="maison-lineups__link maison-lineups__link--static">
           {% endif %}
-            {% if block.settings.kicker != blank %}
-              <p class="maison-lineups__kicker">{{ block.settings.kicker | escape }}</p>
-            {% endif %}
+            <div class="maison-lineups__kicker-row">
+              {% if block.settings.kicker != blank %}
+                <p class="maison-lineups__kicker">{{ block.settings.kicker | escape }}</p>
+              {% endif %}
+              {% if target_col != blank and target_col.all_products_count > 0 %}
+                <span class="maison-lineups__count">{{ target_col.all_products_count }} {{ target_col.all_products_count | pluralize: 'piece', 'pieces' }}</span>
+              {% endif %}
+            </div>
             {% if block.settings.label != blank %}
               <h3 class="maison-lineups__label">{{ block.settings.label | escape }}</h3>
             {% endif %}
@@ -111,6 +120,13 @@
     transform: translateX(0.25rem);
   }
 
+  .maison-lineups__kicker-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
   .maison-lineups__kicker {
     margin: 0;
     font-family: var(--font-heading--family);
@@ -118,6 +134,14 @@
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--color-foreground-muted);
+  }
+
+  .maison-lineups__count {
+    font-family: var(--font-mono--family, ui-monospace, monospace);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--brand-color-aged-bronze, var(--color-foreground-muted));
   }
 
   .maison-lineups__label {

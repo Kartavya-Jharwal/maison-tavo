@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "arrivals": {
+      "type": "maison-arrivals",
+      "settings": {
+        "eyebrow": "Campaign",
+        "heading": "New arrivals",
+        "lede": "The current heat. Pieces that entered the catalogue most recently, and the room we open when a foundry allocation is ready.",
+        "limit": 8,
+        "padding-block-start": 48,
+        "padding-block-end": 64
+      }
+    }
+  },
+  "order": ["arrivals"]
+}

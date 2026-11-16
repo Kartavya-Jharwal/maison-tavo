@@ -1,56 +1,116 @@
 /*
  * ------------------------------------------------------------
- * Maison Tavo collections index — Forge Hybrid / Terre Clay / Kuro Strip / Forge × Terre.
+ * Maison Tavo collections index — 3 Primary Categories + 4 Material Lineups.
  * ------------------------------------------------------------
  */
 {
   "sections": {
+    "categories": {
+      "type": "maison-lineups",
+      "blocks": {
+        "cookware": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Category 01 · Kitchen & Pass",
+            "label": "Cookware",
+            "text": "Skillets, planchas, tavas, kadais, saucepots, roasters, tagines, knives, and service tongs engineered by thermal task.",
+            "handle": "cookware"
+          }
+        },
+        "tableware_pottery": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Category 02 · Tabletop & Chai",
+            "label": "Tableware & Pottery",
+            "text": "Modular Ardh kulhads, laser-marked Rekhā platters, dinner plates, condiment katoris, and shared serving bowls.",
+            "handle": "tableware-pottery"
+          }
+        },
+        "care_sets": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Category 03 · Ritual & Parts",
+            "label": "Care & Sets",
+            "text": "High-smoke seasoning oil, four-piece care ritual kits, stepped replacement lids, and ceramic-docked bamboo steamers.",
+            "handle": "care-sets"
+          }
+        }
+      },
+      "block_order": ["cookware", "tableware_pottery", "care_sets"],
+      "settings": {
+        "eyebrow": "Assortment Hierarchy",
+        "heading": "Shop by Category",
+        "lede": "Three working-kitchen departments encompassing all 25 Maison Tavo specifications.",
+        "padding-block-start": 48,
+        "padding-block-end": 24
+      }
+    },
     "lineups": {
       "type": "maison-lineups",
       "blocks": {
         "forge_hybrid": {
           "type": "lineup",
           "settings": {
-            "kicker": "Skillets",
+            "kicker": "Range 01 · Mixed Metal",
             "label": "Forge Hybrid",
-            "text": "Carbon-steel cookline concepts. Modular mass for the pass — catalog still in draft.",
+            "text": "Nitrided carbon-steel and clad stainless cookware paired with removable cast-bronze thermal mass, lids, and care rituals.",
             "handle": "forge-hybrid"
           }
         },
         "terre_clay": {
           "type": "lineup",
           "settings": {
-            "kicker": "Clay",
+            "kicker": "Range 02 · Stoneware & Earthenware",
             "label": "Terre Clay",
-            "text": "Cast clay vessels and table forms. Grain and heat memory as design story, not a performance claim.",
+            "text": "Modular kulhads, rotary laser-marked ceramic tableware, and stoneware-docked steaming vessels.",
             "handle": "terre-clay"
           }
         },
         "kuro_strip": {
           "type": "lineup",
           "settings": {
-            "kicker": "Knives",
+            "kicker": "Range 03 · Continuous Strip Blades",
             "label": "Kuro Strip",
-            "text": "Strip and hybrid-edge blade concepts. Edge geometry as craft language.",
+            "text": "Chef, hybrid-edge, and micro-scalloped utility knives formed from continuous steel strip with replaceable grip sleeves.",
             "handle": "kuro-strip"
           }
         },
         "forge_terre": {
           "type": "lineup",
           "settings": {
-            "kicker": "Hybrids",
+            "kicker": "Range 04 · Metal × Clay Systems",
             "label": "Forge × Terre",
-            "text": "Forge × Terre service sets and nested pieces for the shared kitchen spine.",
+            "text": "Nested oven-to-table roasters, induction-base earthenware tagines, and ceramic-pad spring-steel tongs.",
             "handle": "forge-terre"
+          }
+        },
+        "new_arrivals": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Campaign",
+            "label": "New arrivals",
+            "text": "The current heat. Newest pieces, and the room we open for a seasonal allocation.",
+            "handle": "",
+            "link": "/pages/new-arrivals"
+          }
+        },
+        "kansa_room": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Room · Companion",
+            "label": "Kansa",
+            "text": "A page of its own. Care, heat, and the voice of the piece — not a collection.",
+            "handle": "",
+            "link": "/pages/kansa"
           }
         }
       },
-      "block_order": ["forge_hybrid", "terre_clay", "kuro_strip", "forge_terre"],
+      "block_order": ["forge_hybrid", "terre_clay", "kuro_strip", "forge_terre", "new_arrivals", "kansa_room"],
       "settings": {
-        "eyebrow": "The rooms",
-        "heading": "Shop by lineage",
-        "lede": "Four collection rooms: Forge Hybrid for skillets, Terre Clay for vessels, Kuro Strip for knives, Forge × Terre for hybrid service.",
-        "padding-block-start": 48,
+        "eyebrow": "Material Architecture",
+        "heading": "Explore by Material Lineup",
+        "lede": "Four material ranges, the new-arrivals room, and Kansa on a page of its own.",
+        "padding-block-start": 24,
         "padding-block-end": 32
       }
     },
@@ -97,7 +157,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<h1>All collections</h1>",
+                "text": "<h1>All Catalogue Rooms</h1>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
@@ -121,7 +181,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Admin collections appear here once created. Lineup rooms above link by handle even while products remain draft.</p>",
+                "text": "<p>Every Shopify collection across our 3 functional categories and 4 material lineups.</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
@@ -216,12 +276,12 @@
       "settings": {
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "columns": 2,
+        "columns": 3,
         "mobile_columns": "1",
         "columns_gap": 20,
         "bento_gap": 8,
         "rows_gap": 32,
-        "max_collections": 8,
+        "max_collections": 12,
         "icons_style": "arrow",
         "icons_shape": "none",
         "section_width": "page-width",
@@ -233,6 +293,7 @@
     }
   },
   "order": [
+    "categories",
     "lineups",
     "collection_list_Wfgh3m"
   ]

@@ -1,0 +1,49 @@
+{
+  "sections": {
+    "room": {
+      "type": "maison-room",
+      "settings": {
+        "eyebrow": "Trust",
+        "heading": "Reviews",
+        "lede": "<p>Star ratings and photo reviews belong on the piece they describe. This room explains where that proof appears. It does not invent scores.</p>",
+        "notice": "Stars render when a reviews app writes the product rating metafield. Until then, cards and piece pages stay quiet rather than showing placeholder scores.",
+        "padding-block-start": 48,
+        "padding-block-end": 64
+      },
+      "blocks": {
+        "where": {
+          "type": "clause",
+          "settings": {
+            "heading": "Where ratings appear",
+            "text": "<p>On the catalogue card: title, photograph, price, colour swatches, and stars when a rating exists. On the piece page: the same stars, the review count, and any photo reviews the app attaches. Quick view on a card opens the piece without leaving the list.</p>"
+          }
+        },
+        "photos": {
+          "type": "clause",
+          "settings": {
+            "heading": "Photo reviews",
+            "text": "<p>Photographs from cooks stay with the piece, beside the studio images, so a patina shot is not mistaken for the product photograph. This page does not host unnamed testimonials.</p>"
+          }
+        },
+        "catalogue": {
+          "type": "pathway",
+          "settings": {
+            "label": "Browse the catalogue",
+            "url": "/collections",
+            "text": "Open a piece to read its reviews."
+          }
+        },
+        "kansa": {
+          "type": "pathway",
+          "settings": {
+            "label": "Ask Kansa",
+            "url": "/pages/kansa",
+            "text": "Care questions have their own room."
+          }
+        }
+      },
+      "block_order": ["where", "photos", "catalogue", "kansa"]
+    }
+  },
+  "order": ["room"]
+}

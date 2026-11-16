@@ -1,0 +1,71 @@
+{%- doc -%}
+  Evidence ledger: each technical claim carries a truth badge.
+{%- enddoc -%}
+
+<div class="maison-ledger" {{ block.shopify_attributes }}>
+  {%- if block.settings.heading != blank -%}
+    <h3 class="maison-ledger__heading">{{ block.settings.heading | escape }}</h3>
+  {%- endif -%}
+  <ul class="maison-ledger__list" role="list">
+    {% content_for 'blocks' %}
+  </ul>
+</div>
+
+{% stylesheet %}
+  .maison-ledger {
+    width: 100%;
+    border-block-start: 1px solid rgb(var(--color-foreground-rgb) / 0.15);
+    padding-block-start: 1rem;
+  }
+
+  .maison-ledger__heading {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-mono--family, ui-monospace, monospace);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+  }
+
+  .maison-ledger__list {
+    display: grid;
+    gap: 0.625rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Evidence ledger",
+  "tag": null,
+  "blocks": [{ "type": "_maison-evidence-claim" }],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Evidence ledger"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Evidence ledger",
+      "category": "Maison Tavo",
+      "blocks": {
+        "claim_1": {
+          "type": "_maison-evidence-claim",
+          "settings": { "status": "hypothesis", "claim": "Clay core spreads induction heat with no hotspot above 12 °C." }
+        },
+        "claim_2": {
+          "type": "_maison-evidence-claim",
+          "settings": { "status": "hypothesis", "claim": "Holds a steady simmer longer than 3 mm carbon steel once the clay core is saturated." }
+        }
+      },
+      "block_order": ["claim_1", "claim_2"]
+    }
+  ]
+}
+{% endschema %}

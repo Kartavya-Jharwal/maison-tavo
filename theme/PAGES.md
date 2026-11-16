@@ -8,12 +8,31 @@ Theme setting group **Navigation & pages** (`maison_pages`) at the end of `confi
 
 ## Header and footer menus
 
-After pages exist, add them under **Online Store → Navigation**:
+The storefront is a multi-page shop. Header links come from the `main-menu`
+navigation. The footer prints Shop, House, Support, and Legal from the theme
+when those menu settings are empty, so the map is visible before a menu sync.
 
-- Header (primary): **Forge Hybrid** (`/collections/forge-hybrid`), **Terre Clay** (`/collections/terre-clay`), **Kuro Strip** (`/collections/kuro-strip`), **Forge × Terre** (`/collections/forge-terre`), then About us, Our story, Building of, Journal
-- Footer: Privacy Policy, Terms of Service, Intellectual property (plus Journal if you want it twice)
+`bun scripts/sync-navigation.ts --apply` writes this header:
 
-Lineup rooms map to the live catalog handles above (the Sets room uses `forge-terre`). Theme lineup links and empty-state copy assume those handles. Do not publish filler stock.
+- **Shop** (`/collections`) — the catalogue
+  - **Cookware**, with type links (skillets, tavas, kadais) and Forge Hybrid, Kuro Strip, Forge × Terre
+  - **Tableware & Pottery**, with kulhads, platters, Terre Clay, and Forge × Terre
+  - **Care & Sets**, with seasoning, care kits, Forge Hybrid, and Terre Clay
+  - **New arrivals** (`/pages/new-arrivals`)
+- **Kansa** (`/pages/kansa`) — its own page, not a collection
+- **About** (`/pages/about`) — Our story, Journal, Reviews
+- **Contact** (`/pages/contact`) — FAQ, Delivery and returns
+
+Collection pages add the finer paths (a tagged URL such as
+`/collections/cookware/skillet`) and repeat the material lineups.
+Forge × Terre is filed under both Cookware and Tableware.
+
+Checkout and the customer account are Shopify-hosted. The bag links to checkout.
+The header account icon and the footer Account link open the login portal.
+Do not rebuild either flow in the theme.
+
+`scripts/push-catalog.ts --apply` creates and synchronizes all three category
+collections plus the four lineup collections. Do not publish filler stock.
 
 Do not remove the footer **Policy links** block. It lists Shopify-hosted policies from **Settings → Policies** (`shop.policies`, including `shop.privacy_policy` and `shop.terms_of_service` once published). House legal pages are additional rooms, not replacements.
 
@@ -32,6 +51,14 @@ Founder and developer copy for About / Our story / Building of is sourced in `FO
 | About us | `about` | `page.about` | `maison-about` |
 | Our story | `our-story` | `page.story` | `maison-story` |
 | Building of | `building` | `page.building` | `maison-building` |
+| Contact | `contact` | `page.contact` | `maison-room` plus the contact form |
+| New arrivals | `new-arrivals` | `page.arrivals` | `maison-arrivals` |
+| Delivery and returns | `delivery-returns` | `page.shipping` | `maison-room` |
+| Frequently asked questions | `faq` | `page.faq` | `maison-room` |
+| Reviews | `reviews` | `page.reviews` | `maison-room` |
+| Cookie Policy | `cookie-policy` | `page.cookies` | `maison-room` |
+| Care | `care` | `page.care` | care ritual |
+| Kansa | `kansa` | `page.kansa` | `kansa-app` |
 | Privacy Policy | `privacy-policy` | `page.privacy` | `maison-legal` (document: privacy) |
 | Terms of Service | `terms-of-service` | `page.terms` | `maison-legal` (document: terms) |
 | Intellectual property | `intellectual-property` | `page.ipr` | `maison-legal` (document: ipr) |

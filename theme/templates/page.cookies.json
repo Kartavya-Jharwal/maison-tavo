@@ -1,0 +1,56 @@
+{
+  "sections": {
+    "room": {
+      "type": "maison-room",
+      "settings": {
+        "eyebrow": "Legal",
+        "heading": "Cookie policy",
+        "lede": "<p>What this storefront stores in the browser, and how to clear it. This is house draft copy for lawyer review, in the same spirit as the privacy and terms pages.</p>",
+        "notice": "Template copy requiring lawyer review. Shopify privacy choices and a published privacy policy take precedence.",
+        "padding-block-start": 48,
+        "padding-block-end": 64
+      },
+      "blocks": {
+        "shopify": {
+          "type": "clause",
+          "settings": {
+            "heading": "Cart, account, and checkout",
+            "text": "<p>Shopify sets cookies required to keep the bag, sign you in, and run checkout. Those are part of placing an order. Payment details are handled on Shopify checkout, not typed into a theme page.</p>"
+          }
+        },
+        "local": {
+          "type": "clause",
+          "settings": {
+            "heading": "Preferences stored on this device",
+            "text": "<p>The exploration drawer can save a cooking preference and an optional email in localStorage on this browser. It is not sent to a Maison Tavo server. The theme may also use sessionStorage for the visit. The footer control Reset Session and Storage clears both.</p>"
+          }
+        },
+        "choice": {
+          "type": "clause",
+          "settings": {
+            "heading": "Choice",
+            "text": "<p>Use the browser controls to block or delete cookies. If the shop enables Shopify analytics or a privacy banner, those choices are presented by Shopify. Refusing non-essential cookies should still leave the catalogue readable.</p>"
+          }
+        },
+        "privacy": {
+          "type": "pathway",
+          "settings": {
+            "label": "Privacy policy",
+            "url": "/pages/privacy-policy",
+            "text": "The longer account of personal information."
+          }
+        },
+        "terms": {
+          "type": "pathway",
+          "settings": {
+            "label": "Terms of service",
+            "url": "/pages/terms-of-service",
+            "text": "The terms that sit with an order."
+          }
+        }
+      },
+      "block_order": ["shopify", "local", "choice", "privacy", "terms"]
+    }
+  },
+  "order": ["room"]
+}
