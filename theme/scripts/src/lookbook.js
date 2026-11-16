@@ -1,5 +1,6 @@
 import { animate } from 'motion';
 import { createStore } from 'zustand/vanilla';
+import { DragGesture } from '@use-gesture/vanilla';
 
 const root = document.getElementById('maison-microapp-root');
 if (root) {
@@ -202,6 +203,29 @@ if (root) {
     if (kind === 'palette') setPalette(id);
     if (kind === 'lineup') setLineup(id);
   });
+
+  // Swipe the colour stage to cycle palettes; chips remain the keyboard path.
+  new DragGesture(
+    root,
+    ({ last, movement, velocity, event, cancel }) => {
+      if (!last) return;
+      const target = event.target instanceof Element ? event.target : null;
+      if (target?.closest('button, a')) {
+        cancel();
+        return;
+      }
+      const dx = movement[0];
+      const speed = velocity[0];
+      if (Math.abs(dx) < 48 && Math.abs(speed) < 0.55) return;
+      const state = store.getState();
+      const index = palettes.findIndex((item) => item.id === state.palette);
+      const next = dx < 0 || speed < 0
+        ? (index + 1) % palettes.length
+        : (index - 1 + palettes.length) % palettes.length;
+      state.setPalette(palettes[next].id);
+    },
+    { axis: 'x', filterTaps: true, threshold: 24, pointer: { touch: true } },
+  );
 
   render(store.getState());
 }

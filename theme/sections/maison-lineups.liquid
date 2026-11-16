@@ -12,7 +12,7 @@
   style="{% render 'spacing-style', settings: section.settings %}"
   data-maison-reveal-root
 >
-  <header class="maison-editorial__header maison-lineups__header">
+  <header class="maison-editorial__header maison-lineups__header" data-mt-scroll>
     {% if section.settings.eyebrow != blank %}
       <p class="maison-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
     {% endif %}

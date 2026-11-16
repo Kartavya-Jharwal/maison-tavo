@@ -7,7 +7,7 @@
   class="section section--page-width spacing-style maison-room"
   style="{% render 'spacing-style', settings: section.settings %}"
 >
-  <header class="maison-room__header">
+  <header class="maison-room__header" data-mt-scroll>
     {% if section.settings.eyebrow != blank %}
       <p class="maison-room__eyebrow">{{ section.settings.eyebrow | escape }}</p>
     {% endif %}

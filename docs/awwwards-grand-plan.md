@@ -45,11 +45,18 @@ No un-sourceable mock fonts. Fully self-hosted, lightweight WOFF2 assets with ex
 ## 3. Usability (30%) — Frictionless Commerce & Multi-Input Precision
 
 ### Multi-Modal Input-Aware Smooth Scrolling
-A single 120fps ticker loop in `theme/scripts/src/maison-runtime.js` coordinating **Lenis** and **GSAP**:
-*   **Touch & Mobile/Tablet**: Native touch passthrough with dampening scaled back to eliminate inertia lag.
-*   **Trackpad (Mac/Laptop)**: 1:1 direct scroll handling to avoid rubber-banding conflicts.
-*   **Mouse Wheel**: Subtly smoothed interpolation (`damp: 0.08`).
+A single GSAP ticker in `theme/scripts/src/horizon-scroll.js` coordinating **Lenis** and **ScrollTrigger**:
+*   **Touch & Mobile/Tablet**: Native touch passthrough; Lenis is not created below the Horizon xl breakpoint.
+*   **Trackpad (Mac/Laptop)**: 1:1 direct scroll (`smoothWheel` off).
+*   **Mouse Wheel**: Subtly smoothed interpolation (`lerp: 0.08`).
 *   **Keyboard (`Tab`, Arrows)**: Instant native focus scrolling with high-contrast, accessible focus indicators.
+
+### Inter-Room Transitions & Spatial Product Study
+The live storefront stays Liquid SSR. Flagship motion is a Bun-bundled island stack — never a headless SPA rewrite:
+*   **Barba.js** swaps only `#MainContent` between same-origin rooms; header, footer, bag, checkout, and account stay native full navigations.
+*   **GSAP** drives the bronze cover sheet and room enter/leave; `prefers-reduced-motion` and the footer motion toggle skip the veil.
+*   **@use-gesture/vanilla** gives the bag drawer drag-to-dismiss rubber-banding and lookbook colour swipes; product form controls stay clickable.
+*   **Three.js + React Three Fiber** lazy-mount a material study vessel on the PDP (`maison-vessel`). Finish radios change metal only — size, stock, and add-to-bag remain the Liquid product form above.
 
 ### Zero-Backend Client Storage Profile Engine
 *   **The 45% Exploration Slide-Up**:

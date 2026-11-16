@@ -2,24 +2,25 @@ import { DragGesture } from '@use-gesture/vanilla';
 import gsap from 'gsap';
 
 /**
- * Horizontal drag on the bag's grip and header.
- * The close button, quantities, and checkout stay clickable.
+ * Horizontal drag on drawer grips and headers.
+ * Works for the bag and any other theme-drawer that exposes a dialog.
+ * Close controls, quantities, and checkout stay clickable.
  * Past a threshold the drawer finishes its own close; otherwise it eases back.
  */
 
-let started = false;
+const bound = new WeakSet();
+let watching = false;
 let tween = null;
 
 function reduced() {
   return document.documentElement.dataset.reducedMotion === 'true';
 }
 
-export function initDrawerGesture() {
-  if (started) return;
-  const drawer = document.getElementById('cart-drawer');
-  const dialog = drawer?.querySelector('dialog');
-  if (!drawer || !dialog || typeof drawer.close !== 'function') return;
-  started = true;
+function bindDrawer(drawer) {
+  if (!(drawer instanceof HTMLElement) || bound.has(drawer)) return;
+  const dialog = drawer.querySelector('dialog');
+  if (!dialog || typeof drawer.close !== 'function') return;
+  bound.add(drawer);
 
   dialog.addEventListener('close', () => {
     tween?.kill();
@@ -38,7 +39,9 @@ export function initDrawerGesture() {
       let allowed = memo;
       if (first) {
         const target = event.target instanceof Element ? event.target : null;
-        const handle = target?.closest('[data-mt-drawer-grip], .theme-drawer__header');
+        const handle = target?.closest(
+          '[data-mt-drawer-grip], .theme-drawer__header, .cart-drawer__grip',
+        );
         const control = target?.closest('button, a, input, select, textarea, label');
         allowed = Boolean(handle) && !control;
       }
@@ -93,4 +96,19 @@ export function initDrawerGesture() {
       pointer: { touch: true },
     },
   );
+}
+
+function scan(root = document) {
+  root.querySelectorAll('theme-drawer').forEach(bindDrawer);
+}
+
+export function initDrawerGesture() {
+  scan();
+  if (watching) return;
+  watching = true;
+  new MutationObserver(() => scan()).observe(document.body, {
+    childList: true,
+    subtree: true,
+  });
+  document.addEventListener('maison:page-enter', () => scan());
 }

@@ -168,3 +168,57 @@ here is sequenced, with its landing point named.
 | Real voice backend (OpenAI Realtime) | Deferred to Phase 3 | D9 — simulated pass carries the signaling value now |
 | Standalone Kansa PWA | Deferred to post-Phase 2 | D7 — integrated first, branched off after |
 | Hydrogen app customization | Deferred indefinitely | Repo rule: Hydrogen is a secondary Oxygen preview, not the live shop; no showcase engineering lands there |
+
+---
+
+## Updates — current session
+
+### D4 — M4 complete (updated)
+
+JSON-LD `additionalProperty` shipped in the Liquid theme PDP via `maison-product-jsonld.liquid`.
+Constraint evaluator, enriched UCP catalog search, and checkout routes live in `apps/agents/`.
+Proof script at `apps/agents/src/demo.ts`. See `docs/ucp-discovery.md` for full agent surface
+documentation.
+
+### D11 — Hydrogen removed from showcase scope
+
+- **Status:** **Decided** (current session).
+- **Decision:** The Hydrogen app (`hydrogen/`) is removed from all planning and execution. It
+  remains in the repository as an unused secondary surface but receives no development work.
+- **Rationale:** The storefront IS the Liquid/Horizon custom theme in `theme/`. There is no
+  Oxygen hosting, no server, and no need for a headless React surface. All showcase engineering
+  — brand, motion, sound, JSON-LD, Kansa, spec table — lives in the Liquid theme and is pushed
+  directly to the Shopify store via Shopify CLI.
+- **Alternatives rejected:** Hydrogen as a "headless demo surface" — adds cost and complexity
+  with zero client-demo value given the Liquid theme is fully capable of the awwwards-quality
+  build.
+- **Reversible?** Yes — the spec files in `.kiro/specs/hydrogen-storefront-launch/` are a
+  starting point if headless Hydrogen is ever needed.
+
+### D12 — Three-layer architecture is fixed
+
+- **Status:** **Decided** (current session).
+- **Decision:** The monorepo has exactly three active layers:
+  1. `theme/` — the storefront (Liquid/Horizon, pushed to Shopify)
+  2. `packages/catalog/` + `packages/ucp/` — shared data and protocol packages
+  3. `apps/agents/` — UCP agent server (separate process, Cloudflare tunnel for HTTPS)
+  
+  The catalog feeds both the theme (via `push-catalog.ts` → Shopify metafields) and the agent
+  layer (direct TypeScript import of `seedCatalog`). This is the complete system.
+- **Rationale:** Clear separation of concerns. The theme is a Shopify artifact deployed via CLI.
+  The agent layer is a standalone Bun server demonstrating the UCP protocol. The catalog is the
+  shared source of truth for both.
+
+### D13 — Flagship motion lives in Liquid islands, not a React storefront
+
+- **Status:** **Decided** (16 Nov 2026).
+- **Decision:** GSAP, Lenis, Barba.js, Use-Gesture, and Three.js / R3F ship as Bun-bundled
+  theme assets (`maison-runtime.js`, `maison-vessel.js`). They enhance the Horizon multipage
+  rooms; they do not replace Shopify navigation, checkout, or customer accounts.
+- **Rationale:** SOTY jury wants an interactive digital flagship, but Jakob’s Law and Lighthouse
+  still own the score. Barba swaps only `#MainContent`. The R3F vessel is a lazy PDP material
+  study and never owns variant selection or add-to-bag. Gestures stop at drawers and lookbook
+  stages so form controls stay frictionless.
+- **Alternatives rejected:** Rewriting the shop as a Hydrogen/R3F SPA; full-document Barba
+  morphs that break Horizon web components; hand-rolled WebGL shaders for the vessel.
+- **Reversible?** Yes — remove the Barba wrapper and vessel section; commerce remains intact.

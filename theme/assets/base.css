@@ -65,8 +65,8 @@ html[scroll-lock] .page-wrapper {
 
   /* Lenis eases the mouse wheel itself. A second native ease fights it,
      and keyboard focus must jump. */
-  html[data-mt-scroll='mouse'] .page-wrapper,
-  html[data-mt-scroll='keyboard'] .page-wrapper {
+  html[data-mt-scroll-input='mouse'] .page-wrapper,
+  html[data-mt-scroll-input='keyboard'] .page-wrapper {
     scroll-behavior: auto !important;
   }
 }

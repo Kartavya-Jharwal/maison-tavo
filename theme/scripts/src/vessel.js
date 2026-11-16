@@ -81,7 +81,7 @@ function Piece({ motion, finish }) {
     camera.lookAt(-0.15, 0.02, 0);
     document.documentElement.dataset.mtDolly = `${camera.position.z.toFixed(2)}|${group.current.position.x.toFixed(2)}|${motion.yaw.toFixed(2)}`;
   });
-  return     h(
+  return h(
     'group',
     { ref: group, position: [-0.32, 0, 0] },
     h('mesh', { geometry: skillet, material: materials[finish] || materials.bronze }),

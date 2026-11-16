@@ -189,17 +189,21 @@ export function initPageTransitions() {
     transitions: [
       {
         name: 'bronze-sheet',
-        async leave() {
+        async leave({ current }) {
           document.documentElement.classList.add('mt-transitioning');
           veil.classList.add('is-covering');
-          document.getElementById('MainContent')?.setAttribute('aria-busy', 'true');
+          const leaving = current.container || document.getElementById('MainContent');
+          leaving?.setAttribute('aria-busy', 'true');
           closeDrawers();
           pauseHorizonScroll();
           if (reduced()) {
             document.dispatchEvent(new CustomEvent('maison:page-leave'));
             return;
           }
-          await gsap.to(veil, { yPercent: 0, duration: 0.42, ease: 'power3.inOut' });
+          await gsap
+            .timeline({ defaults: { ease: 'power3.inOut' } })
+            .to(leaving, { y: 18, autoAlpha: 0.35, duration: 0.28 }, 0)
+            .to(veil, { yPercent: 0, duration: 0.42 }, 0.04);
           document.dispatchEvent(new CustomEvent('maison:page-leave'));
         },
         async enter(data) {
@@ -216,9 +220,19 @@ export function initPageTransitions() {
           } else {
             resetHorizonScroll();
           }
-          if (!reduced()) await gsap.to(veil, { yPercent: -100, duration: 0.48, ease: 'power3.out' });
+          const arriving = data.next.container || document.getElementById('MainContent');
+          if (!reduced()) {
+            gsap.set(arriving, { y: 22, autoAlpha: 0.2 });
+            await gsap
+              .timeline({ defaults: { ease: 'power3.out' } })
+              .to(veil, { yPercent: -100, duration: 0.48 }, 0)
+              .to(arriving, { y: 0, autoAlpha: 1, duration: 0.55 }, 0.12);
+          } else {
+            gsap.set(arriving, { clearProps: 'transform,opacity,visibility' });
+          }
           veil.classList.remove('is-covering');
           document.documentElement.classList.remove('mt-transitioning');
+          gsap.set(arriving, { clearProps: 'transform,opacity,visibility' });
         },
       },
     ],

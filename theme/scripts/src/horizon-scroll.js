@@ -64,7 +64,15 @@ function classifyWheel(event) {
 
 function setMode(kind) {
   const root = document.documentElement;
-  root.dataset.mtScroll = kind;
+  // Keep reveal hooks on [data-mt-scroll]; input mode uses a separate attribute.
+  root.dataset.mtScrollInput = kind;
+  if (root.getAttribute('data-mt-scroll') === 'document'
+    || root.getAttribute('data-mt-scroll') === 'mouse'
+    || root.getAttribute('data-mt-scroll') === 'trackpad'
+    || root.getAttribute('data-mt-scroll') === 'keyboard'
+    || root.getAttribute('data-mt-scroll') === 'pointer') {
+    root.removeAttribute('data-mt-scroll');
+  }
   if (!lenis) return;
   if (kind === 'mouse') {
     lenis.options.smoothWheel = true;
@@ -82,13 +90,14 @@ function motionAllowed() {
 
 function bindMotion(root = document) {
   if (!motionAllowed()) return;
-  root.querySelectorAll('[data-mt-scroll]:not([data-mt-bound])').forEach((el) => {
+  root.querySelectorAll('[data-mt-scroll]:not(html):not([data-mt-bound])').forEach((el) => {
     el.dataset.mtBound = 'true';
     gsap.from(el, {
       y: scroller ? 32 : 16,
-      autoAlpha: 0,
+      opacity: 0,
       duration: 0.9,
       ease: 'power3.out',
+      clearProps: 'opacity,transform',
       scrollTrigger: {
         trigger: el,
         scroller: scroller || undefined,
@@ -185,7 +194,7 @@ export function initHorizonScroll() {
       scroller = element;
       mountLenis(element);
     } else {
-      document.documentElement.dataset.mtScroll = desktop.matches ? 'pointer' : 'document';
+      document.documentElement.dataset.mtScrollInput = desktop.matches ? 'pointer' : 'document';
     }
     bindMotion(document);
     ScrollTrigger.refresh();
