@@ -1,0 +1,62 @@
+{% doc %}
+  Fixed bronze sheet and route announcement for Barba page changes.
+  The sheet stays off-screen until a same-origin room transition covers the page.
+{% enddoc %}
+
+<div class="mt-veil" data-mt-veil aria-hidden="true">
+  <p class="mt-veil__mark">Maison Tavo</p>
+  <span class="mt-veil__rule"></span>
+</div>
+<p class="visually-hidden" data-mt-route-status role="status" aria-live="polite"></p>
+<script>
+  window.MaisonAssets = window.MaisonAssets || {};
+  window.MaisonAssets.vessel = {{ 'maison-vessel.js' | asset_url | json }};
+</script>
+
+{% stylesheet %}
+  .mt-veil {
+    position: fixed;
+    inset: 0;
+    z-index: 120;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: max(1.25rem, var(--safe-area-inset-bottom, 0px)) max(1.5rem, var(--safe-area-inset-right, 0px)) max(1.25rem, var(--safe-area-inset-bottom, 0px)) max(1.5rem, var(--safe-area-inset-left, 0px));
+    background: #14110e;
+    color: #c58b43;
+    pointer-events: none;
+    transform: translate3d(0, -100%, 0);
+  }
+
+  .mt-veil.is-covering {
+    pointer-events: auto;
+  }
+
+  .mt-veil__mark {
+    margin: 0;
+    font-family: var(--font-heading--family, Georgia, serif);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .mt-veil__rule {
+    width: 4.5rem;
+    height: 1px;
+    margin-bottom: 0.45rem;
+    background: currentColor;
+  }
+
+  html.mt-transitioning {
+    cursor: progress;
+  }
+
+  #MainContent:focus {
+    outline: none;
+  }
+
+  html[data-reduced-motion='true'] .mt-veil {
+    display: none;
+  }
+{% endstylesheet %}

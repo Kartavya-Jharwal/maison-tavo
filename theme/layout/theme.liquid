@@ -38,7 +38,7 @@
 
     {% render 'chat-drawer' %}
 
-    <div class="page-wrapper">
+    <div class="page-wrapper" data-barba="wrapper">
       <div id="header-group">
         {% sections 'header-group' %}
       </div>
@@ -154,6 +154,8 @@
         id="MainContent"
         class="content-for-layout"
         role="main"
+        data-barba="container"
+        data-barba-namespace="{{ template.name | escape }}"
         data-page-transition-enabled="{{ settings.page_transition_enabled }}"
         data-product-transition="{{ settings.transition_to_main_product }}"
         data-template="{{ template }}"
@@ -175,6 +177,7 @@
       {% render 'quick-add-modal' %}
     {% endif %}
   
+    {% render 'maison-flagship' %}
     {% render 'maison-experience' %}
     <script src="{{ 'maison-runtime.js' | asset_url }}" defer></script>
   </body>

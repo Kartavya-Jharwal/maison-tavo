@@ -14,6 +14,10 @@ const jobs = [
     entry: `${themeRoot}/scripts/src/kansa.js`,
     outfile: `${themeRoot}/assets/microapp-kansa.js`,
   },
+  {
+    entry: `${themeRoot}/scripts/src/vessel.js`,
+    outfile: `${themeRoot}/assets/maison-vessel.js`,
+  },
 ];
 
 for (const job of jobs) {
@@ -26,6 +30,8 @@ for (const job of jobs) {
       '--minify',
       '--target=browser',
       '--format=iife',
+      '--define',
+      'process.env.NODE_ENV="production"',
       `--banner=${banner}`,
     ],
     cwd: themeRoot,
@@ -39,4 +45,6 @@ for (const job of jobs) {
   }
 }
 
-console.log('Bundled theme assets: maison-runtime.js, microapp-lookbook.js, microapp-kansa.js');
+console.log(
+  'Bundled theme assets: maison-runtime.js, microapp-lookbook.js, microapp-kansa.js, maison-vessel.js',
+);

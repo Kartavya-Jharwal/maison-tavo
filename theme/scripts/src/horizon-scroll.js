@@ -76,7 +76,12 @@ function setMode(kind) {
   }
 }
 
+function motionAllowed() {
+  return document.documentElement.dataset.reducedMotion !== 'true';
+}
+
 function bindMotion(root = document) {
+  if (!motionAllowed()) return;
   root.querySelectorAll('[data-mt-scroll]:not([data-mt-bound])').forEach((el) => {
     el.dataset.mtBound = 'true';
     gsap.from(el, {
@@ -196,4 +201,34 @@ export function initHorizonScroll() {
     lenis?.resize();
     ScrollTrigger.refresh();
   });
+}
+
+export function pauseHorizonScroll() {
+  lenis?.stop();
+}
+
+export function resetHorizonScroll() {
+  const element = wrapper();
+  if (element) element.scrollTop = 0;
+  if (lenis) lenis.scrollTo(0, { immediate: true, force: true });
+  window.scrollTo(0, 0);
+}
+
+export function scrollHorizonTo(target, immediate = false) {
+  if (!(target instanceof Element)) return;
+  if (lenis) {
+    lenis.scrollTo(target, { offset: -24, immediate, force: true });
+    return;
+  }
+  target.scrollIntoView({ block: 'start' });
+}
+
+export function refreshHorizonScroll(root = document) {
+  ScrollTrigger.getAll().forEach((trigger) => {
+    if (trigger.trigger instanceof Element && !trigger.trigger.isConnected) trigger.kill();
+  });
+  bindMotion(root);
+  lenis?.resize();
+  lenis?.start();
+  ScrollTrigger.refresh();
 }

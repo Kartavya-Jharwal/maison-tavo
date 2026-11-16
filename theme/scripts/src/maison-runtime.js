@@ -1,6 +1,8 @@
 import { animate, inView, scroll, stagger } from 'motion';
 import { createStore } from 'zustand/vanilla';
 import { initHorizonScroll } from './horizon-scroll.js';
+import { initDrawerGesture } from './drawer-gesture.js';
+import { initPageTransitions } from './page-transition.js';
 
 /**
  * Lightweight Spring Physics Helper
@@ -339,6 +341,8 @@ if (typeof document !== 'undefined') {
     );
 
     document.querySelectorAll('.clip-line, .inview, .inview-scale, .stacked-title, [data-reveal]').forEach((el) => {
+      if (el.dataset.mtRevealBound) return;
+      el.dataset.mtRevealBound = 'true';
       revealObserver.observe(el);
     });
 
@@ -364,16 +368,97 @@ if (typeof document !== 'undefined') {
 
   MaisonRuntime.tagProfileFits = tagProfileFits;
 
+  function loadScript(src) {
+    if (!src) return Promise.reject(new Error('missing asset'));
+    if (window.__mtVesselScript) return window.__mtVesselScript;
+    if (window.MaisonVessel) return Promise.resolve();
+    const existing = [...document.scripts].find((script) => script.src === src);
+    if (existing?.dataset.loaded === 'true') return Promise.resolve();
+    if (existing) {
+      return new Promise((resolve, reject) => {
+        existing.addEventListener('load', () => resolve(), { once: true });
+        existing.addEventListener('error', () => reject(new Error('asset failed')), { once: true });
+      });
+    }
+    const pending = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = false;
+      script.onload = () => {
+        script.dataset.loaded = 'true';
+        resolve();
+      };
+      script.onerror = () => reject(new Error('asset failed'));
+      document.body.appendChild(script);
+    });
+    window.__mtVesselScript = pending;
+    return pending;
+  }
+
+  let vesselWatch = null;
+
+  function ensureVessel() {
+    vesselWatch?.disconnect();
+    const nodes = [...document.querySelectorAll('[data-mt-vessel]')];
+    if (!nodes.length) return;
+    if (window.MaisonVessel) {
+      window.MaisonVessel.mountAll();
+      return;
+    }
+    const start = () => {
+      loadScript(window.MaisonAssets?.vessel)
+        .then(() => window.MaisonVessel?.mountAll())
+        .catch(() => {
+          document.querySelectorAll('[data-mt-fallback]').forEach((node) => {
+            node.hidden = false;
+          });
+        });
+    };
+    const scroller = getScroller();
+    const root =
+      scroller instanceof Element && scroller !== document.body && scroller !== document.documentElement
+        ? scroller
+        : null;
+    vesselWatch = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        vesselWatch?.disconnect();
+        vesselWatch = null;
+        start();
+      },
+      { root, rootMargin: '480px' },
+    );
+    nodes.forEach((node) => vesselWatch.observe(node));
+  }
+
   const boot = () => {
     initReducedMotionPreference();
     initConsentBar();
     initInViewReveals();
     initGhostParallax();
     initHorizonScroll();
+    initPageTransitions();
+    initDrawerGesture();
     initProfiler();
     initStorageReset();
     tagProfileFits();
+    ensureVessel();
   };
+
+  document.addEventListener('maison:page-enter', () => {
+    if (document.documentElement.dataset.mtRouteBound === 'busy') return;
+    document.documentElement.dataset.mtRouteBound = 'busy';
+    queueMicrotask(() => {
+      delete document.documentElement.dataset.mtRouteBound;
+    });
+    initInViewReveals();
+    tagProfileFits();
+    ensureVessel();
+    const template = document.getElementById('MainContent')?.dataset.template || '';
+    if (!template.startsWith('product')) return;
+    const seen = Number(sessionStorage.getItem(VIEWS_KEY) || 0) + 1;
+    sessionStorage.setItem(VIEWS_KEY, String(seen));
+  });
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);

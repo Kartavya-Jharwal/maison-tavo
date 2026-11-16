@@ -531,10 +531,18 @@
       "type": "maison-view-as",
       "name": "View-as (Human / Agent / Voice)",
       "settings": {}
+    },
+    "maison_vessel": {
+      "type": "maison-vessel",
+      "name": "Material study",
+      "settings": {
+        "heading": "Turn the metal"
+      }
     }
   },
   "order": [
     "main",
+    "maison_vessel",
     "maison_view_as",
     "product_recommendations_qggXJq"
   ]
