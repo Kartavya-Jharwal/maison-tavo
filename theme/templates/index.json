@@ -4,287 +4,156 @@
       "type": "maison-hero",
       "settings": {}
     },
-    "maison_categories": {
-      "type": "maison-lineups",
+    "maison_story_brief": {
+      "type": "maison-story-brief",
       "blocks": {
-        "cookware": {
-          "type": "lineup",
+        "heat": {
+          "type": "highlight",
           "settings": {
-            "kicker": "Category 01 · Kitchen & Pass",
-            "label": "Cookware",
-            "text": "Skillets, planchas, tavas, kadais, saucepots, roasters, tagines, knives, and service tongs engineered by culinary task.",
-            "handle": "cookware"
+            "kicker": "01",
+            "heading": "Heat with memory",
+            "text": "Mass where it matters. Control where the hand needs it."
           }
         },
-        "tableware_pottery": {
-          "type": "lineup",
+        "service": {
+          "type": "highlight",
           "settings": {
-            "kicker": "Category 02 · Tabletop & Chai",
-            "label": "Tableware & Pottery",
-            "text": "Modular Ardh kulhads, laser-marked Rekhā platters, dinner plates, condiment katoris, and shared serving bowls.",
-            "handle": "tableware-pottery"
+            "kicker": "02",
+            "heading": "Built for service",
+            "text": "Hospitality handling, induction-ready bases, care that is a ritual not a chore."
           }
         },
-        "care_sets": {
-          "type": "lineup",
+        "specs": {
+          "type": "highlight",
           "settings": {
-            "kicker": "Category 03 · Ritual & Parts",
-            "label": "Care & Sets",
-            "text": "High-smoke seasoning oil, four-piece care ritual kits, stepped replacement lids, and ceramic-docked bamboo steamers.",
-            "handle": "care-sets"
-          }
-        },
-        "forge_terre": {
-          "type": "lineup",
-          "settings": {
-            "kicker": "Range 04 · Metal × Clay",
-            "label": "Forge × Terre",
-            "text": "Hybrid metal–clay systems separating active induction cooking from tactile earthenware table service.",
-            "handle": "forge-terre"
-          }
-        },
-        "kansa_room": {
-          "type": "lineup",
-          "settings": {
-            "kicker": "Room · Companion",
-            "label": "Kansa",
-            "text": "A page of its own. Ask the bell-bronze companion about heat, care, and the piece in your hand.",
-            "handle": "",
-            "link": "/pages/kansa"
+            "kicker": "03",
+            "heading": "Specs you can read",
+            "text": "Alloy, thickness, and heat claims marked with evidence tiers — not marketing fog."
           }
         }
       },
-      "block_order": [
-        "cookware",
-        "tableware_pottery",
-        "care_sets",
-        "forge_terre",
-        "kansa_room"
-      ],
+      "block_order": ["heat", "service", "specs"],
       "settings": {
-        "eyebrow": "Assortment Architecture",
-        "heading": "Shop by Department & System",
-        "lede": "25 specifications across Cookware, Tableware & Pottery, Care & Sets, and our four material lineups.",
-        "padding-block-start": 56,
+        "eyebrow": "The house",
+        "heading": "Cook with what outlasts you.",
+        "lede": "Dual-mass cookware, refractory clay, and care rituals built for the working kitchen — verified where we can, honest where we cannot.",
+        "cta_label": "Read our story",
+        "cta_link": "/pages/our-story",
+        "padding-block-start": 48,
         "padding-block-end": 40
       }
     },
-    "maison_collection": {
-      "type": "product-list",
+    "maison_featured_trio": {
+      "type": "maison-featured-trio",
       "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 16,
-        "columns": 3,
-        "mobile_columns": "1",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 24,
-        "rows_gap": 32,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 32,
+        "eyebrow": "Three for the pass",
+        "heading": "Featured pieces",
+        "lede": "A flagship pan, the care kit that keeps it honest, and one secondary piece from another pod. Choose them in this section’s settings.",
+        "label_1": "Flagship pan",
+        "label_2": "Service & maintenance",
+        "label_3": "Secondary pod",
         "padding-block-start": 40,
-        "padding-block-end": 64
-      },
+        "padding-block-end": 48
+      }
+    },
+    "maison_releases_teaser": {
+      "type": "maison-releases-teaser",
+      "settings": {
+        "eyebrow": "Release cycle",
+        "heading": "Inventory opens in heats",
+        "lede": "Maison does not keep a perpetual new-arrivals rail. Pieces enter through timed release cycles — then the window closes.",
+        "cycle_name": "Current heat",
+        "cycle_window": "Allocation open while stock lasts",
+        "cycle_key": "current",
+        "releases_url": "/pages/releases",
+        "cta_label": "View releases",
+        "show_mail_link": true,
+        "enable_drawer": true,
+        "enable_popup": false,
+        "popup_delay": 4,
+        "padding-block-start": 24,
+        "padding-block-end": 16
+      }
+    },
+    "maison_pathways": {
+      "type": "maison-pathways",
       "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "static": true,
+        "heat": {
+          "type": "pathway",
           "settings": {
-            "content_direction": "row",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text": {
-              "type": "_product-list-text",
-              "settings": {
-                "text": "<h2>The Working Kitchen</h2>",
-                "type_preset": "h2",
-                "font": "var(--font-heading--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              }
-            },
-            "product_list_button": {
-              "type": "_product-list-button",
-              "settings": {
-                "label": "View the catalogue",
-                "open_in_new_tab": false,
-                "style_class": "button-unstyled",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              }
-            }
-          },
-          "block_order": [
-            "product_list_text",
-            "product_list_button"
-          ]
+            "kicker": "Thermal",
+            "label": "Heat",
+            "text": "Why white heat does not scorch — diffusion made visible.",
+            "url": "/pages/heat",
+            "emphasis": "heat"
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "static": true,
+        "finder": {
+          "type": "pathway",
           "settings": {
-            "product_card_gap": 8,
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product-card-gallery": {
-              "type": "_product-card-gallery",
-              "settings": {
-                "image_ratio": "portrait",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              }
-            },
-            "lens": {
-              "type": "_product-card-lens",
-              "settings": {
-                "aspect_ratio": "4 / 5"
-              }
-            },
-            "product_title": {
-              "type": "product-title",
-              "settings": {
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "paragraph",
-                "font": "var(--font-heading--family)",
-                "font_size": "1.125rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              }
-            },
-            "price": {
-              "type": "price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "0.9375rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              }
-            },
-            "swatches": {
-              "type": "swatches",
-              "settings": {
-                "product_swatches_alignment": "flex-start",
-                "product_swatches_alignment_mobile": "flex-start"
-              }
-            },
-            "review": {
-              "type": "review",
-              "settings": {
-                "stars_style": "shaded",
-                "show_number": true,
-                "type_preset": "paragraph",
-                "width": "100%",
-                "alignment": "left"
-              }
-            }
-          },
-          "block_order": [
-            "product-card-gallery",
-            "lens",
-            "product_title",
-            "price",
-            "swatches",
-            "review"
-          ]
+            "kicker": "Ceremony",
+            "label": "Finder",
+            "text": "Five questions. One piece that fits your pass.",
+            "url": "/pages/finder",
+            "emphasis": "none"
+          }
+        },
+        "department": {
+          "type": "pathway",
+          "settings": {
+            "kicker": "System",
+            "label": "Department",
+            "text": "Shop by department and material system.",
+            "url": "/pages/department",
+            "emphasis": "none"
+          }
+        },
+        "kitchen": {
+          "type": "pathway",
+          "settings": {
+            "kicker": "Catalogue",
+            "label": "Kitchen",
+            "text": "The working kitchen — the live assortment on the pass.",
+            "url": "/pages/kitchen",
+            "emphasis": "none"
+          }
+        },
+        "releases": {
+          "type": "pathway",
+          "settings": {
+            "kicker": "Campaign",
+            "label": "Releases",
+            "text": "Timed inventory cycles — not a perpetual new-arrivals rail.",
+            "url": "/pages/releases",
+            "emphasis": "releases"
+          }
+        },
+        "mail": {
+          "type": "pathway",
+          "settings": {
+            "kicker": "Signal",
+            "label": "Mail",
+            "text": "Join the next heat with Shopify native email signup.",
+            "url": "/pages/mail",
+            "emphasis": "none"
+          }
         }
       },
-      "block_order": []
-    },
-    "maison_thermal": {
-      "type": "maison-thermal",
-      "settings": {}
-    },
-    "maison_finder": {
-      "type": "maison-finder",
-      "settings": {}
-    },
-    "maison_last_call": {
-      "type": "maison-last-call",
-      "settings": {}
+      "block_order": ["heat", "finder", "department", "kitchen", "releases", "mail"],
+      "settings": {
+        "eyebrow": "Deeper rooms",
+        "heading": "Continue through the house",
+        "lede": "Heat, Finder, Department, Kitchen, Releases, and Mail each keep their own page — the homepage only points the way.",
+        "padding-block-start": 32,
+        "padding-block-end": 64
+      }
     }
   },
   "order": [
     "maison_hero",
-    "maison_categories",
-    "maison_collection",
-    "maison_thermal",
-    "maison_finder",
-    "maison_last_call"
+    "maison_story_brief",
+    "maison_featured_trio",
+    "maison_releases_teaser",
+    "maison_pathways"
   ]
 }

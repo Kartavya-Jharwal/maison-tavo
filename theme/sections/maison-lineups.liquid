@@ -11,13 +11,17 @@
   class="section section--page-width spacing-style maison-editorial maison-lineups{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
   style="{% render 'spacing-style', settings: section.settings %}"
   data-maison-reveal-root
+  data-mt-chapter
 >
-  <header class="maison-editorial__header maison-lineups__header" data-mt-scroll>
+  <header class="maison-editorial__header maison-lineups__header" data-mt-scroll="chapter">
     {% if section.settings.eyebrow != blank %}
       <p class="maison-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
     {% endif %}
     {% if section.settings.heading != blank %}
-      <h2 class="maison-editorial__title maison-lineups__title">{{ section.settings.heading | escape }}</h2>
+      <h2
+        class="maison-editorial__title maison-lineups__title"
+        data-mt-scroll="kinetic"
+      >{{ section.settings.heading | escape }}</h2>
     {% endif %}
     {% if section.settings.lede != blank %}
       <p class="maison-editorial__lede">{{ section.settings.lede | escape }}</p>
@@ -25,7 +29,7 @@
   </header>
 
   {% if section.blocks.size > 0 %}
-    <ul class="maison-lineups__grid list-unstyled" role="list">
+    <ul class="maison-lineups__grid list-unstyled" role="list" data-mt-scroll="stagger">
       {% for block in section.blocks %}
           {% liquid
             assign target_col = block.settings.collection
@@ -42,8 +46,7 @@
           %}
         <li
           class="maison-lineups__item"
-          data-maison-reveal
-          style="--maison-reveal-delay: {{ forloop.index0 | times: 80 }}ms"
+          data-mt-scroll-item
           {{ block.shopify_attributes }}
         >
           {% if lineup_url != blank %}
@@ -84,9 +87,9 @@
   }
 
   .maison-lineups__title {
-    font-family: var(--font-fraunces--family, var(--font-heading--family));
+    font-family: var(--mt-type-family-heading);
     font-variation-settings: 'opsz' 144;
-    font-size: clamp(1.75rem, 1.2rem + 1.5vw, 2.5rem);
+    font-size: var(--mt-type-heading);
   }
 
   .maison-lineups__grid {
@@ -129,16 +132,16 @@
 
   .maison-lineups__kicker {
     margin: 0;
-    font-family: var(--font-heading--family);
-    font-size: 0.6875rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--color-foreground-muted);
   }
 
   .maison-lineups__count {
-    font-family: var(--font-mono--family, ui-monospace, monospace);
-    font-size: 0.6875rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--brand-color-aged-bronze, var(--color-foreground-muted));
@@ -146,9 +149,9 @@
 
   .maison-lineups__label {
     margin: 0;
-    font-family: var(--font-fraunces--family, var(--font-heading--family));
+    font-family: var(--mt-type-family-heading);
     font-weight: var(--font-heading--weight);
-    font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.75rem);
+    font-size: var(--mt-type-title);
     letter-spacing: 0.02em;
     transition: color 0.25s ease;
   }
@@ -157,14 +160,14 @@
     margin: 0;
     max-width: 36rem;
     color: var(--color-foreground-muted);
-    font-size: 0.95rem;
+    font-size: var(--mt-type-body);
     line-height: 1.55;
   }
 
   .maison-lineups__cta {
     display: inline-block;
     margin-block-start: 0.35rem;
-    font-size: 0.75rem;
+    font-size: var(--mt-type-accent);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--brand-color-aged-bronze, var(--color-foreground-muted));
@@ -196,49 +199,20 @@
     }
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .maison-lineups [data-maison-reveal] {
-      opacity: 0;
-      transform: translateY(0.75rem);
-      transition:
-        opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-      transition-delay: var(--maison-reveal-delay, 0ms);
-    }
+  .maison-lineups__title .mt-word,
+  .maison-lineups__title .mt-word-mask {
+    vertical-align: top;
+  }
 
-    .maison-lineups [data-maison-reveal].is-revealed {
-      opacity: 1;
-      transform: none;
+  @media (prefers-reduced-motion: reduce) {
+    .maison-lineups [data-mt-scroll],
+    .maison-lineups [data-mt-scroll-item] {
+      opacity: 1 !important;
+      transform: none !important;
+      visibility: visible !important;
     }
   }
 {% endstylesheet %}
-
-{% javascript %}
-  (() => {
-    const root = document.querySelector('.maison-lineups[data-maison-reveal-root]');
-    if (!root) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const items = root.querySelectorAll('[data-maison-reveal]');
-    if (!items.length || !('IntersectionObserver' in window)) {
-      items.forEach((el) => el.classList.add('is-revealed'));
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-revealed');
-          observer.unobserve(entry.target);
-        });
-      },
-      { rootMargin: '0px 0px -8% 0px', threshold: 0.15 }
-    );
-
-    items.forEach((el) => observer.observe(el));
-  })();
-{% endjavascript %}
 
 {% schema %}
 {

@@ -1,5 +1,6 @@
 {% doc %}
   Shared cart typography styles, used by both cart-products and cart-summary.
+  Brand map: Bai Jamjuree body · Satoshi accent/UI · secondary price face from settings.
 
   @example
   {% render 'cart-typography-styles' %}
@@ -7,14 +8,21 @@
 
 {% stylesheet %}
   .cart-primary-typography {
-    font-family: var(--cart-primary-font-family);
-    font-style: var(--cart-primary-font-style);
-    font-weight: var(--cart-primary-font-weight);
+    font-family: var(--cart-primary-font-family, var(--font-body--family));
+    font-style: var(--cart-primary-font-style, normal);
+    font-weight: var(--cart-primary-font-weight, 400);
   }
 
   .cart-secondary-typography {
-    font-family: var(--cart-secondary-font-family);
-    font-style: var(--cart-secondary-font-style);
-    font-weight: var(--cart-secondary-font-weight);
+    font-family: var(--cart-secondary-font-family, var(--font-mono--family));
+    font-style: var(--cart-secondary-font-style, normal);
+    font-weight: var(--cart-secondary-font-weight, 400);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .cart-accent-typography {
+    font-family: var(--font-accent--family, var(--font-subheading--family));
+    font-style: var(--font-accent--style, normal);
+    font-weight: var(--font-accent--weight, 500);
   }
 {% endstylesheet %}

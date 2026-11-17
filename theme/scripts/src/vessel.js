@@ -230,6 +230,14 @@ function mount(root) {
   );
 
   const abort = new AbortController();
+  const onReducedMotion = (event) => {
+    const reduced = event?.detail?.reduced ?? reducedMotion();
+    motion.reduced = Boolean(reduced);
+    if (motion.reduced) motion.auto = false;
+    kick(motion);
+  };
+  document.addEventListener('maison:reduced-motion', onReducedMotion, { signal: abort.signal });
+
   root.addEventListener(
     'change',
     (event) => {

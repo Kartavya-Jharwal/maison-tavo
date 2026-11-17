@@ -150,6 +150,7 @@
                   <div
                     class="mega-menu__grid"
                     data-menu-grid-id="{{ list_id }}"
+                    style="--menu-columns-desktop: {% if menu_content_type == 'collection_images' %}8{% else %}6{% endif %}; --menu-columns-tablet: 4;"
                   >
                     {% render 'mega-menu-list',
                       parent_link: link,

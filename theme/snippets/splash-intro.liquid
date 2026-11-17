@@ -1,6 +1,23 @@
 {% doc %}
   First-visit splash / intro overlay. Included from layout/theme.liquid.
   Hidden on cart and checkout. Uses Brand tokens CSS variables.
+
+  Media drop-in (theme/assets/):
+  - maison-splash.mp4          → full-bleed background video
+  - maison-splash-audio.mp3    → optional separate audio bed
+  - maison-splash-poster.jpg   → poster / reduced-motion still
+
+  First paint: poster img + wordmark + Enter are in HTML. Video stays opacity 0 until a
+  decoded frame is ready (requestVideoFrameCallback / loadeddata), then fades in over poster.
+
+  Autoplay with sound (browser quirk path):
+  1. Try video.play() unmuted (+ audio if present).
+  2. If NotAllowedError / play rejects: mute video, play muted, keep audio paused.
+  3. On first pointerdown or keydown while splash is open: unmute video and start audio.
+  4. prefers-reduced-motion / data-reduced-motion: static poster only — no src, no audio.
+  5. Enter / Escape / backdrop: dismiss, pause + mute all media, reveal storefront.
+
+  Hooks: [data-mt-splash-video], [data-mt-splash-audio], [data-splash-skip]
 {% enddoc %}
 
 {% liquid
@@ -27,7 +44,6 @@
     if splash_skip == blank
       assign splash_skip = 'Enter'
     endif
-    assign splash_logo_height = settings.logo_height | default: 36 | times: 2
     assign splash_duration = settings.splash_duration | default: 3.5
     if splash_duration == blank
       assign splash_duration = 3.5
@@ -37,6 +53,14 @@
     if splash_storage == blank
       assign splash_storage = 'session'
     endif
+
+    comment
+      Asset URLs always resolve; until files exist in theme/assets/ they 404 and media stays idle.
+      Leave data-src empty only if you prefer wiring src by hand — defaults point at drop-in names.
+    endcomment
+    assign splash_video_url = 'maison-splash.mp4' | asset_url
+    assign splash_audio_url = 'maison-splash-audio.mp3' | asset_url
+    assign splash_poster_url = 'maison-splash-poster.jpg' | asset_url
   %}
 
   <dialog
@@ -50,37 +74,79 @@
     data-storage-key="maison-tavo-splash-seen"
     style="--splash-duration: {{ splash_duration_s }};"
   >
+    <div
+      class="splash-intro__media"
+      aria-hidden="true"
+      style="--splash-poster: url('{{ splash_poster_url }}');"
+    >
+      <img
+        class="splash-intro__poster"
+        src="{{ splash_poster_url }}"
+        alt=""
+        width="1920"
+        height="1080"
+        decoding="async"
+        fetchpriority="high"
+        draggable="false"
+      >
+      <video
+        class="splash-intro__video"
+        data-mt-splash-video
+        data-src="{{ splash_video_url }}"
+        poster="{{ splash_poster_url }}"
+        playsinline
+        webkit-playsinline
+        loop
+        preload="metadata"
+        disablepictureinpicture
+        disableremoteplayback
+      ></video>
+      <audio
+        class="splash-intro__audio"
+        data-mt-splash-audio
+        data-src="{{ splash_audio_url }}"
+        preload="none"
+        loop
+      ></audio>
+      <div class="splash-intro__scrim"></div>
+      <div class="splash-intro__grain" aria-hidden="true"></div>
+    </div>
+
     <div class="splash-intro__panel">
       <h2
         id="SplashIntroHeading"
         class="splash-intro__heading"
+        aria-label="{{ splash_heading | escape }}"
       >
-        {% if settings.splash_show_logo and settings.logo != blank %}
-          <span class="visually-hidden">{{ splash_heading }}</span>
-          {% render 'image',
-            image: settings.logo,
-            class: 'splash-intro__logo',
-            height: splash_logo_height,
-            alt_text_fallback: splash_heading,
-            text_fallback: splash_heading
-          %}
-        {% else %}
-          {{ splash_heading }}
-        {% endif %}
+        <span class="splash-intro__mark" aria-hidden="true">{{ splash_heading }}</span>
       </h2>
 
       <button
         id="SplashIntroSkip"
         type="button"
-        class="button-secondary splash-intro__skip"
+        class="splash-intro__enter"
         data-splash-skip
+        aria-label="{{ splash_skip | escape }} — enter storefront"
       >
-        {{ splash_skip }}
+        <span class="splash-intro__enter-orb" aria-hidden="true">
+          <span class="splash-intro__enter-ring"></span>
+          <span class="splash-intro__enter-blob"></span>
+          <svg
+            class="splash-intro__enter-icon"
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            focusable="false"
+            aria-hidden="true"
+          >
+            <path d="M8.2 5.4v13.2L19 12 8.2 5.4z" fill="currentColor"></path>
+          </svg>
+        </span>
+        <span class="splash-intro__enter-label">{{ splash_skip }}</span>
       </button>
     </div>
   </dialog>
 
-  <script src="{{ 'maison-runtime.js' | asset_url }}" defer></script>
   <script>
     (function () {
       var dialog = document.getElementById('SplashIntro');
@@ -92,9 +158,16 @@
       var storageType = dialog.getAttribute('data-storage') || 'session';
       var key = dialog.getAttribute('data-storage-key') || 'maison-tavo-splash-seen';
       var duration = parseFloat(dialog.getAttribute('data-duration') || '0');
-      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var reduceMotion =
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        document.documentElement.getAttribute('data-reduced-motion') === 'true';
+      var video = dialog.querySelector('[data-mt-splash-video]');
+      var audio = dialog.querySelector('[data-mt-splash-audio]');
       var closeTimer;
       var closing = false;
+      var soundUnlocked = false;
+      var unlockBound = false;
+      var frameReady = false;
 
       function getStore() {
         try {
@@ -120,7 +193,149 @@
         } catch (error) {}
       }
 
+      function bindMediaSrc(el) {
+        if (!el) return;
+        var src = el.getAttribute('data-src') || el.getAttribute('src') || '';
+        if (!src) return;
+        if (!el.getAttribute('src')) {
+          el.setAttribute('src', src);
+        }
+      }
+
+      function revealVideoFrame() {
+        if (!video || frameReady || reduceMotion) return;
+        frameReady = true;
+        video.classList.add('is-frame-ready');
+      }
+
+      /* Keep poster visible until a real frame can paint (avoids black flash). */
+      function armVideoFrameReady() {
+        if (!video || reduceMotion || frameReady) return;
+
+        if (typeof video.requestVideoFrameCallback === 'function') {
+          video.requestVideoFrameCallback(function () {
+            revealVideoFrame();
+          });
+        }
+
+        var onLoadedData = function () {
+          revealVideoFrame();
+        };
+        video.addEventListener('loadeddata', onLoadedData, { once: true });
+
+        video.addEventListener(
+          'loadedmetadata',
+          function () {
+            if (video.readyState >= 2) {
+              revealVideoFrame();
+              return;
+            }
+            try {
+              if (video.currentTime === 0) video.currentTime = 0.001;
+            } catch (error) {}
+          },
+          { once: true }
+        );
+      }
+
+      function pauseMedia() {
+        if (video) {
+          try {
+            video.pause();
+            video.muted = true;
+          } catch (error) {}
+        }
+        if (audio) {
+          try {
+            audio.pause();
+            audio.muted = true;
+          } catch (error) {}
+        }
+      }
+
+      function unlockSound() {
+        if (soundUnlocked || reduceMotion || closing) return;
+        soundUnlocked = true;
+        if (video) {
+          video.muted = false;
+          var vp = video.play();
+          if (vp && typeof vp.catch === 'function') vp.catch(function () {});
+        }
+        if (audio && audio.getAttribute('src')) {
+          audio.muted = false;
+          var ap = audio.play();
+          if (ap && typeof ap.catch === 'function') ap.catch(function () {});
+        }
+      }
+
+      function bindUnlockGesture() {
+        if (unlockBound || reduceMotion) return;
+        unlockBound = true;
+        var unlock = function () {
+          unlockSound();
+          dialog.removeEventListener('pointerdown', unlock, true);
+          dialog.removeEventListener('keydown', unlock, true);
+        };
+        dialog.addEventListener('pointerdown', unlock, true);
+        dialog.addEventListener('keydown', unlock, true);
+      }
+
+      function tryAutoplayWithSound() {
+        if (reduceMotion) return;
+        bindMediaSrc(video);
+        bindMediaSrc(audio);
+        armVideoFrameReady();
+
+        if (!video || !video.getAttribute('src')) {
+          bindUnlockGesture();
+          return;
+        }
+
+        video.muted = false;
+        var attempt = video.play();
+        if (attempt && typeof attempt.then === 'function') {
+          attempt
+            .then(function () {
+              soundUnlocked = true;
+              if (typeof video.requestVideoFrameCallback === 'function') {
+                video.requestVideoFrameCallback(function () {
+                  revealVideoFrame();
+                });
+              } else {
+                revealVideoFrame();
+              }
+              if (audio && audio.getAttribute('src')) {
+                audio.muted = false;
+                var ap = audio.play();
+                if (ap && typeof ap.catch === 'function') ap.catch(function () {});
+              }
+            })
+            .catch(function () {
+              /* Browser blocked unmuted autoplay — start muted, unlock on first gesture. */
+              video.muted = true;
+              var mutedPlay = video.play();
+              if (mutedPlay && typeof mutedPlay.then === 'function') {
+                mutedPlay
+                  .then(function () {
+                    if (typeof video.requestVideoFrameCallback === 'function') {
+                      video.requestVideoFrameCallback(function () {
+                        revealVideoFrame();
+                      });
+                    } else {
+                      revealVideoFrame();
+                    }
+                  })
+                  .catch(function () {});
+              }
+              bindUnlockGesture();
+            });
+        } else {
+          bindUnlockGesture();
+        }
+      }
+
       function finishClose() {
+        pauseMedia();
         if (typeof dialog.close === 'function') {
           dialog.close();
         } else {
@@ -156,6 +371,7 @@
         closing = true;
         window.clearTimeout(closeTimer);
         markSeen();
+        pauseMedia();
         dialog.setAttribute('data-closing', '');
 
         if (reduceMotion) {
@@ -167,6 +383,7 @@
       }
 
       if (hasSeen()) {
+        pauseMedia();
         dialog.remove();
         return;
       }
@@ -176,6 +393,8 @@
       } else {
         dialog.setAttribute('open', '');
       }
+
+      tryAutoplayWithSound();
 
       var skipButton = dialog.querySelector('[data-splash-skip]');
       if (skipButton) {
@@ -206,121 +425,343 @@
 {% endif %}
 
 {% stylesheet %}
-    .splash-intro {
-      inset: 0;
-      width: 100%;
-      max-width: none;
-      height: 100%;
-      max-height: none;
-      margin: 0;
-      padding: var(--brand-space-xl, var(--padding-xl));
-      border: 0;
-      background: var(--splash-background, var(--brand-color-canvas, var(--color-background)));
-      color: var(--splash-foreground, var(--brand-color-ink, var(--color-foreground)));
-      font-family: var(--brand-font-heading, var(--font-heading--family));
-      z-index: var(--brand-z-splash, var(--layer-temporary));
+  .splash-intro {
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    background: var(--splash-background, var(--brand-color-canvas, var(--color-background)));
+    color: var(--splash-foreground, var(--brand-color-ink, var(--color-foreground)));
+    font-family: var(--brand-font-wordmark, var(--font-wordmark--family, var(--font-heading--family)));
+    z-index: var(--brand-z-splash, var(--layer-temporary));
+  }
+
+  .splash-intro[open] {
+    display: grid;
+    place-items: center;
+    /* No fade-from-0: poster + chrome must paint with the modal (no blank/black flash). */
+  }
+
+  .splash-intro[data-closing] {
+    animation: splash-intro-fade-out 0.32s var(--brand-motion-easing, cubic-bezier(0.4, 0, 1, 1)) both;
+  }
+
+  .splash-intro::backdrop {
+    background: var(--splash-background, var(--brand-color-canvas, var(--color-background)));
+  }
+
+  .splash-intro__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background-color: var(--splash-background, var(--brand-color-canvas, var(--color-background)));
+    background-image:
+      radial-gradient(120% 80% at 50% 20%, color-mix(in srgb, var(--splash-foreground, #1a1a1a) 8%, transparent), transparent 55%),
+      var(--splash-poster, none);
+    background-size: cover, cover;
+    background-position: center, center;
+  }
+
+  .splash-intro__poster,
+  .splash-intro__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .splash-intro__poster {
+    z-index: 0;
+    display: block;
+  }
+
+  /* Hidden until a decoded frame is ready — poster stays painted underneath. */
+  .splash-intro__video {
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.28s var(--brand-motion-easing, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+
+  .splash-intro__video.is-frame-ready {
+    opacity: 1;
+  }
+
+  .splash-intro__audio {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+
+  /* Cheap film grain — CSS SVG noise, not WebGL / Three (homepage stays light). */
+  .splash-intro__grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    animation: splash-intro-grain 1.8s steps(2) infinite;
+  }
+
+  @keyframes splash-intro-grain {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-2%, 1.5%, 0); }
+  }
+
+  .splash-intro__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--splash-background, #f5f2ec) 18%, transparent) 0%,
+        color-mix(in srgb, var(--splash-background, #f5f2ec) 42%, transparent) 45%,
+        color-mix(in srgb, var(--splash-background, #f5f2ec) 72%, transparent) 100%
+      );
+  }
+
+  .splash-intro__panel {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: clamp(var(--mt-space-5), 3vw, var(--mt-space-6));
+    width: min(100%, 100vw);
+    min-height: 100%;
+    padding: clamp(var(--mt-space-5), 4vw, var(--mt-space-7));
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .splash-intro[open] .splash-intro__panel {
+    /* Transform-only enhance — wordmark stays visible from first paint. */
+    animation: splash-intro-panel-in 0.7s 0.08s
+      var(--brand-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)) both;
+  }
+
+  .splash-intro__heading {
+    margin: 0;
+    width: 100%;
+    max-width: 100vw;
+    overflow: hidden;
+    font-family: var(--mt-type-family-wordmark, var(--brand-font-wordmark, var(--font-wordmark--family)));
+    /*
+      Typography Agent 3 — size owns string width ≈ 69vw.
+      Noto Serif 100 + −0.07em tracking → ~5.5em advance → font-size = 69vw / 5.5.
+    */
+    font-size: var(--mt-type-wordmark-splash, var(--font-size--brand-wordmark-splash, clamp(2.75rem, calc(69vw / 5.5), 14rem)));
+    font-weight: var(--font-weight--wordmark, 100);
+    letter-spacing: var(--mt-type-tracking-wordmark, var(--letter-spacing--wordmark, -0.07em));
+    font-kerning: normal;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    line-height: 0.9;
+    text-transform: none;
+    color: inherit;
+  }
+
+  .splash-intro__mark {
+    display: block;
+    white-space: nowrap;
+    transform: translateX(-1.5%);
+  }
+
+  .splash-intro__enter {
+    position: relative;
+    display: inline-grid;
+    justify-items: center;
+    gap: var(--mt-space-3);
+    margin: 0;
+    padding: var(--mt-space-1);
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    min-height: var(--minimum-touch-target, 2.75rem);
+    min-width: var(--minimum-touch-target, 2.75rem);
+  }
+
+  .splash-intro__enter:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 0.45rem;
+  }
+
+  .splash-intro__enter-orb {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: clamp(3.25rem, 7.5vw, 4.5rem);
+    height: clamp(3.25rem, 7.5vw, 4.5rem);
+  }
+
+  .splash-intro__enter-blob,
+  .splash-intro__enter-ring {
+    position: absolute;
+    inset: 0;
+  }
+
+  .splash-intro__enter-blob {
+    border-radius: 58% 42% 54% 46% / 48% 56% 44% 52%;
+    background:
+      radial-gradient(circle at 32% 28%, color-mix(in srgb, currentColor 18%, transparent), transparent 52%),
+      color-mix(in srgb, var(--splash-background, #f5f2ec) 55%, currentColor 12%);
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, currentColor 22%, transparent),
+      0 0.35rem 1.25rem color-mix(in srgb, currentColor 12%, transparent);
+    animation: splash-enter-blob 7.5s ease-in-out infinite;
+  }
+
+  .splash-intro__enter-ring {
+    inset: -0.4rem;
+    border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+    border-radius: 62% 38% 48% 52% / 52% 44% 56% 48%;
+    opacity: 0.75;
+    animation: splash-enter-ring 9s ease-in-out infinite;
+  }
+
+  .splash-intro__enter-icon {
+    position: relative;
+    z-index: 1;
+    margin-inline-start: 0.12rem;
+    opacity: 0.92;
+  }
+
+  .splash-intro__enter-label {
+    font-family: var(--font-body--family, inherit);
+    font-size: var(--font-size--fluid-xs, clamp(0.7rem, 0.65rem + 0.2vw, 0.8125rem));
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+
+  .splash-intro[open] .splash-intro__enter {
+    /* Transform-only enhance — Enter CTA stays visible from first paint. */
+    animation: splash-intro-skip-in 0.5s 0.28s
+      var(--brand-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)) both;
+  }
+
+  .splash-intro__enter:hover .splash-intro__enter-blob,
+  .splash-intro__enter:focus-visible .splash-intro__enter-blob {
+    animation-duration: 3.2s;
+    background:
+      radial-gradient(circle at 32% 28%, color-mix(in srgb, currentColor 28%, transparent), transparent 55%),
+      color-mix(in srgb, var(--splash-background, #f5f2ec) 42%, currentColor 18%);
+  }
+
+  @keyframes splash-intro-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes splash-intro-panel-in {
+    from {
+      transform: translateY(0.65rem) scale(0.985);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  @keyframes splash-intro-skip-in {
+    from {
+      transform: translateY(0.35rem);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  @keyframes splash-enter-blob {
+    0%,
+    100% {
+      border-radius: 58% 42% 54% 46% / 48% 56% 44% 52%;
+      transform: rotate(0deg) scale(1);
+    }
+    33% {
+      border-radius: 44% 56% 42% 58% / 58% 42% 58% 42%;
+      transform: rotate(4deg) scale(1.03);
+    }
+    66% {
+      border-radius: 52% 48% 60% 40% / 40% 60% 40% 60%;
+      transform: rotate(-3deg) scale(0.98);
+    }
+  }
+
+  @keyframes splash-enter-ring {
+    0%,
+    100% {
+      border-radius: 62% 38% 48% 52% / 52% 44% 56% 48%;
+      transform: rotate(0deg) scale(1);
+      opacity: 0.75;
+    }
+    50% {
+      border-radius: 40% 60% 55% 45% / 45% 55% 40% 60%;
+      transform: rotate(-8deg) scale(1.06);
+      opacity: 0.45;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .splash-intro[open],
+    .splash-intro[data-closing],
+    .splash-intro[open] .splash-intro__panel,
+    .splash-intro[open] .splash-intro__enter,
+    .splash-intro__enter-blob,
+    .splash-intro__enter-ring {
+      animation: none;
     }
 
-    .splash-intro[open] {
-      display: grid;
-      place-items: center;
-      animation: splash-intro-fade-in 0.55s var(--brand-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)) both;
+    .splash-intro__video,
+    .splash-intro__video.is-frame-ready {
+      visibility: hidden;
+      opacity: 0;
+      transition: none;
     }
 
-    .splash-intro[data-closing] {
-      animation: splash-intro-fade-out 0.32s var(--brand-motion-easing, cubic-bezier(0.4, 0, 1, 1)) both;
+    .splash-intro__grain {
+      animation: none;
+      opacity: 0.1;
     }
+  }
 
-    .splash-intro[open] .splash-intro__panel {
-      animation: splash-intro-panel-in 0.7s 0.08s
-        var(--brand-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)) both;
-    }
+  html[data-reduced-motion='true'] .splash-intro[open],
+  html[data-reduced-motion='true'] .splash-intro[data-closing],
+  html[data-reduced-motion='true'] .splash-intro[open] .splash-intro__panel,
+  html[data-reduced-motion='true'] .splash-intro[open] .splash-intro__enter,
+  html[data-reduced-motion='true'] .splash-intro__enter-blob,
+  html[data-reduced-motion='true'] .splash-intro__enter-ring {
+    animation: none;
+  }
 
-    .splash-intro[open] .splash-intro__skip {
-      animation: splash-intro-skip-in 0.5s 0.28s
-        var(--brand-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)) both;
-    }
+  html[data-reduced-motion='true'] .splash-intro__video,
+  html[data-reduced-motion='true'] .splash-intro__video.is-frame-ready {
+    visibility: hidden;
+    opacity: 0;
+    transition: none;
+  }
 
-    .splash-intro::backdrop {
-      background: var(--splash-background, var(--brand-color-canvas, var(--color-background)));
-    }
-
-    .splash-intro__panel {
-      display: grid;
-      justify-items: center;
-      gap: var(--brand-space-xl, var(--gap-xl));
-      text-align: center;
-    }
-
-    .splash-intro__heading {
-      margin: 0;
-      font-family: var(--brand-font-heading, var(--font-heading--family));
-      font-size: var(--font-size--h2, var(--font-h2--size));
-      font-weight: var(--font-heading--weight);
-      letter-spacing: var(--brand-letter-spacing-sm, var(--letter-spacing-sm));
-      line-height: var(--brand-line-height-heading, var(--line-height--heading-normal));
-      color: inherit;
-    }
-
-    .splash-intro__logo {
-      display: block;
-      width: auto;
-      height: auto;
-      max-height: calc(var(--header-logo-image-height, 36px) * 2);
-      margin-inline: auto;
-      object-fit: contain;
-    }
-
-    .splash-intro__skip {
-      min-height: var(--minimum-touch-target);
-    }
-
-    @keyframes splash-intro-fade-in {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes splash-intro-fade-out {
-      from {
-        opacity: 1;
-      }
-      to {
-        opacity: 0;
-      }
-    }
-
-    @keyframes splash-intro-panel-in {
-      from {
-        opacity: 0;
-        transform: translateY(0.65rem) scale(0.985);
-      }
-      to {
-        opacity: 1;
-        transform: none;
-      }
-    }
-
-    @keyframes splash-intro-skip-in {
-      from {
-        opacity: 0;
-        transform: translateY(0.35rem);
-      }
-      to {
-        opacity: 1;
-        transform: none;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .splash-intro[open],
-      .splash-intro[data-closing],
-      .splash-intro[open] .splash-intro__panel,
-      .splash-intro[open] .splash-intro__skip {
-        animation: none;
-      }
-    }
+  html[data-reduced-motion='true'] .splash-intro__grain {
+    animation: none;
+    opacity: 0.1;
+  }
 {% endstylesheet %}

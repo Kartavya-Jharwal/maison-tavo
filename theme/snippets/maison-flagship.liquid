@@ -11,6 +11,7 @@
 <script>
   window.MaisonAssets = window.MaisonAssets || {};
   window.MaisonAssets.vessel = {{ 'maison-vessel.js' | asset_url | json }};
+  window.MaisonAssets.idleBlaze = {{ 'maison-idle-blaze.js' | asset_url | json }};
 </script>
 
 {% stylesheet %}
@@ -35,10 +36,12 @@
 
   .mt-veil__mark {
     margin: 0;
-    font-family: var(--font-heading--family, Georgia, serif);
-    font-size: 0.75rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    font-family: var(--mt-type-family-wordmark);
+    font-weight: 100;
+    font-size: var(--mt-type-accent);
+    letter-spacing: -0.06em;
+    text-transform: none;
+    font-kerning: normal;
   }
 
   .mt-veil__rule {
@@ -52,8 +55,13 @@
     cursor: progress;
   }
 
-  #MainContent:focus {
+  #MainContent:focus:not(:focus-visible) {
     outline: none;
+  }
+
+  #MainContent:focus-visible {
+    outline: 2px solid var(--bell, #b8893a);
+    outline-offset: 3px;
   }
 
   html[data-reduced-motion='true'] .mt-veil {

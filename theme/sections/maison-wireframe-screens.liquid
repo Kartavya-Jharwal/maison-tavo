@@ -16,8 +16,11 @@
         <span class="eyebrow">{{ section.settings.eyebrow | default: 'Dual Depth Architecture' | escape }}</span>
         <span class="maison-screens__badge">4 SCREENS · 2 READING DEPTHS</span>
       </div>
-      <h2 class="maison-screens__title stacked-title">
-        <span class="clip-line"><span>{{ section.settings.heading | default: 'The Wireframe System' | escape }}</span></span>
+      <h2
+        class="maison-screens__title stacked-title"
+        aria-label="{{ section.settings.heading | default: 'The Wireframe System' | escape }}"
+      >
+        <span class="clip-line" aria-hidden="true"><span>{{ section.settings.heading | default: 'The Wireframe System' | escape }}</span></span>
       </h2>
       <p class="maison-screens__lede">
         {{ section.settings.lede | default: 'Maison Tavo serves two depths of attention: the aesthetic curator who seeks tactile provenance, and the culinary technologist whose software agents require deterministic machine-readable fields.' | escape }}
@@ -104,14 +107,33 @@
         <div class="screen-panel is-active" id="screen-panel-curator" data-screen="curator">
           <div class="screen-layout-curator">
             <div class="curator-media">
-              <img
-                src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?q=85&w=900&auto=format&fit=crop"
-                alt="Forge Relay 280 Tava"
-                class="curator-img"
-                loading="lazy"
-                width="900"
-                height="650"
-              >
+              {% liquid
+                assign curator_image = blank
+                assign forge_room = collections['forge-hybrid']
+                if forge_room != blank and forge_room.products_count > 0
+                  assign curator_image = forge_room.products.first.featured_image
+                endif
+              %}
+              {% if curator_image != blank %}
+                {{
+                  curator_image
+                  | image_url: width: 900
+                  | image_tag:
+                    class: 'curator-img',
+                    widths: '450, 700, 900',
+                    sizes: '(min-width: 900px) 420px, 90vw',
+                    loading: 'lazy',
+                    alt: 'Forge Relay 280 Tava',
+                    width: 900,
+                    height: 650
+                }}
+              {% else %}
+                <div
+                  class="curator-img curator-img--plane"
+                  role="img"
+                  aria-label="Forge Relay 280 Tava"
+                ></div>
+              {% endif %}
               <div class="curator-tag glass-bronze">
                 <span class="curator-tag__spec">HAND-BEATEN BELL BRONZE RIVETS</span>
                 <span class="curator-tag__alloy">Alloy #78:22 · Rajasthan Sand Cast</span>
@@ -134,7 +156,7 @@
 
               <div class="curator-actions">
                 <a href="#lineups" class="pill pill-light">Inspect Artifact →</a>
-                <span class="curator-provenance-note">✓ In-stock for Heat Edition #04</span>
+                <span class="curator-provenance-note"><i class="fa-solid fa-check" aria-hidden="true"></i> In-stock for Heat Edition #04</span>
               </div>
             </div>
           </div>
@@ -189,7 +211,7 @@
             <div class="voice-card glass-bronze">
               <div class="voice-header">
                 <div class="voice-icon-circle">
-                  <span>🔔</span>
+                  <span><i class="fa-solid fa-bell" aria-hidden="true"></i></span>
                 </div>
                 <div>
                   <h4 class="voice-name">Kansa Resonance Analyzer</h4>
@@ -304,8 +326,8 @@
   }
 
   .maison-screens__badge {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.68rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.14em;
     background: var(--soot, #14110F);
     color: var(--bone, #F7F2E9);
@@ -314,8 +336,8 @@
   }
 
   .maison-screens__title {
-    font-family: var(--font-heading--family, 'Fraunces', serif);
-    font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-display);
     font-weight: 400;
     line-height: 1.05;
     letter-spacing: -0.025em;
@@ -324,7 +346,7 @@
   }
 
   .maison-screens__lede {
-    font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+    font-size: var(--mt-type-lede);
     line-height: 1.65;
     color: rgba(20, 17, 15, 0.78);
     margin: 0;
@@ -379,22 +401,22 @@
   }
 
   .tab-index {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.72rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.12em;
     color: var(--bell, #B8893A);
   }
 
   .tab-title {
-    font-family: var(--font-heading--family, 'Fraunces', serif);
-    font-size: 1.15rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-lede);
     font-weight: 500;
     margin: 0.2rem 0;
   }
 
   .tab-sub {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.68rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     opacity: 0.7;
     letter-spacing: 0.04em;
   }
@@ -416,7 +438,7 @@
     padding-bottom: 1.25rem;
     border-bottom: 1px solid rgba(247, 242, 233, 0.12);
     margin-bottom: 2rem;
-    font-size: 0.8rem;
+    font-size: var(--mt-type-accent);
     gap: 1rem;
     flex-wrap: wrap;
   }
@@ -434,8 +456,8 @@
   }
 
   .viewport-address {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.72rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     color: rgba(247, 242, 233, 0.6);
     background: rgba(0, 0, 0, 0.35);
     padding: 0.35rem 1rem;
@@ -448,8 +470,8 @@
   }
 
   .viewport-meta .meta-tag {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.68rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.1em;
     color: var(--bell, #B8893A);
   }
@@ -498,6 +520,14 @@
     filter: brightness(0.95);
   }
 
+  .curator-img--plane {
+    filter: none;
+    min-height: 12rem;
+    background:
+      radial-gradient(ellipse 65% 50% at 55% 40%, rgba(184, 137, 58, 0.32), transparent 72%),
+      linear-gradient(155deg, #2a2420 0%, #14110f 48%, #3a2e24 100%);
+  }
+
   .curator-tag {
     position: absolute;
     bottom: 1rem;
@@ -509,22 +539,22 @@
 
   .curator-tag__spec {
     display: block;
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.68rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.12em;
     color: var(--bell, #B8893A);
   }
 
   .curator-tag__alloy {
     display: block;
-    font-size: 0.8rem;
+    font-size: var(--mt-type-accent);
     color: var(--bone, #F7F2E9);
     margin-top: 0.2rem;
   }
 
   .curator-kicker {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.72rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.16em;
     color: var(--bell, #B8893A);
     display: block;
@@ -532,8 +562,8 @@
   }
 
   .curator-title {
-    font-family: var(--font-heading--family, 'Fraunces', serif);
-    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-heading);
     font-weight: 400;
     line-height: 1.1;
     margin: 0 0 1rem 0;
@@ -541,7 +571,7 @@
   }
 
   .curator-desc {
-    font-size: 1rem;
+    font-size: var(--mt-type-body);
     line-height: 1.65;
     color: rgba(247, 242, 233, 0.75);
     margin: 0 0 1.75rem 0;
@@ -565,14 +595,14 @@
   }
 
   .spec-pill span {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.65rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.1em;
     color: var(--bell, #B8893A);
   }
 
   .spec-pill strong {
-    font-size: 0.88rem;
+    font-size: var(--mt-type-nav);
     font-weight: 500;
   }
 
@@ -584,8 +614,8 @@
   }
 
   .curator-provenance-note {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.75rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     color: var(--verdigris, #4F7F72);
   }
 
@@ -614,8 +644,8 @@
   .terminal-bar {
     background: #14110F;
     padding: 0.65rem 1rem;
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.72rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     color: rgba(247, 242, 233, 0.65);
     display: flex;
     justify-content: space-between;
@@ -630,8 +660,8 @@
   .terminal-code {
     padding: 1.25rem 1.5rem;
     margin: 0;
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.78rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     line-height: 1.6;
     color: #e2e8f0;
     overflow-x: auto;
@@ -652,9 +682,9 @@
   .r-chip {
     display: inline-block;
     padding: 0.35rem 0.75rem;
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
+    letter-spacing: var(--mt-type-tracking-accent);
     text-transform: uppercase;
     background: rgba(184, 137, 58, 0.12);
     border: 1px solid rgba(184, 137, 58, 0.3);
@@ -697,19 +727,19 @@
     color: var(--soot, #14110F);
     display: grid;
     place-items: center;
-    font-size: 1.4rem;
+    font-size: var(--mt-type-title);
     box-shadow: 0 0 24px rgba(184, 137, 58, 0.4);
   }
 
   .voice-name {
-    font-family: var(--font-heading--family, 'Fraunces', serif);
-    font-size: 1.35rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-title);
     margin: 0 0 0.25rem 0;
   }
 
   .voice-freq {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.75rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     color: var(--bell, #B8893A);
   }
 
@@ -740,7 +770,7 @@
   }
 
   .voice-quote {
-    font-size: 0.95rem;
+    font-size: var(--mt-type-body);
     line-height: 1.6;
     color: rgba(247, 242, 233, 0.85);
     font-style: italic;
@@ -764,14 +794,14 @@
 
   .mini-step strong {
     display: block;
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.65rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     color: var(--bell, #B8893A);
     margin-bottom: 0.2rem;
   }
 
   .mini-step span {
-    font-size: 0.82rem;
+    font-size: var(--mt-type-accent);
     color: var(--bone, #F7F2E9);
   }
 
@@ -806,15 +836,15 @@
   }
 
   .ledger-tag {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.72rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.14em;
     color: var(--bell, #B8893A);
   }
 
   .ledger-batch {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.8rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     font-weight: 700;
   }
 
@@ -823,13 +853,13 @@
     justify-content: space-between;
     padding-block: 0.75rem;
     border-bottom: 1px solid rgba(247, 242, 233, 0.06);
-    font-size: 0.88rem;
+    font-size: var(--mt-type-nav);
   }
 
   .ledger-row span {
     color: rgba(247, 242, 233, 0.65);
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.75rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
   }
 {% endstylesheet %}
 

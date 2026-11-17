@@ -24,7 +24,15 @@
       </span>
 
       <span class="svg-wrapper {% if display_style != 'icon' %}desktop:hidden{% endif %}">
-        {{ 'icon-search.svg' | inline_asset_content }}
+        {%- comment -%}
+          Nav example: Font Awesome when kit ID is set; Horizon SVG otherwise.
+          Kit ID: Theme settings → Icons → Font Awesome kit ID.
+        {%- endcomment -%}
+        {%- if settings.font_awesome_kit_id != blank -%}
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        {%- else -%}
+          {{ 'icon-search.svg' | inline_asset_content }}
+        {%- endif -%}
       </span>
     </button>
   </search-button>

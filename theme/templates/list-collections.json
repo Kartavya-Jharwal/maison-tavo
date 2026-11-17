@@ -88,10 +88,10 @@
           "type": "lineup",
           "settings": {
             "kicker": "Campaign",
-            "label": "New arrivals",
+            "label": "Releases",
             "text": "The current heat. Newest pieces, and the room we open for a seasonal allocation.",
             "handle": "",
-            "link": "/pages/new-arrivals"
+            "link": "/pages/releases"
           }
         },
         "kansa_room": {
@@ -109,7 +109,7 @@
       "settings": {
         "eyebrow": "Material Architecture",
         "heading": "Explore by Material Lineup",
-        "lede": "Four material ranges, the new-arrivals room, and Kansa on a page of its own.",
+        "lede": "Four material ranges, the Releases room, and Kansa on a page of its own.",
         "padding-block-start": 24,
         "padding-block-end": 32
       }

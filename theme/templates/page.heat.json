@@ -1,0 +1,34 @@
+{
+  "sections": {
+    "intro": {
+      "type": "maison-room",
+      "settings": {
+        "eyebrow": "Thermal",
+        "heading": "Heat, made visible",
+        "lede": "<p>Comparative heat maps of how a burner loads the pan. Toggle stovetop profile and map mode — composite mass spreads sideways; thin steel keeps the hotspot.</p>",
+        "padding-block-start": 48,
+        "padding-block-end": 8
+      },
+      "blocks": {
+        "finder": {
+          "type": "pathway",
+          "settings": {
+            "label": "Finder ceremony",
+            "url": "/pages/finder",
+            "text": "Match heat source and ritual to a piece."
+          }
+        }
+      },
+      "block_order": ["finder"]
+    },
+    "maison_thermal": {
+      "type": "maison-thermal",
+      "settings": {
+        "kicker": "Heat, made visible",
+        "heading": "Why it doesn't scorch",
+        "lede": "Pick a stovetop profile and a heat-map mode. Composite mass spreads sideways; thin steel keeps the hotspot."
+      }
+    }
+  },
+  "order": ["intro", "maison_thermal"]
+}

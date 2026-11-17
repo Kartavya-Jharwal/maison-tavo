@@ -1,0 +1,30 @@
+{%- doc -%}
+  Font Awesome Kit loader (FA 6/7). Separate ownership from the theme —
+  paste your kit ID in Theme settings → Icons → Font Awesome kit ID.
+
+  Setup:
+  1. Create a kit at https://fontawesome.com/kits (Web Fonts + CSS or SVG + JS).
+  2. Copy the kit ID from the embed URL: kit.fontawesome.com/<KIT_ID>.js
+  3. Paste <KIT_ID> into Theme settings → Icons → Font Awesome kit ID
+     (or set `settings.font_awesome_kit_id` in the editor).
+  4. Use icons: <i class="fa-solid fa-bell" aria-hidden="true"></i>
+
+  Leave the setting blank to skip the script (no remote request).
+{%- enddoc -%}
+
+{%- liquid
+  assign fa_kit_id = settings.font_awesome_kit_id | default: '' | strip
+-%}
+
+{%- if fa_kit_id != blank -%}
+  <script
+    src="https://kit.fontawesome.com/{{ fa_kit_id | escape }}.js"
+    crossorigin="anonymous"
+    defer
+  ></script>
+{%- else -%}
+  {% comment %}
+    Font Awesome inactive — paste kit ID in Theme settings → Icons.
+    Placeholder: REPLACE_WITH_FA_KIT_ID (e.g. a1b2c3d4e5 from kit.fontawesome.com/a1b2c3d4e5.js).
+  {% endcomment %}
+{%- endif -%}

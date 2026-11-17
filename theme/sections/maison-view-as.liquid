@@ -68,20 +68,49 @@
 
 {% stylesheet %}
   .maison-panopticon {
-    padding-block: clamp(3rem, 6vw, 6rem);
+    padding-block: clamp(var(--mt-space-7), 6vw, var(--mt-space-9));
   }
 
   .maison-panopticon__header {
     display: grid;
-    gap: 0.75rem;
-    margin-block-end: clamp(1.5rem, 3vw, 2.5rem);
+    gap: var(--mt-space-3);
+    margin-block-end: clamp(var(--mt-space-5), 3vw, var(--mt-space-6));
+  }
+
+  .maison-panopticon__header .maison-lens__bar {
+    justify-self: start;
+  }
+
+  @media screen and (max-width: 749px) {
+    .maison-panopticon__header .maison-lens__bar {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      width: 100%;
+      max-width: 100%;
+      border-radius: 3px;
+    }
+
+    .maison-panopticon__header .maison-lens__option {
+      min-width: 0;
+      padding-inline: var(--mt-space-1);
+      font-size: var(--mt-type-mono);
+    }
+
+    .maison-panopticon__human,
+    .maison-panopticon__engineer {
+      grid-template-columns: 1fr;
+    }
+
+    .maison-panopticon__copy {
+      max-width: none;
+    }
   }
 
   .maison-panopticon__kicker,
   .maison-evidence {
     margin: 0;
-    font-family: var(--font-mono--family, ui-monospace, monospace);
-    font-size: 0.75rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: rgb(var(--color-foreground-rgb) / 0.7);
@@ -93,11 +122,11 @@
 
   .maison-panopticon__heading {
     margin: 0;
-    font-family: var(--font-heading--family);
-    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.75rem);
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-display);
     font-weight: 400;
     line-height: 1.05;
-    letter-spacing: -0.02em;
+    letter-spacing: var(--mt-type-tracking-heading);
   }
 
   .maison-panopticon__panel[hidden] {
@@ -106,7 +135,7 @@
 
   .maison-panopticon__human {
     display: grid;
-    gap: clamp(1.5rem, 4vw, 4rem);
+    gap: clamp(var(--mt-space-5), 4vw, var(--mt-space-8));
     align-items: center;
   }
 
@@ -125,27 +154,28 @@
 
   .maison-panopticon__copy {
     display: grid;
-    gap: 1.25rem;
+    gap: var(--mt-space-5);
     max-width: 38rem;
   }
 
   .maison-panopticon__lede {
     margin: 0;
-    font-family: var(--font-heading--family);
-    font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem);
-    line-height: 1.4;
+    max-width: 28ch;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-title);
+    line-height: 1.35;
   }
 
   .maison-panopticon__facts {
     display: grid;
     grid-template-columns: max-content 1fr;
-    gap: 0.75rem 1.5rem;
+    gap: var(--mt-space-3) var(--mt-space-5);
     margin: 0;
   }
 
   .maison-panopticon__facts dt {
-    font-family: var(--font-mono--family, ui-monospace, monospace);
-    font-size: 0.75rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: rgb(var(--color-foreground-rgb) / 0.65);

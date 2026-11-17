@@ -1,0 +1,341 @@
+{% comment %}
+  Homepage link-outs to deeper rooms: Heat, Finder, Department, Kitchen,
+  Releases, Mail. Includes the Heat CTA card and slim Releases teaser.
+{% endcomment %}
+
+<div
+  class="section section--page-width spacing-style maison-pathways"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  data-mt-chapter
+>
+  <header class="maison-pathways__header" data-mt-scroll="chapter">
+    {% if section.settings.eyebrow != blank %}
+      <p class="maison-pathways__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h2
+        class="maison-pathways__heading"
+        data-mt-scroll="kinetic"
+        aria-label="{{ section.settings.heading | escape }}"
+      >
+        {{ section.settings.heading | escape }}
+      </h2>
+    {% endif %}
+    {% if section.settings.lede != blank %}
+      <p class="maison-pathways__lede">{{ section.settings.lede | escape }}</p>
+    {% endif %}
+  </header>
+
+  <ul class="maison-pathways__grid" role="list" data-mt-scroll="stagger">
+    {% for block in section.blocks %}
+      <li
+        class="maison-pathways__card{% if block.settings.emphasis == 'heat' %} maison-pathways__card--heat{% elsif block.settings.emphasis == 'releases' %} maison-pathways__card--releases{% endif %}"
+        data-mt-scroll-item
+        {{ block.shopify_attributes }}
+      >
+        {% if block.settings.kicker != blank %}
+          <p class="maison-pathways__kicker">{{ block.settings.kicker | escape }}</p>
+        {% endif %}
+        {% if block.settings.url != blank %}
+          <a class="maison-pathways__link" href="{{ block.settings.url }}">
+            <span class="maison-pathways__label">{{ block.settings.label | escape }}</span>
+            <span class="maison-pathways__arrow" aria-hidden="true">→</span>
+          </a>
+        {% else %}
+          <span class="maison-pathways__label">{{ block.settings.label | escape }}</span>
+        {% endif %}
+        {% if block.settings.text != blank %}
+          <p class="maison-pathways__text">{{ block.settings.text | escape }}</p>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+{% stylesheet %}
+  .maison-pathways {
+    color: var(--color-foreground);
+  }
+
+  .maison-pathways__header {
+    max-width: 40rem;
+    margin-block-end: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .maison-pathways__eyebrow {
+    margin: 0;
+    font-family: var(--mt-type-family-mono, var(--font-mono--family));
+    font-size: var(--mt-type-accent, var(--font-size--xs));
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-pathways__heading {
+    margin-block: 0.75rem 1rem;
+    font-family: var(--mt-type-family-heading, var(--font-heading--family));
+  }
+
+  .maison-pathways__lede {
+    margin: 0;
+    color: var(--color-foreground-muted);
+    line-height: 1.55;
+  }
+
+  .maison-pathways__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media screen and (min-width: 750px) {
+    .maison-pathways__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (min-width: 1100px) {
+    .maison-pathways__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .maison-pathways__card {
+    border: 1px solid var(--color-border, rgba(0, 0, 0, 0.14));
+    padding: 1.15rem 1.2rem 1.25rem;
+    min-height: 8.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    background: var(--color-background);
+  }
+
+  .maison-pathways__card--heat {
+    border-color: color-mix(in srgb, var(--mt-color-ember, #e2552b) 45%, var(--color-border, #ccc));
+  }
+
+  .maison-pathways__card--releases {
+    background: color-mix(in srgb, var(--color-foreground) 4%, var(--color-background));
+  }
+
+  .maison-pathways__kicker {
+    margin: 0;
+    font-family: var(--mt-type-family-mono, var(--font-mono--family));
+    font-size: var(--mt-type-accent, var(--font-size--xs));
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-pathways__link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .maison-pathways__link:hover .maison-pathways__label {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .maison-pathways__link:focus-visible {
+    outline: 2px solid var(--color-foreground);
+    outline-offset: 3px;
+  }
+
+  .maison-pathways__label {
+    font-family: var(--mt-type-family-heading, var(--font-heading--family));
+    font-size: var(--font-size--md);
+  }
+
+  .maison-pathways__arrow {
+    font-size: 0.95em;
+    opacity: 0.7;
+  }
+
+  .maison-pathways__text {
+    margin: 0.25rem 0 0;
+    color: var(--color-foreground-muted);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .maison-pathways [data-mt-scroll],
+    .maison-pathways [data-mt-scroll-item] {
+      opacity: 1 !important;
+      transform: none !important;
+      visibility: visible !important;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.maison_pathways",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:settings.maison_eyebrow",
+      "default": "Deeper rooms"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "Continue through the house"
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "t:settings.maison_lede",
+      "default": "Heat, Finder, Department, Kitchen, Releases, and Mail each keep their own page — the homepage only points the way."
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pathway",
+      "name": "Pathway",
+      "settings": [
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker",
+          "default": "Room"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Heat"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Why white heat does not scorch — diffusion made visible."
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "select",
+          "id": "emphasis",
+          "label": "Emphasis",
+          "options": [
+            { "value": "none", "label": "Default" },
+            { "value": "heat", "label": "Heat CTA" },
+            { "value": "releases", "label": "Releases teaser" }
+          ],
+          "default": "none"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.maison_pathways",
+      "category": "t:categories.storytelling",
+      "blocks": [
+        {
+          "type": "pathway",
+          "settings": {
+            "kicker": "Thermal",
+            "label": "Heat",
+            "text": "Why white heat does not scorch — diffusion made visible.",
+            "url": "/pages/heat",
+            "emphasis": "heat"
+          }
+        },
+        {
+          "type": "pathway",
+          "settings": {
+            "kicker": "Ceremony",
+            "label": "Finder",
+            "text": "Five questions. One piece that fits your pass.",
+            "url": "/pages/finder",
+            "emphasis": "none"
+          }
+        },
+        {
+          "type": "pathway",
+          "settings": {
+            "kicker": "System",
+            "label": "Department",
+            "text": "Shop by department and material system.",
+            "url": "/pages/department",
+            "emphasis": "none"
+          }
+        },
+        {
+          "type": "pathway",
+          "settings": {
+            "kicker": "Catalogue",
+            "label": "Kitchen",
+            "text": "The working kitchen — the live assortment on the pass.",
+            "url": "/pages/kitchen",
+            "emphasis": "none"
+          }
+        },
+        {
+          "type": "pathway",
+          "settings": {
+            "kicker": "Campaign",
+            "label": "Releases",
+            "text": "Current heat and newest pieces.",
+            "url": "/pages/releases",
+            "emphasis": "releases"
+          }
+        },
+        {
+          "type": "pathway",
+          "settings": {
+            "kicker": "Signal",
+            "label": "Mail",
+            "text": "Join the next heat with Shopify native email signup.",
+            "url": "/pages/mail",
+            "emphasis": "none"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

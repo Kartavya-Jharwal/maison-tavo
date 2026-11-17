@@ -2,7 +2,9 @@
   "sections": {
     "covenant": {
       "type": "maison-care-ritual",
-      "settings": {}
+      "settings": {
+        "kansa_url": "/pages/kansa"
+      }
     },
     "craft": {
       "type": "maison-pdp-story",

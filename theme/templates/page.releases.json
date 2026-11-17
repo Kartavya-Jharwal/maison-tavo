@@ -1,0 +1,39 @@
+{
+  "sections": {
+    "releases": {
+      "type": "maison-releases",
+      "blocks": {
+        "cycle_current": {
+          "type": "cycle",
+          "settings": {
+            "name": "Current heat",
+            "window": "Live while the allocation lasts",
+            "status": "open",
+            "note": "Pieces link to real product pages. Checkout stays on Shopify.",
+            "limit": 8
+          }
+        },
+        "cycle_next": {
+          "type": "cycle",
+          "settings": {
+            "name": "Next allocation",
+            "window": "Announced on the mail list",
+            "status": "upcoming",
+            "note": "Join /pages/mail for the opening signal.",
+            "limit": 8
+          }
+        }
+      },
+      "block_order": ["cycle_current", "cycle_next"],
+      "settings": {
+        "eyebrow": "Inventory cycles",
+        "heading": "Releases",
+        "lede": "<p>Maison opens inventory in timed heats — not a perpetual new-arrivals rail. Each cycle has a window; when it closes, the pieces leave this room.</p>",
+        "mail_link": true,
+        "padding-block-start": 48,
+        "padding-block-end": 64
+      }
+    }
+  },
+  "order": ["releases"]
+}

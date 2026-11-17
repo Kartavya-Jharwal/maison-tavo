@@ -1,16 +1,34 @@
 import barba from '@barba/core';
 import gsap from 'gsap';
-import { pauseHorizonScroll, refreshHorizonScroll, resetHorizonScroll, scrollHorizonTo } from './horizon-scroll.js';
+import {
+  pauseHorizonScroll,
+  refreshHorizonScroll,
+  resetHorizonScroll,
+  resumeHorizonScroll,
+  scrollHorizonTo,
+} from './horizon-scroll.js';
 
 /**
  * Real documents, animated between rooms.
  * Barba swaps #MainContent only. Header, footer, cart, and checkout stay put.
  * Checkout, account, discount, and non-http links are left to the browser.
+ *
+ * Fail-safe: leave covers the bronze veil and pauses Lenis. If the request,
+ * enter animation, or Barba lifecycle aborts, releaseTransition() always
+ * clears covering state so the storefront cannot stay blocked.
  */
 
 const BLOCKED = /\/(checkout|account|challenge|discount|apps|tools)(\/|$)/;
+/**
+ * Hard ceiling past Barba request timeout + leave/enter motion + asset adopt.
+ * Re-armed at enter so a slow fetch does not false-trigger mid-animation.
+ */
+const TRANSITION_WATCHDOG_MS = 14000;
+const ENTER_WATCHDOG_MS = 8000;
 
 let started = false;
+let watchdogId = 0;
+let releasing = false;
 
 function reduced() {
   return document.documentElement.dataset.reducedMotion === 'true';
@@ -160,6 +178,62 @@ async function rememberProduct() {
   }
 }
 
+function clearWatchdog() {
+  if (!watchdogId) return;
+  window.clearTimeout(watchdogId);
+  watchdogId = 0;
+}
+
+function armWatchdog(release, ms = TRANSITION_WATCHDOG_MS) {
+  clearWatchdog();
+  watchdogId = window.setTimeout(() => {
+    watchdogId = 0;
+    release('watchdog');
+  }, ms);
+}
+
+/**
+ * Undo leave/enter side effects so the UI cannot stay covered or inert.
+ * Safe to call multiple times; used on success, error, abort, and watchdog.
+ */
+function releaseTransition(veil, reason = 'ok') {
+  if (releasing) return;
+  releasing = true;
+  clearWatchdog();
+  try {
+    gsap.killTweensOf(veil);
+    gsap.set(veil, { yPercent: -100 });
+    veil.classList.remove('is-covering');
+    document.documentElement.classList.remove('mt-transitioning');
+
+    const main = document.getElementById('MainContent');
+    if (main) {
+      gsap.killTweensOf(main);
+      gsap.set(main, { clearProps: 'transform,opacity,visibility' });
+      main.removeAttribute('aria-busy');
+      if (main.style) {
+        main.style.removeProperty('opacity');
+        main.style.removeProperty('visibility');
+        main.style.removeProperty('transform');
+      }
+    }
+
+    document.querySelectorAll('[aria-busy="true"]').forEach((node) => {
+      if (node.id === 'MainContent' || node.hasAttribute('data-barba')) {
+        node.removeAttribute('aria-busy');
+      }
+    });
+
+    resumeHorizonScroll();
+
+    if (reason !== 'ok' && typeof console !== 'undefined') {
+      console.warn(`[maison] page transition released (${reason})`);
+    }
+  } finally {
+    releasing = false;
+  }
+}
+
 export function initPageTransitions() {
   if (started || window.Shopify?.designMode) return;
   const wrapper = document.querySelector('[data-barba="wrapper"]');
@@ -168,6 +242,8 @@ export function initPageTransitions() {
   if (!wrapper || !container || !veil) return;
   started = true;
   rememberStyles(document);
+
+  const release = (reason) => releaseTransition(veil, reason);
 
   gsap.set(veil, { yPercent: -100 });
   veil.addEventListener(
@@ -182,72 +258,94 @@ export function initPageTransitions() {
 
   try {
     barba.init({
-    timeout: 12000,
-    cacheIgnore: true,
-    preventRunning: true,
-    prevent: shouldPrevent,
-    transitions: [
-      {
-        name: 'bronze-sheet',
-        async leave({ current }) {
-          document.documentElement.classList.add('mt-transitioning');
-          veil.classList.add('is-covering');
-          const leaving = current.container || document.getElementById('MainContent');
-          leaving?.setAttribute('aria-busy', 'true');
-          closeDrawers();
-          pauseHorizonScroll();
-          if (reduced()) {
-            document.dispatchEvent(new CustomEvent('maison:page-leave'));
-            return;
-          }
-          await gsap
-            .timeline({ defaults: { ease: 'power3.inOut' } })
-            .to(leaving, { y: 18, autoAlpha: 0.35, duration: 0.28 }, 0)
-            .to(veil, { yPercent: 0, duration: 0.42 }, 0.04);
-          document.dispatchEvent(new CustomEvent('maison:page-leave'));
+      timeout: 8000,
+      cacheIgnore: true,
+      preventRunning: true,
+      prevent: shouldPrevent,
+      transitions: [
+        {
+          name: 'bronze-sheet',
+          async leave({ current }) {
+            armWatchdog(release);
+            document.documentElement.classList.add('mt-transitioning');
+            veil.classList.add('is-covering');
+            const leaving = current.container || document.getElementById('MainContent');
+            leaving?.setAttribute('aria-busy', 'true');
+            closeDrawers();
+            pauseHorizonScroll();
+            try {
+              if (reduced()) {
+                document.dispatchEvent(new CustomEvent('maison:page-leave'));
+                return;
+              }
+              await gsap
+                .timeline({ defaults: { ease: 'power3.inOut' } })
+                .to(leaving, { y: 18, autoAlpha: 0.35, duration: 0.28 }, 0)
+                .to(veil, { yPercent: 0, duration: 0.42 }, 0.04);
+              document.dispatchEvent(new CustomEvent('maison:page-leave'));
+            } catch (error) {
+              release('leave');
+              throw error;
+            }
+          },
+          async enter(data) {
+            armWatchdog(release, ENTER_WATCHDOG_MS);
+            try {
+              const html = data.next.html || '';
+              if (isPassword(html)) {
+                release('password');
+                window.location.assign(data.next.url.href);
+                return;
+              }
+              await adoptAssets(html);
+              if (data.next.url.hash) {
+                const target = document.querySelector(data.next.url.hash);
+                if (target) scrollHorizonTo(target, true);
+                else resetHorizonScroll();
+              } else {
+                resetHorizonScroll();
+              }
+              const arriving = data.next.container || document.getElementById('MainContent');
+              if (reduced()) {
+                gsap.set(arriving, { clearProps: 'transform,opacity,visibility' });
+                release('reduced');
+                return;
+              }
+              gsap.set(arriving, { y: 22, autoAlpha: 0.2, scale: 0.992 });
+              await gsap
+                .timeline({ defaults: { ease: 'power3.out' } })
+                .to(veil, { yPercent: -100, duration: 0.48 }, 0)
+                .to(arriving, { y: 0, autoAlpha: 1, scale: 1, duration: 0.55 }, 0.12);
+              release('ok');
+            } catch (error) {
+              release('enter');
+              throw error;
+            }
+          },
         },
-        async enter(data) {
-          const html = data.next.html || '';
-          if (isPassword(html)) {
-            window.location.assign(data.next.url.href);
-            return;
-          }
-          await adoptAssets(html);
-          if (data.next.url.hash) {
-            const target = document.querySelector(data.next.url.hash);
-            if (target) scrollHorizonTo(target, true);
-            else resetHorizonScroll();
-          } else {
-            resetHorizonScroll();
-          }
-          const arriving = data.next.container || document.getElementById('MainContent');
-          if (!reduced()) {
-            gsap.set(arriving, { y: 22, autoAlpha: 0.2 });
-            await gsap
-              .timeline({ defaults: { ease: 'power3.out' } })
-              .to(veil, { yPercent: -100, duration: 0.48 }, 0)
-              .to(arriving, { y: 0, autoAlpha: 1, duration: 0.55 }, 0.12);
-          } else {
-            gsap.set(arriving, { clearProps: 'transform,opacity,visibility' });
-          }
-          veil.classList.remove('is-covering');
-          document.documentElement.classList.remove('mt-transitioning');
-          gsap.set(arriving, { clearProps: 'transform,opacity,visibility' });
-        },
-      },
-    ],
+      ],
     });
   } catch {
     started = false;
-    veil.classList.remove('is-covering');
-    document.documentElement.classList.remove('mt-transitioning');
+    release('init');
     return;
   }
 
+  // Wrap go so request/timeout failures after leave always clear the veil.
+  const go = barba.go.bind(barba);
+  barba.go = async (...args) => {
+    try {
+      return await go(...args);
+    } catch (error) {
+      release('go');
+      throw error;
+    }
+  };
+
   barba.hooks.after(() => {
+    release('ok');
     const main = document.getElementById('MainContent');
     if (main) {
-      main.removeAttribute('aria-busy');
       main.tabIndex = -1;
       main.focus({ preventScroll: true });
     }
@@ -256,5 +354,23 @@ export function initPageTransitions() {
     refreshHorizonScroll(main || document);
     document.dispatchEvent(new CustomEvent('maison:page-enter', { detail: { url: location.href } }));
     rememberProduct();
+  });
+
+  window.addEventListener('unhandledrejection', (event) => {
+    const message = String(event.reason?.message || event.reason || '');
+    if (/barba|transition|timeout|fetch/i.test(message) && document.documentElement.classList.contains('mt-transitioning')) {
+      release('rejection');
+    }
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (
+      document.visibilityState === 'visible' &&
+      document.documentElement.classList.contains('mt-transitioning') &&
+      veil.classList.contains('is-covering') &&
+      !watchdogId
+    ) {
+      armWatchdog(release, ENTER_WATCHDOG_MS);
+    }
   });
 }

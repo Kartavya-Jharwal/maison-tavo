@@ -250,20 +250,354 @@
     --brand-color-damascus-silver: {{ settings.brand_color_damascus_silver }};
     --brand-color-damascus-silver-rgb: {{ settings.brand_color_damascus_silver.rgb }};
 
-    /* ── Maison Tavo canonical 9-token palette ───────────────────── */
-    --soot:      #14110F;
-    --limewash:  #EFE8DC;
-    --bone:      #F7F2E9;
-    --bell:      #B8893A;
-    --copper:    #C2703D;
-    --clay:      #8E4B35;
-    --steel:     #8C9094;
-    --verdigris: #4F7F72;
-    --ember:     #E2552B;
+    /*
+      Canonical Maison palette — last in <head>, wins over settings drift.
+      Prefer --mt-color-* / --mt-color-*-rgb. Short aliases for legacy CSS.
+      Contrast pairs: docs/color-tokens.md
+    */
+    --mt-color-soot: #14110f;
+    --mt-color-soot-rgb: 20, 17, 15;
+    --mt-color-limewash: #efe8dc;
+    --mt-color-limewash-rgb: 239, 232, 220;
+    --mt-color-bone: #f7f2e9;
+    --mt-color-bone-rgb: 247, 242, 233;
+    --mt-color-bell: #b8893a;
+    --mt-color-bell-rgb: 184, 137, 58;
+    --mt-color-copper: #c2703d;
+    --mt-color-copper-rgb: 194, 112, 61;
+    --mt-color-clay: #8e4b35;
+    --mt-color-clay-rgb: 142, 75, 53;
+    --mt-color-steel: #8c9094;
+    --mt-color-steel-rgb: 140, 144, 148;
+    --mt-color-verdigris: #4f7f72;
+    --mt-color-verdigris-rgb: 79, 127, 114;
+    --mt-color-ember: #e2552b;
+    --mt-color-ember-rgb: 226, 85, 43;
+
+    --soot: var(--mt-color-soot);
+    --limewash: var(--mt-color-limewash);
+    --bone: var(--mt-color-bone);
+    --bell: var(--mt-color-bell);
+    --copper: var(--mt-color-copper);
+    --clay: var(--mt-color-clay);
+    --steel: var(--mt-color-steel);
+    --verdigris: var(--mt-color-verdigris);
+    --ember: var(--mt-color-ember);
+
+    /* Semantic surfaces */
+    --mt-surface-canvas: var(--mt-color-limewash);
+    --mt-surface-raised: var(--mt-color-bone);
+    --mt-surface-ink: var(--mt-color-soot);
+    --mt-surface-accent: var(--mt-color-bell);
+    --mt-surface-heat: var(--mt-color-ember);
+    --mt-surface-metal: var(--mt-color-copper);
+    --mt-surface-clay: var(--mt-color-clay);
+    --mt-surface-steel: var(--mt-color-steel);
+    --mt-surface-patina: var(--mt-color-verdigris);
+    --mt-surface-border: rgb(var(--mt-color-bell-rgb) / 0.3);
+    --mt-surface-border-subtle: rgb(var(--mt-color-soot-rgb) / 0.1);
+
+    /* Horizon --color-* → Maison (safe commerce map) */
+    --color-background: var(--mt-color-limewash);
+    --color-background-rgb: var(--mt-color-limewash-rgb);
+    --color-foreground: var(--mt-color-soot);
+    --color-foreground-rgb: var(--mt-color-soot-rgb);
+    --color-border: var(--mt-color-soot);
+    --color-border-rgb: var(--mt-color-soot-rgb);
+    --color-shadow-rgb: var(--mt-color-soot-rgb);
+    --color-error: var(--mt-color-ember);
+    --color-error-rgb: var(--mt-color-ember-rgb);
+    --color-success: var(--mt-color-verdigris);
+    --color-success-rgb: var(--mt-color-verdigris-rgb);
+    --color-white: var(--mt-color-bone);
+    --color-white-rgb: var(--mt-color-bone-rgb);
+    --color-instock: var(--mt-color-verdigris);
+    --color-lowstock: var(--mt-color-bell);
+    --color-outofstock: var(--mt-color-steel);
+
+    --brand-color-canvas: var(--mt-color-limewash);
+    --brand-color-canvas-rgb: var(--mt-color-limewash-rgb);
+    --brand-color-ink: var(--mt-color-soot);
+    --brand-color-ink-rgb: var(--mt-color-soot-rgb);
+    --brand-color-border: var(--mt-color-soot);
+    --splash-background: var(--mt-color-limewash);
+    --splash-foreground: var(--mt-color-soot);
+
+    /* Commerce CTAs via Horizon button vars — no global button !important */
+    --color-primary-button-background: var(--mt-color-soot);
+    --color-primary-button-text: var(--mt-color-bone);
+    --color-primary-button-border: var(--mt-color-bell);
+    --color-primary-button-focus-outline: var(--mt-color-bell);
+    --color-primary-button-hover-background: var(--mt-color-ember);
+    --color-primary-button-hover-text: #ffffff;
+    --color-primary-button-hover-border: var(--mt-color-ember);
+
+    --color-secondary-button-text: var(--mt-color-soot);
+    --color-secondary-button-background: transparent;
+    --color-secondary-button-border: var(--mt-color-bell);
+    --color-secondary-button-hover-text: var(--mt-color-bell);
+    --color-secondary-button-hover-background: transparent;
+    --color-secondary-button-hover-border: var(--mt-color-bell);
+
+    --color-input-background: var(--mt-color-bone);
+    --color-input-text: var(--mt-color-soot);
+    --color-input-text-rgb: var(--mt-color-soot-rgb);
+    --color-input-border: rgb(var(--mt-color-soot-rgb) / 0.2);
+  }
+
+  /* Rem root + Bai Jamjuree body — cascade after base.css, no !important */
+  html {
+    font-size: 100%;
   }
 
   body {
-    color: var(--color-foreground);
-    background-color: var(--color-background);
+    color: var(--mt-surface-ink);
+    background-color: var(--mt-surface-canvas);
+    font-family: var(--mt-type-family-body, var(--font-body--family));
+    font-size: var(--mt-type-body, 1rem);
+    line-height: var(--mt-type-leading-body, 1.65);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Type roles — scoped selectors only (never [class*="heading|menu|nav|price"]) */
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6,
+  .product-title,
+  .collection-title,
+  .maison-highlight,
+  .maison-hero__headline,
+  .maison-footer__headline,
+  .maison-panopticon__heading,
+  .maison-tree__title,
+  .maison-last-call__heading {
+    font-family: var(--mt-type-family-heading);
+    font-weight: 400;
+    letter-spacing: var(--mt-type-tracking-heading);
+    color: var(--mt-surface-ink);
+  }
+
+  h1, .h1 {
+    font-size: var(--mt-type-display);
+    letter-spacing: var(--mt-type-tracking-heading, -0.02em);
+  }
+
+  /* Hero title — Instrument Serif large fluid display step (Typography Agent 3) */
+  .maison-hero__headline {
+    font-size: var(--mt-type-display-lg, var(--font-size--fluid-display));
+  }
+
+  h2, .h2 {
+    font-size: var(--mt-type-heading);
+  }
+
+  h3, .h3,
+  .maison-editorial__title,
+  .maison-story__title,
+  .maison-room__title,
+  .maison-lineups__title,
+  .maison-pdp-story__title,
+  .maison-care__title {
+    font-size: var(--mt-type-title);
+    letter-spacing: -0.015em;
+  }
+
+  h4, .h4 {
+    font-size: var(--mt-type-lede);
+    letter-spacing: -0.01em;
+  }
+
+  .maison-lede {
+    font-family: var(--mt-type-family-body);
+    font-size: var(--mt-type-lede);
+    line-height: var(--mt-type-leading-body);
+  }
+
+  .maison-body {
+    font-family: var(--mt-type-family-body);
+    font-size: var(--mt-type-body);
+    line-height: var(--mt-type-leading-body);
+  }
+
+  .caption,
+  .label,
+  .overline,
+  .announcement-bar__message,
+  .header__menu .menu-list__link,
+  .header-menu .menu-list__link,
+  .navigation-link,
+  .maison-tree__label,
+  .maison-lens__option,
+  .maison-eyebrow,
+  .maison-kicker {
+    font-family: var(--mt-type-family-accent);
+    font-weight: 500;
+  }
+
+  .caption,
+  .label,
+  .overline,
+  .announcement-bar__message,
+  .maison-eyebrow,
+  .maison-kicker {
+    font-size: var(--mt-type-accent);
+    letter-spacing: var(--mt-type-tracking-accent);
+    text-transform: uppercase;
+  }
+
+  .header__menu .menu-list__link,
+  .header-menu .menu-list__link,
+  .navigation-link {
+    font-size: var(--mt-type-nav);
+    letter-spacing: var(--mt-type-tracking-accent);
+  }
+
+  .maison-wordmark,
+  .header-logo,
+  .header__heading-text,
+  .header__heading-link,
+  .mt-veil__mark {
+    font-family: var(--mt-type-family-wordmark);
+    font-weight: 100;
+    font-size: var(--mt-type-wordmark);
+    letter-spacing: var(--mt-type-tracking-wordmark);
+    text-transform: none;
+    font-kerning: normal;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    color: var(--mt-surface-ink);
+  }
+
+  /* Splash display mark — size owned by snippets/splash-intro.liquid (~68–70vw) */
+  .splash-intro__heading {
+    font-family: var(--mt-type-family-wordmark);
+    font-weight: 100;
+    letter-spacing: var(--mt-type-tracking-wordmark);
+    text-transform: none;
+    font-kerning: normal;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    color: var(--mt-surface-ink);
+  }
+
+  .mt-coda__word {
+    font-family: var(--mt-type-family-wordmark);
+    font-weight: var(--font-weight--wordmark, 100);
+    font-size: var(--mt-type-wordmark-display);
+    letter-spacing: var(--mt-type-tracking-wordmark);
+    font-kerning: normal;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+  }
+
+  .price,
+  .price-item,
+  .product-price,
+  .unit-price,
+  .sku,
+  .spec-value,
+  [data-font-mono],
+  code,
+  pre,
+  .agent-view,
+  .ucp-view,
+  .maison-mono,
+  .maison-spec {
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1, 'zero' 1;
+  }
+
+  .maison-devanagari,
+  [lang='hi'],
+  .kansa-script {
+    font-family: var(--mt-type-family-devanagari);
+    letter-spacing: 0.04em;
+  }
+
+  .button:not(.button-unstyled):not(.close-button):not(.menu-drawer__close-button):not(.menu-drawer__back-button),
+  .button-secondary:not(.button-unstyled),
+  button[name='add'],
+  button[name='checkout'].cart__checkout-button,
+  .maison-btn--primary {
+    font-family: var(--mt-type-family-accent);
+    font-size: var(--mt-type-button);
+    letter-spacing: var(--mt-type-tracking-accent);
+    text-transform: uppercase;
+  }
+
+  .header-wrapper,
+  #header-component {
+    background-color: var(--mt-surface-canvas);
+    border-bottom: 1px solid var(--mt-surface-border);
+    color: var(--mt-surface-ink);
+  }
+
+  .announcement-bar {
+    background-color: var(--mt-surface-ink);
+    color: var(--mt-surface-raised);
+    border-bottom: 1px solid color-mix(in srgb, var(--bell) 35%, transparent);
+    font-family: var(--mt-type-family-accent);
+    font-size: var(--mt-type-accent);
+    letter-spacing: var(--mt-type-tracking-accent);
+  }
+
+  .announcement-bar a {
+    color: var(--mt-surface-accent);
+  }
+
+  .product-card,
+  .collection-card {
+    background-color: var(--mt-surface-raised);
+    transition: border-color var(--mt-dur-mid) var(--mt-ease-strike),
+      box-shadow var(--mt-dur-mid) var(--mt-ease-strike);
+  }
+
+  .product-card:hover,
+  .collection-card:hover {
+    border-color: var(--mt-surface-accent);
+    box-shadow: var(--mt-elevation-md);
+  }
+
+  .cart-drawer,
+  .theme-drawer {
+    background-color: var(--mt-surface-raised);
+    color: var(--mt-surface-ink);
+  }
+
+  .cart__trust,
+  .cart-discount__label,
+  .cart-note__label,
+  .cart-totals__total-label {
+    font-family: var(--mt-type-family-accent);
+  }
+
+  .cart-totals__total-value {
+    font-family: var(--mt-type-family-heading);
+    font-weight: 400;
+  }
+
+  .cart-discount__input,
+  .cart-note__instructions,
+  .cart-totals__tax-note {
+    font-family: var(--mt-type-family-body);
+  }
+
+  .maison-footer-section,
+  .maison-footer {
+    background-color: var(--mt-surface-ink);
+    color: var(--mt-surface-raised);
+  }
+
+  .maison-footer a {
+    color: color-mix(in srgb, var(--bone) 85%, var(--bell));
+  }
+
+  .maison-footer a:hover {
+    color: var(--mt-surface-accent);
+  }
+
+  /* Hide leftover Horizon footer chrome when Maison footer is present */
+  .shopify-section-group-footer-group:has(.maison-footer) .shopify-section:has(> .footer):not(.maison-footer-section),
+  .shopify-section-group-footer-group:has(.maison-footer) .footer-utilities {
+    display: none !important;
   }
 {% endstyle %}

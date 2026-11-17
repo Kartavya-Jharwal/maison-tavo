@@ -15,6 +15,22 @@
       >
     {%- endif -%}
 
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('mt_reduced_motion');
+          var reduce =
+            saved === 'true' ||
+            (saved === null && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+          document.documentElement.dataset.reducedMotion = String(reduce);
+        } catch (error) {
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.dataset.reducedMotion = 'true';
+          }
+        }
+      })();
+    </script>
+
     {%- render 'view-transition-opt-in' -%}
 
     {%- render 'meta-tags' -%}
@@ -179,6 +195,7 @@
   
     {% render 'maison-flagship' %}
     {% render 'maison-experience' %}
+    {% render 'maison-toasts' %}
     <script src="{{ 'maison-runtime.js' | asset_url }}" defer></script>
   </body>
 </html>

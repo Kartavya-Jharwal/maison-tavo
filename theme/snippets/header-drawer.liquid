@@ -63,12 +63,13 @@
     <summary
       class="header__icon header__icon--menu header__icon--summary"
       aria-label="{{ 'accessibility.menu' | t }}"
+      aria-expanded="false"
       on:click="/toggle"
     >
-      <span class="svg-wrapper header-drawer-icon header-drawer-icon--open">
+      <span class="svg-wrapper header-drawer-icon header-drawer-icon--open" aria-hidden="true">
         {{- 'icon-menu.svg' | inline_asset_content -}}
       </span>
-      <span class="svg-wrapper header-drawer-icon header-drawer-icon--close">
+      <span class="svg-wrapper header-drawer-icon header-drawer-icon--close" aria-hidden="true">
         {{- 'icon-close-menu.svg' | inline_asset_content -}}
       </span>
     </summary>

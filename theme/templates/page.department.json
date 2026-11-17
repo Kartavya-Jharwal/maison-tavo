@@ -1,0 +1,99 @@
+{
+  "sections": {
+    "intro": {
+      "type": "maison-room",
+      "settings": {
+        "eyebrow": "Assortment",
+        "heading": "Department & system",
+        "lede": "<p>Shop by working-kitchen department and material system. Categories hold the culinary task; lineups hold the alloy and craft route.</p>",
+        "padding-block-start": 48,
+        "padding-block-end": 8
+      },
+      "blocks": {
+        "kitchen": {
+          "type": "pathway",
+          "settings": {
+            "label": "Working kitchen",
+            "url": "/pages/kitchen",
+            "text": "The live assortment grid."
+          }
+        },
+        "catalog": {
+          "type": "pathway",
+          "settings": {
+            "label": "All collections",
+            "url": "/collections",
+            "text": "Category index and material lineups."
+          }
+        }
+      },
+      "block_order": ["kitchen", "catalog"]
+    },
+    "maison_categories": {
+      "type": "maison-lineups",
+      "blocks": {
+        "cookware": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Category 01 · Kitchen & Pass",
+            "label": "Cookware",
+            "text": "Skillets, planchas, tavas, kadais, saucepots, roasters, tagines, knives, and service tongs engineered by culinary task.",
+            "handle": "cookware"
+          }
+        },
+        "tableware_pottery": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Category 02 · Tabletop & Chai",
+            "label": "Tableware & Pottery",
+            "text": "Modular Ardh kulhads, laser-marked Rekhā platters, dinner plates, condiment katoris, and shared serving bowls.",
+            "handle": "tableware-pottery"
+          }
+        },
+        "care_sets": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Category 03 · Ritual & Parts",
+            "label": "Care & Sets",
+            "text": "High-smoke seasoning oil, four-piece care ritual kits, stepped replacement lids, and ceramic-docked bamboo steamers.",
+            "handle": "care-sets"
+          }
+        },
+        "forge_terre": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Range 04 · Metal × Clay",
+            "label": "Forge × Terre",
+            "text": "Hybrid metal–clay systems separating active induction cooking from tactile earthenware table service.",
+            "handle": "forge-terre"
+          }
+        },
+        "kansa_room": {
+          "type": "lineup",
+          "settings": {
+            "kicker": "Room · Companion",
+            "label": "Kansa",
+            "text": "A page of its own. Ask the bell-bronze companion about heat, care, and the piece in your hand.",
+            "handle": "",
+            "link": "/pages/kansa"
+          }
+        }
+      },
+      "block_order": [
+        "cookware",
+        "tableware_pottery",
+        "care_sets",
+        "forge_terre",
+        "kansa_room"
+      ],
+      "settings": {
+        "eyebrow": "Assortment Architecture",
+        "heading": "Shop by Department & System",
+        "lede": "25 specifications across Cookware, Tableware & Pottery, Care & Sets, and our four material lineups.",
+        "padding-block-start": 24,
+        "padding-block-end": 64
+      }
+    }
+  },
+  "order": ["intro", "maison_categories"]
+}

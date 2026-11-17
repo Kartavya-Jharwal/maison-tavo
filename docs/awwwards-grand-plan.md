@@ -26,9 +26,13 @@ No un-sourceable mock fonts. Fully self-hosted, lightweight WOFF2 assets with ex
 
 | Role | Family | Sourcing & Licensing | OpenType & Kerning Configuration |
 |---|---|---|---|
-| **Editorial Display** | **Instrument Serif** / **Cormorant Garamond** | Google Fonts / OFL (Self-hosted WOFF2) | `font-kerning: normal; font-feature-settings: "liga" 1, "dlig" 1;` |
-| **Reading & Body** | **Libre Baskerville** / **Instrument Sans** | OFL (Self-hosted WOFF2) | `font-kerning: normal; line-height: 1.65;` |
-| **Specifications & Specs** | **Geist Mono** / **JetBrains Mono** | Vercel / JetBrains (OFL) | `font-feature-settings: "zero" 1, "tnum" 1;` Tabular figures |
+| **Headers & Highlights** | **Instrument Serif** | Google Fonts / OFL (Self-hosted WOFF2) | `font-kerning: normal; letter-spacing: -0.02em;` |
+| **Reading & Body** | **Bai Jamjuree** | Google Fonts / OFL (Self-hosted WOFF2) | `font-kerning: normal; line-height: 1.65;` |
+| **Accent / UI** | **Satoshi** | Fontshare (Self-hosted WOFF2) | Medium weight for nav, labels, buttons |
+| **Maison Tavo Wordmark** | **Noto Serif** Extra Thin (100) | Google Fonts / OFL (Self-hosted WOFF2) | Close-knit tracking `letter-spacing: -0.07em` |
+| **Specifications & Specs** | **JetBrains Mono** | JetBrains (OFL) | `font-feature-settings: "zero" 1, "tnum" 1;` Tabular figures |
+
+Brand type sizes use rem + Utopia-style `clamp()` tokens on `:root` (`--font-size--fluid-*`, `--font-size--brand-*`) — never fixed `px`.
 
 *   **Zero-CLS Font Loading**: `size-adjust`, `ascent-override`, and `descent-override` are calibrated to system fallbacks (`Georgia` and `monospace`) in `snippets/fonts.liquid` to guarantee **0ms layout shift**.
 *   **Accessible Kinetic Text Reveals**:

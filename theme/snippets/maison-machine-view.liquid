@@ -19,6 +19,13 @@
 -%}
 
 <div class="maison-machine{% if full %} maison-machine--full{% endif %}">
+  <header class="maison-machine__chrome" aria-hidden="true">
+    <span class="maison-machine__dot"></span>
+    <span class="maison-machine__dot"></span>
+    <span class="maison-machine__dot"></span>
+    <span class="maison-machine__chrome-label">MACHINE · SCHEMA.ORG</span>
+  </header>
+
   <pre class="maison-machine__ascii" aria-hidden="true">
     {%- if key contains 'knife' or key contains 'blade' or key contains 'kuro' -%}
 {{ '
@@ -29,11 +36,11 @@
 ' }}
     {%- elsif key contains 'tagine' -%}
 {{ '
-            /\
-           /  \
-          /    \
-        _(______)_
-       (__________)
+              /\
+             /  \
+            /    \
+          _(______)_
+         (__________)
 ' }}
     {%- elsif key contains 'kadai' or key contains 'wok' -%}
 {{ '
@@ -83,32 +90,31 @@
 ' }}
     {%- endif -%}
   </pre>
+
   <pre class="maison-machine__json"><code>{
-  "@type": "Product",
-  "name": {{ product.title | json }},
-  "sku": {{ variant.sku | default: product.handle | json }},
-  "category": {{ product.type | json }},
-  "price": {{ variant.price | money_without_currency | remove: ',' | json }},
-  "priceCurrency": {{ cart.currency.iso_code | json }},
-  "availability": "{% if variant.available %}InStock{% else %}OutOfStock{% endif %}"
+  <span class="maison-machine__key">"@type"</span>: <span class="maison-machine__str">"Product"</span>,
+  <span class="maison-machine__key">"name"</span>: <span class="maison-machine__str">{{ product.title | json }}</span>,
+  <span class="maison-machine__key">"sku"</span>: <span class="maison-machine__str">{{ variant.sku | default: product.handle | json }}</span>,
+  <span class="maison-machine__key">"category"</span>: <span class="maison-machine__str">{{ product.type | json }}</span>,
+  <span class="maison-machine__key">"price"</span>: <span class="maison-machine__str">{{ variant.price | money_without_currency | remove: ',' | json }}</span>,
+  <span class="maison-machine__key">"priceCurrency"</span>: <span class="maison-machine__str">{{ cart.currency.iso_code | json }}</span>,
+  <span class="maison-machine__key">"availability"</span>: <span class="maison-machine__str">"{% if variant.available %}InStock{% else %}OutOfStock{% endif %}"</span>
   {%- if specs.lineup.value != blank %},
-  "lineup": {{ specs.lineup.value | json }}{% endif %}
+  <span class="maison-machine__key">"lineup"</span>: <span class="maison-machine__str">{{ specs.lineup.value | json }}</span>{% endif %}
   {%- if specs.primary_material.value != blank %},
-  "primaryMaterial": {{ specs.primary_material.value | json }}{% endif %}
+  <span class="maison-machine__key">"primaryMaterial"</span>: <span class="maison-machine__str">{{ specs.primary_material.value | json }}</span>{% endif %}
   {%- if specs.dimensions_summary.value != blank %},
-  "dimensions": {{ specs.dimensions_summary.value | json }}{% endif %}
+  <span class="maison-machine__key">"dimensions"</span>: <span class="maison-machine__str">{{ specs.dimensions_summary.value | json }}</span>{% endif %}
   {%- if heat != blank %},
-  "heatSources": {{ heat | json }}{% endif %}
-  {%- if specs.dishwasher_suitability.value != blank %},
-  "dishwasher": {{ specs.dishwasher_suitability.value | json }}{% endif %}
+  <span class="maison-machine__key">"heatSources"</span>: <span class="maison-machine__str">{{ heat | json }}</span>{% endif %}
   {%- if specs.claim_status.value != blank %},
-  "claimStatus": {{ specs.claim_status.value | json }}{% endif %}
+  <span class="maison-machine__key">"claimStatus"</span>: <span class="maison-machine__str">{{ specs.claim_status.value | json }}</span>{% endif %}
   {%- if full and specs.lining_material.value != blank %},
-  "liningMaterial": {{ specs.lining_material.value | json }}{% endif %}
+  <span class="maison-machine__key">"liningMaterial"</span>: <span class="maison-machine__str">{{ specs.lining_material.value | json }}</span>{% endif %}
   {%- if full and specs.food_contact_suitability.value != blank %},
-  "foodContactSuitability": {{ specs.food_contact_suitability.value | json }}{% endif %}
+  <span class="maison-machine__key">"foodContactSuitability"</span>: <span class="maison-machine__str">{{ specs.food_contact_suitability.value | json }}</span>{% endif %}
   {%- if full and specs.care_instructions.value != blank %},
-  "careInstructions": {{ specs.care_instructions.value | json }}{% endif %}
+  <span class="maison-machine__key">"careInstructions"</span>: <span class="maison-machine__str">{{ specs.care_instructions.value | json }}</span>{% endif %}
 }</code></pre>
 </div>
 
@@ -116,15 +122,48 @@
   .maison-machine {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.65rem;
     width: 100%;
     height: 100%;
-    padding: 1rem;
+    padding: 0.85rem 0.9rem 1rem;
     overflow: hidden;
-    background: var(--brand-color-obsidian-charcoal, #121212);
+    background:
+      radial-gradient(120% 80% at 0% 0%, rgba(184, 137, 58, 0.12), transparent 55%),
+      var(--brand-color-obsidian-charcoal, #121212);
     color: #d8c79c;
-    font-family: var(--font-mono--family, ui-monospace, monospace);
+    font-family: var(--mt-type-family-mono);
     font-variant-numeric: tabular-nums slashed-zero;
+  }
+
+  .maison-machine__chrome {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 1rem;
+  }
+
+  .maison-machine__dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: rgb(216 199 156 / 0.35);
+  }
+
+  .maison-machine__dot:nth-child(1) {
+    background: #8a6a3a;
+  }
+  .maison-machine__dot:nth-child(2) {
+    background: #b8893a;
+  }
+  .maison-machine__dot:nth-child(3) {
+    background: #d4b56a;
+  }
+
+  .maison-machine__chrome-label {
+    margin-inline-start: auto;
+    font-size: var(--mt-type-mono);
+    letter-spacing: 0.14em;
+    color: rgb(216 199 156 / 0.55);
   }
 
   .maison-machine pre {
@@ -134,25 +173,45 @@
   }
 
   .maison-machine__ascii {
-    font-size: clamp(0.5rem, 1.4cqi, 0.75rem);
-    line-height: 1.15;
+    flex: 0 0 auto;
+    padding-block: 0.35rem 0.15rem;
+    font-size: var(--mt-type-mono);
+    line-height: 1.2;
     color: var(--bell, #b8893a);
+    border-block-end: 1px solid rgb(216 199 156 / 0.12);
   }
 
   .maison-machine__json {
-    font-size: 0.6875rem;
-    line-height: 1.45;
-    overflow: hidden;
+    flex: 1 1 auto;
+    min-height: 0;
+    font-size: var(--mt-type-mono);
+    line-height: 1.5;
+    overflow: auto;
     color: #e9e2cf;
+    scrollbar-width: thin;
+  }
+
+  .maison-machine__key {
+    color: #9fb59a;
+  }
+
+  .maison-machine__str {
+    color: #e2c48a;
   }
 
   .maison-machine--full {
     height: auto;
+    min-height: 28rem;
     padding: clamp(1.25rem, 3vw, 2rem);
+    gap: 1rem;
+  }
+
+  .maison-machine--full .maison-machine__ascii {
+    font-size: var(--mt-type-nav);
   }
 
   .maison-machine--full .maison-machine__json {
-    font-size: 0.8125rem;
+    font-size: var(--mt-type-accent);
     overflow-x: auto;
   }
 {% endstylesheet %}

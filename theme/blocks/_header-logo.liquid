@@ -36,9 +36,10 @@
   style="
     {% render 'size-style', settings: block_settings %}
     {% render 'spacing-style', settings: block_settings %}
-    --font-family: var(--font-body--family);
-    --font-style: var(--font-body--style);
-    --font-weight: 600;
+    --font-family: var(--font-wordmark--family);
+    --font-style: normal;
+    --font-weight: 100;
+    --letter-spacing: -0.07em;
   "
   {{ block.shopify_attributes }}
 >
@@ -88,10 +89,11 @@
   .header-logo {
     display: flex;
     height: 100%;
-    font-size: var(--font-size--md);
-    font-family: var(--font-family);
-    font-weight: var(--font-weight);
+    font-size: var(--mt-type-wordmark, var(--font-size--brand-wordmark, clamp(1.25rem, 1.05rem + 0.8vw, 1.875rem)));
+    font-family: var(--mt-type-family-wordmark, var(--font-wordmark--family, var(--font-family)));
+    font-weight: var(--font-weight--wordmark, 100);
     font-style: var(--font-style);
+    letter-spacing: var(--mt-type-tracking-wordmark, var(--letter-spacing--wordmark, -0.07em));
     color: var(--color-foreground);
     justify-content: center;
     align-items: center;

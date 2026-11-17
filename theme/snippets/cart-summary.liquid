@@ -57,11 +57,11 @@
               {% endif %}
             >
               <summary class="cart-note__summary">
-                <span class="cart-note__label cart-primary-typography">
+                <span class="cart-note__label cart-accent-typography">
                   {{ 'content.seller_note' | t }}
                 </span>
 
-                <span class="cart-totals__icon">
+                <span class="cart-totals__icon" aria-hidden="true">
                   {{- 'icon-plus.svg' | inline_asset_content -}}
                 </span>
               </summary>
@@ -123,9 +123,9 @@
             {% endif %}
           >
             <summary class="cart-discount__summary">
-              <span class="cart-discount__label cart-primary-typography">{{ 'content.discount' | t }}</span>
+              <span class="cart-discount__label cart-accent-typography">{{ 'content.discount' | t }}</span>
 
-              <span class="cart-totals__icon">
+              <span class="cart-totals__icon" aria-hidden="true">
                 {{- 'icon-plus.svg' | inline_asset_content -}}
               </span>
             </summary>
@@ -151,17 +151,20 @@
                       </label>
                       <input
                         id="cart-discount"
-                        class="cart-discount__input"
+                        class="cart-discount__input cart-primary-typography"
                         type="text"
                         name="discount"
                         size="8"
+                        autocomplete="off"
+                        autocapitalize="characters"
+                        spellcheck="false"
                         placeholder="{{ 'content.discount_code' | t }}"
                         required
                         data-skip-node-update
                       >
                       <button
                         type="submit"
-                        class="button cart-discount__button"
+                        class="button cart-discount__button cart-accent-typography"
                       >
                         {{ 'actions.apply' | t }}
                       </button>
@@ -232,7 +235,7 @@
       class="cart-totals__item cart-totals__total"
       role="status"
     >
-      <span class="cart-totals__total-label cart-primary-typography">{{ 'content.cart_estimated_total' | t }}</span>
+      <span class="cart-totals__total-label cart-accent-typography">{{ 'content.cart_estimated_total' | t }}</span>
       <text-component
         ref="cartTotal"
         value="{{ total_price | strip_html }}"
@@ -268,7 +271,7 @@
     {% endif %}
     form="cart-form"
   >
-    <span class="button-text">
+    <span class="button-text cart-accent-typography">
       {{ 'content.checkout' | t }}
     </span>
   </button>
@@ -283,6 +286,27 @@
       {{ content_for_additional_checkout_buttons }}
     </div>
   {% endif %}
+
+  {%- comment -%}
+    Streak chip: optional pre-checkout chrome only. Never wraps or disables checkout.
+    Post-purchase streak UI belongs in Checkout / Customer Account extensions.
+  {%- endcomment -%}
+  <p
+    class="mt-streak-chip cart-accent-typography"
+    data-mt-streak-chip
+    hidden
+    aria-live="polite"
+  >
+    <i class="fa-solid fa-fire mt-streak-chip__icon" aria-hidden="true"></i>
+    <span data-mt-streak-label></span>
+    <span class="visually-hidden">{{ 'content.streak_chip_sr' | t }}</span>
+  </p>
+
+  <p class="cart__trust cart-accent-typography" role="note">
+    <span class="cart__trust-line">{{ 'content.cart_trust_secure' | t }}</span>
+    <span class="cart__trust-sep" aria-hidden="true">·</span>
+    <span class="cart__trust-line">{{ 'content.cart_trust_shipping' | t }}</span>
+  </p>
 </div>
 
 {% stylesheet %}
@@ -291,8 +315,8 @@
     flex-direction: column;
     gap: 0;
     border-block: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10-25));
-    padding-block: 0;
-    margin-block-start: var(--margin-3xs);
+    padding-block: var(--padding-xs) 0;
+    margin-block-start: var(--margin-sm);
   }
 
   .cart-actions__divider {
@@ -300,7 +324,7 @@
   }
 
   .cart-totals:not(:has(.cart-actions)) {
-    margin-block-start: var(--margin-3xs);
+    margin-block-start: var(--margin-sm);
     border-block-start: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10-25));
     padding-block-start: var(--margin-xl);
   }
@@ -309,16 +333,21 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--gap-md);
   }
 
   .cart-totals__tax-note {
     color: var(--color-foreground-subdued);
+    justify-content: flex-start;
+    line-height: 1.45;
+    max-width: 28rem;
   }
 
   .cart-totals__tax-note a {
     color: var(--color-foreground-subdued);
     text-decoration-line: underline;
     text-decoration-color: currentColor;
+    text-underline-offset: 0.15em;
 
     &:hover {
       text-decoration-color: transparent;
@@ -326,7 +355,8 @@
   }
 
   .cart-totals__tax-note small {
-    font-size: var(--font-size--2xs);
+    font-size: clamp(0.6875rem, 0.65rem + 0.15vw, 0.75rem);
+    letter-spacing: 0.01em;
   }
 
   .cart-discounts {
@@ -374,7 +404,7 @@
   .cart-totals {
     display: flex;
     flex-direction: column;
-    gap: var(--gap-xl);
+    gap: clamp(1rem, 0.85rem + 0.6vw, 1.5rem);
     width: 100%;
     border-block-start: none;
 
@@ -390,24 +420,25 @@
 
   .cart-totals__original-container,
   .cart-totals__original-container * {
-    font-size: var(--cart-font-size--sm);
+    font-size: clamp(0.8125rem, 0.78rem + 0.2vw, 0.9375rem);
   }
 
   .cart-totals__total {
     align-items: baseline;
     font-weight: var(--font-weight-bold);
+    padding-block-end: var(--padding-2xs);
   }
 
   .cart-totals__total-label {
-    font-size: var(--cart-font-size--sm);
+    font-size: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   .cart-totals__total-value {
-    font-size: var(--cart-font-size--xl);
-
-    @media screen and (max-width: 749px) {
-      font-size: var(--font-size--lg);
-    }
+    font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.75rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
   .cart-totals__installments {
@@ -445,8 +476,10 @@
     display: flex;
     align-items: flex-start;
     gap: var(--gap-2xs);
-    font-size: var(--font-size--2xs);
+    font-size: clamp(0.6875rem, 0.65rem + 0.15vw, 0.75rem);
     font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   .cart-note__instructions {
@@ -456,11 +489,12 @@
     border-color: var(--color-input-border);
     transition: box-shadow var(--animation-speed) ease;
     box-shadow: var(--input-box-shadow);
-    min-height: 5.5rem;
+    min-height: 4.5rem;
     min-width: 100%;
     max-width: 100%;
-    font-size: var(--font-size--sm);
-    padding: max(4px, calc(var(--style-border-radius-inputs) * (1 - cos(45deg))));
+    font-size: clamp(0.875rem, 0.84rem + 0.2vw, 1rem);
+    line-height: 1.45;
+    padding: max(0.5rem, calc(var(--style-border-radius-inputs) * (1 - cos(45deg))));
   }
 
   .cart-totals__icon {
@@ -472,15 +506,73 @@
   .cart__ctas {
     width: 100%;
     display: grid;
-    gap: var(--checkout-button-gap);
+    gap: clamp(0.65rem, 0.55rem + 0.35vw, 0.9rem);
     grid-auto-flow: row;
     grid-template-columns: 1fr;
+    margin-block-start: var(--margin-2xs);
   }
 
   .cart__ctas .cart__checkout-button {
     width: 100%;
-    height: clamp(25px, var(--height-buy-buttons), 55px);
-    padding-inline: var(--padding-4xl);
+    min-height: clamp(2.75rem, 2.4rem + 1vw, 3.25rem);
+    height: auto;
+    padding-block: 0.85rem;
+    padding-inline: clamp(1.25rem, 1rem + 1vw, 2.5rem);
+    letter-spacing: 0.04em;
+  }
+
+  .mt-streak-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin: 0 auto;
+    padding: 0;
+    color: var(--mt-streak-accent, var(--color-foreground-subdued));
+    font-size: clamp(0.6875rem, 0.65rem + 0.15vw, 0.75rem);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    line-height: 1.35;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .mt-streak-chip[hidden] {
+    display: none;
+  }
+
+  .mt-streak-chip__icon {
+    font-size: 0.85em;
+    opacity: calc(0.55 + (var(--mt-streak-intensity, 0) * 0.45));
+  }
+
+  html[data-mt-streak-tier='ember'] .mt-streak-chip {
+    opacity: 0.85;
+  }
+
+  html[data-mt-streak-tier='flame'] .mt-streak-chip,
+  html[data-mt-streak-tier='forge'] .mt-streak-chip {
+    opacity: 1;
+  }
+
+  .cart__trust {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem 0.55rem;
+    margin: 0;
+    padding-block-start: 0.15rem;
+    color: var(--color-foreground-subdued);
+    font-size: clamp(0.6875rem, 0.65rem + 0.15vw, 0.75rem);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.35;
+  }
+
+  .cart__trust-sep {
+    opacity: 0.45;
   }
 
   .cart-drawer__summary .cart-totals:not(:has(.cart-totals__original-container:empty)) {
@@ -501,11 +593,11 @@
     border-color: var(--color-input-border);
     border-style: solid;
     border-radius: var(--style-border-radius-inputs);
-    padding: var(--padding-sm) var(--padding-md);
+    padding: 0.7rem 0.9rem;
     height: 100%;
     flex-grow: 1;
     min-width: 0;
-    font-size: var(--font-size--sm);
+    font-size: clamp(0.875rem, 0.84rem + 0.2vw, 1rem);
   }
 
   .cart-discount__input::placeholder {
@@ -514,10 +606,12 @@
 
   .cart-discount__pill-code {
     overflow: hidden;
-    max-width: 100px;
+    max-width: 8rem;
     text-overflow: ellipsis;
     white-space: nowrap;
     margin: 0;
+    font-size: clamp(0.6875rem, 0.65rem + 0.15vw, 0.75rem);
+    letter-spacing: 0.04em;
   }
 
   .cart-discount {
@@ -530,7 +624,7 @@
     flex-wrap: wrap;
     list-style: none;
     padding-inline: 0;
-    margin: 0;
+    margin: 0.35rem 0 0;
   }
 
   .cart-discount__codes:has(.cart-discount__pill) {
@@ -539,10 +633,14 @@
 
   .cart-discount__button {
     height: 100%;
+    min-width: 5.5rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   .cart-discount__content {
-    height: calc(var(--button-size) + var(--padding-2xs) + var(--padding-sm));
+    min-height: calc(var(--button-size) + var(--padding-2xs) + var(--padding-sm));
+    height: auto;
   }
 
   .cart-discount__pill {
@@ -550,7 +648,7 @@
     color: var(--color-foreground);
     gap: var(--padding-xs);
     align-items: center;
-    padding: var(--padding-xs) var(--padding-sm);
+    padding: 0.4rem 0.7rem;
     border-radius: var(--style-border-radius-pills);
     background-color: var(--color-input-background);
     text-transform: uppercase;
@@ -558,9 +656,10 @@
 
   .cart-discount__form {
     display: flex;
-    gap: var(--padding-md);
-    align-items: center;
-    height: 100%;
+    gap: 0.65rem;
+    align-items: stretch;
+    min-height: 2.75rem;
+    height: auto;
     padding-block: var(--padding-2xs) var(--padding-sm);
   }
 
@@ -606,8 +705,10 @@
     display: flex;
     align-items: flex-start;
     gap: var(--gap-2xs);
-    font-size: var(--font-size--2xs);
+    font-size: clamp(0.6875rem, 0.65rem + 0.15vw, 0.75rem);
     font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
   @media screen and (min-width: 750px) {

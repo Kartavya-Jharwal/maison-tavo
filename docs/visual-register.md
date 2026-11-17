@@ -14,19 +14,44 @@ Scope: the visual language, motion, and build of the storefront. Undated on purp
 **Never:** mandala or paisley overlays, saffron-orange gradients, "ethnic" fonts, stock steam, neon-on-black, purple AI gradients, glassmorphism everywhere, generic 3D blobs.
 
 ## 2. Tokens (single source, consumed by Theme, MkDocs, deck, A3 kit)
+
+Canonical colors are `--mt-color-*` with `--mt-color-*-rgb` companions ([color-tokens.md](color-tokens.md)). Short aliases remain for legacy consumers.
+
 ```css
 :root{
-  --soot:#14110F;      /* ink, backgrounds for night sections */
-  --limewash:#EFE8DC;  /* default page ground */
-  --bone:#F7F2E9;      /* raised surfaces */
-  --bell:#B8893A;      /* kansa bronze, primary accent */
-  --copper:#C2703D;    /* category 2 accent */
-  --clay:#8E4B35;      /* fired-clay secondary */
-  --steel:#8C9094;     /* category 1 counterpoint */
-  --verdigris:#4F7F72; /* patina, success, care kit */
-  --ember:#E2552B;     /* heat only: CTAs on hover, heat map, last call */
+  --mt-color-soot:#14110F; --mt-color-soot-rgb:20,17,15;
+  --mt-color-limewash:#EFE8DC; --mt-color-limewash-rgb:239,232,220;
+  --mt-color-bone:#F7F2E9; --mt-color-bone-rgb:247,242,233;
+  --mt-color-bell:#B8893A; --mt-color-bell-rgb:184,137,58;
+  --mt-color-copper:#C2703D; --mt-color-copper-rgb:194,112,61;
+  --mt-color-clay:#8E4B35; --mt-color-clay-rgb:142,75,53;
+  --mt-color-steel:#8C9094; --mt-color-steel-rgb:140,144,148;
+  --mt-color-verdigris:#4F7F72; --mt-color-verdigris-rgb:79,127,114;
+  --mt-color-ember:#E2552B; --mt-color-ember-rgb:226,85,43;
+  --soot:var(--mt-color-soot); --limewash:var(--mt-color-limewash); --bone:var(--mt-color-bone);
+  --bell:var(--mt-color-bell); --copper:var(--mt-color-copper); --clay:var(--mt-color-clay);
+  --steel:var(--mt-color-steel); --verdigris:var(--mt-color-verdigris); --ember:var(--mt-color-ember);
   --ease-strike:cubic-bezier(.2,.8,.2,1);
   --dur-slow:900ms; --dur-mid:420ms; --dur-fast:160ms;
+
+  /* Glassmorphism & Kinetic Tokens (Adapted from Abdughafur Khujzoda on CodePen: https://codepen.io/Abdughafur-Khujzoda) */
+  --glass-blur-sm: blur(8px);
+  --glass-blur: blur(14px);
+  --glass-blur-lg: blur(20px);
+  --glass-surface-light: rgba(247, 242, 233, 0.72);
+  --glass-surface-dark: rgba(20, 17, 15, 0.75);
+  --glass-surface-bronze: rgba(184, 137, 58, 0.16);
+  --glass-border-light: rgba(255, 255, 255, 0.45);
+  --glass-border-dark: rgba(247, 242, 233, 0.14);
+  --glass-border-bronze: rgba(184, 137, 58, 0.35);
+  --glass-shadow: 0 10px 35px rgba(20, 17, 15, 0.12);
+  --glass-shadow-glow: 0 0 30px rgba(184, 137, 58, 0.25);
+  --radius-card-sm: 0.875rem;
+  --radius-card: 1.5rem;
+  --radius-card-lg: 2rem;
+  --radius-pill: 62.5rem;
+  --ease-mask: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-reveal: 0.95s;
 }
 ```
 Category theming: Category 1 pairs soot, steel and bell; Category 2 pairs clay, copper and limewash; Category 3 pairs verdigris, bone and bell. A category colour swaps in through CSS variables on the route wrapper, so every component restyles for free.
@@ -43,6 +68,7 @@ Category theming: Category 1 pairs soot, steel and bell; Category 2 pairs clay, 
 - **Clay (Cat 2):** grain texture, soft inner shadow, slightly uneven radii on image masks (organic, hand-formed).
 - **Limewash ground:** subtle large-scale mottling (SVG turbulence filter or pre-baked texture), never flat white.
 - **Soot sections:** deep warm black with faint ember glow bleeding from the bottom edge of hero and the last-call section.
+- **Frosted Glass (Atelier Glassmorphism):** frosted glass plates (`--glass-surface-light`, `--glass-surface-dark`, `--glass-blur`) float above hammered and fired foundations rather than replacing them. The physical tactile textures (brushed metal swirls, stippling, fired clay depth) remain the foundational ground, while frosted glass delivers floating metadata badges, provenance pills, and interactive focus states with a 1px cold-chiseled specular rim highlight (`--glass-border-light`, `--glass-border-dark`). Cites: [Abdughafur Khujzoda on CodePen](https://codepen.io/Abdughafur-Khujzoda).
 - **Paper grain** over everything at ~3-4% for cohesion. Respect reduced-motion and performance by baking textures, not running filters live.
 
 ## 5. Signature moves (the eye candy, specified)

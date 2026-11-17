@@ -4,26 +4,25 @@
   and waitlist pre-order field for upcoming foundry heats.
 {% endcomment %}
 
-<div class="maison-last-call section" data-section-id="{{ section.id }}">
+<div class="maison-last-call section" data-section-id="{{ section.id }}" data-mt-chapter>
   <div class="maison-last-call__inner section--page-width">
     <!-- Bell Icon Strike Trigger -->
-    <div class="maison-last-call__bell-wrap">
+    <div class="maison-last-call__bell-wrap" data-mt-scroll="beat">
       <button class="maison-last-call__bell-btn" id="last-call-bell" aria-label="Strike the Temple Bell at Last Call" data-strike>
-        <span class="bell-glyph">🔔</span>
+        <span class="bell-glyph"><i class="fa-solid fa-bell" aria-hidden="true"></i></span>
         <span class="bell-ring-pulse"></span>
       </button>
       <span class="maison-last-call__devanagari">अंतिम पुकार · The Pass is Called</span>
     </div>
 
-    <div class="maison-last-call__content">
-      <h2 class="maison-last-call__heading">The furnace cools. The next edition begins.</h2>
+    <div class="maison-last-call__content" data-mt-scroll="chapter">
+      <h2 class="maison-last-call__heading" data-mt-scroll="kinetic">The next heat opens soon.</h2>
       <p class="maison-last-call__copy">
-        Maison Tavo runs in limited craft heats between our foundries in Rajasthan and our kitchen workshop in London.
-        Register for the next drop allocation before the furnace strikes.
+        Limited craft heats between Jaipur and London. Register once — we signal the next drop.
       </p>
 
       <!-- Pre-order / Waitlist Form -->
-      <form class="maison-last-call__form" id="last-call-waitlist-form">
+      <form class="maison-last-call__form" id="last-call-waitlist-form" data-mt-scroll="beat">
         <div class="maison-last-call__input-row">
           <input
             type="email"
@@ -42,32 +41,71 @@
       </form>
 
       <div class="maison-last-call__success" id="last-call-success" style="display: none;">
-        ✓ Your seat at the pass is recorded. We will signal when the next heat is struck.
+        <i class="fa-solid fa-check" aria-hidden="true"></i> Your seat at the pass is recorded. We will signal when the next heat is struck.
       </div>
     </div>
   </div>
 </div>
 
 {% stylesheet %}
+  /* Editorial band — Maison footer owns chrome + signup */
   .maison-last-call {
     background: var(--soot, #14110F);
     color: #f7f2e9;
-    padding-block: 5rem 6rem;
+    padding-block: clamp(3rem, 6vw, 4.5rem) clamp(2.5rem, 5vw, 3.5rem);
     position: relative;
     overflow: hidden;
     border-block-start: 1px solid #282420;
+    border-block-end: 0;
   }
 
-  /* Ember glow bleed at the bottom */
   .maison-last-call::after {
     content: '';
     position: absolute;
     bottom: 0;
-    left: 20%;
-    right: 20%;
-    height: 120px;
-    background: radial-gradient(ellipse at bottom, rgba(226, 85, 43, 0.22) 0%, rgba(226, 85, 43, 0) 75%);
+    left: 25%;
+    right: 25%;
+    height: 64px;
+    background: radial-gradient(ellipse at bottom, rgba(226, 85, 43, 0.1) 0%, rgba(226, 85, 43, 0) 75%);
     pointer-events: none;
+  }
+
+  .maison-last-call .bell-ring-pulse {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1px solid rgba(184, 137, 58, 0.35);
+    opacity: 0;
+    pointer-events: none;
+    animation: mt-bell-pulse 2.8s ease-out infinite;
+  }
+
+  @keyframes mt-bell-pulse {
+    0% { transform: scale(0.85); opacity: 0.35; }
+    70% { transform: scale(1.35); opacity: 0; }
+    100% { transform: scale(1.35); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .maison-last-call .bell-ring-pulse { animation: none; }
+
+    .maison-last-call [data-mt-scroll],
+    .maison-last-call [data-mt-chapter] {
+      opacity: 1 !important;
+      transform: none !important;
+      visibility: visible !important;
+    }
+  }
+
+  html[data-reduced-motion='true'] .maison-last-call .bell-ring-pulse {
+    animation: none !important;
+  }
+
+  html[data-reduced-motion='true'] .maison-last-call [data-mt-scroll],
+  html[data-reduced-motion='true'] .maison-last-call [data-mt-chapter] {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
   }
 
   .maison-last-call__inner {
@@ -94,7 +132,7 @@
     background: #1f1b18;
     border: 1.5px solid var(--bell, #B8893A);
     color: var(--bell, #B8893A);
-    font-size: 1.6rem;
+    font-size: var(--mt-type-title);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -111,8 +149,8 @@
   }
 
   .maison-last-call__devanagari {
-    font-family: var(--font-body--family, sans-serif);
-    font-size: 0.8rem;
+    font-family: var(--mt-type-family-body);
+    font-size: var(--mt-type-accent);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--bell, #B8893A);
@@ -123,20 +161,22 @@
   }
 
   .maison-last-call__heading {
-    margin: 0 0 1rem;
-    font-family: var(--font-fraunces--family, var(--font-heading--family));
-    font-size: clamp(2.2rem, 1.8rem + 1.8vw, 3.4rem);
+    margin: 0 0 0.75rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-heading);
     font-weight: 400;
-    letter-spacing: 0.02em;
+    letter-spacing: var(--mt-type-tracking-heading);
     line-height: 1.1;
     color: var(--bone, #F7F2E9);
   }
 
   .maison-last-call__copy {
-    margin: 0 0 2.5rem;
-    font-size: 1.125rem;
-    line-height: 1.65;
-    color: #a8a29e;
+    margin: 0 0 1.75rem;
+    max-width: 36ch;
+    margin-inline: auto;
+    font-size: var(--mt-type-body);
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--bone, #F7F2E9) 68%, transparent);
   }
 
   /* Form */
@@ -166,15 +206,26 @@
     border: 1px solid var(--glass-border-dark, rgba(247, 242, 233, 0.14));
     padding: 0.85rem 1.4rem;
     color: var(--bone, #f7f2e9);
-    font-size: 0.95rem;
+    font-size: var(--mt-type-body);
     border-radius: var(--radius-pill, 62.5rem);
-    outline: none;
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
-  .maison-last-call__email:focus {
+  .maison-last-call__email:focus-visible {
+    outline: 2px solid var(--bell, #B8893A);
+    outline-offset: 3px;
     border-color: var(--bell, #B8893A);
     box-shadow: 0 0 16px rgba(184, 137, 58, 0.3);
+  }
+
+  .maison-last-call__submit-btn:focus-visible {
+    outline: 2px solid var(--bone, #F7F2E9);
+    outline-offset: 3px;
+  }
+
+  .maison-last-call__bell-btn:focus-visible {
+    outline: 2px solid var(--bell, #B8893A);
+    outline-offset: 3px;
   }
 
   .maison-last-call__submit-btn {
@@ -184,7 +235,7 @@
     font-weight: 600;
     padding: 0.85rem 1.75rem;
     border-radius: var(--radius-pill, 62.5rem);
-    font-size: 0.95rem;
+    font-size: var(--mt-type-body);
     cursor: pointer;
     transition: background 0.2s, transform 0.2s var(--ease-strike), box-shadow 0.2s;
   }
@@ -197,8 +248,8 @@
 
   .maison-last-call__note {
     margin-block-start: 0.75rem;
-    font-size: 0.75rem;
-    color: #78716c;
+    font-size: var(--mt-type-accent);
+    color: color-mix(in srgb, var(--bone, #F7F2E9) 58%, transparent);
   }
 
   .maison-last-call__success {
@@ -207,7 +258,7 @@
     background: #1f2e24;
     border: 1px solid var(--verdigris, #4F7F72);
     color: #86efac;
-    font-size: 0.95rem;
+    font-size: var(--mt-type-body);
     border-radius: 4px;
   }
 {% endstylesheet %}
@@ -222,6 +273,16 @@
         e.preventDefault();
         form.style.display = 'none';
         if (success) success.style.display = 'block';
+        document.dispatchEvent(new CustomEvent('maison:mail-primary-convert'));
+        document.dispatchEvent(
+          new CustomEvent('maison:toast', {
+            detail: {
+              type: 'success',
+              icon: 'mail',
+              message: 'You are on the list for the next heat.',
+            },
+          }),
+        );
       });
     }
   });

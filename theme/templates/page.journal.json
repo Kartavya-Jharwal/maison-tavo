@@ -1,0 +1,52 @@
+{
+  "sections": {
+    "journal_intro": {
+      "type": "maison-journal-intro",
+      "settings": {
+        "eyebrow": "Atelier dispatches",
+        "heading": "Journal",
+        "lede": "Letters from the cutting table: fittings, cloth, and the making of Maison Tavo. A dedicated house page — not a Shopify blog grid.",
+        "padding-block-start": 48,
+        "padding-block-end": 24
+      }
+    },
+    "entries": {
+      "type": "maison-building",
+      "blocks": {
+        "pass": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Note 01",
+            "heading": "The pass stays quiet",
+            "text": "<p>Journal entries land here as living notes — fittings, cloth, and foundry heat — without requiring a Shopify blog. Add or reorder entries in the theme editor.</p>"
+          }
+        },
+        "heat": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Note 02",
+            "heading": "Heat before merch",
+            "text": "<p>We open a release when a foundry allocation is ready, not when a calendar asks for content. The journal records that discipline.</p>"
+          }
+        },
+        "rooms": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Note 03",
+            "heading": "Rooms before shout",
+            "text": "<p>Department, Kitchen, Heat, Finder, Mail, and Releases each keep a page. The journal is the written spine between them.</p>"
+          }
+        }
+      },
+      "block_order": ["pass", "heat", "rooms"],
+      "settings": {
+        "eyebrow": "Dispatches",
+        "heading": "From the cutting table",
+        "lede": "Editorial notes for the house. Replace these placeholders as real dispatches land.",
+        "padding-block-start": 24,
+        "padding-block-end": 96
+      }
+    }
+  },
+  "order": ["journal_intro", "entries"]
+}

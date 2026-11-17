@@ -624,4 +624,84 @@
       display: none;
     }
   }
+
+  /* Maison Tavo — sparse predictive results (brand type, negative space) */
+  .predictive-search-results__inner {
+    padding-block: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .predictive-search-results__title {
+    font-family: var(--font-accent--family, 'Satoshi', system-ui, sans-serif);
+    font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.62;
+    margin-block: 0 clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .predictive-search-results__wrapper-products {
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+    padding-inline: clamp(1rem, 3vw, 1.75rem);
+  }
+
+  .predictive-search-results__card--product .resource-card__title {
+    font-family: var(--font-heading--family, 'Instrument Serif', Georgia, serif);
+    font-size: clamp(1rem, 0.92rem + 0.35vw, 1.2rem);
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .predictive-search-results__card--product .resource-card__content .price {
+    font-family: var(--font-body--family, 'Bai Jamjuree', system-ui, sans-serif);
+    font-size: clamp(0.8rem, 0.75rem + 0.2vw, 0.9rem);
+    letter-spacing: 0.04em;
+    opacity: 0.78;
+  }
+
+  .predictive-search-results__card--product .resource-card__image {
+    border-radius: 0;
+  }
+
+  .predictive-search-results__no-results {
+    font-family: var(--font-body--family, 'Bai Jamjuree', system-ui, sans-serif);
+    font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+    letter-spacing: 0.02em;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+    padding-block: clamp(2rem, 6vw, 3.5rem);
+    max-width: 28rem;
+    margin-inline: auto;
+  }
+
+  .search-page__header h3,
+  .search-page__header .h2,
+  .search-page__header .h3 {
+    font-family: var(--font-heading--family, 'Instrument Serif', Georgia, serif);
+    font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.75rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-block-end: clamp(0.5rem, 1.5vw, 1rem);
+  }
+
+  .search-page-input {
+    font-family: var(--font-body--family, 'Bai Jamjuree', system-ui, sans-serif);
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.15rem);
+  }
+
+  .search-results__no-results {
+    font-family: var(--font-body--family, 'Bai Jamjuree', system-ui, sans-serif);
+    font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+    margin-block-start: clamp(1.5rem, 4vw, 2.5rem);
+    max-width: 28rem;
+  }
+
+  results-list .product-grid__item .product-card .text-block,
+  results-list .product-grid__item .product-card a {
+    font-family: var(--font-heading--family, 'Instrument Serif', Georgia, serif);
+  }
 {% endstylesheet %}

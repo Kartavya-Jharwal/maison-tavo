@@ -5,14 +5,19 @@
   with animated reasoning chips and Strike audio feedback.
 {% endcomment %}
 
-<div class="maison-finder section section--page-width" id="finder" data-root="maison-finder-root">
+<div
+  class="maison-finder section section--page-width"
+  id="finder"
+  data-root="maison-finder-root"
+  data-mt-chapter
+>
   <div class="maison-finder__container">
-    <header class="maison-finder__header">
+    <header class="maison-finder__header" data-mt-scroll="chapter">
       <div class="maison-finder__kicker-row">
         <span class="maison-finder__badge">V6 FINDER AS CEREMONY</span>
         <span class="maison-finder__step-indicator" id="finder-progress-text">QUESTION 1 OF 5</span>
       </div>
-      <h2 class="maison-finder__title">Which piece commands your pass?</h2>
+      <h2 class="maison-finder__title" data-mt-scroll="kinetic">Which piece commands your pass?</h2>
       <p class="maison-finder__lede">
         Answer five tactile culinary inquiries. Our reasoning engine matches your heat source,
         cooking rituals, and material affinity to the right Maison Tavo heirloom.
@@ -29,7 +34,7 @@
     </header>
 
     <!-- QUESTIONS WRAPPER -->
-    <div class="maison-finder__questions" id="finder-questions-box">
+    <div class="maison-finder__questions" id="finder-questions-box" data-mt-scroll="beat">
       <!-- Q1 -->
       <div class="finder-q-card is-active" data-q="0">
         <h3 class="finder-q-title">1. What is your primary cooking heat source?</h3>
@@ -134,9 +139,9 @@
 
         <!-- Reasoning chips -->
         <div class="finder-reasoning-chips" id="result-chips">
-          <span class="r-chip">✓ Induction &amp; Flame Certified</span>
-          <span class="r-chip">✓ Beeswax Lipid Seasoned</span>
-          <span class="r-chip">✓ Drop-Forged Balance</span>
+          <span class="r-chip"><i class="fa-solid fa-check" aria-hidden="true"></i> Induction &amp; Flame Certified</span>
+          <span class="r-chip"><i class="fa-solid fa-check" aria-hidden="true"></i> Beeswax Lipid Seasoned</span>
+          <span class="r-chip"><i class="fa-solid fa-check" aria-hidden="true"></i> Drop-Forged Balance</span>
         </div>
 
         <div class="finder-result-actions">
@@ -175,8 +180,8 @@
   }
 
   .maison-finder__badge {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.65rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.14em;
     padding: 0.2rem 0.55rem;
     background: var(--bell, #b8893a);
@@ -186,16 +191,16 @@
   }
 
   .maison-finder__step-indicator {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.72rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     color: #94a3b8;
     letter-spacing: 0.1em;
   }
 
   .maison-finder__title {
     margin: 0 0 0.85rem;
-    font-family: var(--font-fraunces--family, var(--font-heading--family));
-    font-size: clamp(2rem, 1.5rem + 1.8vw, 3rem);
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-display);
     font-weight: var(--font-heading--weight);
     letter-spacing: 0.02em;
     line-height: 1.1;
@@ -203,7 +208,7 @@
 
   .maison-finder__lede {
     margin: 0 0 1.5rem;
-    font-size: 1.05rem;
+    font-size: var(--mt-type-body);
     line-height: 1.6;
     color: #94a3b8;
   }
@@ -211,7 +216,7 @@
   .maison-finder__progress-bells {
     display: flex;
     gap: 0.75rem;
-    font-size: 0.95rem;
+    font-size: var(--mt-type-body);
     color: #475569;
   }
 
@@ -236,8 +241,8 @@
 
   .finder-q-title {
     margin: 0 0 1.5rem;
-    font-family: var(--font-fraunces--family, var(--font-heading--family));
-    font-size: 1.4rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-title);
     color: #f8fafc;
   }
 
@@ -271,13 +276,13 @@
   }
 
   .opt-label {
-    font-size: 1.05rem;
+    font-size: var(--mt-type-body);
     font-weight: 600;
     color: #f1f5f9;
   }
 
   .opt-sub {
-    font-size: 0.825rem;
+    font-size: var(--mt-type-accent);
     color: #94a3b8;
   }
 
@@ -295,8 +300,8 @@
   }
 
   .finder-result-pill {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.6875rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.12em;
     color: var(--bell, #b8893a);
     margin-block-end: 0.75rem;
@@ -304,13 +309,13 @@
 
   .finder-result-title {
     margin: 0 0 0.85rem;
-    font-family: var(--font-fraunces--family, var(--font-heading--family));
-    font-size: 2rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-heading);
     color: #f8fafc;
   }
 
   .finder-result-desc {
-    font-size: 1rem;
+    font-size: var(--mt-type-body);
     line-height: 1.65;
     color: #cbd5e1;
     margin: 0 0 1.5rem;
@@ -324,9 +329,9 @@
   }
 
   .r-chip {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
+    letter-spacing: var(--mt-type-tracking-accent);
     background: var(--glass-surface-bronze, rgba(184, 137, 58, 0.16));
     border: 1px solid var(--glass-border-bronze, rgba(184, 137, 58, 0.35));
     color: var(--bell, #b8893a);
@@ -347,7 +352,7 @@
     text-decoration: none;
     padding: 0.85rem 1.85rem;
     border-radius: var(--radius-pill, 62.5rem);
-    font-size: 0.95rem;
+    font-size: var(--mt-type-body);
     transition: background 0.2s, transform 0.2s var(--ease-strike), box-shadow 0.2s;
   }
 
@@ -363,11 +368,27 @@
     color: #94a3b8;
     text-decoration: underline;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: var(--mt-type-accent);
   }
 
   .finder-restart-btn:hover {
     color: #f1f5f9;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .maison-finder [data-mt-scroll],
+    .maison-finder [data-mt-chapter] {
+      opacity: 1 !important;
+      transform: none !important;
+      visibility: visible !important;
+    }
+  }
+
+  html[data-reduced-motion='true'] .maison-finder [data-mt-scroll],
+  html[data-reduced-motion='true'] .maison-finder [data-mt-chapter] {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
   }
 {% endstylesheet %}
 
@@ -396,31 +417,31 @@
         title: 'Forge Relay Dual-Mass Skillet (26 cm)',
         handle: 'forge-relay-dual-mass-skillet',
         desc: 'Nitrided carbon-steel vessel with a removable cast-bronze thermal ring. Responsive on induction or gas, then holds table warmth when docked.',
-        chips: ['✓ Induction & Gas Target', '✓ Removable Bronze Thermal Ring', '✓ [CONCEPT_SPEC]']
+        chips: ['<i class="fa-solid fa-check" aria-hidden="true"></i> Induction & Gas Target', '<i class="fa-solid fa-check" aria-hidden="true"></i> Removable Bronze Thermal Ring', '<i class="fa-solid fa-check" aria-hidden="true"></i> [CONCEPT_SPEC]']
       },
       plancha: {
         title: 'Forge Split-Field Plancha (46 × 28 cm)',
         handle: 'forge-split-field-plancha',
         desc: 'Twin-burner plancha dividing active carbon-steel searing from a stainless-lined bronze service zone for tableside pass workflows.',
-        chips: ['✓ Dual-Zone Searing + Service', '✓ 46 × 28 cm Shared Pass', '✓ [CONCEPT_SPEC]']
+        chips: ['<i class="fa-solid fa-check" aria-hidden="true"></i> Dual-Zone Searing + Service', '<i class="fa-solid fa-check" aria-hidden="true"></i> 46 × 28 cm Shared Pass', '<i class="fa-solid fa-check" aria-hidden="true"></i> [CONCEPT_SPEC]']
       },
       tava: {
         title: 'Forge Relay Wide Tava (30 cm)',
         handle: 'forge-relay-tava-30',
         desc: 'Heavy-gauge nitrided carbon-steel tava with sweeping perimeter access for crisp dosas, flatbreads, and smash searing across induction or gas.',
-        chips: ['✓ 30 cm Flatbread & Dosa Field', '✓ Bronze-Isolated Handle', '✓ [CONCEPT_SPEC]']
+        chips: ['<i class="fa-solid fa-check" aria-hidden="true"></i> 30 cm Flatbread & Dosa Field', '<i class="fa-solid fa-check" aria-hidden="true"></i> Bronze-Isolated Handle', '<i class="fa-solid fa-check" aria-hidden="true"></i> [CONCEPT_SPEC]']
       },
       terre: {
         title: 'Forge–Terre Shared Tagine (32 cm)',
         handle: 'forge-terre-tagine-32',
         desc: 'Clad 18/10 stainless induction base paired with a high-fired earthenware condensation cone for slow braises, biryanis, and shared table service.',
-        chips: ['✓ Induction Base + Earthenware Cone', '✓ Slow Vapour-Return Braising', '✓ [CONCEPT_SPEC]']
+        chips: ['<i class="fa-solid fa-check" aria-hidden="true"></i> Induction Base + Earthenware Cone', '<i class="fa-solid fa-check" aria-hidden="true"></i> Slow Vapour-Return Braising', '<i class="fa-solid fa-check" aria-hidden="true"></i> [CONCEPT_SPEC]']
       },
       knife: {
         title: "Kuro Strip 200 Chef's Knife",
         handle: 'kuro-strip-200-chefs-knife',
         desc: 'Thin 200 mm chef blade formed from a single continuous strip of steel with an exposed handle loop and replaceable textured grip sleeve.',
-        chips: ['✓ 200 mm Continuous Steel Strip', '✓ Replaceable Grip Sleeve', '✓ [CONCEPT_SPEC]']
+        chips: ['<i class="fa-solid fa-check" aria-hidden="true"></i> 200 mm Continuous Steel Strip', '<i class="fa-solid fa-check" aria-hidden="true"></i> Replaceable Grip Sleeve', '<i class="fa-solid fa-check" aria-hidden="true"></i> [CONCEPT_SPEC]']
       }
     };
 

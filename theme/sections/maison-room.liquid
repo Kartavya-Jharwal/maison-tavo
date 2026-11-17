@@ -7,7 +7,7 @@
   class="section section--page-width spacing-style maison-room"
   style="{% render 'spacing-style', settings: section.settings %}"
 >
-  <header class="maison-room__header" data-mt-scroll>
+  <header class="maison-room__header" data-mt-scroll="chapter">
     {% if section.settings.eyebrow != blank %}
       <p class="maison-room__eyebrow">{{ section.settings.eyebrow | escape }}</p>
     {% endif %}
@@ -103,8 +103,8 @@
 
   .maison-room__eyebrow {
     margin: 0;
-    font-family: var(--font-mono--family, ui-monospace, monospace);
-    font-size: 0.75rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-foreground-muted);
@@ -112,8 +112,8 @@
 
   .maison-room__title {
     margin: 0.5rem 0 1rem;
-    font-family: var(--font-heading--family);
-    font-size: clamp(2rem, 1.4rem + 2vw, 3.5rem);
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-display);
     font-weight: 400;
     line-height: 1.05;
   }
@@ -141,8 +141,8 @@
   .maison-room__clause h2,
   .maison-room__place h2 {
     margin: 0 0 0.6rem;
-    font-family: var(--font-heading--family);
-    font-size: 1.25rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-title);
     font-weight: 400;
   }
 
@@ -167,7 +167,7 @@
 
   .maison-room__pathway a {
     color: inherit;
-    font-family: var(--font-heading--family);
+    font-family: var(--mt-type-family-heading);
   }
 
   .maison-room__pathway span {

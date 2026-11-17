@@ -2,11 +2,20 @@
   Site-wide client layers:
   1. 45% exploration profiler (localStorage only).
   2. Consent & Accessibility Preferences bar (Reduced Cookies + Reduced Animations toggle).
+  3. Toast host is separate: snippets/maison-toasts.liquid (bundled in maison-runtime.js).
   Behaviour lives in scripts/src/maison-runtime.js.
 {%- enddoc -%}
 
 <!-- 45% Exploration Profiler Modal -->
-<section class="mt-profiler" data-mt-profiler role="dialog" aria-modal="false" aria-labelledby="mt-profiler-title" hidden>
+<section
+  class="mt-profiler"
+  data-mt-profiler
+  role="dialog"
+  aria-modal="false"
+  aria-labelledby="mt-profiler-title"
+  tabindex="-1"
+  hidden
+>
   <form class="mt-profiler__form" data-mt-profiler-form>
     <div class="mt-profiler__head">
       <p class="mt-profiler__kicker">Your kitchen · stays on this device</p>
@@ -96,8 +105,8 @@
   .mt-profiler__email span,
   .mt-consent-bar__eyebrow {
     margin: 0 0 0.5rem;
-    font-family: var(--font-mono--family, ui-monospace, monospace);
-    font-size: 0.75rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: rgb(var(--color-foreground-rgb) / 0.7);
@@ -105,8 +114,8 @@
 
   .mt-profiler__title {
     margin: 0;
-    font-family: var(--font-heading--family);
-    font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-title);
     font-weight: 400;
   }
 
@@ -213,7 +222,7 @@
 
   .mt-consent-bar__text {
     margin: 0;
-    font-size: 0.8125rem;
+    font-size: var(--mt-type-accent);
     line-height: 1.45;
     color: rgba(20, 17, 15, 0.85);
   }
@@ -227,14 +236,14 @@
 
   .mt-btn-sm {
     padding: 0.5rem 0.875rem !important;
-    font-size: 0.75rem !important;
+    font-size: var(--mt-type-accent) !important;
     min-height: 36px !important;
     line-height: 1.2 !important;
     white-space: nowrap;
   }
 
   .mt-motion-btn {
-    font-family: var(--font-mono--family, monospace) !important;
+    font-family: var(--mt-type-family-mono) !important;
     letter-spacing: 0.05em;
   }
 

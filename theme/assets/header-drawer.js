@@ -72,6 +72,8 @@ class HeaderDrawer extends Component {
 
     if (!summary) return;
 
+    // Do NOT set details.open here — on:click runs in capture before the
+    // summary's default toggle. Setting open early makes the browser close it.
     summary.setAttribute('aria-expanded', 'true');
 
     this.preventInitialAccordionAnimations(details);
@@ -117,6 +119,10 @@ class HeaderDrawer extends Component {
     details.classList.remove('menu-open');
     this.refs.menuDrawer.classList.remove('menu-drawer--has-submenu-opened');
 
+    // Drop backdrop hit-testing immediately so a mid-animation overlay can't freeze the page
+    const backdrop = details.querySelector(':scope > .menu-drawer__backdrop');
+    if (backdrop instanceof HTMLElement) backdrop.style.pointerEvents = 'none';
+
     // Wait for the .menu-drawer element's transition, not the entire details subtree
     // This avoids waiting for child accordion/resource-card animations which can cause issues on Firefox
     const drawer = details.querySelector('.menu-drawer, .menu-drawer__submenu');
@@ -125,10 +131,13 @@ class HeaderDrawer extends Component {
       drawer || details,
       () => {
         reset(details);
+        if (backdrop instanceof HTMLElement) backdrop.style.removeProperty('pointer-events');
         if (details === this.refs.details) {
           removeTrapFocus();
           const openDetails = this.querySelectorAll('details[open]:not(accordion-custom > details)');
           openDetails.forEach(reset);
+          // Return keyboard focus to the menu trigger after Escape / close.
+          summary.focus({ preventScroll: true });
         } else {
           trapFocus(this.refs.details);
         }

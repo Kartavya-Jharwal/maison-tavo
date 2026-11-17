@@ -64,7 +64,7 @@
           "type": "clause",
           "settings": {
             "heading": "Where is my order history?",
-            "text": "<p>Open <a href=\"/account/login\">Account</a> for orders, saved addresses, and profile details. The bag is only the active selection.</p>"
+            "text": "<p>Use <a href=\"/account\">Account</a> in the header for orders, addresses, and profile. The bag is only the active selection.</p>"
           }
         }
       },

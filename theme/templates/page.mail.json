@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "mail": {
+      "type": "maison-mail",
+      "settings": {
+        "eyebrow": "Signal",
+        "heading": "Mail",
+        "lede": "<p>Join the next heat. Shopify-native customer email signup with marketing consent — the same pattern as the footer form. No custom backend.</p>",
+        "email_label": "Email",
+        "placeholder": "Email for the next heat",
+        "button_label": "Join the next heat",
+        "success": "You're on the list.",
+        "fine_print": "We use Shopify Email for batch notices. Unsubscribe anytime from any message.",
+        "show_releases_link": true,
+        "padding-block-start": 48,
+        "padding-block-end": 84
+      }
+    }
+  },
+  "order": ["mail"]
+}

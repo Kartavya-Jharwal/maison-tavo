@@ -15,11 +15,11 @@
     --min-height: 16px;
     --min-width: 16px;
 
-    /* mobile values */
+    /* mobile values — rem-friendly caps for card + filter density */
     --scaling-factor: 0.5;
-    --max-swatch-size: 28px;
-    --max-pill-size: 20px;
-    --max-filter-size: 32px;
+    --max-swatch-size: 1.625rem;
+    --max-pill-size: 1.125rem;
+    --max-filter-size: 1.875rem;
 
     /* From the settings */
     --offset-swatch-width: calc(var(--variant-picker-swatch-width-unitless) - var(--min-width-unitless));
@@ -113,9 +113,9 @@
 
     @media screen and (min-width: 750px) {
       /* desktop values */
-      --max-swatch-size: 32px;
-      --max-pill-size: 16px;
-      --max-filter-size: 28px;
+      --max-swatch-size: 1.75rem;
+      --max-pill-size: 1rem;
+      --max-filter-size: 1.625rem;
       --scaling-factor: 0.65;
     }
   }

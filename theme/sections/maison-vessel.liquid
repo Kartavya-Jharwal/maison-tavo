@@ -10,7 +10,7 @@
   data-finish="bronze"
   data-finish-group="mt-finish-{{ section.id }}"
 >
-  <div class="maison-vessel__layout" data-mt-scroll>
+  <div class="maison-vessel__layout" data-mt-scroll="chapter">
     <div class="maison-vessel__copy">
       {% if section.settings.eyebrow != blank %}
         <p class="maison-vessel__eyebrow">{{ section.settings.eyebrow | escape }}</p>
@@ -73,7 +73,7 @@
     margin: 0 0 0.5rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    font-size: 0.72rem;
+    font-size: var(--mt-type-mono);
   }
 
   .maison-vessel__title,
@@ -165,7 +165,7 @@
   .maison-vessel__hint {
     margin: 0;
     max-width: 40rem;
-    font-size: 0.9rem;
+    font-size: var(--mt-type-nav);
   }
 
   @media (min-width: 990px) {

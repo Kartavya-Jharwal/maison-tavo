@@ -207,7 +207,7 @@
 {% elsif request.design_mode %}
   <div class="maison-spec-table maison-spec-table--empty" {{ block.shopify_attributes }}>
     <p class="maison-spec-table__notice">
-      Spec table appears when product metafields in the <code>specs</code> namespace are set.
+      Spec table appears when product metafields in the specs namespace are set.
     </p>
   </div>
 {% endif %}
@@ -221,8 +221,8 @@
 
   .maison-spec-table__heading {
     margin: 0 0 0.75rem;
-    font-family: var(--font-heading--family);
-    font-size: var(--font-size--md, 1rem);
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-body);
     letter-spacing: 0.04em;
   }
 
@@ -235,17 +235,17 @@
   }
 
   .maison-spec-table__label {
-    font-family: var(--font-mono--family, var(--font-accent--family));
-    font-size: 0.6875rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: rgb(var(--color-foreground-rgb) / 0.65);
   }
 
   .maison-spec-table__badge {
-    font-family: var(--font-mono--family, var(--font-accent--family));
-    font-size: 0.6875rem;
-    letter-spacing: 0.08em;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
+    letter-spacing: var(--mt-type-tracking-accent);
     text-transform: uppercase;
     padding: 0.2em 0.55em;
     border: 1px solid var(--color-foreground);
@@ -270,8 +270,8 @@
   .maison-spec-table__notice {
     margin: 0 0 1rem;
     max-width: 42rem;
-    font-family: var(--font-mono--family, var(--font-accent--family));
-    font-size: 0.75rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     line-height: 1.45;
     color: rgb(var(--color-foreground-rgb) / 0.72);
   }
@@ -298,8 +298,8 @@
   .maison-spec-table__grid th {
     width: 34%;
     min-width: 8.5rem;
-    font-family: var(--font-mono--family, var(--font-accent--family));
-    font-size: 0.75rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     font-weight: 400;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -307,8 +307,8 @@
   }
 
   .maison-spec-table__grid td {
-    font-family: var(--font-mono--family, var(--font-accent--family));
-    font-size: 0.8125rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     line-height: 1.5;
     color: var(--color-foreground);
   }

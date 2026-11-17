@@ -38,47 +38,95 @@
     assign parts = row | split: '|'
     assign total = total | plus: parts[1]
   endfor
-  assign scale = 240.0 | divided_by: total
-  assign y = 130.0
+  assign scale = 220.0 | divided_by: total
+  assign y = 118.0
   assign uid = id_prefix | default: product.id
+  assign handle_label = product.handle | upcase | truncate: 18, ''
 -%}
 
-<figure class="maison-strata" aria-label="Cross-section of {{ product.title | escape }}: {% for row in rows %}{% assign p = row | split: '|' %}{{ p[0] }} {{ p[1] }} mm{% unless forloop.last %}, {% endunless %}{% endfor %}">
+<figure
+  class="maison-strata"
+  aria-label="Cross-section of {{ product.title | escape }}: {% for row in rows %}{% assign p = row | split: '|' %}{{ p[0] }} {{ p[1] }} mm{% unless forloop.last %}, {% endunless %}{% endfor %}"
+>
   <svg viewBox="0 0 400 500" role="img" aria-hidden="true" focusable="false">
     <defs>
-      <pattern id="strata-grid-{{ uid }}" width="20" height="20" patternUnits="userSpaceOnUse">
-        <path d="M20 0H0V20" fill="none" stroke="currentColor" stroke-opacity="0.08" stroke-width="1"/>
+      <pattern id="strata-grid-{{ uid }}" width="16" height="16" patternUnits="userSpaceOnUse">
+        <path d="M16 0H0V16" fill="none" stroke="currentColor" stroke-opacity="0.07" stroke-width="1"/>
       </pattern>
-      <pattern id="strata-hatch-{{ uid }}" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-        <line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-opacity="0.35" stroke-width="1"/>
+      <pattern id="strata-hatch-{{ uid }}" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" stroke-opacity="0.28" stroke-width="1"/>
       </pattern>
     </defs>
+
     <rect width="400" height="500" fill="url(#strata-grid-{{ uid }})"/>
-    <text x="24" y="40" class="maison-strata__mono">SECTION A–A · {{ product.handle | upcase | truncate: 22, '' }}</text>
-    <text x="24" y="60" class="maison-strata__mono maison-strata__mono--muted">SCALE {{ scale | round: 0 }}:1 · TOTAL {{ total | round: 1 }} MM</text>
+
+    <!-- Registration marks -->
+    <path d="M18 18h14M18 18v14" class="maison-strata__reg"/>
+    <path d="M382 18h-14M382 18v14" class="maison-strata__reg"/>
+    <path d="M18 482h14M18 482v-14" class="maison-strata__reg"/>
+    <path d="M382 482h-14M382 482v-14" class="maison-strata__reg"/>
+
+    <text x="36" y="42" class="maison-strata__mono">SECTION A–A</text>
+    <text x="36" y="60" class="maison-strata__mono maison-strata__mono--muted">{{ handle_label }}</text>
+    <text x="36" y="78" class="maison-strata__mono maison-strata__mono--muted">
+      SCALE {{ scale | round: 0 }}:1 · Σ {{ total | round: 1 }} mm
+    </text>
+    <text x="250" y="42" class="maison-strata__mono maison-strata__mono--accent" text-anchor="end">k = W/m·K</text>
+    <text x="364" y="42" class="maison-strata__mono maison-strata__mono--muted" text-anchor="end">mm</text>
+
+    <rect x="36" y="96" width="168" height="{{ total | times: scale | plus: 44 | round: 1 }}" class="maison-strata__frame" fill="none"/>
 
     {%- for row in rows -%}
       {%- assign p = row | split: '|' -%}
-      {%- assign h = p[1] | times: scale -%}
-      {%- assign mid = h | divided_by: 2 | plus: y -%}
-      {%- assign tone = forloop.index0 | modulo: 3 -%}
-      <rect
-        x="40" y="{{ y | round: 2 }}" width="180" height="{{ h | round: 2 }}"
-        class="maison-strata__layer maison-strata__layer--{{ tone }}"
-      />
-      {%- if tone == 1 -%}
-        <rect x="40" y="{{ y | round: 2 }}" width="180" height="{{ h | round: 2 }}" fill="url(#strata-hatch-{{ uid }})"/>
+      {%- if p[0] != blank -%}
+        {%- assign h = p[1] | times: scale -%}
+        {%- if h < 14 -%}{%- assign h = 14.0 -%}{%- endif -%}
+        {%- assign mid = h | divided_by: 2 | plus: y -%}
+        {%- assign tone = forloop.index0 | modulo: 3 -%}
+
+        <rect
+          x="48"
+          y="{{ y | round: 2 }}"
+          width="144"
+          height="{{ h | round: 2 }}"
+          class="maison-strata__layer maison-strata__layer--{{ tone }}"
+        />
+        {%- if tone == 1 -%}
+          <rect
+            x="48"
+            y="{{ y | round: 2 }}"
+            width="144"
+            height="{{ h | round: 2 }}"
+            fill="url(#strata-hatch-{{ uid }})"
+          />
+        {%- endif -%}
+
+        <line x1="192" y1="{{ mid | round: 2 }}" x2="214" y2="{{ mid | round: 2 }}" class="maison-strata__leader"/>
+        <circle cx="214" cy="{{ mid | round: 2 }}" r="1.6" class="maison-strata__dot"/>
+        <text x="224" y="{{ mid | minus: 5 | round: 2 }}" class="maison-strata__label">{{ p[0] | escape | truncate: 28 }}</text>
+        <text x="224" y="{{ mid | plus: 12 | round: 2 }}" class="maison-strata__mono maison-strata__mono--muted">
+          {{ p[1] }} mm · k {{ p[2] }}
+        </text>
+
+        {%- assign y = y | plus: h -%}
       {%- endif -%}
-      <line x1="220" y1="{{ mid | round: 2 }}" x2="244" y2="{{ mid | round: 2 }}" class="maison-strata__leader"/>
-      <text x="250" y="{{ mid | minus: 4 | round: 2 }}" class="maison-strata__label">{{ p[0] | escape }}</text>
-      <text x="250" y="{{ mid | plus: 12 | round: 2 }}" class="maison-strata__mono maison-strata__mono--muted">{{ p[1] }} mm · k {{ p[2] }} W/m·K</text>
-      {%- assign y = y | plus: h -%}
     {%- endfor -%}
 
-    <line x1="28" y1="130" x2="28" y2="{{ y | round: 2 }}" class="maison-strata__dim"/>
-    <line x1="22" y1="130" x2="34" y2="130" class="maison-strata__dim"/>
-    <line x1="22" y1="{{ y | round: 2 }}" x2="34" y2="{{ y | round: 2 }}" class="maison-strata__dim"/>
-    <text x="24" y="468" class="maison-strata__mono maison-strata__mono--accent">[{{ source | upcase }}]</text>
+    <line x1="40" y1="118" x2="40" y2="{{ y | round: 2 }}" class="maison-strata__dim"/>
+    <line x1="34" y1="118" x2="46" y2="118" class="maison-strata__dim"/>
+    <line x1="34" y1="{{ y | round: 2 }}" x2="46" y2="{{ y | round: 2 }}" class="maison-strata__dim"/>
+    <text
+      x="28"
+      y="{{ y | minus: 118 | divided_by: 2 | plus: 118 | round: 0 }}"
+      class="maison-strata__mono maison-strata__mono--muted"
+      transform="rotate(-90 28 {{ y | minus: 118 | divided_by: 2 | plus: 118 | round: 0 }})"
+      text-anchor="middle"
+    >
+      {{ total | round: 1 }} mm
+    </text>
+
+    <text x="36" y="468" class="maison-strata__mono maison-strata__mono--accent">[{{ source | upcase }}]</text>
+    <text x="364" y="468" class="maison-strata__mono maison-strata__mono--muted" text-anchor="end">THICKNESS · CONDUCTIVITY</text>
   </svg>
 </figure>
 
@@ -88,7 +136,9 @@
     width: 100%;
     height: 100%;
     color: var(--color-foreground);
-    background: rgb(var(--color-foreground-rgb) / 0.03);
+    background:
+      linear-gradient(180deg, rgb(var(--color-foreground-rgb) / 0.03), transparent 42%),
+      rgb(var(--color-background-rgb) / 0.92);
   }
 
   .maison-strata svg {
@@ -97,31 +147,60 @@
     height: 100%;
   }
 
-  .maison-strata__layer--0 { fill: var(--brand-color-obsidian-charcoal, #121212); }
-  .maison-strata__layer--1 { fill: var(--brand-color-cast-clay, #a45a3d); }
-  .maison-strata__layer--2 { fill: var(--bell, #b8893a); }
+  .maison-strata__reg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1;
+    stroke-opacity: 0.35;
+  }
+
+  .maison-strata__frame {
+    stroke: currentColor;
+    stroke-opacity: 0.18;
+    stroke-width: 1;
+  }
+
+  .maison-strata__layer--0 {
+    fill: var(--brand-color-obsidian-charcoal, #121212);
+  }
+  .maison-strata__layer--1 {
+    fill: var(--brand-color-cast-clay, #a45a3d);
+  }
+  .maison-strata__layer--2 {
+    fill: var(--bell, #b8893a);
+  }
 
   .maison-strata__leader,
   .maison-strata__dim {
     stroke: currentColor;
     stroke-width: 1;
-    stroke-opacity: 0.6;
+    stroke-opacity: 0.55;
+  }
+
+  .maison-strata__dot {
+    fill: currentColor;
+    fill-opacity: 0.7;
   }
 
   .maison-strata__label {
-    font-family: var(--font-heading--family);
-    font-size: 15px;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-nav);
     fill: currentColor;
   }
 
   .maison-strata__mono {
-    font-family: var(--font-mono--family, ui-monospace, monospace);
-    font-size: 11px;
-    letter-spacing: 0.08em;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
+    letter-spacing: var(--mt-type-tracking-accent);
     font-variant-numeric: tabular-nums slashed-zero;
     fill: currentColor;
   }
 
-  .maison-strata__mono--muted { fill-opacity: 0.65; }
-  .maison-strata__mono--accent { fill: var(--brand-color-raw-copper, var(--bell, #b8893a)); }
+  .maison-strata__mono--muted {
+    fill-opacity: 0.58;
+  }
+
+  .maison-strata__mono--accent {
+    fill: var(--brand-color-raw-copper, var(--bell, #b8893a));
+  }
 {% endstylesheet %}

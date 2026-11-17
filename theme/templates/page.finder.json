@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "maison_finder": {
+      "type": "maison-finder",
+      "settings": {}
+    }
+  },
+  "order": ["maison_finder"]
+}

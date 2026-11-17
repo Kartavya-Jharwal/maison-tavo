@@ -1,0 +1,243 @@
+{% comment %}
+  Dedicated mailing-list room. Shopify-native customer form only
+  (same mechanism as Horizon email-signup / footer newsletter).
+  Creates or updates a customer with marketing consent + newsletter tag.
+{% endcomment %}
+
+<div
+  class="section section--page-width spacing-style maison-mail"
+  style="{% render 'spacing-style', settings: section.settings %}"
+  data-mt-mail-page
+>
+  <header class="maison-mail__header">
+    {% if section.settings.eyebrow != blank %}
+      <p class="maison-mail__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {% endif %}
+    <h1 class="maison-mail__title">
+      {% if section.settings.heading != blank %}
+        {{ section.settings.heading | escape }}
+      {% else %}
+        {{ page.title | default: 'Mail' | escape }}
+      {% endif %}
+    </h1>
+    {% if section.settings.lede != blank %}
+      <div class="maison-mail__lede rte">{{ section.settings.lede }}</div>
+    {% endif %}
+  </header>
+
+  <div class="maison-mail__panel">
+    {%- form 'customer', id: 'MaisonMailSignup', class: 'maison-mail__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+
+      <label class="visually-hidden" for="MaisonMailEmail">
+        {{ section.settings.email_label | default: 'Email' | escape }}
+      </label>
+      <div class="maison-mail__row">
+        <input
+          id="MaisonMailEmail"
+          type="email"
+          name="contact[email]"
+          autocomplete="email"
+          autocorrect="off"
+          autocapitalize="off"
+          placeholder="{{ section.settings.placeholder | escape }}"
+          required
+          {% if form.errors %}
+            aria-invalid="true"
+            aria-describedby="MaisonMailError"
+          {% elsif form.posted_successfully? %}
+            aria-describedby="MaisonMailSuccess"
+          {% endif %}
+        >
+        <button type="submit" class="button button--primary">
+          {{ section.settings.button_label | escape }}
+        </button>
+      </div>
+
+      {%- if form.posted_successfully? -%}
+        <p class="maison-mail__note" id="MaisonMailSuccess" role="status">
+          {{ section.settings.success | escape }}
+        </p>
+      {%- elsif form.errors -%}
+        <p class="maison-mail__note" id="MaisonMailError" role="alert">
+          {{ form.errors.translated_fields.email | capitalize }}
+          {{ form.errors.messages.email }}
+        </p>
+      {%- elsif section.settings.fine_print != blank -%}
+        <p class="maison-mail__fine">{{ section.settings.fine_print | escape }}</p>
+      {%- endif -%}
+    {%- endform -%}
+
+    {% if section.settings.show_releases_link %}
+      <p class="maison-mail__aside">
+        <a href="/pages/releases">See open release cycles</a>
+      </p>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .maison-mail__header {
+    max-width: 40rem;
+    margin-block-end: 2rem;
+  }
+
+  .maison-mail__eyebrow {
+    margin: 0;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted, rgb(var(--color-foreground-rgb) / 0.65));
+  }
+
+  .maison-mail__title {
+    margin: 0.5rem 0 1rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-display);
+    font-weight: 400;
+    line-height: 1.05;
+  }
+
+  .maison-mail__lede {
+    margin: 0;
+    color: var(--color-foreground-muted, rgb(var(--color-foreground-rgb) / 0.75));
+  }
+
+  .maison-mail__panel {
+    max-width: 32rem;
+  }
+
+  .maison-mail__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .maison-mail__row input[type='email'] {
+    flex: 1 1 14rem;
+    min-height: 2.75rem;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.25);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+  }
+
+  .maison-mail__row input[type='email']:focus-visible {
+    outline: 2px solid var(--color-foreground);
+    outline-offset: 2px;
+  }
+
+  .maison-mail__note {
+    margin: 0.85rem 0 0;
+  }
+
+  .maison-mail__fine,
+  .maison-mail__aside {
+    margin: 0.85rem 0 0;
+    font-size: var(--mt-type-body, var(--font-size--fluid-sm, 0.9375rem));
+    color: var(--color-foreground-muted, rgb(var(--color-foreground-rgb) / 0.7));
+  }
+
+  .maison-mail__aside a {
+    color: inherit;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.maison_mail",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:settings.maison_eyebrow",
+      "default": "Mailing list"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "Signal for the next heat"
+    },
+    {
+      "type": "richtext",
+      "id": "lede",
+      "label": "Introduction",
+      "default": "<p>One list for release cycles and foundry allocations. Powered by Shopify customer marketing — the same native newsletter path as the footer signup.</p>"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email label",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder",
+      "default": "Email for the next heat"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Join the list"
+    },
+    {
+      "type": "text",
+      "id": "success",
+      "label": "Success message",
+      "default": "You're on the list."
+    },
+    {
+      "type": "textarea",
+      "id": "fine_print",
+      "label": "Fine print",
+      "default": "We use Shopify Email for batch notices. Unsubscribe anytime from any message."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_releases_link",
+      "label": "Link to releases page",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.maison_mail",
+      "category": "t:categories.forms"
+    }
+  ]
+}
+{% endschema %}

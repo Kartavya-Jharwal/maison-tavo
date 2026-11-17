@@ -243,6 +243,9 @@
         {%- endif -%}
       {%- endform -%}
     </product-form-component>
+    <p class="maison-ask-kansa">
+      <a href="/pages/kansa?piece={{ product.handle | url_encode }}">Ask Kansa about this piece →</a>
+    </p>
   {%- else -%}
     <div class="product-form-buttons">
       <button
@@ -256,6 +259,21 @@
     </div>
   {%- endif -%}
 </span>
+
+{% stylesheet %}
+  .maison-ask-kansa {
+    margin: 0.85rem 0 0;
+    font-size: 0.9rem;
+  }
+  .maison-ask-kansa a {
+    color: inherit;
+    text-underline-offset: 0.15em;
+  }
+  .maison-ask-kansa a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+{% endstylesheet %}
 
 {% if block_settings.show_pickup_availability %}
   <script

@@ -15,10 +15,10 @@
           type="email"
           name="contact[email]"
           autocomplete="email"
-          placeholder="Email for the next furnace heat"
+          placeholder="Email for the next heat"
           required
         >
-        <button type="submit" class="button">{{ section.settings.button_label | escape }}</button>
+        <button type="submit" class="button button--primary">{{ section.settings.button_label | escape }}</button>
         {%- if form.posted_successfully? -%}
           <p class="maison-footer__note" role="status">You're on the list.</p>
         {%- elsif form.errors -%}
@@ -51,20 +51,33 @@
               <li><a href="{{ collections['cookware'].url | default: '/collections/cookware' }}">Cookware</a></li>
               <li><a href="{{ collections['tableware-pottery'].url | default: '/collections/tableware-pottery' }}">Tableware &amp; Pottery</a></li>
               <li><a href="{{ collections['care-sets'].url | default: '/collections/care-sets' }}">Care &amp; Sets</a></li>
-              <li><a href="/pages/new-arrivals">New arrivals</a></li>
+              <li><a href="/pages/releases">Releases</a></li>
+              <li><a href="/pages/department">Department</a></li>
+              <li><a href="/pages/kitchen">Kitchen</a></li>
               <li><a href="/pages/kansa">Kansa</a></li>
             {%- elsif i == 2 -%}
               <li><a href="/pages/about">About us</a></li>
               <li><a href="/pages/our-story">Our story</a></li>
               <li><a href="/pages/building">Building of</a></li>
-              <li><a href="/blogs/journal">Journal</a></li>
+              <li><a href="/pages/journal">Journal</a></li>
+              <li><a href="/pages/heat">Heat</a></li>
+              <li><a href="/pages/finder">Finder</a></li>
               <li><a href="/pages/reviews">Reviews</a></li>
             {%- else -%}
               <li><a href="/pages/contact">Contact &amp; locations</a></li>
+              <li><a href="/pages/mail">Mail</a></li>
               <li><a href="/pages/faq">FAQ</a></li>
               <li><a href="/pages/delivery-returns">Delivery &amp; returns</a></li>
               <li><a href="{{ routes.search_url }}">Search</a></li>
-              <li><a href="{{ routes.account_login_url }}">Account</a></li>
+              {%- if shop.customer_accounts_enabled -%}
+                <li>
+                  {%- if customer -%}
+                    <a href="{{ routes.account_url }}">Account</a>
+                  {%- else -%}
+                    <a href="{{ routes.account_login_url }}">Account</a>
+                  {%- endif -%}
+                </li>
+              {%- endif -%}
             {%- endif -%}
           </ul>
         </div>
@@ -76,7 +89,18 @@
           <li><a href="/pages/terms-of-service">Terms of service</a></li>
           <li><a href="/pages/cookie-policy">Cookie policy</a></li>
           <li><a href="/pages/intellectual-property">Intellectual property</a></li>
+          {%- comment -%} Explicit legal links above; skip shop policies that duplicate those titles {%- endcomment -%}
           {%- for policy in shop.policies -%}
+            {%- assign policy_title_down = policy.title | downcase -%}
+            {%- if policy_title_down contains 'privacy'
+              or policy_title_down contains 'terms'
+              or policy_title_down contains 'cookie'
+              or policy_title_down contains 'intellectual'
+              or policy_title_down contains 'refund'
+              or policy_title_down contains 'shipping'
+            -%}
+              {%- continue -%}
+            {%- endif -%}
             <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
           {%- endfor -%}
         </ul>
@@ -94,10 +118,10 @@
     </div>
   </div>
 
-  <div class="mt-coda">
-    <p class="mt-coda__word" data-mt-scroll aria-hidden="true">{{ section.settings.wordmark | escape }}</p>
+  <div class="mt-coda" aria-label="{{ section.settings.wordmark | escape }}">
+    <p class="mt-coda__word" data-mt-scroll="coda" aria-hidden="true">{{ section.settings.wordmark | escape }}</p>
     <ul class="mt-coda__arrows" role="list">
-      <li><a href="/pages/kansa">Ask Kansa a care question →</a></li>
+      <li><a href="/pages/kansa">Ask Kansa — care, heat, sight →</a></li>
       <li><a href="/pages/ucp">Read the agent spec ↗</a></li>
       <li><a href="/pages/care">The care covenant ↓</a></li>
     </ul>
@@ -112,8 +136,8 @@
 {% stylesheet %}
   .maison-footer {
     --footer-mono: var(--font-mono--family, ui-monospace, monospace);
-    color: var(--color-foreground);
-    background: var(--color-background);
+    color: var(--bone, #f7f2e9);
+    background: var(--soot, #14110f);
   }
 
   .maison-footer a {
@@ -136,61 +160,66 @@
     width: 100%;
     max-width: var(--page-width, 90rem);
     margin-inline: auto;
-    padding-inline: var(--page-margin, clamp(1.25rem, 4vw, 3rem));
+    padding-inline: var(--page-margin, clamp(var(--mt-space-5), 4vw, var(--mt-space-7)));
   }
 
   .maison-footer__cta {
     display: grid;
-    gap: 2rem;
+    gap: clamp(var(--mt-space-5), 3vw, var(--mt-space-6));
     align-items: end;
-    padding-block: clamp(4rem, 9vw, 8rem) clamp(2.5rem, 5vw, 4rem);
-    border-block-end: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+    padding-block: clamp(var(--mt-space-7), 7vw, var(--mt-space-9)) clamp(var(--mt-space-6), 4vw, var(--mt-space-7));
+    border-block-end: 1px solid rgb(247 242 233 / 0.14);
   }
 
   @media screen and (min-width: 750px) {
     .maison-footer__cta {
-      grid-template-columns: 1.4fr 1fr;
+      grid-template-columns: 1.2fr 1fr;
+      column-gap: clamp(var(--mt-space-6), 5vw, var(--mt-space-8));
     }
   }
 
   .maison-footer__headline {
     margin: 0;
-    max-width: 14ch;
-    font-family: var(--font-heading--family);
-    font-size: clamp(2.25rem, 1.4rem + 3.6vw, 4.75rem);
+    max-width: 11ch;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-heading);
     font-weight: 400;
-    line-height: 1;
+    line-height: 1.05;
     letter-spacing: -0.025em;
   }
 
   .maison-footer__form {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--mt-space-2);
   }
 
   .maison-footer__form input[type='email'] {
     flex: 1 1 14rem;
     min-height: 48px;
-    padding: 0 1rem;
-    border: 1px solid rgb(var(--color-foreground-rgb) / 0.25);
+    padding: 0 var(--mt-space-4);
+    border: 1px solid rgb(247 242 233 / 0.28);
     background: transparent;
     color: inherit;
     font: inherit;
+  }
+
+  .maison-footer__form input[type='email']::placeholder {
+    color: rgb(247 242 233 / 0.45);
   }
 
   .maison-footer__note {
     flex-basis: 100%;
     margin: 0;
     font-family: var(--footer-mono);
-    font-size: 0.75rem;
+    font-size: var(--mt-type-accent);
   }
 
   .maison-footer__grid {
     display: grid;
-    gap: 2.5rem;
-    padding-block: clamp(2.5rem, 5vw, 4rem);
-    font-size: 0.9375rem;
+    gap: var(--mt-space-6);
+    padding-block: clamp(var(--mt-space-6), 5vw, var(--mt-space-8));
+    font-size: var(--mt-type-body);
   }
 
   @media screen and (min-width: 990px) {
@@ -202,9 +231,9 @@
 
   .maison-footer__edge {
     display: grid;
-    gap: 0.35rem;
+    gap: var(--mt-space-1);
     font-family: var(--footer-mono);
-    font-size: 0.75rem;
+    font-size: var(--mt-type-accent);
     font-style: normal;
     letter-spacing: 0.1em;
     line-height: 1.6;
@@ -219,34 +248,34 @@
   }
 
   .maison-footer__accent {
-    margin-block-start: 1rem;
+    margin-block-start: var(--mt-space-4);
     color: var(--footer-accent);
   }
 
   .maison-footer__menus {
     display: grid;
-    gap: 2rem;
+    gap: var(--mt-space-6);
     grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
   }
 
   .maison-footer .maison-footer__label {
-    margin: 0 0 1rem;
+    margin: 0 0 var(--mt-space-4);
     font-family: var(--footer-mono);
-    font-size: 0.6875rem;
+    font-size: var(--mt-type-mono);
     font-weight: 400;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgb(var(--color-foreground-rgb) / 0.6);
+    color: rgb(247 242 233 / 0.55);
   }
 
   .maison-footer__col a {
-    font-size: 0.9375rem;
+    font-size: var(--mt-type-body);
     line-height: 1.4;
   }
 
   .maison-footer__col ul {
     display: grid;
-    gap: 0.6rem;
+    gap: var(--mt-space-2);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -255,7 +284,7 @@
   .mt-coda {
     container-type: inline-size;
     overflow: hidden;
-    padding-block: clamp(2rem, 5vw, 4rem) 1.5rem;
+    padding-block: clamp(var(--mt-space-6), 5vw, var(--mt-space-8)) var(--mt-space-5);
     background: var(--footer-accent);
     color: #f7f5f0;
     text-align: center;
@@ -263,19 +292,22 @@
 
   .mt-coda__word {
     margin: 0;
-    font-family: var(--font-heading--family);
-    font-size: 21cqi;
+    font-family: var(--mt-type-family-wordmark);
+    font-weight: var(--font-weight--wordmark, 100);
+    font-size: var(--mt-type-wordmark-display, var(--font-size--brand-wordmark-display, clamp(2.75rem, 1.4rem + 9cqi, 9rem)));
     line-height: 0.85;
-    letter-spacing: -0.04em;
+    letter-spacing: var(--mt-type-tracking-wordmark, var(--letter-spacing--wordmark, -0.07em));
+    font-kerning: normal;
+    font-feature-settings: 'kern' 1, 'liga' 1;
     white-space: nowrap;
     translate: -2cqi 0;
   }
 
   .mt-coda__arrows {
     display: grid;
-    gap: 0.5rem;
+    gap: var(--mt-space-2);
     justify-content: center;
-    margin: clamp(2rem, 5vw, 3.5rem) 0 0;
+    margin: clamp(var(--mt-space-6), 5vw, var(--mt-space-7)) 0 0;
     padding: 0;
     list-style: none;
   }
@@ -290,11 +322,11 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.5rem 0.75rem;
-    margin: 2rem 0 0;
+    gap: var(--mt-space-2) var(--mt-space-3);
+    margin: var(--mt-space-6) 0 0;
     font-family: var(--footer-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.08em;
+    font-size: var(--mt-type-mono);
+    letter-spacing: var(--mt-type-tracking-accent);
     opacity: 0.8;
   }
 {% endstylesheet %}
@@ -306,7 +338,7 @@
   "class": "maison-footer-section",
   "enabled_on": { "groups": ["footer"] },
   "settings": [
-    { "type": "text", "id": "headline", "label": "Headline", "default": "Cook with something that outlasts you" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Cook with what outlasts you" },
     { "type": "text", "id": "button_label", "label": "Sign-up button", "default": "Join the next heat" },
     { "type": "header", "content": "Menus" },
     { "type": "link_list", "id": "menu_1", "label": "Column 1", "default": "main-menu" },

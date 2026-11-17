@@ -40,8 +40,8 @@
 
   .maison-editorial__eyebrow {
     margin: 0;
-    font-family: var(--font-heading--family);
-    font-size: 0.75rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-accent);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-foreground-muted);
@@ -49,7 +49,7 @@
 
   .maison-editorial__title {
     margin-block: 0.75rem 1rem;
-    font-family: var(--font-heading--family);
+    font-family: var(--mt-type-family-heading);
     font-weight: var(--font-heading--weight);
     letter-spacing: 0.04em;
   }
@@ -58,7 +58,7 @@
     margin: 0;
     max-width: 40rem;
     color: var(--color-foreground-muted);
-    font-size: 1.125rem;
+    font-size: var(--mt-type-lede);
     line-height: 1.6;
   }
 
@@ -74,7 +74,7 @@
   "tag": "section",
   "class": "section-wrapper",
   "enabled_on": {
-    "templates": ["blog"]
+    "templates": ["blog", "page"]
   },
   "settings": [
     {
@@ -93,7 +93,7 @@
       "type": "textarea",
       "id": "lede",
       "label": "t:settings.maison_lede",
-      "default": "Letters from the cutting table: fittings, cloth, and the making of Maison Tavo. Create a blog in Admin with handle journal, then publish articles here."
+      "default": "Letters from the cutting table: fittings, cloth, and the making of Maison Tavo. Prefer the dedicated Journal page template (page.journal) — a Shopify blog is optional, not required."
     },
     {
       "type": "paragraph",

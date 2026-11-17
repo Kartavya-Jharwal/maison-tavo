@@ -312,8 +312,8 @@
 
   .maison-ucp__badge {
     display: inline-block;
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.6875rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 0.3em 0.7em;
@@ -328,18 +328,18 @@
   }
 
   .maison-ucp__status {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.6875rem;
-    letter-spacing: 0.08em;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
+    letter-spacing: var(--mt-type-tracking-accent);
     color: var(--bell, #B8893A);
   }
 
   .maison-ucp__title {
     margin: 0 0 1rem;
-    font-family: var(--font-heading--family, 'Fraunces', serif);
-    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-display);
     font-weight: 400;
-    letter-spacing: -0.02em;
+    letter-spacing: var(--mt-type-tracking-heading);
     line-height: 1.1;
     color: var(--soot, #14110F);
   }
@@ -348,7 +348,7 @@
     margin: 0 0 2.5rem;
     max-width: 48rem;
     color: rgba(20, 17, 15, 0.78);
-    font-size: 1.1rem;
+    font-size: var(--mt-type-lede);
     line-height: 1.6;
   }
 
@@ -385,8 +385,8 @@
   }
 
   .status-text {
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.68rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.1em;
     color: var(--bell, #B8893A);
     white-space: nowrap;
@@ -401,8 +401,8 @@
     background: transparent;
     border: 1px solid transparent;
     color: #A39B8F;
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.75rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     padding: 0.35rem 0.85rem;
     border-radius: 2px;
     cursor: pointer;
@@ -426,8 +426,8 @@
     background: transparent;
     color: var(--bell, #B8893A);
     border: 1px solid rgba(184, 137, 58, 0.4);
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.7rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     padding: 0.35rem 0.85rem;
     border-radius: 2px;
     cursor: pointer;
@@ -460,16 +460,16 @@
   .maison-ucp__url-pill {
     background: #0369a1;
     color: #fff;
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.7rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     font-weight: 600;
     padding: 0.2rem 0.6rem;
     border-radius: 3px;
   }
 
   .maison-ucp__note {
-    font-size: 0.8rem;
-    color: #64748b;
+    font-size: var(--mt-type-nav);
+    color: color-mix(in srgb, var(--bone, #F7F2E9) 62%, transparent);
   }
 
   .maison-ucp__code {
@@ -478,8 +478,8 @@
     overflow-y: auto;
     background: transparent;
     color: #e2e8f0;
-    font-family: var(--font-mono--family, 'Courier New', Courier, monospace);
-    font-size: 0.825rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
     line-height: 1.6;
   }
 {% endstylesheet %}

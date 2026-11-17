@@ -3,6 +3,10 @@ import { createStore } from 'zustand/vanilla';
 import { initHorizonScroll } from './horizon-scroll.js';
 import { initDrawerGesture } from './drawer-gesture.js';
 import { initPageTransitions } from './page-transition.js';
+import { initMicroInteractions, refreshMicroInteractions } from './micro-interactions.js';
+import { initIdleBlazeLoader } from './effects/idle-blaze-loader.js';
+import { initMaisonToasts, MaisonToast, showToast } from './maison-toasts.js';
+import { initStreak, streakApi } from './streak.js';
 
 /**
  * Lightweight Spring Physics Helper
@@ -38,15 +42,31 @@ const MaisonRuntime = {
   scroll,
   createStore,
   spring,
+  toast: showToast,
+  MaisonToast,
 };
 
 globalThis.MaisonRuntime = MaisonRuntime;
+
+/** Respect OS preference and the footer / consent-bar motion toggle. */
+function motionReduced() {
+  const flag = document.documentElement.dataset.reducedMotion;
+  if (flag === 'true') return true;
+  if (flag === 'false') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function announceMotionPreference(reduced) {
+  document.dispatchEvent(
+    new CustomEvent('maison:reduced-motion', { detail: { reduced: Boolean(reduced) } }),
+  );
+}
 
 // Cart add-to-cart feedback - scale pulse on the cart icon (D10: reduced-motion aware)
 if (typeof document !== 'undefined') {
   document.addEventListener('shopify:cart:lines-update', (e) => {
     if (e && e.detail && e.detail.action !== 'add') return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (motionReduced()) return;
     const el = document.querySelector(
       '[data-cart-icon-bubble], .cart-count-bubble, .header__icon--cart',
     );
@@ -57,12 +77,13 @@ if (typeof document !== 'undefined') {
 
 // ─── V1 The Strike (global) - Concentric rings radiating in bell bronze ───
 function triggerStrike(e) {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (motionReduced()) return;
   const x = e.clientX;
   const y = e.clientY;
   
   const container = document.createElement('div');
   container.className = 'maison-strike-container';
+  container.setAttribute('aria-hidden', 'true');
   container.style.cssText = `
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
@@ -71,32 +92,35 @@ function triggerStrike(e) {
     overflow: hidden;
   `;
   
-  // 3 concentric bell-bronze rings
-  [0, 120, 240].forEach((delay) => {
+  // Restrained Strike: two soft rings, lower opacity, shorter life
+  [0, 160].forEach((delay) => {
     const ring = document.createElement('div');
     ring.style.cssText = `
       position: absolute;
       top: ${y}px; left: ${x}px;
-      width: 12px; height: 12px;
-      border: 1.5px solid var(--bell, #B8893A);
+      width: 10px; height: 10px;
+      border: 1px solid var(--bell, #B8893A);
       border-radius: 50%;
-      transform: translate(-50%, -50%) scale(0.1);
-      opacity: 0.85;
-      box-shadow: 0 0 12px rgba(184, 137, 58, 0.45);
+      transform: translate(-50%, -50%) scale(0.15);
+      opacity: 0.35;
+      box-shadow: none;
     `;
     container.appendChild(ring);
-    
+
     setTimeout(() => {
       animate(
         ring,
-        { transform: ['translate(-50%, -50%) scale(0.1)', 'translate(-50%, -50%) scale(16)'], opacity: [0.85, 0] },
-        { duration: 0.9, easing: [0.2, 0.8, 0.2, 1] }
+        {
+          transform: ['translate(-50%, -50%) scale(0.15)', 'translate(-50%, -50%) scale(8)'],
+          opacity: [0.35, 0],
+        },
+        { duration: 0.55, easing: [0.2, 0.8, 0.2, 1] },
       );
     }, delay);
   });
-  
+
   document.body.appendChild(container);
-  setTimeout(() => container.remove(), 1400);
+  setTimeout(() => container.remove(), 900);
 
   playTempleBell();
 }
@@ -162,6 +186,7 @@ function initProfiler() {
   if (!drawer) return;
   const form = drawer.querySelector('[data-mt-profiler-form]');
   let returnFocus = null;
+  let trapHandler = null;
 
   if (document.getElementById('MainContent')?.dataset.template?.startsWith('product')) {
     sessionStorage.setItem(VIEWS_KEY, String(Number(sessionStorage.getItem(VIEWS_KEY) || 0) + 1));
@@ -170,18 +195,56 @@ function initProfiler() {
   const eligible = () =>
     !readProfile() && !sessionStorage.getItem(PROFILER_LATER_KEY) && drawer.hidden;
 
-  const open = () => {
-    if (!eligible()) return;
-    returnFocus = document.activeElement;
-    drawer.hidden = false;
-    drawer.querySelector('input')?.focus({ preventScroll: true });
-    window.removeEventListener('scroll', onScroll, { capture: true });
+  const focusables = () =>
+    Array.from(
+      drawer.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex^="-"])',
+      ),
+    ).filter((el) => el instanceof HTMLElement && !el.closest('[hidden]'));
+
+  const releaseTrap = () => {
+    if (!trapHandler) return;
+    drawer.removeEventListener('keydown', trapHandler);
+    trapHandler = null;
   };
 
   const close = () => {
     drawer.hidden = true;
+    drawer.setAttribute('aria-modal', 'false');
+    releaseTrap();
     sessionStorage.setItem(PROFILER_LATER_KEY, '1');
     if (returnFocus instanceof HTMLElement) returnFocus.focus({ preventScroll: true });
+  };
+
+  const open = () => {
+    if (!eligible()) return;
+    returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    drawer.hidden = false;
+    drawer.setAttribute('aria-modal', 'true');
+    releaseTrap();
+    trapHandler = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const items = focusables();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement;
+      if (event.shiftKey && (active === first || !drawer.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !drawer.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    drawer.addEventListener('keydown', trapHandler);
+    (focusables()[0] || drawer).focus({ preventScroll: true });
+    window.removeEventListener('scroll', onScroll, { capture: true });
   };
 
   const onScroll = () => {
@@ -196,10 +259,7 @@ function initProfiler() {
     if (Number(sessionStorage.getItem(VIEWS_KEY) || 0) >= 2) open();
   }, 45000);
 
-  drawer.querySelector('[data-mt-profiler-later]').addEventListener('click', close);
-  drawer.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') close();
-  });
+  drawer.querySelector('[data-mt-profiler-later]')?.addEventListener('click', close);
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     const data = new FormData(form);
@@ -213,6 +273,8 @@ function initProfiler() {
       }),
     );
     drawer.hidden = true;
+    drawer.setAttribute('aria-modal', 'false');
+    releaseTrap();
     tagProfileFits();
     if (returnFocus instanceof HTMLElement) returnFocus.focus({ preventScroll: true });
   });
@@ -235,24 +297,33 @@ function initStorageReset() {
 function initReducedMotionPreference() {
   const toggleBtn = document.querySelector('[data-mt-reduced-motion-toggle]');
   const label = document.querySelector('[data-mt-motion-label]');
-  
-  const saved = localStorage.getItem('mt_reduced_motion');
-  const isReduced = saved === 'true' || (saved === null && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-  if (isReduced) {
-    document.documentElement.dataset.reducedMotion = 'true';
-    if (toggleBtn) toggleBtn.setAttribute('aria-pressed', 'true');
-    if (label) label.textContent = 'ON';
+  let saved = null;
+  try {
+    saved = localStorage.getItem('mt_reduced_motion');
+  } catch {
+    saved = null;
   }
+  const isReduced =
+    saved === 'true' || (saved === null && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  document.documentElement.dataset.reducedMotion = String(isReduced);
+  if (toggleBtn) toggleBtn.setAttribute('aria-pressed', String(isReduced));
+  if (label) label.textContent = isReduced ? 'ON' : 'OFF';
 
   if (toggleBtn) {
     toggleBtn.addEventListener('click', () => {
-      const current = document.documentElement.dataset.reducedMotion === 'true';
-      const next = !current;
+      const next = document.documentElement.dataset.reducedMotion !== 'true';
       document.documentElement.dataset.reducedMotion = String(next);
-      localStorage.setItem('mt_reduced_motion', String(next));
+      try {
+        localStorage.setItem('mt_reduced_motion', String(next));
+      } catch {
+        /* private mode */
+      }
       toggleBtn.setAttribute('aria-pressed', String(next));
       if (label) label.textContent = next ? 'ON' : 'OFF';
+      announceMotionPreference(next);
+      if (next) MaisonRuntime.initInViewReveals?.();
     });
   }
 }
@@ -279,33 +350,36 @@ function initConsentBar() {
 }
 
 function playTempleBell() {
+  // Prefer shared MaisonSound API (same opt-in flag + kansa partials).
+  if (window.MaisonSound?.playBell) {
+    window.MaisonSound.playBell();
+    return;
+  }
   if (!soundEnabled()) return;
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
     const ctx = new AudioContext();
-    if (ctx.state === 'suspended') {
-      ctx.resume();
-    }
+    if (ctx.state === 'suspended') ctx.resume();
     const now = ctx.currentTime;
-    
-    // Fundamental bell frequencies (~880Hz, 1320Hz, 2200Hz)
-    [880, 1320, 2200].forEach((freq, idx) => {
+    // Fallback kansa partials (~880 Hz) when maison-sound.js is absent.
+    [
+      [880, 0.028, 1.35],
+      [1320, 0.014, 1.05],
+      [2200, 0.006, 0.7],
+    ].forEach(([freq, vol, decay]) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
       osc.frequency.setValueAtTime(freq, now);
-      
-      const initialVol = 0.03 / (idx + 1);
-      gain.gain.setValueAtTime(initialVol, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.1);
-      
+      gain.gain.setValueAtTime(vol, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + decay);
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start(now);
-      osc.stop(now + 1.15);
+      osc.stop(now + decay + 0.05);
     });
-  } catch (e) {
+  } catch {
     // Audio context not permitted yet
   }
 }
@@ -323,7 +397,22 @@ if (typeof document !== 'undefined') {
    * Attribution & Inspiration: [Abdughafur Khujzoda on CodePen](https://codepen.io/Abdughafur-Khujzoda)
    */
   function initInViewReveals() {
-    if (typeof IntersectionObserver === 'undefined') return;
+    const targets = document.querySelectorAll(
+      '.clip-line, .inview, .inview-scale, .stacked-title, [data-reveal], .maison-hero',
+    );
+
+    if (motionReduced()) {
+      targets.forEach((el) => {
+        el.classList.add('revealed', 'is-visible', 'visible', 'is-revealed');
+        el.dataset.mtRevealBound = 'true';
+      });
+      return;
+    }
+
+    if (typeof IntersectionObserver === 'undefined') {
+      targets.forEach((el) => el.classList.add('revealed', 'is-visible', 'visible', 'is-revealed'));
+      return;
+    }
 
     const revealObserver = new IntersectionObserver(
       (entries) => {
@@ -337,7 +426,7 @@ if (typeof document !== 'undefined') {
           revealObserver.unobserve(el);
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.12 },
     );
 
     document.querySelectorAll('.clip-line, .inview, .inview-scale, .stacked-title, [data-reveal]').forEach((el) => {
@@ -367,6 +456,7 @@ if (typeof document !== 'undefined') {
   MaisonRuntime.initGhostParallax = initGhostParallax;
 
   MaisonRuntime.tagProfileFits = tagProfileFits;
+  MaisonRuntime.streak = streakApi;
 
   function loadScript(src) {
     if (!src) return Promise.reject(new Error('missing asset'));
@@ -383,7 +473,7 @@ if (typeof document !== 'undefined') {
     const pending = new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = src;
-      script.async = false;
+      script.async = true;
       script.onload = () => {
         script.dataset.loaded = 'true';
         resolve();
@@ -419,6 +509,7 @@ if (typeof document !== 'undefined') {
       scroller instanceof Element && scroller !== document.body && scroller !== document.documentElement
         ? scroller
         : null;
+    // Tight margin: prefetch near viewport without competing with hero LCP.
     vesselWatch = new IntersectionObserver(
       (entries) => {
         if (!entries.some((entry) => entry.isIntersecting)) return;
@@ -426,23 +517,29 @@ if (typeof document !== 'undefined') {
         vesselWatch = null;
         start();
       },
-      { root, rootMargin: '480px' },
+      { root, rootMargin: '200px 0px' },
     );
     nodes.forEach((node) => vesselWatch.observe(node));
   }
 
+  globalThis.MaisonToast = MaisonToast;
+
   const boot = () => {
     initReducedMotionPreference();
     initConsentBar();
+    initMaisonToasts();
     initInViewReveals();
     initGhostParallax();
     initHorizonScroll();
     initPageTransitions();
     initDrawerGesture();
+    initMicroInteractions();
     initProfiler();
     initStorageReset();
+    initStreak();
     tagProfileFits();
     ensureVessel();
+    MaisonRuntime.idleBlaze = initIdleBlazeLoader();
   };
 
   document.addEventListener('maison:page-enter', () => {
@@ -452,6 +549,7 @@ if (typeof document !== 'undefined') {
       delete document.documentElement.dataset.mtRouteBound;
     });
     initInViewReveals();
+    refreshMicroInteractions();
     tagProfileFits();
     ensureVessel();
     const template = document.getElementById('MainContent')?.dataset.template || '';

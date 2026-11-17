@@ -1,16 +1,29 @@
 {
   "sections": {
-    "arrivals": {
-      "type": "maison-arrivals",
+    "releases": {
+      "type": "maison-releases",
+      "blocks": {
+        "cycle_current": {
+          "type": "cycle",
+          "settings": {
+            "name": "Current heat",
+            "window": "Live while the allocation lasts",
+            "status": "open",
+            "note": "This room replaces the old new-arrivals rail. Canonical URL: /pages/releases.",
+            "limit": 8
+          }
+        }
+      },
+      "block_order": ["cycle_current"],
       "settings": {
-        "eyebrow": "Campaign",
-        "heading": "New arrivals",
-        "lede": "The current heat. Pieces that entered the catalogue most recently, and the room we open when a foundry allocation is ready.",
-        "limit": 8,
+        "eyebrow": "Inventory cycles",
+        "heading": "Releases",
+        "lede": "<p>New arrivals is retired. Maison opens inventory in timed release cycles. Prefer <a href=\"/pages/releases\">/pages/releases</a>.</p>",
+        "mail_link": true,
         "padding-block-start": 48,
         "padding-block-end": 64
       }
     }
   },
-  "order": ["arrivals"]
+  "order": ["releases"]
 }

@@ -74,7 +74,7 @@
 <ul
   data-menu-list-id="{{ id }}"
   class="mega-menu__list list-unstyled"
-  style="--menu-image-border-radius: {{ image_border_radius }}px;"
+  style="--menu-image-border-radius: {{ image_border_radius }}px; --menu-columns-desktop: {{ max_menu_columns }}; --menu-columns-tablet: {{ max_menu_columns_tablet }};"
 >
   {% for link in parent_link.links %}
     {% liquid
@@ -246,28 +246,10 @@
   endif
 %}
 
-{% style %}
-  [data-menu-grid-id="{{ id }}"] {
-    {% if menu_content_type == 'collection_images' and parent_link.links.size < 5 %}
-      --menu-columns-desktop: {{ grid_columns_count_collection_images }};
-      --menu-columns-tablet: {{ grid_columns_count_tablet }};
-    {% else %}
-      --menu-columns-desktop: {{ grid_columns_count }};
-      --menu-columns-tablet: {{ grid_columns_count_tablet }};
-    {% endif %}
-  }
-
-  [data-menu-list-id="{{ id }}"] {
-    {% if menu_content_type == 'collection_images' and parent_link.links.size < 5 %}
-      --menu-columns-desktop: {{ grid_columns_count_collection_images }};
-      --menu-columns-tablet: {{ max_menu_columns_tablet }};
-    {% else %}
-      --menu-columns-desktop: {{ max_menu_columns }};
-      --menu-columns-tablet: {{ max_menu_columns_tablet }};
-    {% endif %}
-  }
-{% endstyle %}
-
+{%- comment -%}
+  Column CSS variables live as inline styles on .mega-menu__grid (header-menu)
+  and inherit to this list — avoid nested <style> tags that leak into a11y names.
+{%- endcomment -%}
 {% case menu_content_type %}
   {% when 'featured_products' %}
     {%- capture image_sizes -%}

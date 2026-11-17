@@ -86,52 +86,44 @@ const item = (
 ) => ({title, type, url, resourceId, items});
 
 const MAIN_MENU_ITEMS = [
-  item('Shop', 'COLLECTIONS', '/collections', undefined, [
-    item('Cookware', 'COLLECTION', '/collections/cookware', colId('cookware'), [
-      item('Skillets', 'HTTP', '/collections/cookware/skillet'),
-      item('Tavas', 'HTTP', '/collections/cookware/tava'),
-      item('Kadais', 'HTTP', '/collections/cookware/kadai'),
-      item('Forge Hybrid', 'COLLECTION', '/collections/forge-hybrid', colId('forge-hybrid')),
-      item('Kuro Strip', 'COLLECTION', '/collections/kuro-strip', colId('kuro-strip')),
-      item('Forge × Terre', 'COLLECTION', '/collections/forge-terre', colId('forge-terre')),
-    ]),
-    item('Tableware & Pottery', 'COLLECTION', '/collections/tableware-pottery', colId('tableware-pottery'), [
-      item('Kulhads', 'HTTP', '/collections/tableware-pottery/kulhad'),
-      item('Platters', 'HTTP', '/collections/tableware-pottery/serving-platter'),
-      item('Terre Clay', 'COLLECTION', '/collections/terre-clay', colId('terre-clay')),
-      item('Forge × Terre', 'COLLECTION', '/collections/forge-terre', colId('forge-terre')),
-    ]),
-    item('Care & Sets', 'COLLECTION', '/collections/care-sets', colId('care-sets'), [
-      item('Seasoning oil', 'HTTP', '/collections/care-sets/seasoning-oil'),
-      item('Care kits', 'HTTP', '/collections/care-sets/care-kit'),
-      item('Forge Hybrid', 'COLLECTION', '/collections/forge-hybrid', colId('forge-hybrid')),
-      item('Terre Clay', 'COLLECTION', '/collections/terre-clay', colId('terre-clay')),
-    ]),
-    item('New arrivals', 'HTTP', '/pages/new-arrivals'),
+  item('Cookware', 'COLLECTION', '/collections/cookware', colId('cookware'), [
+    item('Forge Hybrid', 'COLLECTION', '/collections/forge-hybrid', colId('forge-hybrid')),
+    item('Kuro Strip', 'COLLECTION', '/collections/kuro-strip', colId('kuro-strip')),
+    item('Forge × Terre', 'COLLECTION', '/collections/forge-terre', colId('forge-terre')),
   ]),
-  item('Kansa', 'HTTP', '/pages/kansa'),
-  item('About', 'HTTP', '/pages/about', undefined, [
-    item('Our story', 'HTTP', '/pages/our-story'),
-    item('Journal', 'HTTP', '/blogs/journal'),
-    item('Reviews', 'HTTP', '/pages/reviews'),
+  item('Tableware & Pottery', 'COLLECTION', '/collections/tableware-pottery', colId('tableware-pottery'), [
+    item('Terre Clay', 'COLLECTION', '/collections/terre-clay', colId('terre-clay')),
+    item('Forge × Terre', 'COLLECTION', '/collections/forge-terre', colId('forge-terre')),
   ]),
-  item('Contact', 'HTTP', '/pages/contact', undefined, [
-    item('FAQ', 'HTTP', '/pages/faq'),
-    item('Delivery and returns', 'HTTP', '/pages/delivery-returns'),
-  ]),
+  item('Care & Sets', 'COLLECTION', '/collections/care-sets', colId('care-sets')),
+  item('Catalog', 'COLLECTIONS', '/collections'),
+  item('Department', 'HTTP', '/pages/department'),
+  item('Kitchen', 'HTTP', '/pages/kitchen'),
+  item('Heat', 'HTTP', '/pages/heat'),
+  item('Finder', 'HTTP', '/pages/finder'),
+  item('Releases', 'HTTP', '/pages/releases'),
+  item('Journal', 'HTTP', '/pages/journal'),
+  item('Mail', 'HTTP', '/pages/mail'),
+  item('About', 'HTTP', '/pages/about'),
+  item('Contact', 'HTTP', '/pages/contact'),
 ];
 
 const FOOTER_MENU_ITEMS = [
-  item('Catalogue', 'COLLECTIONS', '/collections'),
-  item('Kansa', 'HTTP', '/pages/kansa'),
-  item('About us', 'HTTP', '/pages/about'),
+  item('Catalog', 'COLLECTIONS', '/collections'),
+  item('Cookware', 'COLLECTION', '/collections/cookware', colId('cookware')),
+  item('Tableware & Pottery', 'COLLECTION', '/collections/tableware-pottery', colId('tableware-pottery')),
+  item('Care & Sets', 'COLLECTION', '/collections/care-sets', colId('care-sets')),
+  item('Department', 'HTTP', '/pages/department'),
+  item('Kitchen', 'HTTP', '/pages/kitchen'),
+  item('Heat', 'HTTP', '/pages/heat'),
+  item('Finder', 'HTTP', '/pages/finder'),
+  item('Releases', 'HTTP', '/pages/releases'),
+  item('Journal', 'HTTP', '/pages/journal'),
+  item('Mail', 'HTTP', '/pages/mail'),
+  item('About', 'HTTP', '/pages/about'),
   item('Contact', 'HTTP', '/pages/contact'),
-  item('FAQ', 'HTTP', '/pages/faq'),
-  item('Delivery and returns', 'HTTP', '/pages/delivery-returns'),
-  item('Reviews', 'HTTP', '/pages/reviews'),
   item('Privacy Policy', 'HTTP', '/pages/privacy-policy'),
   item('Terms of Service', 'HTTP', '/pages/terms-of-service'),
-  item('Cookie Policy', 'HTTP', '/pages/cookie-policy'),
 ];
 
 console.log(`Store: ${STORE_DOMAIN}`);

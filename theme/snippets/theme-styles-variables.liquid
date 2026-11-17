@@ -124,16 +124,41 @@
   %}
 
   :root {
-    /* VISUAL-REGISTER.md tokens: "The forge, the kitchen, the temple bell" */
-    --soot: #14110F;      /* ink, backgrounds for night sections */
-    --limewash: #EFE8DC;  /* default page ground */
-    --bone: #F7F2E9;      /* raised surfaces */
-    --bell: #B8893A;      /* kansa bronze, primary accent */
-    --copper: #C2703D;    /* category 2 accent */
-    --clay: #8E4B35;      /* fired-clay secondary */
-    --steel: #8C9094;     /* category 1 counterpoint */
-    --verdigris: #4F7F72; /* patina, success, care kit */
-    --ember: #E2552B;     /* heat only: CTAs on hover, heat map, last call */
+    /*
+      Maison Tavo canonical color primitives (owner: color tokens).
+      Prefer --mt-color-* / --mt-color-*-rgb everywhere.
+      Short aliases (--soot, etc.) remain for legacy consumers.
+      See docs/color-tokens.md for AA contrast pairs.
+    */
+    --mt-color-soot: #14110f;
+    --mt-color-soot-rgb: 20, 17, 15;
+    --mt-color-limewash: #efe8dc;
+    --mt-color-limewash-rgb: 239, 232, 220;
+    --mt-color-bone: #f7f2e9;
+    --mt-color-bone-rgb: 247, 242, 233;
+    --mt-color-bell: #b8893a;
+    --mt-color-bell-rgb: 184, 137, 58;
+    --mt-color-copper: #c2703d;
+    --mt-color-copper-rgb: 194, 112, 61;
+    --mt-color-clay: #8e4b35;
+    --mt-color-clay-rgb: 142, 75, 53;
+    --mt-color-steel: #8c9094;
+    --mt-color-steel-rgb: 140, 144, 148;
+    --mt-color-verdigris: #4f7f72;
+    --mt-color-verdigris-rgb: 79, 127, 114;
+    --mt-color-ember: #e2552b;
+    --mt-color-ember-rgb: 226, 85, 43;
+
+    --soot: var(--mt-color-soot);
+    --limewash: var(--mt-color-limewash);
+    --bone: var(--mt-color-bone);
+    --bell: var(--mt-color-bell);
+    --copper: var(--mt-color-copper);
+    --clay: var(--mt-color-clay);
+    --steel: var(--mt-color-steel);
+    --verdigris: var(--mt-color-verdigris);
+    --ember: var(--mt-color-ember);
+
     --ease-strike: cubic-bezier(.2, .8, .2, 1);
     --dur-slow: 900ms;
     --dur-mid: 420ms;
@@ -219,7 +244,7 @@
     --font-subheading--family: {{ settings.type_subheading_font.family }}, {{ settings.type_subheading_font.fallback_families }};
     --font-subheading--style: {{ settings.type_subheading_font.style }};
     --font-subheading--weight: {{ settings.type_subheading_font.weight }};
-    /* Luxury serif headings: self-hosted Fraunces (fonts.liquid) overrides the picker face */
+    /* Luxury serif headings: self-hosted Instrument Serif (fonts.liquid) overrides the picker face */
     --font-heading--family: var(--font-libre-baskerville--family, {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }});
     --font-heading--style: {{ settings.type_heading_font.style }};
     --font-heading--weight: {{ settings.type_heading_font.weight }};
@@ -246,24 +271,24 @@
     --font-h6--spacing: var(--font-heading--spacing);
     --font-paragraph--spacing: 0.5em;
 
-    /** Z-Index / Layering */
-    --layer-section-background: {{ settings.brand_z_section_background }};
-    --layer-lowest: {{ settings.brand_z_lowest }};
-    --layer-base: {{ settings.brand_z_base }};
-    --layer-flat: {{ settings.brand_z_flat }};
-    --layer-raised: {{ settings.brand_z_raised }};
-    --layer-heightened: {{ settings.brand_z_heightened }};
-    --layer-sticky: {{ settings.brand_z_sticky }};
-    --layer-window-overlay: {{ settings.brand_z_window_overlay }};
-    --layer-header-menu: {{ settings.brand_z_header_menu }};
-    --layer-overlay: {{ settings.brand_z_overlay }};
-    --layer-menu-drawer: {{ settings.brand_z_menu_drawer }};
-    --layer-temporary: {{ settings.brand_z_temporary }};
+    /** Z-Index / Layering — Horizon scale; liquid defaults survive missing schema keys */
+    --layer-section-background: {{ settings.brand_z_section_background | default: -2 }};
+    --layer-lowest: {{ settings.brand_z_lowest | default: -1 }};
+    --layer-base: {{ settings.brand_z_base | default: 0 }};
+    --layer-flat: {{ settings.brand_z_flat | default: 1 }};
+    --layer-raised: {{ settings.brand_z_raised | default: 2 }};
+    --layer-heightened: {{ settings.brand_z_heightened | default: 4 }};
+    --layer-sticky: {{ settings.brand_z_sticky | default: 8 }};
+    --layer-window-overlay: {{ settings.brand_z_window_overlay | default: 10 }};
+    --layer-header-menu: {{ settings.brand_z_header_menu | default: 12 }};
+    --layer-overlay: {{ settings.brand_z_overlay | default: 16 }};
+    --layer-menu-drawer: {{ settings.brand_z_menu_drawer | default: 18 }};
+    --layer-temporary: {{ settings.brand_z_temporary | default: 1000 }};
     --layer-splash: {{ settings.brand_z_splash | default: 9999 }};
     --brand-z-base: var(--layer-base);
     --brand-z-sticky: var(--layer-sticky);
     --brand-z-overlay: var(--layer-overlay);
-    --brand-z-temporary: var(--layer-temporary, 1000);
+    --brand-z-temporary: var(--layer-temporary);
     --brand-z-splash: var(--layer-splash);
 
     /* Max-width / Measure */
@@ -455,13 +480,16 @@
     --brand-color-muted-rgb: {{ settings.brand_color_muted.rgb }};
     --brand-color-inverse-canvas: var(--brand-color-black);
     --brand-color-inverse-ink: var(--brand-color-white);
-    --color-error: var(--brand-color-error);
-    --color-success: var(--brand-color-success);
-    --color-white: var(--brand-color-white);
-    --color-white-rgb: var(--brand-color-white-rgb);
-    --color-instock: {{ settings.brand_color_instock }};
-    --color-lowstock: {{ settings.brand_color_lowstock }};
-    --color-outofstock: {{ settings.brand_color_outofstock }};
+    /* Horizon status colors → Maison palette (safe semantic map) */
+    --color-error: var(--mt-color-ember);
+    --color-error-rgb: var(--mt-color-ember-rgb);
+    --color-success: var(--mt-color-verdigris);
+    --color-success-rgb: var(--mt-color-verdigris-rgb);
+    --color-white: var(--mt-color-bone);
+    --color-white-rgb: var(--mt-color-bone-rgb);
+    --color-instock: var(--mt-color-verdigris);
+    --color-lowstock: var(--mt-color-bell);
+    --color-outofstock: var(--mt-color-steel);
 
     /* Opacity */
     --opacity-5: 0.05;
@@ -487,53 +515,143 @@
     --brand-shadow-lg: {{ settings.brand_shadow_lg | default: '0px 8px 32px rgb(0 0 0 / 20%)' }};
     --gradient-image-overlay: linear-gradient(to top, rgb(0 0 0 / 0.5), transparent);
 
-    /* Spacing */
-    --brand-space-3xs: {{ settings.brand_space_3xs | default: '0.125rem' }};
-    --brand-space-2xs: {{ settings.brand_space_2xs | default: '0.25rem' }};
-    --brand-space-xs: {{ settings.brand_space_xs | default: '0.5rem' }};
-    --brand-space-sm: {{ settings.brand_space_sm | default: '0.7rem' }};
-    --brand-space-md: {{ settings.brand_space_md | default: '0.8rem' }};
-    --brand-space-lg: {{ settings.brand_space_lg | default: '1rem' }};
-    --brand-space-xl: {{ settings.brand_space_xl | default: '1.25rem' }};
-    --brand-space-2xl: {{ settings.brand_space_2xl | default: '1.5rem' }};
-    --brand-space-3xl: {{ settings.brand_space_3xl | default: '1.75rem' }};
-    --brand-space-4xl: {{ settings.brand_space_4xl | default: '2rem' }};
-    --brand-space-5xl: {{ settings.brand_space_5xl | default: '3rem' }};
-    --brand-space-6xl: {{ settings.brand_space_6xl | default: '4rem' }};
+    /*
+      Maison space scale (OWNER) — unit 0.25rem (4px @ 16px root).
+      Numeric steps only; named aliases map onto them. Do not redefine type here.
+      0:0  1:4  2:8  3:12  4:16  5:24  6:32  7:48  8:64  9:96  10:128  11:192  12:256 (px)
+    */
+    --mt-space-unit: 0.25rem;
+    --mt-space-0: 0;
+    --mt-space-1: 0.25rem;
+    --mt-space-2: 0.5rem;
+    --mt-space-3: 0.75rem;
+    --mt-space-4: 1rem;
+    --mt-space-5: 1.5rem;
+    --mt-space-6: 2rem;
+    --mt-space-7: 3rem;
+    --mt-space-8: 4rem;
+    --mt-space-9: 6rem;
+    --mt-space-10: 8rem;
+    --mt-space-11: 12rem;
+    --mt-space-12: 16rem;
 
-    --margin-3xs: var(--brand-space-3xs);
-    --margin-2xs: 0.3rem;
-    --margin-xs: var(--brand-space-xs);
-    --margin-sm: var(--brand-space-sm);
-    --margin-md: var(--brand-space-md);
-    --margin-lg: var(--brand-space-lg);
-    --margin-xl: var(--brand-space-xl);
-    --margin-2xl: var(--brand-space-2xl);
-    --margin-4xl: var(--brand-space-4xl);
-    --margin-6xl: 5rem;
+    /* Named aliases → numeric (legacy Maison / Horizon bridges) */
+    --mt-space-3xs: var(--mt-space-1);
+    --mt-space-2xs: var(--mt-space-1);
+    --mt-space-xs: var(--mt-space-2);
+    --mt-space-sm: var(--mt-space-3);
+    --mt-space-md: var(--mt-space-4);
+    --mt-space-lg: var(--mt-space-4);
+    --mt-space-xl: var(--mt-space-5);
+    --mt-space-2xl: var(--mt-space-5);
+    --mt-space-3xl: var(--mt-space-6);
+    --mt-space-4xl: var(--mt-space-6);
+    --mt-space-5xl: var(--mt-space-7);
+    --mt-space-6xl: var(--mt-space-8);
+    --mt-space-gutter: clamp(var(--mt-space-4), 0.75rem + 1.2vw, var(--mt-space-6));
+    --mt-space-section: clamp(var(--mt-space-7), 2rem + 4vw, var(--mt-space-9));
 
-    --padding-3xs: var(--brand-space-3xs);
-    --padding-2xs: var(--brand-space-2xs);
-    --padding-xs: var(--brand-space-xs);
-    --padding-sm: var(--brand-space-sm);
-    --padding-md: var(--brand-space-md);
-    --padding-lg: var(--brand-space-lg);
-    --padding-xl: var(--brand-space-xl);
-    --padding-2xl: var(--brand-space-2xl);
-    --padding-3xl: var(--brand-space-3xl);
-    --padding-4xl: var(--brand-space-4xl);
-    --padding-5xl: var(--brand-space-5xl);
-    --padding-6xl: var(--brand-space-6xl);
+    /* brand-space-* mirrors the same scale (splash / older consumers) */
+    --brand-space-3xs: var(--mt-space-3xs);
+    --brand-space-2xs: var(--mt-space-2xs);
+    --brand-space-xs: var(--mt-space-xs);
+    --brand-space-sm: var(--mt-space-sm);
+    --brand-space-md: var(--mt-space-md);
+    --brand-space-lg: var(--mt-space-lg);
+    --brand-space-xl: var(--mt-space-xl);
+    --brand-space-2xl: var(--mt-space-2xl);
+    --brand-space-3xl: var(--mt-space-3xl);
+    --brand-space-4xl: var(--mt-space-4xl);
+    --brand-space-5xl: var(--mt-space-5xl);
+    --brand-space-6xl: var(--mt-space-6xl);
 
-    --gap-3xs: var(--brand-space-3xs);
-    --gap-2xs: 0.3rem;
-    --gap-xs: var(--brand-space-xs);
-    --gap-sm: var(--brand-space-sm);
-    --gap-md: 0.9rem;
-    --gap-lg: var(--brand-space-lg);
-    --gap-xl: var(--brand-space-xl);
-    --gap-2xl: var(--brand-space-4xl);
-    --gap-3xl: var(--brand-space-5xl);
+    /*
+      Maison semantic token layer (Gap 1)
+      color: --mt-color-* → --mt-surface-* → Horizon --color-*
+      type SIZE steps owned in fonts.liquid (--mt-type-xs…4xl Utopia scale);
+      roles below only map onto those steps. Do not redefine clamp math here.
+    */
+
+    --mt-type-family-body: var(--font-body--family);
+    --mt-type-family-accent: var(--font-accent--family);
+    --mt-type-family-heading: var(--font-heading--family);
+    --mt-type-family-wordmark: var(--font-wordmark--family);
+    --mt-type-family-mono: var(--font-mono--family);
+    --mt-type-family-devanagari: var(--font-devanagari--family);
+    --mt-type-body: var(--mt-type-md, var(--font-size--brand-body, 1rem));
+    --mt-type-accent: var(--mt-type-xs, var(--font-size--brand-accent, 0.6944rem));
+    --mt-type-nav: var(--mt-type-sm, var(--font-size--brand-nav, 0.8333rem));
+    --mt-type-button: var(--mt-type-xs, var(--font-size--brand-button, 0.6944rem));
+    --mt-type-lede: var(--mt-type-lg, var(--font-size--fluid-lg));
+    --mt-type-title: var(--mt-type-xl, var(--font-size--fluid-xl));
+    --mt-type-heading: var(--mt-type-2xl, var(--font-size--brand-heading));
+    --mt-type-display: var(--mt-type-3xl, var(--font-size--fluid-3xl));
+    --mt-type-display-lg: var(--mt-type-4xl, var(--font-size--fluid-display));
+    --mt-type-mono: var(--mt-type-xs, var(--font-size--fluid-xs));
+    --mt-type-wordmark: var(--font-size--brand-wordmark, clamp(1.25rem, 1.05rem + 0.8vw, 1.875rem));
+    --mt-type-wordmark-display: var(--font-size--brand-wordmark-display, clamp(2.75rem, 1.4rem + 9cqi, 9rem));
+    --mt-type-wordmark-splash: var(--font-size--brand-wordmark-splash, clamp(2.75rem, calc(69vw / 5.5), 14rem));
+    --mt-type-tracking-heading: -0.02em;
+    --mt-type-tracking-wordmark: var(--letter-spacing--wordmark, -0.07em);
+    --mt-type-tracking-accent: 0.08em;
+    --mt-type-leading-body: 1.65;
+
+    --mt-surface-canvas: var(--mt-color-limewash);
+    --mt-surface-raised: var(--mt-color-bone);
+    --mt-surface-ink: var(--mt-color-soot);
+    --mt-surface-accent: var(--mt-color-bell);
+    --mt-surface-heat: var(--mt-color-ember);
+    --mt-surface-metal: var(--mt-color-copper);
+    --mt-surface-clay: var(--mt-color-clay);
+    --mt-surface-steel: var(--mt-color-steel);
+    --mt-surface-patina: var(--mt-color-verdigris);
+    --mt-surface-border: rgb(var(--mt-color-bell-rgb) / 0.3);
+    --mt-surface-border-subtle: rgb(var(--mt-color-soot-rgb) / 0.1);
+
+    --mt-elevation-sm: 0 4px 12px rgb(var(--mt-color-soot-rgb) / 0.06);
+    --mt-elevation-md: 0 12px 28px rgb(var(--mt-color-soot-rgb) / 0.07);
+    --mt-elevation-lg: var(--glass-shadow-lg, 0 20px 50px rgb(var(--mt-color-soot-rgb) / 0.22));
+    --mt-elevation-glow: var(--glass-shadow-glow, 0 0 30px rgb(var(--mt-color-bell-rgb) / 0.25));
+    --mt-elevation-heat: 0 4px 16px rgb(var(--mt-color-ember-rgb) / 0.3);
+
+    --mt-ease-strike: var(--ease-strike);
+    --mt-dur-fast: var(--dur-fast);
+    --mt-dur-mid: var(--dur-mid);
+    --mt-dur-slow: var(--dur-slow);
+
+    --margin-3xs: var(--mt-space-1);
+    --margin-2xs: var(--mt-space-1);
+    --margin-xs: var(--mt-space-2);
+    --margin-sm: var(--mt-space-3);
+    --margin-md: var(--mt-space-4);
+    --margin-lg: var(--mt-space-4);
+    --margin-xl: var(--mt-space-5);
+    --margin-2xl: var(--mt-space-5);
+    --margin-4xl: var(--mt-space-6);
+    --margin-6xl: var(--mt-space-8);
+
+    --padding-3xs: var(--mt-space-1);
+    --padding-2xs: var(--mt-space-1);
+    --padding-xs: var(--mt-space-2);
+    --padding-sm: var(--mt-space-3);
+    --padding-md: var(--mt-space-4);
+    --padding-lg: var(--mt-space-4);
+    --padding-xl: var(--mt-space-5);
+    --padding-2xl: var(--mt-space-5);
+    --padding-3xl: var(--mt-space-6);
+    --padding-4xl: var(--mt-space-6);
+    --padding-5xl: var(--mt-space-7);
+    --padding-6xl: var(--mt-space-8);
+
+    --gap-3xs: var(--mt-space-1);
+    --gap-2xs: var(--mt-space-1);
+    --gap-xs: var(--mt-space-2);
+    --gap-sm: var(--mt-space-3);
+    --gap-md: var(--mt-space-4);
+    --gap-lg: var(--mt-space-4);
+    --gap-xl: var(--mt-space-5);
+    --gap-2xl: var(--mt-space-6);
+    --gap-3xl: var(--mt-space-7);
 
     --spacing-scale-md: 0.7;
     --spacing-scale-default: 1.0;
@@ -807,189 +925,94 @@
 %}
 
 {%- comment -%}
-  ═══════════════════════════════════════════════════════════════
-  MAISON TAVO — Brand Font & Colour Override
-  Placed LAST so it wins the cascade over all Horizon picker vars.
-  Fonts: Fraunces (display/heading) · Hanken Grotesk (body/UI)
-         JetBrains Mono (specs/prices/agent) · Noto Serif Devanagari
-  Colours: 9 canonical brand tokens. Never override with new hues.
-  ═══════════════════════════════════════════════════════════════
+  MAISON TAVO — Brand token lock (variables only)
+  Element skins live in color-palette (last in <head>) + base.css utilities.
+  Never use [class*="…"] or global button nukes — they break Horizon drawer/facets.
 {%- endcomment -%}
 {% style %}
   :root {
-    /* ── Brand typefaces (override Shopify picker variables) ──────── */
-    --font-body--family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body--family: 'Bai Jamjuree', 'Bai Jamjuree Fallback', system-ui, sans-serif;
     --font-body--weight: 400;
     --font-body--style: normal;
-    --font-subheading--family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-subheading--family: 'Satoshi', 'Satoshi Fallback', system-ui, sans-serif;
     --font-subheading--weight: 500;
     --font-subheading--style: normal;
-    --font-heading--family: 'Fraunces', 'Libre Baskerville', Georgia, serif;
-    --font-heading--weight: 300;
+    --font-heading--family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
+    --font-heading--weight: 400;
     --font-heading--style: normal;
-    --font-accent--family: 'JetBrains Mono', 'Anonymous Pro', monospace;
-    --font-accent--weight: 400;
+    --font-accent--family: 'Satoshi', 'Satoshi Fallback', system-ui, sans-serif;
+    --font-accent--weight: 500;
     --font-accent--style: normal;
-    --font-mono--family: 'JetBrains Mono', 'Anonymous Pro', monospace;
+    --font-highlight--family: var(--font-heading--family);
+    --font-wordmark--family: 'Noto Serif', 'Noto Serif Wordmark Fallback', Georgia, serif;
+    --font-mono--family: 'JetBrains Mono', 'JetBrains Mono Fallback', ui-monospace, monospace;
     --font-mono--weight: 400;
     --font-mono--style: normal;
-    --font-devanagari--family: 'Noto Serif Devanagari', 'Tiro Devanagari Hindi', serif;
+    --font-devanagari--family: 'Noto Serif Devanagari', 'Noto Serif Devanagari Fallback', 'Tiro Devanagari Hindi', serif;
+    --brand-font-body: var(--font-body--family);
+    --brand-font-accent: var(--font-accent--family);
+    --brand-font-heading: var(--font-heading--family);
+    --brand-font-wordmark: var(--font-wordmark--family);
+    --brand-font-mono: var(--font-mono--family);
 
-    /* ── Brand colour tokens ─────────────────────────────────────── */
-    --soot:      #14110F;
-    --limewash:  #EFE8DC;
-    --bone:      #F7F2E9;
-    --bell:      #B8893A;
-    --copper:    #C2703D;
-    --clay:      #8E4B35;
-    --steel:     #8C9094;
-    --verdigris: #4F7F72;
-    --ember:     #E2552B;
+    /* Reaffirm color primitives after font lock (colors only) */
+    --mt-color-soot: #14110f;
+    --mt-color-soot-rgb: 20, 17, 15;
+    --mt-color-limewash: #efe8dc;
+    --mt-color-limewash-rgb: 239, 232, 220;
+    --mt-color-bone: #f7f2e9;
+    --mt-color-bone-rgb: 247, 242, 233;
+    --mt-color-bell: #b8893a;
+    --mt-color-bell-rgb: 184, 137, 58;
+    --mt-color-copper: #c2703d;
+    --mt-color-copper-rgb: 194, 112, 61;
+    --mt-color-clay: #8e4b35;
+    --mt-color-clay-rgb: 142, 75, 53;
+    --mt-color-steel: #8c9094;
+    --mt-color-steel-rgb: 140, 144, 148;
+    --mt-color-verdigris: #4f7f72;
+    --mt-color-verdigris-rgb: 79, 127, 114;
+    --mt-color-ember: #e2552b;
+    --mt-color-ember-rgb: 226, 85, 43;
 
-    /* ── Easing & duration tokens ────────────────────────────────── */
-    --ease-strike: cubic-bezier(.2,.8,.2,1);
-    --dur-slow:    900ms;
-    --dur-mid:     420ms;
-    --dur-fast:    160ms;
-  }
+    --soot: var(--mt-color-soot);
+    --limewash: var(--mt-color-limewash);
+    --bone: var(--mt-color-bone);
+    --bell: var(--mt-color-bell);
+    --copper: var(--mt-color-copper);
+    --clay: var(--mt-color-clay);
+    --steel: var(--mt-color-steel);
+    --verdigris: var(--mt-color-verdigris);
+    --ember: var(--mt-color-ember);
 
-  /* Apply body font globally — highest specificity wins over theme selectors */
-  html, body {
-    font-family: var(--font-body--family) !important;
-    background-color: var(--limewash) !important;
-    color: var(--soot) !important;
-  }
+    --ease-strike: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --dur-slow: 900ms;
+    --dur-mid: 420ms;
+    --dur-fast: 160ms;
 
-  /* Headings: Fraunces with optical sizing */
-  h1, h2, h3, h4, h5, h6,
-  .h1, .h2, .h3, .h4, .h5, .h6,
-  [class*="heading"],
-  .title, .product-title, .collection-title {
-    font-family: var(--font-heading--family) !important;
-    font-weight: 300 !important;
-    font-variation-settings: 'opsz' 72 !important;
-    letter-spacing: -0.02em !important;
-  }
-
-  h1, .h1 { font-variation-settings: 'opsz' 144 !important; letter-spacing: -0.03em !important; }
-  h2, .h2 { font-variation-settings: 'opsz' 72 !important; }
-  h3, .h3 { font-variation-settings: 'opsz' 36 !important; letter-spacing: -0.015em !important; }
-
-  /* Subheadings / UI labels: Hanken Grotesk medium */
-  .caption, .label, label,
-  nav, [class*="nav"],
-  [class*="menu"], [class*="menu-item"],
-  [class*="pill"], [class*="badge"],
-  [class*="eyebrow"], [class*="overline"],
-  .announcement-bar__message {
-    font-family: var(--font-subheading--family) !important;
-    font-weight: 500 !important;
-    letter-spacing: 0.04em !important;
-  }
-
-  /* Mono: prices, specs, agent surfaces */
-  .price, .price-item, [class*="price"],
-  .sku, [class*="sku"],
-  [class*="spec"], [class*="mono"],
-  code, pre, .agent-view, .ucp-view {
-    font-family: var(--font-mono--family) !important;
-    font-variant-numeric: tabular-nums !important;
-  }
-
-  /* Devanagari wordmark */
-  .maison-devanagari, [lang="hi"], .kansa-script {
-    font-family: var(--font-devanagari--family) !important;
-    letter-spacing: 0.04em !important;
+    /* Refresh semantic aliases after font lock */
+    --mt-type-family-body: var(--font-body--family);
+    --mt-type-family-accent: var(--font-accent--family);
+    --mt-type-family-heading: var(--font-heading--family);
+    --mt-type-family-wordmark: var(--font-wordmark--family);
+    --mt-type-family-mono: var(--font-mono--family);
+    --mt-type-family-devanagari: var(--font-devanagari--family);
+    --mt-surface-canvas: var(--mt-color-limewash);
+    --mt-surface-raised: var(--mt-color-bone);
+    --mt-surface-ink: var(--mt-color-soot);
+    --mt-surface-accent: var(--mt-color-bell);
+    --mt-surface-heat: var(--mt-color-ember);
+    --mt-surface-metal: var(--mt-color-copper);
+    --mt-surface-clay: var(--mt-color-clay);
+    --mt-surface-steel: var(--mt-color-steel);
+    --mt-surface-patina: var(--mt-color-verdigris);
+    --mt-ease-strike: var(--ease-strike);
+    --mt-dur-fast: var(--dur-fast);
+    --mt-dur-mid: var(--dur-mid);
+    --mt-dur-slow: var(--dur-slow);
   }
 
-  /* ── Colour application ──────────────────────────────────────────── */
-  /* Header */
-  .header, header, [id="shopify-section-header"] {
-    background-color: var(--limewash) !important;
-    border-bottom: 1px solid color-mix(in srgb, var(--bell) 30%, transparent) !important;
-    color: var(--soot) !important;
-  }
-
-  /* Primary buttons → soot bg, bone text, ember hover */
-  .button--primary, .btn-primary,
-  [class*="button--primary"], input[type="submit"],
-  button[name="add"] {
-    background-color: var(--soot) !important;
-    color: var(--bone) !important;
-    border: 1px solid var(--bell) !important;
-    font-family: var(--font-subheading--family) !important;
-    letter-spacing: 0.08em !important;
-    text-transform: uppercase !important;
-    font-size: 0.75rem !important;
-    transition: background-color var(--dur-mid) var(--ease-strike),
-                border-color var(--dur-mid) var(--ease-strike) !important;
-  }
-  .button--primary:hover, .btn-primary:hover,
-  button[name="add"]:hover {
-    background-color: var(--ember) !important;
-    border-color: var(--ember) !important;
-  }
-
-  /* Secondary buttons → transparent, bell border */
-  .button--secondary, .btn-secondary,
-  [class*="button--secondary"] {
-    background-color: transparent !important;
-    color: var(--soot) !important;
-    border: 1px solid var(--bell) !important;
-  }
-
-  /* Announcement bar → soot on bone */
-  .announcement-bar, [class*="announcement"] {
-    background-color: var(--soot) !important;
-    color: var(--bone) !important;
-  }
-
-  /* Product / collection cards */
-  .card-wrapper, .product-card, [class*="product-card"],
-  .collection-card, [class*="card-wrapper"] {
-    background-color: var(--bone) !important;
-    border: 1px solid transparent !important;
-    transition: border-color var(--dur-mid) var(--ease-strike) !important;
-  }
-  .card-wrapper:hover, .product-card:hover,
-  [class*="product-card"]:hover {
-    border-color: var(--bell) !important;
-  }
-
-  /* Footer → soot background */
-  .footer, footer, [id*="footer"],
-  [class*="footer"] {
-    background-color: var(--soot) !important;
-    color: var(--bone) !important;
-  }
-  .footer a, footer a, [class*="footer"] a {
-    color: color-mix(in srgb, var(--bone) 80%, var(--bell)) !important;
-  }
-
-  /* Links */
-  a:not([class*="button"]):not([class*="btn"]) {
-    color: inherit !important;
-  }
-  a:not([class*="button"]):not([class*="btn"]):hover {
-    color: var(--bell) !important;
-  }
-
-  /* Cart drawer */
-  .drawer, [class*="cart-drawer"] {
-    background-color: var(--bone) !important;
-    color: var(--soot) !important;
-  }
-
-  /* Inputs */
-  input, textarea, select {
-    font-family: var(--font-body--family) !important;
-    border-color: color-mix(in srgb, var(--bell) 40%, transparent) !important;
-    background-color: var(--bone) !important;
-    color: var(--soot) !important;
-  }
-  input:focus, textarea:focus, select:focus {
-    border-color: var(--bell) !important;
-    outline: none !important;
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--bell) 20%, transparent) !important;
+  html {
+    font-size: 100%;
   }
 {% endstyle %}

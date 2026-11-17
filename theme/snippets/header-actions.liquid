@@ -153,7 +153,7 @@
 
 {% stylesheet %}
   .account-button {
-    /* Remove the background color from the color scheme, we want to inherit the color of the header */
+    /* Inherit header ground — do not paint a separate scheme plate */
     background: transparent;
   }
 
@@ -164,37 +164,77 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  .account-button__text {
+    font-family: var(--font-accent--family, var(--font-body--family));
+    font-weight: var(--font-accent--weight, 500);
+    letter-spacing: 0.02em;
+  }
+
+  /*
+    New Customer Accounts sheet — themeable CSS vars only.
+    Hosted login/register UI stays on Shopify; this styles the storefront chrome.
+  */
   shopify-account {
-    --shopify-account-font-heading: var(--font-heading--family);
-    --shopify-account-font-heading-weight: var(--font-heading--weight);
-    --shopify-account-font-body: var(--font-body--family);
-    --shopify-account-font-body-weight: var(--font-body--weight);
-    --shopify-account-radius-base: var(--style-border-radius-popover);
-    --shopify-account-radius-button: var(--style-border-radius-buttons-primary);
-    --shopify-account-radius-button-small: var(--style-border-radius-buttons-primary);
-    --shopify-account-radius-input: var(--style-border-radius-buttons-primary);
-    --shopify-account-color-background: var(--color-background);
-    --shopify-account-color-text: var(--color-foreground);
-    --shopify-account-color-accent: var(--color-primary-button-background);
-    --shopify-account-color-accent-text: var(--color-primary-button-text);
-    --shopify-account-dialog-position-top: calc(var(--account-dialog-top, var(--header-height, 0px)) + 10px);
+    --shopify-account-font-heading: var(--font-heading--family, 'Instrument Serif', Georgia, serif);
+    --shopify-account-font-heading-weight: var(--font-heading--weight, 400);
+    --shopify-account-font-heading-transform: none;
+    --shopify-account-font-body: var(--font-body--family, 'Bai Jamjuree', system-ui, sans-serif);
+    --shopify-account-font-body-weight: var(--font-body--weight, 400);
+    --shopify-account-font-body-transform: none;
+    --shopify-account-radius-base: 0.25rem;
+    --shopify-account-radius-dialog: 0.25rem;
+    --shopify-account-radius-button: 0.125rem;
+    --shopify-account-radius-button-small: 0.125rem;
+    --shopify-account-radius-input: 0.125rem;
+    --shopify-account-color-background: var(--bone, var(--color-background));
+    --shopify-account-color-background-subdued: var(--limewash, var(--color-background));
+    --shopify-account-color-card-background: var(--bone, var(--color-background));
+    --shopify-account-color-card-text: var(--soot, var(--color-foreground));
+    --shopify-account-color-text: var(--soot, var(--color-foreground));
+    --shopify-account-color-text-subdued: color-mix(in srgb, var(--soot, #14110f) 62%, transparent);
+    --shopify-account-color-border: color-mix(in srgb, var(--soot, #14110f) 14%, transparent);
+    --shopify-account-color-control-background: var(--limewash, var(--color-background));
+    --shopify-account-color-control-text: var(--soot, var(--color-foreground));
+    --shopify-account-color-accent: var(--bell, var(--color-primary-button-background));
+    --shopify-account-color-accent-hover: var(--ember, var(--bell, var(--color-primary-button-background)));
+    --shopify-account-color-accent-text: var(--bone, var(--color-primary-button-text, #f7f2e9));
+    --shopify-account-color-shadow: color-mix(in srgb, var(--soot, #14110f) 16%, transparent);
+    --shopify-account-signed-in-avatar-color-background: var(--soot, var(--color-foreground));
+    --shopify-account-signed-in-avatar-color-text: var(--limewash, var(--color-background));
+    --shopify-account-signed-in-avatar-size: 1.75rem;
+    --shopify-account-dialog-position-top: calc(var(--account-dialog-top, var(--header-height, 0px)) + 0.625rem);
 
     &:not(:defined) {
-      min-width: 44px;
-      height: 44px;
+      min-width: 2.75rem;
+      height: 2.75rem;
       display: flex;
       justify-content: center;
       align-items: center;
-      /* Match the line height of the other buttons */
       line-height: normal;
     }
   }
 
+  shopify-account::part(signed-out-avatar) {
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.125rem;
+    color: inherit;
+    background: transparent;
+  }
+
+  shopify-account::part(signed-out-avatar):focus-visible {
+    outline: 0.125rem solid var(--bell, var(--color-foreground));
+    outline-offset: 0.1875rem;
+  }
+
   .account-button__fallback {
-    width: 28px;
-    height: 28px;
+    width: 1.75rem;
+    height: 1.75rem;
     border-radius: 50%;
-    background-color: var(--shopify-account-color-accent, #0a142f);
+    background-color: var(--shopify-account-signed-in-avatar-color-background, var(--soot, #14110f));
   }
 
   .account-button--text shopify-account {

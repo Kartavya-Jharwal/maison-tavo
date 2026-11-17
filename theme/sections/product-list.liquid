@@ -24,8 +24,9 @@
     {% render 'spacing-style', settings: section.settings %}
     {% render 'gap-style', value: section.settings.gap %}
   "
+  data-mt-chapter
 >
-  <div class="section-resource-list__header">
+  <div class="section-resource-list__header" data-mt-scroll="chapter">
     {%- content_for 'block', type: '_product-list-content', id: 'static-header' -%}
   </div>
 
@@ -35,6 +36,7 @@
         {% for product in section.settings.collection.products limit: max_items %}
         <div
           class="resource-list__item"
+          data-mt-scroll-item
         >
             {% content_for 'block',
               type: '_product-card',
@@ -53,6 +55,7 @@
       {% for i in (1..max_items) %}
         <div
           class="resource-list__item"
+          data-mt-scroll-item
         >
             {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: null %}
         </div>
@@ -69,14 +72,16 @@
     assign list_items_array = list_items | strip | split: '<!--@list/split-->'
   %}
 
-  {% render 'resource-list',
-    list_items: list_items,
-    list_items_array: list_items_array,
-    settings: section.settings,
-    slide_count: max_items,
-    content_type: 'products',
-    test_id: 'resource-list-grid'
-  %}
+  <div data-mt-scroll="stagger">
+    {% render 'resource-list',
+      list_items: list_items,
+      list_items_array: list_items_array,
+      settings: section.settings,
+      slide_count: max_items,
+      content_type: 'products',
+      test_id: 'resource-list-grid'
+    %}
+  </div>
 
   <div
     class="section-resource-list__content"

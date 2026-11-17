@@ -40,19 +40,27 @@
         {% content_for 'block', type: 'filters', id: 'filters', results: search, results_size: search.results_count %}
         {% assign products = search.results | where: 'object_type', 'product' %}
       {% else %}
-        {% assign collection = settings.empty_state_collection | default: collections.all %}
-        {% assign default_title = 'content.search_results_resource_products' | t %}
-        {% assign title = settings.empty_state_collection.title | default: default_title %}
-        {% assign products = collection.products %}
+        {% comment %}
+          Keep zero-result searches honest — do not substitute empty_state_collection /
+          collections.all products (unpublished catalog may legitimately return nothing).
+        {% endcomment %}
+        {% assign products = search.results | where: 'object_type', 'product' %}
       {% endif %}
 
       {% capture children %}
         {% for product in products %}
+          {% liquid
+            assign tags_joined = product.tags | join: ' '
+            assign search_corpus = product.title | append: ' ' | append: product.type | append: ' ' | append: product.handle | append: ' ' | append: tags_joined
+          %}
           <li
             id="{{ section.id }}-{{ product.id }}"
             class="product-grid__item product-grid__item--{{ forloop.index0 }}"
             data-page="{{ paginate.current_page }}"
             data-product-id="{{ product.id }}"
+            data-maison-search-item
+            data-search-corpus="{{ search_corpus | escape }}"
+            data-product-type="{{ product.type | escape }}"
             ref="cards[]"
           >
             {% content_for 'block',

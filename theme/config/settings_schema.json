@@ -1667,6 +1667,21 @@
           }
         ],
         "default": "default"
+      },
+      {
+        "type": "header",
+        "content": "t:content.font_awesome_kit"
+      },
+      {
+        "type": "paragraph",
+        "content": "t:content.font_awesome_kit_help"
+      },
+      {
+        "type": "text",
+        "id": "font_awesome_kit_id",
+        "label": "t:settings.font_awesome_kit_id",
+        "info": "t:info.font_awesome_kit_id",
+        "placeholder": "REPLACE_WITH_FA_KIT_ID"
       }
     ]
   },
@@ -2222,15 +2237,81 @@
       },
       {
         "type": "number",
-        "id": "brand_z_splash",
-        "label": "t:settings.brand_z_splash",
-        "default": 9999
+        "id": "brand_z_section_background",
+        "label": "t:settings.brand_z_section_background",
+        "default": -2
+      },
+      {
+        "type": "number",
+        "id": "brand_z_lowest",
+        "label": "t:settings.brand_z_lowest",
+        "default": -1
+      },
+      {
+        "type": "number",
+        "id": "brand_z_base",
+        "label": "t:settings.brand_z_base",
+        "default": 0
+      },
+      {
+        "type": "number",
+        "id": "brand_z_flat",
+        "label": "t:settings.brand_z_flat",
+        "default": 1
+      },
+      {
+        "type": "number",
+        "id": "brand_z_raised",
+        "label": "t:settings.brand_z_raised",
+        "default": 2
+      },
+      {
+        "type": "number",
+        "id": "brand_z_heightened",
+        "label": "t:settings.brand_z_heightened",
+        "default": 4
+      },
+      {
+        "type": "number",
+        "id": "brand_z_sticky",
+        "label": "t:settings.brand_z_sticky",
+        "default": 8
+      },
+      {
+        "type": "number",
+        "id": "brand_z_window_overlay",
+        "label": "t:settings.brand_z_window_overlay",
+        "default": 10
+      },
+      {
+        "type": "number",
+        "id": "brand_z_header_menu",
+        "label": "t:settings.brand_z_header_menu",
+        "default": 12
+      },
+      {
+        "type": "number",
+        "id": "brand_z_overlay",
+        "label": "t:settings.brand_z_overlay",
+        "default": 16
+      },
+      {
+        "type": "number",
+        "id": "brand_z_menu_drawer",
+        "label": "t:settings.brand_z_menu_drawer",
+        "default": 18
       },
       {
         "type": "number",
         "id": "brand_z_temporary",
         "label": "t:settings.brand_z_temporary",
         "default": 1000
+      },
+      {
+        "type": "number",
+        "id": "brand_z_splash",
+        "label": "t:settings.brand_z_splash",
+        "default": 9999
       }
     ]
   },

@@ -311,13 +311,25 @@ class PredictiveSearchComponent extends Component {
 
   /**
    * Fetch search results using the section renderer and update the results container.
+   * MaisonSearchAssist (optional) expands synonyms/typos for the Shopify query,
+   * then re-ranks the morphed product cards client-side — no alternate search screen.
    * @param {string} searchTerm - The term to search for
    */
   async #getSearchResults(searchTerm) {
     if (!this.dataset.sectionId) return;
 
+    const assist = globalThis.MaisonSearchAssist;
+    const prepared =
+      assist && typeof assist.preparePredictiveQuery === 'function'
+        ? assist.preparePredictiveQuery(searchTerm)
+        : { query: searchTerm, original: searchTerm, aliases: [] };
+
+    const fetchTerm = prepared.query || searchTerm;
+    this.dataset.maisonOriginalQuery = prepared.original || searchTerm;
+    this.dataset.maisonAliases = (prepared.aliases || []).join(',');
+
     const url = new URL(Theme.routes.predictive_search_url, location.origin);
-    url.searchParams.set('q', searchTerm);
+    url.searchParams.set('q', fetchTerm);
     url.searchParams.set('resources[limit_scope]', 'each');
 
     const { predictiveSearchResults } = this.refs;
@@ -349,6 +361,15 @@ class PredictiveSearchComponent extends Component {
         }
 
         morph(predictiveSearchResults, resultsMarkup);
+
+        if (assist && typeof assist.afterPredictiveMorph === 'function') {
+          assist.afterPredictiveMorph(
+            predictiveSearchResults,
+            fetchTerm,
+            prepared.original || searchTerm,
+            prepared.aliases || []
+          );
+        }
 
         this.#resetScrollPositions();
 

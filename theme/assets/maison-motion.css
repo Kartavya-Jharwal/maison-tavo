@@ -25,4 +25,33 @@ html.maison-motion-active .cart-bubble {
     opacity: 1 !important;
     transform: none !important;
   }
+
+  [data-mt-scroll],
+  [data-mt-scroll-item],
+  [data-mt-scrub],
+  [data-mt-chapter] {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+  }
+}
+
+html[data-reduced-motion='true'] [data-mt-scroll],
+html[data-reduced-motion='true'] [data-mt-scroll-item],
+html[data-reduced-motion='true'] [data-mt-scrub],
+html[data-reduced-motion='true'] [data-mt-chapter] {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+
+/* Kinetic SplitText word masks (GSAP) stay inline with Instrument Serif. */
+.mt-word {
+  display: inline-block;
+}
+
+.mt-word-mask {
+  display: inline-block;
+  vertical-align: top;
+  overflow: clip;
 }

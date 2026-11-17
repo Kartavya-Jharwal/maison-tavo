@@ -88,7 +88,6 @@
 <div
   class="section section--page-width spacing-style maison-tree"
   style="{% render 'spacing-style', settings: section.settings %}"
-  data-mt-scroll
 >
   <nav class="maison-tree__crumb" aria-label="Breadcrumb">
     <ol>
@@ -106,7 +105,7 @@
     </ol>
   </nav>
 
-  <header class="maison-tree__header">
+  <header class="maison-tree__header" data-mt-scroll="chapter">
     <p class="maison-tree__eyebrow">
       {% if section.settings.eyebrow != blank %}
         {{ section.settings.eyebrow | escape }}
@@ -137,10 +136,9 @@
   {% endif %}
 
   <p class="maison-tree__kansa">
-    <a href="/pages/kansa">Kansa</a>
-    is a room of its own — the companion for a piece you already hold.
-    <a href="/pages/new-arrivals">New arrivals</a>
-    keeps the current heat.
+    <a href="/pages/kansa">Kansa</a> — living will of the house for a piece you hold.
+    <span aria-hidden="true"> · </span>
+    <a href="/pages/releases">Releases</a>
   </p>
 </div>
 
@@ -152,19 +150,19 @@
   .maison-tree__crumb ol {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem 0.5rem;
-    margin: 0 0 1.5rem;
+    gap: var(--mt-space-1) var(--mt-space-2);
+    margin: 0 0 clamp(var(--mt-space-5), 3vw, var(--mt-space-6));
     padding: 0;
     list-style: none;
-    font-family: var(--font-mono--family, ui-monospace, monospace);
-    font-size: 0.75rem;
-    letter-spacing: 0.06em;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
+    letter-spacing: var(--mt-type-tracking-accent);
     text-transform: uppercase;
   }
 
   .maison-tree__crumb li:not(:last-child)::after {
     content: "/";
-    margin-inline-start: 0.5rem;
+    margin-inline-start: var(--mt-space-2);
     color: var(--color-foreground-muted);
   }
 
@@ -180,30 +178,37 @@
 
   .maison-tree__eyebrow {
     margin: 0;
-    font-family: var(--font-mono--family, ui-monospace, monospace);
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-foreground-muted);
   }
 
   .maison-tree__title {
-    margin: 0.4rem 0 1.25rem;
-    font-family: var(--font-heading--family);
-    font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+    margin: var(--mt-space-2) 0 0;
+    max-width: 16ch;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-title);
     font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: var(--mt-type-tracking-heading);
+  }
+
+  .maison-tree__header {
+    margin-block-end: clamp(var(--mt-space-5), 3.5vw, var(--mt-space-6));
   }
 
   .maison-tree__group + .maison-tree__group {
-    margin-block-start: 1.25rem;
+    margin-block-start: clamp(var(--mt-space-5), 2.5vw, var(--mt-space-6));
   }
 
   .maison-tree__label {
-    margin: 0 0 0.55rem;
-    font-family: var(--font-mono--family, ui-monospace, monospace);
-    font-size: 0.6875rem;
+    margin: 0 0 var(--mt-space-3);
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
     font-weight: 400;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-foreground-muted);
   }
@@ -211,20 +216,44 @@
   .maison-tree__list {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--mt-space-2);
     margin: 0;
     padding: 0;
     list-style: none;
+    max-width: 100%;
   }
 
   .maison-tree__list a {
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
-    padding: 0.35rem 0.8rem;
-    border: 1px solid var(--color-border);
+    min-height: var(--mt-space-6);
+    padding: var(--mt-space-1) var(--mt-space-4);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.18);
+    border-radius: 2px;
     color: inherit;
     text-decoration: none;
+    font-size: var(--mt-type-accent);
+    line-height: 1.2;
+    white-space: nowrap;
+    transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+  }
+
+  @media screen and (max-width: 749px) {
+    .maison-tree__list {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+      padding-block-end: var(--mt-space-1);
+      scrollbar-width: thin;
+      gap: var(--mt-space-1);
+    }
+
+    .maison-tree__list a {
+      flex: 0 0 auto;
+      min-height: calc(var(--mt-space-6) + var(--mt-space-1));
+      padding-inline: var(--mt-space-3);
+    }
   }
 
   .maison-tree__list a[aria-current='page'] {
@@ -238,18 +267,32 @@
   }
 
   .maison-tree a:focus-visible {
-    outline: 2px solid var(--color-foreground);
+    outline: 2px solid var(--bell, #b8893a);
     outline-offset: 3px;
   }
 
   .maison-tree__kansa {
-    max-width: 42rem;
-    margin: 1.5rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--mt-space-1);
+    max-width: 36rem;
+    margin: var(--mt-space-6) 0 0;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
+    letter-spacing: var(--mt-type-tracking-accent);
+    text-transform: uppercase;
     color: var(--color-foreground-muted);
   }
 
   .maison-tree__kansa a {
     color: var(--color-foreground);
+    text-decoration: none;
+  }
+
+  .maison-tree__kansa a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
   }
 {% endstylesheet %}
 

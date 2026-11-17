@@ -1,423 +1,548 @@
 {% comment %}
-  Maison Tavo — V2 Signature Hero: "Heat takes shape."
-  Art Direction: "The forge, the kitchen, the temple bell."
-  Asymmetric editorial layout, Fraunces serif display, Devanagari signature,
-  tactile provenance indicators, and direct exploration pathways.
+  Maison Tavo — Post-splash full-bleed hero.
+  First viewport: brand + Instrument Serif headline + house tagline + CTA.
+  Art-directed crops via <picture> (optional mobile/tablet images) + CSS object-fit.
+  Media: section pickers → Forge Hybrid product → assets/maison-hero.svg (swap for maison-hero.jpg).
 {% endcomment %}
 
+{% liquid
+  assign hero_desktop = section.settings.image
+  assign hero_tablet = section.settings.image_tablet
+  assign hero_mobile = section.settings.image_mobile
+  assign hero_alt = section.settings.image_alt | strip
+  assign headline = section.settings.headline | default: 'Heat takes shape.'
+  assign tagline = section.settings.tagline | default: 'Cook with what outlasts you.'
+  assign brand_label = section.settings.brand | default: 'Maison Tavo'
+  assign media_mode = 'asset'
+
+  if hero_desktop == blank
+    assign forge_collection = collections['forge-hybrid']
+    if forge_collection != blank and forge_collection.products_count > 0
+      assign hero_product = forge_collection.products.first
+      if hero_product.featured_image != blank
+        assign hero_desktop = hero_product.featured_image
+        if hero_alt == blank
+          assign hero_alt = hero_product.featured_image.alt | default: hero_product.title
+        endif
+      endif
+    endif
+  endif
+
+  if hero_desktop != blank
+    assign media_mode = 'image'
+  endif
+
+  if hero_alt == blank
+    assign hero_alt = 'Maison Tavo hand-forged dual-mass cookware'
+  endif
+
+  if hero_tablet == blank
+    assign hero_tablet = hero_desktop
+  endif
+  if hero_mobile == blank
+    assign hero_mobile = hero_desktop
+  endif
+%}
+
 <section class="maison-hero" data-section-id="{{ section.id }}">
-  <div class="maison-hero__container">
-    <div class="maison-hero__grid">
-      <!-- Left Editorial Column -->
-      <div class="maison-hero__editorial">
-        <div class="maison-hero__eyebrow-row">
-          <span class="maison-hero__kicker">Atelier &amp; Fonderie</span>
-          <span class="maison-hero__divider">/</span>
-          <span class="maison-hero__devanagari">कांसे की गूँज · रसोई की साधना</span>
-        </div>
-
-        <h1 class="maison-hero__headline" id="maisonHeroTitle">
-          <span class="clip-line"><span class="hero-word">Heat takes</span></span><br>
-          <span class="clip-line"><span class="hero-word maison-hero__headline--italic">shape.</span></span>
-        </h1>
-
-        <p class="maison-hero__lede">
-          Modern heirlooms for the working kitchen — metallurgy you can parse, craft you can live with.
-          Forged dual-mass carbon steel, hand-beaten bell bronze, and refractory cast clay.
-        </p>
-
-        <form class="maison-hero__search" action="{{ routes.search_url }}" method="get" role="search">
-          <label class="visually-hidden" for="MaisonHeroSearch">Search the catalogue</label>
-          <input
-            id="MaisonHeroSearch"
-            type="search"
-            name="q"
-            placeholder="Search skillets, kansa, clay"
-            autocomplete="off"
+  <div class="maison-hero__stage">
+    <div class="maison-hero__media" data-mt-scroll="image" data-mt-when="load">
+      {% if media_mode == 'image' %}
+        <picture class="maison-hero__picture" data-mt-scrub="16">
+          {% if section.settings.image_mobile != blank %}
+            <source
+              media="(max-width: 749px)"
+              srcset="
+                {{ hero_mobile | image_url: width: 750 }} 750w,
+                {{ hero_mobile | image_url: width: 1100 }} 1100w,
+                {{ hero_mobile | image_url: width: 1500 }} 1500w
+              "
+              sizes="100vw"
+              width="{{ hero_mobile.width }}"
+              height="{{ hero_mobile.height }}"
+            >
+          {% endif %}
+          {% if section.settings.image_tablet != blank %}
+            <source
+              media="(min-width: 750px) and (max-width: 1199px)"
+              srcset="
+                {{ hero_tablet | image_url: width: 1200 }} 1200w,
+                {{ hero_tablet | image_url: width: 1600 }} 1600w,
+                {{ hero_tablet | image_url: width: 2000 }} 2000w
+              "
+              sizes="100vw"
+              width="{{ hero_tablet.width }}"
+              height="{{ hero_tablet.height }}"
+            >
+          {% endif %}
+          <source
+            media="(min-width: 1200px)"
+            srcset="
+              {{ hero_desktop | image_url: width: 1600 }} 1600w,
+              {{ hero_desktop | image_url: width: 2000 }} 2000w,
+              {{ hero_desktop | image_url: width: 2400 }} 2400w,
+              {{ hero_desktop | image_url: width: 2880 }} 2880w
+            "
+            sizes="100vw"
+            width="{{ hero_desktop.width }}"
+            height="{{ hero_desktop.height }}"
           >
-          <button type="submit" class="maison-btn maison-btn--primary">Search</button>
-        </form>
-
-        <div class="maison-hero__actions">
-          <a href="{{ routes.collections_url }}" class="maison-btn maison-btn--primary">
-            <span>Shop the catalogue</span>
-            <span class="maison-btn__arrow">→</span>
-          </a>
-          <a href="/pages/new-arrivals" class="maison-btn maison-btn--subtle">
-            <span>New arrivals</span>
-          </a>
-          <a href="/pages/kansa" class="maison-btn maison-btn--text">Ask Kansa</a>
-        </div>
-      </div>
-
-      <!-- Right Visual Column -->
-      <div class="maison-hero__visual">
-        <div class="maison-hero__image-frame">
-          <img
-            src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?q=85&w=1200&auto=format&fit=crop"
-            alt="Maison Tavo Hand-Forged Dual-Mass Cookware"
-            class="maison-hero__img"
-            loading="eager"
-            width="1200"
-            height="900"
-          >
-          <div class="maison-hero__provenance-tag">
-            <span class="tag-label">SPEC NO. 01</span>
-            <span class="tag-title">Forge Relay 280 · Dual-Mass Carbon Steel</span>
-            <span class="tag-meta">Induction Ready · Bell-Bronze Rivets · 2.4kg</span>
-          </div>
-        </div>
-      </div>
+          {{
+            hero_desktop
+            | image_url: width: 2400
+            | image_tag:
+              class: 'maison-hero__img',
+              widths: '750, 1100, 1500, 1800, 2400, 2880',
+              sizes: '100vw',
+              loading: 'eager',
+              fetchpriority: 'high',
+              alt: hero_alt,
+              width: hero_desktop.width,
+              height: hero_desktop.height
+          }}
+        </picture>
+      {% else %}
+        <img
+          class="maison-hero__img maison-hero__img--asset"
+          src="{{ 'maison-hero.svg' | asset_url }}"
+          alt="{{ hero_alt | escape }}"
+          width="2400"
+          height="1600"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          data-mt-scrub="16"
+        >
+      {% endif %}
     </div>
 
-    <!-- Metallurgy Provenance Strip -->
-    <div class="maison-hero__provenance-strip" id="lineups" data-mt-scroll>
-      <a class="provenance-col" href="{{ collections['forge-hybrid'].url | default: '/collections/forge-hybrid' }}">
+    <div class="maison-hero__scrim" aria-hidden="true"></div>
+
+    <div class="maison-hero__content">
+      <p class="maison-hero__brand" data-mt-scroll data-mt-when="load">{{ brand_label | escape }}</p>
+
+      <h1
+        class="maison-hero__headline"
+        id="maisonHeroTitle"
+        data-mt-scroll="kinetic"
+        data-mt-when="load"
+        aria-label="{{ headline | escape }}"
+      >
+        {{ headline | escape }}
+      </h1>
+
+      <p class="maison-hero__tagline" data-mt-scroll data-mt-when="load">
+        {{ tagline | escape }}
+      </p>
+
+      <div class="maison-hero__actions" data-mt-scroll="beat" data-mt-when="load">
+        <a href="{{ routes.collections_url }}" class="maison-btn maison-btn--primary">
+          <span>Shop the catalogue</span>
+          <span class="maison-btn__arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="/pages/releases" class="maison-btn maison-btn--ghost">
+          <span>Releases</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="maison-hero__below">
+    <form
+      class="maison-hero__search"
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      data-maison-open-predictive
+      data-mt-scroll="beat"
+    >
+      <label class="visually-hidden" for="MaisonHeroSearch">Search the catalogue</label>
+      <input
+        id="MaisonHeroSearch"
+        type="search"
+        name="q"
+        placeholder="Skillet, tava, terre…"
+        autocomplete="off"
+        enterkeyhint="search"
+      >
+      <button type="submit" class="maison-btn maison-btn--primary">Search</button>
+    </form>
+
+    <div class="maison-hero__provenance-strip" id="lineups" data-mt-scroll="stagger">
+      <a class="provenance-col" data-mt-scroll-item href="{{ collections['forge-hybrid'].url | default: '/collections/forge-hybrid' }}">
         <span class="provenance-num">01</span>
-        <h4 class="provenance-title">Forge Hybrid</h4>
-        <p class="provenance-desc">Carbon-steel cookline concepts. Dual-mass heat retention with lightweight hospitality handling.</p>
+        <h2 class="provenance-title">Forge Hybrid</h2>
+        <p class="provenance-desc">Carbon-steel cookline. Dual-mass heat with hospitality handling.</p>
       </a>
-      <a class="provenance-col" href="{{ collections['terre-clay'].url | default: '/collections/terre-clay' }}">
+      <a class="provenance-col" data-mt-scroll-item href="{{ collections['terre-clay'].url | default: '/collections/terre-clay' }}">
         <span class="provenance-num">02</span>
-        <h4 class="provenance-title">Terre Clay</h4>
-        <p class="provenance-desc">Refractory cast clay vessels and table service. Ancient thermal memory with modern kitchen durability.</p>
+        <h2 class="provenance-title">Terre Clay</h2>
+        <p class="provenance-desc">Refractory cast clay vessels. Thermal memory, modern durability.</p>
       </a>
-      <a class="provenance-col" href="{{ collections['kuro-strip'].url | default: '/collections/kuro-strip' }}">
+      <a class="provenance-col" data-mt-scroll-item href="{{ collections['kuro-strip'].url | default: '/collections/kuro-strip' }}">
         <span class="provenance-num">03</span>
-        <h4 class="provenance-title">Kuro Strip</h4>
-        <p class="provenance-desc">Hybrid-edge blade geometry. Precision edge retention inspired by traditional forge craft.</p>
+        <h2 class="provenance-title">Kuro Strip</h2>
+        <p class="provenance-desc">Hybrid-edge blade geometry. Forge craft, precision retention.</p>
       </a>
-      <a class="provenance-col" href="/pages/kansa">
+      <a class="provenance-col" data-mt-scroll-item href="/pages/kansa">
         <span class="provenance-num">04</span>
-        <h4 class="provenance-title">Kansa</h4>
-        <p class="provenance-desc">Its own room. Ask the bell-bronze companion about heat, care, and the piece in your hand.</p>
+        <h2 class="provenance-title">Kansa</h2>
+        <p class="provenance-desc">Living will of the house — care, heat, sight, and memory for the piece in hand.</p>
       </a>
     </div>
   </div>
 </section>
 
-<style>
+{% stylesheet %}
   .maison-hero {
-    background-color: var(--limewash, #EFE8DC);
-    color: var(--soot, #14110F);
-    padding-top: clamp(3rem, 6vw, 6.5rem);
-    padding-bottom: clamp(4rem, 8vw, 7.5rem);
     position: relative;
-    overflow: hidden;
+    color: var(--soot, #14110f);
+    background: var(--limewash, #efe8dc);
   }
 
-  .maison-hero__container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 clamp(1.5rem, 4vw, 4rem);
-  }
-
-  .maison-hero__grid {
+  .maison-hero__stage {
+    position: relative;
+    isolation: isolate;
     display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    gap: clamp(2.5rem, 5vw, 6rem);
-    align-items: center;
-    margin-bottom: clamp(4rem, 8vw, 7rem);
+    align-items: end;
+    min-height: 100svh;
+    min-height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    color: var(--bone, #f7f2e9);
   }
 
-  .maison-hero__eyebrow-row {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--bell, #B8893A);
+  .maison-hero__media,
+  .maison-hero__picture,
+  .maison-hero__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
   }
 
-  .maison-hero__divider {
-    opacity: 0.4;
+  .maison-hero__img {
+    display: block;
+    object-fit: cover;
+    object-position: 58% 42%;
+    filter: contrast(1.04) brightness(0.92);
   }
 
-  .maison-hero__devanagari {
-    font-family: var(--font-devanagari--family, 'Noto Serif Devanagari', serif);
-    letter-spacing: 0.15em;
-    font-size: 0.85rem;
-    color: var(--bell, #B8893A);
+  .maison-hero__img--asset {
+    filter: none;
+  }
+
+  .maison-hero__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(20, 17, 15, 0.28) 0%,
+        rgba(20, 17, 15, 0.18) 38%,
+        rgba(20, 17, 15, 0.72) 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(20, 17, 15, 0.35) 0%,
+        rgba(20, 17, 15, 0.08) 55%,
+        rgba(20, 17, 15, 0.2) 100%
+      );
+  }
+
+  .maison-hero__content {
+    position: relative;
+    z-index: 2;
+    width: min(42rem, 100%);
+    padding:
+      clamp(var(--mt-space-8), 12vw, var(--mt-space-10))
+      clamp(var(--mt-space-5), 4vw, var(--mt-space-8))
+      clamp(var(--mt-space-6), 6vw, var(--mt-space-8));
+  }
+
+  .maison-hero__brand {
+    margin: 0 0 var(--mt-space-4);
+    font-family: var(--mt-type-family-heading, var(--font-heading--family, 'Instrument Serif', Georgia, serif));
+    font-size: var(--mt-type-wordmark, var(--font-size--brand-wordmark, clamp(1.25rem, 1.05rem + 0.8vw, 1.875rem)));
+    font-weight: 400;
+    letter-spacing: var(--mt-type-tracking-wordmark, var(--letter-spacing--wordmark, -0.07em));
+    line-height: 1.1;
+    color: var(--bone, #f7f2e9);
   }
 
   .maison-hero__headline {
-    font-family: var(--font-heading--family, 'Fraunces', serif);
-    font-size: clamp(3.2rem, 8vw, 7.5rem);
+    margin: 0 0 var(--mt-space-4);
+    font-family: var(--mt-type-family-heading, var(--font-heading--family, 'Instrument Serif', Georgia, serif));
+    font-size: var(--mt-type-display-lg, var(--font-size--fluid-display, var(--mt-type-4xl, clamp(2.4883rem, 1.6943rem + 0.2481vw, 5.2675rem))));
     font-weight: 400;
     line-height: 0.95;
-    letter-spacing: -0.025em;
-    margin: 0 0 2rem 0;
-    color: var(--soot, #14110F);
+    letter-spacing: var(--mt-type-tracking-heading, -0.02em);
+    color: var(--bone, #f7f2e9);
   }
 
-  .hero-word {
-    display: inline-block;
-    transform: translateY(115%);
-    opacity: 0;
-    will-change: transform, opacity;
+  .maison-hero__headline .mt-word,
+  .maison-hero__headline .mt-word-mask {
+    vertical-align: top;
   }
 
-  .maison-hero.is-revealed .hero-word,
-  .maison-hero.revealed .hero-word {
-    transform: translateY(0);
-    opacity: 1;
-    transition:
-      transform 1.1s cubic-bezier(0.16, 1, 0.3, 1),
-      opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .maison-hero.is-revealed .clip-line:nth-of-type(2) .hero-word,
-  .maison-hero.revealed .clip-line:nth-of-type(2) .hero-word {
-    transition-delay: 0.16s;
-  }
-
-  .maison-hero__headline--italic {
+  .maison-hero__tagline {
+    margin: 0 0 var(--mt-space-6);
+    max-width: 28ch;
+    font-family: var(--mt-type-family-heading, var(--font-heading--family, 'Instrument Serif', Georgia, serif));
+    font-size: var(--mt-type-lede, var(--font-size--fluid-lg, clamp(1.125rem, 1.02rem + 0.48vw, 1.375rem)));
     font-style: italic;
-    font-weight: 300;
-    color: var(--bell, #B8893A);
-  }
-
-  .maison-hero__lede {
-    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
-    line-height: 1.65;
-    color: rgba(20, 17, 15, 0.82);
-    max-width: 48ch;
-    margin: 0 0 2.5rem 0;
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    color: color-mix(in srgb, var(--bone, #f7f2e9) 88%, transparent);
   }
 
   .maison-hero__actions {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 1.5rem;
-    flex-wrap: wrap;
+    gap: var(--mt-space-3) var(--mt-space-5);
   }
 
-  .maison-hero__search {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    max-width: 36rem;
-    margin: 0 0 1.25rem;
-  }
-
-  .maison-hero__search input[type='search'] {
-    flex: 1 1 14rem;
-    min-height: 48px;
-    padding: 0 1rem;
-    border: 1px solid rgba(20, 17, 15, 0.25);
-    background: transparent;
-    color: inherit;
-    font: inherit;
-  }
-
-  .maison-btn {
+  .maison-hero .maison-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.9rem 1.8rem;
-    border-radius: 2px;
-    font-family: var(--font-body--family, sans-serif);
-    font-size: 0.82rem;
-    letter-spacing: 0.1em;
+    gap: var(--mt-space-2);
+    padding: var(--mt-space-4) var(--mt-space-6);
+    border-radius: 0.125rem;
+    font-family: var(--mt-type-family-accent, var(--font-accent--family, sans-serif));
+    font-size: var(--mt-type-button, var(--font-size--brand-button, 0.75rem));
+    letter-spacing: var(--mt-type-tracking-accent, 0.1em);
     text-transform: uppercase;
     text-decoration: none;
     cursor: pointer;
-    transition: all var(--dur-mid, 420ms) var(--ease-strike, cubic-bezier(.2, .8, .2, 1));
+    transition:
+      transform var(--dur-mid, 420ms) var(--ease-strike, cubic-bezier(0.2, 0.8, 0.2, 1)),
+      background-color var(--dur-mid, 420ms) var(--ease-strike, cubic-bezier(0.2, 0.8, 0.2, 1)),
+      border-color var(--dur-mid, 420ms) var(--ease-strike, cubic-bezier(0.2, 0.8, 0.2, 1)),
+      color var(--dur-mid, 420ms) var(--ease-strike, cubic-bezier(0.2, 0.8, 0.2, 1));
   }
 
-  .maison-btn--primary {
-    background: var(--soot, #14110F);
-    color: var(--bone, #F7F2E9);
-    border: 1px solid var(--bell, #B8893A);
+  .maison-hero .maison-btn--primary {
+    background: var(--bone, #f7f2e9);
+    color: var(--soot, #14110f);
+    border: 0.0625rem solid var(--bell, #b8893a);
   }
 
-  .maison-btn--primary:hover {
-    background: var(--ember, #E2552B);
-    border-color: var(--ember, #E2552B);
+  .maison-hero .maison-btn--primary:hover {
+    background: var(--ember, #e2552b);
+    border-color: var(--ember, #e2552b);
     color: #fff;
-    transform: translateY(-1px);
-    box-shadow: 0 8px 24px rgba(226, 85, 43, 0.25);
+    transform: translateY(-0.0625rem);
   }
 
-  .maison-btn--subtle {
+  .maison-hero .maison-btn--ghost {
     background: transparent;
-    color: var(--soot, #14110F);
-    border: 1px solid rgba(20, 17, 15, 0.25);
+    color: var(--bone, #f7f2e9);
+    border: 0.0625rem solid color-mix(in srgb, var(--bone, #f7f2e9) 42%, transparent);
   }
 
-  .maison-btn--subtle:hover {
-    border-color: var(--bell, #B8893A);
-    color: var(--bell, #B8893A);
-  }
-
-  .maison-btn--text {
-    padding-inline: 0;
-    background: transparent;
-    color: var(--soot, #14110F);
-    border: 0;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
+  .maison-hero .maison-btn--ghost:hover {
+    border-color: var(--bell, #b8893a);
+    color: var(--bell, #b8893a);
   }
 
   .maison-hero a:focus-visible,
   .maison-hero button:focus-visible,
   .maison-hero input:focus-visible {
-    outline: 2px solid var(--bell, #B8893A);
-    outline-offset: 3px;
+    outline: 0.125rem solid var(--bell, #b8893a);
+    outline-offset: 0.1875rem;
+  }
+
+  .maison-hero__below {
+    width: min(87.5rem, 100%);
+    margin-inline: auto;
+    padding:
+      clamp(var(--mt-space-6), 5vw, var(--mt-space-8))
+      clamp(var(--mt-space-5), 4vw, var(--mt-space-8))
+      clamp(var(--mt-space-7), 6vw, var(--mt-space-8));
+  }
+
+  .maison-hero__search {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: var(--mt-space-3);
+    max-width: min(36rem, 100%);
+    margin: 0 0 clamp(var(--mt-space-6), 4vw, var(--mt-space-7));
+  }
+
+  .maison-hero__search input[type='search'] {
+    flex: 1 1 14rem;
+    min-height: var(--mt-space-7);
+    padding: var(--mt-space-3) var(--mt-space-4);
+    border: 0.0625rem solid color-mix(in srgb, var(--soot, #14110f) 22%, transparent);
+    background: transparent;
+    color: inherit;
+    font-family: var(--mt-type-family-body, var(--font-body--family, sans-serif));
+    font-size: var(--mt-type-body, 1rem);
+    letter-spacing: 0.01em;
+  }
+
+  .maison-hero__search input[type='search']::placeholder {
+    color: color-mix(in srgb, var(--soot, #14110f) 42%, transparent);
+  }
+
+  .maison-hero__provenance-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--mt-space-5) var(--mt-space-6);
+    border-top: 0.0625rem solid color-mix(in srgb, var(--soot, #14110f) 15%, transparent);
+    padding-top: var(--mt-space-6);
   }
 
   a.provenance-col {
     display: block;
     color: inherit;
     text-decoration: none;
+    padding: var(--mt-space-4) var(--mt-space-1) var(--mt-space-2);
+    border-top: 0.0625rem solid color-mix(in srgb, var(--soot, #14110f) 15%, transparent);
+    transition: transform var(--dur-mid, 420ms) var(--ease-strike, cubic-bezier(0.2, 0.8, 0.2, 1));
   }
 
-  .maison-btn__dot {
-    color: var(--bell, #B8893A);
-    font-size: 0.7rem;
-  }
-
-  /* Right Visual */
-  .maison-hero__visual {
-    position: relative;
-  }
-
-  .maison-hero__image-frame {
-    position: relative;
-    border-radius: 2px;
-    overflow: hidden;
-    background: var(--bone, #F7F2E9);
-    box-shadow: 0 24px 60px rgba(20, 17, 15, 0.12);
-  }
-
-  .maison-hero__img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3.2;
-    object-fit: cover;
-    display: block;
-    filter: contrast(1.04) brightness(0.98);
-    transition: transform var(--dur-slow, 900ms) var(--ease-strike, cubic-bezier(.2, .8, .2, 1));
-  }
-
-  .maison-hero__image-frame:hover .maison-hero__img {
-    transform: scale(1.02);
-  }
-
-  .maison-hero__provenance-tag {
-    position: absolute;
-    bottom: 1.25rem;
-    left: 1.25rem;
-    right: 1.25rem;
-    background: var(--glass-surface-dark, rgba(20, 17, 15, 0.75));
-    backdrop-filter: var(--glass-blur, blur(14px));
-    -webkit-backdrop-filter: var(--glass-blur, blur(14px));
-    padding: 1rem 1.25rem;
-    border: 1px solid var(--glass-border-dark, rgba(247, 242, 233, 0.14));
-    border-left: 3px solid var(--bell, #B8893A);
-    border-radius: var(--radius-card-sm, 0.875rem);
-    box-shadow: var(--glass-shadow, 0 10px 35px rgba(20, 17, 15, 0.12));
-    color: var(--bone, #F7F2E9);
-  }
-
-  .tag-label {
-    display: block;
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    color: var(--bell, #B8893A);
-    margin-bottom: 0.2rem;
-  }
-
-  .tag-title {
-    display: block;
-    font-family: var(--font-heading--family, 'Fraunces', serif);
-    font-size: 1.05rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .tag-meta {
-    display: block;
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.72rem;
-    color: #A39B8F;
-    letter-spacing: 0.04em;
-  }
-
-  /* Provenance 4-Column Strip */
-  .maison-hero__provenance-strip {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    border-top: 1px solid rgba(20, 17, 15, 0.15);
-    padding-top: 3rem;
-  }
-
-  .provenance-col {
-    position: relative;
-    padding: 1.25rem 1rem;
-    border-top: 1px solid var(--hairline, rgba(20, 17, 15, 0.15));
-    border-radius: var(--radius-card-sm, 0.875rem);
-    transition: transform var(--dur-mid, 420ms) var(--ease-strike, cubic-bezier(.2, .8, .2, 1)),
-                background 0.3s ease,
-                box-shadow 0.3s ease;
-  }
-
-  .provenance-col:hover {
-    background: var(--glass-surface-light, rgba(247, 242, 233, 0.72));
-    backdrop-filter: var(--glass-blur-sm, blur(8px));
-    -webkit-backdrop-filter: var(--glass-blur-sm, blur(8px));
-    transform: translateY(-4px);
-    box-shadow: var(--glass-shadow, 0 10px 35px rgba(20, 17, 15, 0.12));
+  a.provenance-col:hover {
+    transform: translateY(-0.2rem);
   }
 
   .provenance-num {
     display: block;
-    font-family: var(--font-mono--family, monospace);
-    font-size: 0.75rem;
+    margin-bottom: var(--mt-space-2);
+    font-family: var(--mt-type-family-mono, var(--font-mono--family, monospace));
+    font-size: var(--mt-type-mono);
     letter-spacing: 0.1em;
-    color: var(--bell, #B8893A);
-    margin-bottom: 0.6rem;
+    color: var(--bell, #b8893a);
   }
 
   .provenance-title {
-    font-family: var(--font-heading--family, 'Fraunces', serif);
-    font-size: 1.25rem;
-    margin: 0 0 0.5rem 0;
-    color: var(--soot, #14110F);
+    margin: 0 0 var(--mt-space-2);
+    font-family: var(--mt-type-family-heading, var(--font-heading--family, 'Instrument Serif', Georgia, serif));
+    font-size: var(--mt-type-lede);
+    font-weight: 400;
+    color: var(--soot, #14110f);
   }
 
   .provenance-desc {
-    font-size: 0.86rem;
-    line-height: 1.6;
-    color: rgba(20, 17, 15, 0.75);
     margin: 0;
+    font-family: var(--mt-type-family-body, var(--font-body--family, sans-serif));
+    font-size: var(--mt-type-body, 1rem);
+    line-height: var(--mt-type-leading-body, 1.6);
+    color: color-mix(in srgb, var(--soot, #14110f) 75%, transparent);
   }
 
-  @media (max-width: 960px) {
-    .maison-hero__grid {
-      grid-template-columns: 1fr;
-      gap: 3rem;
-    }
-    .maison-hero__provenance-strip {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2.5rem 1.5rem;
+  @media (max-width: 1199px) {
+    .maison-hero__img {
+      object-position: 52% 38%;
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 749px) {
+    .maison-hero__img {
+      object-position: 46% 32%;
+    }
+
+    .maison-hero__content {
+      width: 100%;
+      padding-bottom: clamp(var(--mt-space-6), 8vw, var(--mt-space-7));
+    }
+
     .maison-hero__provenance-strip {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: var(--mt-space-6);
     }
   }
-</style>
+
+  @media (min-width: 750px) and (max-width: 1199px) {
+    .maison-hero__provenance-strip {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--mt-space-6) var(--mt-space-5);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .maison-hero__img {
+      object-position: 58% 42%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .maison-hero [data-mt-scroll],
+    .maison-hero [data-mt-scroll-item],
+    .maison-hero [data-mt-scrub] {
+      opacity: 1 !important;
+      transform: none !important;
+      visibility: visible !important;
+    }
+  }
+
+  html[data-reduced-motion='true'] .maison-hero [data-mt-scroll],
+  html[data-reduced-motion='true'] .maison-hero [data-mt-scroll-item],
+  html[data-reduced-motion='true'] .maison-hero [data-mt-scrub] {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
   "name": "Maison V2 Hero",
-  "settings": []
+  "tag": "section",
+  "class": "section-maison-hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand",
+      "label": "Brand",
+      "default": "Maison Tavo"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Heat takes shape."
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Cook with what outlasts you."
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero image (desktop)",
+      "info": "Full-bleed. Falls back to Forge Hybrid media, then theme asset maison-hero.svg (replace with maison-hero.jpg when ready)."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_tablet",
+      "label": "Hero image (tablet crop)",
+      "info": "Optional art-directed crop for 750–1199px. Uses desktop image when blank."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Hero image (mobile crop)",
+      "info": "Optional art-directed crop for ≤749px. Uses desktop image when blank."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "Maison Tavo hand-forged dual-mass cookware"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison V2 Hero"
+    }
+  ]
 }
 {% endschema %}

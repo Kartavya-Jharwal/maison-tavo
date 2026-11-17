@@ -49,14 +49,21 @@
           {% for _id in order_ids %}
             {% assign int_id = _id | times: 1 %}
             {% assign product = products | find: 'id', int_id %}
+            {% liquid
+              assign tags_joined = product.tags | join: ' '
+              assign search_corpus = product.title | append: ' ' | append: product.type | append: ' ' | append: product.handle | append: ' ' | append: tags_joined
+            %}
             <li
               class="predictive-search-results__card predictive-search-results__card--product"
               ref="recentlyViewedItems[]"
+              data-maison-search-item
+              data-search-corpus="{{ search_corpus | escape }}"
+              data-product-type="{{ product.type | escape }}"
             >
               {% render 'resource-card',
                 resource_type: 'product',
                 resource: product,
-                image_width: 500,
+                image_width: 900,
                 image_hover: true,
                 image_aspect_ratio: '4 / 5',
                 product_view_context: 'search'
@@ -65,14 +72,21 @@
           {% endfor %}
         {% else %}
           {% for product in products limit: limit %}
+            {% liquid
+              assign tags_joined = product.tags | join: ' '
+              assign search_corpus = product.title | append: ' ' | append: product.type | append: ' ' | append: product.handle | append: ' ' | append: tags_joined
+            %}
             <li
               class="predictive-search-results__card predictive-search-results__card--product"
               ref="recentlyViewedItems[]"
+              data-maison-search-item
+              data-search-corpus="{{ search_corpus | escape }}"
+              data-product-type="{{ product.type | escape }}"
             >
               {% render 'resource-card',
                 resource_type: 'product',
                 resource: product,
-                image_width: 500,
+                image_width: 900,
                 image_hover: true,
                 image_aspect_ratio: '4 / 5',
                 product_view_context: 'search'
@@ -93,14 +107,21 @@
         assign limit = limit | default: 8
       %}
       {% for product in products limit: limit %}
+        {% liquid
+          assign tags_joined = product.tags | join: ' '
+          assign search_corpus = product.title | append: ' ' | append: product.type | append: ' ' | append: product.handle | append: ' ' | append: tags_joined
+        %}
         <li
           class="predictive-search-results__card predictive-search-results__card--product"
           ref="resultsItems[]"
+          data-maison-search-item
+          data-search-corpus="{{ search_corpus | escape }}"
+          data-product-type="{{ product.type | escape }}"
         >
           {% render 'resource-card',
             resource_type: 'product',
             resource: product,
-            image_width: 500,
+            image_width: 900,
             image_hover: true,
             image_aspect_ratio: '4 / 5',
             product_view_context: 'search'

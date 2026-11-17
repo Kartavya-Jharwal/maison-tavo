@@ -238,16 +238,16 @@ p:empty {
   }
 }
 
-/* Focus */
+/* Focus — high-contrast keyboard rings (WCAG AA/AAA visible focus) */
 *:focus-visible {
-  outline: var(--focus-outline-width) solid currentcolor;
-  outline-offset: var(--focus-outline-offset);
+  outline: max(2px, var(--focus-outline-width)) solid currentcolor;
+  outline-offset: max(3px, var(--focus-outline-offset));
 }
 
 @supports not selector(:focus-visible) {
   *:focus {
-    outline: var(--focus-outline-width) solid currentcolor;
-    outline-offset: var(--focus-outline-offset);
+    outline: max(2px, var(--focus-outline-width)) solid currentcolor;
+    outline-offset: max(3px, var(--focus-outline-offset));
   }
 }
 
@@ -1263,6 +1263,11 @@ summary:hover {
   box-shadow: var(--input-box-shadow-focus);
 }
 
+.field__input:focus-visible {
+  outline: 2px solid var(--bell, #b8893a);
+  outline-offset: 2px;
+}
+
 .field__input--button-radius {
   border-radius: var(--style-border-radius-buttons-primary);
 }
@@ -1845,228 +1850,90 @@ main > .shopify-section:first-child .section:not(.disable-section-top-offset) {
 }
 
 /* ==========================================================================
-   MAISON TAVO BRAND THEME OVERRIDES
-   "The forge, the kitchen, the temple bell"
-   Tokens: --soot, --limewash, --bone, --bell, --copper, --clay, --steel, --verdigris, --ember
+   MAISON TAVO — token consumers + Horizon chrome repairs
+   Semantic tokens live in theme-styles-variables / color-palette (--mt-*).
+   Do not re-nuke body/header/buttons here with !important.
+
+   Space scale (OWNER: theme-styles-variables) — unit 0.25rem / 4px @ 16px root
+   | step | rem     | px  |
+   | 0    | 0       | 0   |
+   | 1    | 0.25rem | 4   |
+   | 2    | 0.5rem  | 8   |
+   | 3    | 0.75rem | 12  |
+   | 4    | 1rem    | 16  |
+   | 5    | 1.5rem  | 24  |
+   | 6    | 2rem    | 32  |
+   | 7    | 3rem    | 48  |
+   | 8    | 4rem    | 64  |
+   | 9    | 6rem    | 96  |
+   | 10   | 8rem    | 128 |
+   | 11   | 12rem   | 192 |
+   | 12   | 16rem   | 256 |
+   Prefer --mt-space-N. Named aliases (xs/sm/…) map onto these steps.
    ========================================================================== */
 
-:root {
-  --color-background: var(--limewash, #EFE8DC);
-  --color-foreground: var(--soot, #14110F);
-  --color-foreground-rgb: 20, 17, 15;
-  --color-background-rgb: 239, 232, 220;
-}
-
-html, body {
-  background-color: var(--limewash, #EFE8DC) !important;
-  color: var(--soot, #14110F) !important;
-  font-family: var(--font-body--family, 'Hanken Grotesk', -apple-system, sans-serif) !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Page canvas ground */
 .page-wrapper,
 #MainContent,
 .content-for-layout,
 .section-background {
-  background-color: var(--limewash, #EFE8DC);
-}
-
-/* Typography Overrides */
-h1, h2, h3, h4, .h1, .h2, .h3, .h4,
-.product-title,
-.collection-title,
-.section-title {
-  font-family: var(--font-heading--family, 'Fraunces', serif) !important;
-  font-weight: 500 !important;
-  color: var(--soot, #14110F);
-}
-
-/* Monospace Specs & Price */
-.price,
-.product-price,
-.unit-price,
-.spec-value,
-.badge,
-[data-font-mono] {
-  font-family: var(--font-mono--family, 'JetBrains Mono', monospace) !important;
-  font-feature-settings: "tnum" 1, "zero" 1;
-}
-
-/* Header & Navigation Skin */
-.header-wrapper,
-#header-component {
-  background-color: var(--limewash, #EFE8DC) !important;
-  border-bottom: 1px solid rgba(184, 137, 58, 0.22) !important;
-}
-
-.header__heading-text,
-.header__heading-link {
-  font-family: var(--font-heading--family, 'Fraunces', serif) !important;
-  font-size: 1.45rem !important;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase !important;
-  color: var(--soot, #14110F) !important;
-}
-
-.header__nav a,
-.navigation-link {
-  font-size: 0.85rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.08em !important;
-  color: var(--soot, #14110F) !important;
-  transition: color var(--dur-fast) var(--ease-strike);
-}
-
-.header__nav a:hover,
-.navigation-link:hover {
-  color: var(--bell, #B8893A) !important;
-}
-
-/* Product Cards */
-.product-card,
-.card {
-  background: var(--bone, #F7F2E9) !important;
-  border: 1px solid rgba(20, 17, 15, 0.1) !important;
-  border-radius: 3px !important;
-  padding: 1rem !important;
-  transition: transform var(--dur-mid) var(--ease-strike), box-shadow var(--dur-mid) var(--ease-strike), border-color var(--dur-mid) var(--ease-strike) !important;
-}
-
-.product-card:hover,
-.card:hover {
-  transform: translateY(-2px);
-  border-color: var(--bell, #B8893A) !important;
-  box-shadow: 0 12px 28px rgba(20, 17, 15, 0.07);
+  background-color: var(--mt-surface-canvas, var(--limewash, #efe8dc));
 }
 
 .product-card__image-wrapper,
 .card__media {
-  background-color: var(--limewash, #EFE8DC) !important;
-  border-radius: 2px !important;
+  background-color: var(--mt-surface-canvas, var(--limewash, #efe8dc));
   overflow: hidden;
 }
 
-/* Tactile Buttons with Ember Hover */
-.button,
-.button-primary,
-button.button,
-a.button {
-  background: var(--soot, #14110F) !important;
-  color: var(--bone, #F7F2E9) !important;
-  border: 1px solid var(--bell, #B8893A) !important;
-  font-family: var(--font-body--family, sans-serif) !important;
-  font-size: 0.82rem !important;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase !important;
-  padding: 0.75rem 1.6rem !important;
-  border-radius: 3px !important;
+.maison-btn--primary,
+.shopify-payment-button__button--unbranded {
+  border-radius: 3px;
   cursor: pointer;
-  transition: all var(--dur-mid) var(--ease-strike) !important;
+  transition:
+    background-color var(--mt-dur-mid, var(--dur-mid)) var(--mt-ease-strike, var(--ease-strike)),
+    border-color var(--mt-dur-mid, var(--dur-mid)) var(--mt-ease-strike, var(--ease-strike)),
+    box-shadow var(--mt-dur-mid, var(--dur-mid)) var(--mt-ease-strike, var(--ease-strike));
 }
 
-.button:hover,
-.button-primary:hover,
-button.button:hover,
-a.button:hover {
-  background: var(--ember, #E2552B) !important;
-  border-color: var(--ember, #E2552B) !important;
-  color: #fff !important;
-  box-shadow: 0 4px 16px rgba(226, 85, 43, 0.3) !important;
-}
-
-.button-secondary {
-  background: transparent !important;
-  color: var(--soot, #14110F) !important;
-  border: 1px solid rgba(20, 17, 15, 0.25) !important;
-}
-
-.button-secondary:hover {
-  border-color: var(--bell, #B8893A) !important;
-  color: var(--bell, #B8893A) !important;
-}
-
-/* Announcement Bar */
-.announcement-bar {
-  background: var(--soot, #14110F) !important;
-  color: var(--bone, #F7F2E9) !important;
-  border-bottom: 1px solid rgba(184, 137, 58, 0.35) !important;
-  font-size: 0.75rem !important;
-  letter-spacing: 0.08em !important;
-}
-
-.announcement-bar a {
-  color: var(--bell, #B8893A) !important;
-}
-
-/* Footer Styling */
-footer,
-.footer,
-.footer-section {
-  background-color: var(--soot, #14110F) !important;
-  color: var(--bone, #F7F2E9) !important;
-  border-top: 1px solid rgba(184, 137, 58, 0.3) !important;
-}
-
-footer a,
-.footer a {
-  color: var(--bone, #F7F2E9) !important;
-  opacity: 0.85;
-  transition: opacity var(--dur-fast), color var(--dur-fast);
-}
-
-footer a:hover,
-.footer a:hover {
-  color: var(--bell, #B8893A) !important;
-  opacity: 1;
-}
-
-/* Maison Tavo Luxury Atelier Header */
-.header-wrapper,
-#header-component {
-  background-color: var(--limewash, #EFE8DC) !important;
-  border-bottom: 1px solid rgba(184, 137, 58, 0.25) !important;
-  padding-block: 0.75rem !important;
-}
-
-.header__heading-text,
-.header__heading-link,
-.header-logo {
-  font-family: var(--font-heading--family, 'Fraunces', serif) !important;
-  font-size: 1.55rem !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.16em !important;
-  text-transform: uppercase !important;
-  color: var(--soot, #14110F) !important;
+.maison-btn--primary:hover {
+  box-shadow: var(--mt-elevation-heat, 0 4px 16px rgba(226, 85, 43, 0.3));
 }
 
 .header__menu .menu-list__link,
-.navigation-link,
-.header__nav a {
-  font-family: var(--font-body--family, sans-serif) !important;
-  font-size: 0.8rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.12em !important;
-  font-weight: 500 !important;
-  color: var(--soot, #14110F) !important;
-  padding: 0.5rem 0.85rem !important;
-  transition: color var(--dur-fast) var(--ease-strike) !important;
+.header__nav a,
+.navigation-link {
+  text-transform: uppercase;
+  color: var(--mt-surface-ink, var(--soot, #14110f));
+  padding: var(--mt-space-2) var(--mt-space-3);
+  transition: color var(--mt-dur-fast, var(--dur-fast)) var(--mt-ease-strike, var(--ease-strike));
 }
 
 .header__menu .menu-list__link:hover,
-.navigation-link:hover,
-.header__nav a:hover {
-  color: var(--bell, #B8893A) !important;
+.header__nav a:hover,
+.navigation-link:hover {
+  color: var(--mt-surface-accent, var(--bell, #b8893a));
+}
+
+.maison-footer {
+  border-top: 1px solid color-mix(in srgb, var(--bell, #b8893a) 30%, transparent);
+}
+
+.maison-footer a {
+  opacity: 0.9;
+  transition:
+    opacity var(--mt-dur-fast, var(--dur-fast)),
+    color var(--mt-dur-fast, var(--dur-fast));
+}
+
+.maison-footer a:hover {
+  opacity: 1;
 }
 
 /* ==========================================================================
-   Glassmorphism Tokens & Tactile Atelier Surface Architecture
-   Attribution & Inspiration: [Abdughafur Khujzoda on CodePen](https://codepen.io/Abdughafur-Khujzoda)
-   Harmonized with Maison Tavo's tactile hammered, struck, and fired material reality
+   Glassmorphism & tactile surfaces
+   Attribution: Abdughafur Khujzoda on CodePen
    ========================================================================== */
 
-/* Universal Frosted Glass */
 .glass {
   background: var(--glass-surface-light);
   backdrop-filter: var(--glass-blur);
@@ -2082,7 +1949,7 @@ footer a:hover,
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border-light);
   box-shadow: var(--glass-shadow);
-  color: var(--soot, #14110F);
+  color: var(--mt-surface-ink, var(--soot, #14110f));
 }
 
 .glass-dark {
@@ -2090,8 +1957,8 @@ footer a:hover,
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border-dark);
-  box-shadow: var(--glass-shadow-lg);
-  color: var(--bone, #F7F2E9);
+  box-shadow: var(--mt-elevation-lg, var(--glass-shadow-lg));
+  color: var(--mt-surface-raised, var(--bone, #f7f2e9));
 }
 
 .glass-bronze {
@@ -2099,23 +1966,20 @@ footer a:hover,
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border-bronze);
-  box-shadow: var(--glass-shadow-glow);
-  color: var(--bone, #F7F2E9);
+  box-shadow: var(--mt-elevation-glow, var(--glass-shadow-glow));
+  color: var(--mt-surface-raised, var(--bone, #f7f2e9));
 }
 
-/* Tactile Coexistence Layers:
-   Frosted glass planes resting over hammered bronze, struck steel, and fired clay
-*/
 .surface--hammered {
   position: relative;
-  background-color: var(--soot, #14110F);
-  background-image: 
+  background-color: var(--mt-surface-ink, var(--soot, #14110f));
+  background-image:
     radial-gradient(ellipse at 50% 0%, rgba(184, 137, 58, 0.22) 0%, transparent 60%),
     radial-gradient(circle at 80% 90%, rgba(194, 112, 61, 0.15) 0%, transparent 50%);
 }
 
 .surface--hammered::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -2125,18 +1989,17 @@ footer a:hover,
 }
 
 .surface--fired-clay {
-  background-color: var(--clay, #8E4B35);
-  box-shadow: inset 0 2px 8px rgba(20, 17, 15, 0.35);
+  background-color: var(--mt-surface-clay, var(--clay, #8e4b35));
+  box-shadow: inset 0 2px 8px color-mix(in srgb, var(--soot, #14110f) 35%, transparent);
 }
 
 .surface--struck-edge {
-  box-shadow: 
+  box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.4) inset,
-    0 -1px 0 rgba(20, 17, 15, 0.6) inset,
+    0 -1px 0 color-mix(in srgb, var(--soot, #14110f) 60%, transparent) inset,
     var(--glass-shadow);
 }
 
-/* Staggered Text Mask Reveals (Abdughafur Khujzoda pattern) */
 .clip-line {
   overflow: hidden;
   padding-bottom: 0.14em;
@@ -2158,20 +2021,34 @@ footer a:hover,
     opacity 0.75s var(--ease-mask);
 }
 
-/* Kinetic Pill Buttons */
+@media (prefers-reduced-motion: reduce) {
+  .clip-line > span {
+    transform: none;
+    opacity: 1;
+    will-change: auto;
+  }
+}
+
+html[data-reduced-motion='true'] .clip-line > span {
+  transform: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+  will-change: auto;
+}
+
 .pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.65rem;
+  gap: var(--mt-space-3);
   border-radius: var(--radius-pill);
-  padding: 0.875rem 1.75rem;
-  font-family: var(--font-body--family, sans-serif);
-  font-size: 0.85rem;
+  padding: var(--mt-space-4) var(--mt-space-6);
+  font-family: var(--mt-type-family-accent, var(--font-accent--family, sans-serif));
+  font-size: var(--mt-type-accent, 0.85rem);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  transition: all var(--dur-mid) var(--ease-strike);
+  transition: all var(--mt-dur-mid, var(--dur-mid)) var(--mt-ease-strike, var(--ease-strike));
   cursor: pointer;
   text-decoration: none;
 }
@@ -2180,7 +2057,7 @@ footer a:hover,
 .pill .pill-arrow {
   width: 1rem;
   height: 1rem;
-  transition: transform var(--dur-mid) var(--ease-mask);
+  transition: transform var(--mt-dur-mid, var(--dur-mid)) var(--ease-mask);
 }
 
 .pill:hover svg,
@@ -2189,69 +2066,338 @@ footer a:hover,
 }
 
 .pill-light {
-  background: var(--bone, #F7F2E9);
-  color: var(--soot, #14110F);
+  background: var(--mt-surface-raised, var(--bone, #f7f2e9));
+  color: var(--mt-surface-ink, var(--soot, #14110f));
   border: 1px solid var(--glass-border-light-subtle);
 }
 
 .pill-light:hover {
-  background: var(--limewash, #EFE8DC);
-  color: var(--bell, #B8893A);
+  background: var(--mt-surface-canvas, var(--limewash, #efe8dc));
+  color: var(--mt-surface-accent, var(--bell, #b8893a));
 }
 
 .pill-dark {
-  background: var(--soot, #14110F);
-  color: var(--bone, #F7F2E9);
-  border: 1px solid rgba(184, 137, 58, 0.3);
+  background: var(--mt-surface-ink, var(--soot, #14110f));
+  color: var(--mt-surface-raised, var(--bone, #f7f2e9));
+  border: 1px solid color-mix(in srgb, var(--bell, #b8893a) 30%, transparent);
 }
 
 .pill-dark:hover {
-  background: var(--bell, #B8893A);
-  color: var(--soot, #14110F);
-  border-color: var(--bell, #B8893A);
+  background: var(--mt-surface-accent, var(--bell, #b8893a));
+  color: var(--mt-surface-ink, var(--soot, #14110f));
+  border-color: var(--mt-surface-accent, var(--bell, #b8893a));
 }
 
 .pill-glass {
   background: var(--glass-surface-dark);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  color: var(--bone, #F7F2E9);
+  color: var(--mt-surface-raised, var(--bone, #f7f2e9));
   border: 1px solid var(--glass-border-bronze);
   box-shadow: var(--glass-shadow);
 }
 
 .pill-glass:hover {
-  background: var(--bell, #B8893A);
-  color: var(--soot, #14110F);
+  background: var(--mt-surface-accent, var(--bell, #b8893a));
+  color: var(--mt-surface-ink, var(--soot, #14110f));
   transform: translateY(-2px);
-  box-shadow: var(--glass-shadow-glow);
+  box-shadow: var(--mt-elevation-glow, var(--glass-shadow-glow));
 }
 
-/* Eyebrow with living forge dot */
 .eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-mono--family, monospace);
-  font-size: 0.72rem;
+  gap: var(--mt-space-2);
+  font-family: var(--mt-type-family-mono, var(--font-mono--family, monospace));
+  font-size: var(--mt-type-mono, var(--mt-type-accent));
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--bell, #B8893A);
+  color: var(--mt-surface-accent, var(--bell, #b8893a));
 }
 
 .eyebrow::before {
-  content: "";
+  content: '';
   width: 0.375rem;
   height: 0.375rem;
   border-radius: 50%;
-  background: var(--bell, #B8893A);
+  background: var(--mt-surface-accent, var(--bell, #b8893a));
   flex-shrink: 0;
-  box-shadow: 0 0 8px rgba(184, 137, 58, 0.6);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--bell, #b8893a) 60%, transparent);
 }
 
 .eyebrow--ember::before {
-  background: var(--ember, #E2552B);
-  box-shadow: 0 0 10px rgba(226, 85, 43, 0.8);
+  background: var(--mt-surface-heat, var(--ember, #e2552b));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--ember, #e2552b) 80%, transparent);
 }
 
+/* ==========================================================================
+   Horizon chrome repairs — header drawer, facets, panopticon mobile
+   ========================================================================== */
+
+/* Keep the trigger above row chrome; drawer/backdrop use fixed layers below */
+header-drawer,
+.header-drawer {
+  position: relative;
+  z-index: var(--layer-menu-drawer, 18);
+}
+
+.menu-drawer-container summary.header__icon--menu {
+  pointer-events: auto;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  list-style: none;
+}
+
+.menu-drawer-container summary.header__icon--menu::-webkit-details-marker {
+  display: none;
+}
+
+.menu-drawer {
+  pointer-events: auto;
+  z-index: var(--layer-menu-drawer, 18);
+}
+
+/* Backdrop must stay under the panel (menu_drawer > overlay). When closed /
+   not .menu-open, never capture clicks — prevents frozen dim overlays. */
+.menu-drawer__backdrop {
+  pointer-events: none;
+  z-index: var(--layer-overlay, 16);
+}
+
+.menu-drawer-container.menu-open > .menu-drawer__backdrop {
+  pointer-events: auto;
+}
+
+/* Desktop drawer mode: show close glyph on the summary (Horizon hid it ≥750px) */
+@media screen and (min-width: 750px) {
+  details.menu-open > .header__icon--menu .header-drawer-icon--close {
+    display: flex;
+  }
+
+  details.menu-open > .header__icon--menu .header-drawer-icon--open {
+    display: none;
+  }
+}
+
+/* Undo commerce CTA tokens on drawer chrome only */
+.menu-drawer .button.close-button,
+.menu-drawer .menu-drawer__close-button,
+.menu-drawer .menu-drawer__back-button,
+.header-drawer .button.close-button {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  padding: var(--mt-space-4) !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  font-size: inherit !important;
+}
+
+.menu-drawer__menu-item,
+.menu-drawer__menu-item-text,
+.menu-drawer__navigation {
+  font-size: var(--mt-type-nav, var(--font-size--brand-nav, 0.875rem));
+  font-family: var(--mt-type-family-accent, var(--font-accent--family, 'Satoshi', system-ui, sans-serif));
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.menu-drawer__menu-item--mainlist {
+  font-size: var(--mt-type-lede, var(--font-size--fluid-lg, 1.0625rem));
+}
+
+.facets-controls,
+.facets__summary,
+.facets__label,
+.facet-status,
+.facets__clear-all,
+.filtering,
+.facets {
+  font-size: var(--mt-type-accent, var(--font-size--brand-accent, 0.75rem));
+}
+
+.facets-block-wrapper,
+.facets-controls-wrapper,
+.facets--horizontal .facets__form {
+  gap: clamp(var(--mt-space-2), 1.5vw, var(--mt-space-4));
+}
+
+.facets__summary,
+.facets__label {
+  font-family: var(--mt-type-family-mono, var(--font-mono--family, ui-monospace, monospace));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.facets__pill,
+.facets .pill,
+.filter-value,
+.facets-horizontal,
+.mobile-facets__details,
+.maison-tree__list {
+  max-width: 100%;
+}
+
+.facets-horizontal,
+.facets__wrapper,
+.filtering__products,
+.maison-tree__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mt-space-2);
+  max-width: 100%;
+}
+
+.maison-tree__list a,
+.facets__pill,
+.pill:not(.pill-light):not(.pill-dark):not(.pill-glass),
+.facets-remove__pill {
+  font-size: var(--mt-type-accent, var(--font-size--fluid-xs));
+  line-height: 1.2;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.facets-remove__pill,
+.facets__pill-label {
+  border-radius: 2px;
+  min-height: 2.25rem;
+}
+
+.products-count-wrapper {
+  font-family: var(--mt-type-family-mono, var(--font-mono--family, ui-monospace, monospace));
+  font-size: var(--mt-type-mono, var(--font-size--fluid-xs));
+  letter-spacing: 0.06em;
+  color: rgb(var(--color-foreground-rgb) / 0.62);
+}
+
+@media screen and (max-width: 749px) {
+  .maison-tree__list,
+  .facets-horizontal {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    padding-block-end: var(--mt-space-1);
+    scrollbar-width: thin;
+  }
+
+  .maison-tree__list a,
+  .facets__pill {
+    flex: 0 0 auto;
+  }
+
+  .facets-mobile-wrapper,
+  .facets-controls-wrapper {
+    padding-block: var(--mt-space-1);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .maison-lens__bar {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    max-width: 100%;
+    border-radius: 3px;
+  }
+
+  .maison-lens__option {
+    min-width: 0;
+    padding-inline: var(--mt-space-1);
+    font-size: var(--mt-type-mono, var(--font-size--fluid-xs));
+  }
+
+  .maison-panopticon__human,
+  .maison-panopticon__engineer,
+  .maison-panopticon__panel {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .product-card:has(.maison-lens) {
+    display: grid;
+    gap: var(--mt-space-3);
+  }
+
+  .product-grid-mobile--large .product-card__content {
+    gap: var(--mt-space-3);
+  }
+}
+
+/* ── Idle Blaze (90s inactivity WebGPU overlay) ───────────────────────────
+   Underlay is the first frame (CSS). Canvas stays opacity:0 until is-painted
+   after the first successful GPU paint. pointer-events:none — never blocks commerce.
+*/
+.mt-idle-blaze {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.6s var(--mt-ease-strike, cubic-bezier(0.2, 0.8, 0.2, 1));
+  contain: strict;
+}
+
+.mt-idle-blaze.is-active {
+  opacity: 1;
+}
+
+.mt-idle-blaze.is-fading {
+  opacity: 0;
+}
+
+.mt-idle-blaze__underlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: min(42vh, 28rem);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.9s var(--mt-ease-strike, cubic-bezier(0.2, 0.8, 0.2, 1));
+  background:
+    radial-gradient(120% 90% at 50% 100%, rgba(226, 85, 43, 0.42) 0%, rgba(226, 85, 43, 0.12) 38%, transparent 72%),
+    linear-gradient(180deg, transparent 0%, rgba(184, 137, 58, 0.08) 45%, rgba(20, 17, 15, 0.22) 100%);
+  mix-blend-mode: screen;
+}
+
+.mt-idle-blaze.is-painted .mt-idle-blaze__underlay {
+  opacity: 0;
+}
+
+.mt-idle-blaze__output {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.9s var(--mt-ease-strike, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.mt-idle-blaze.is-painted .mt-idle-blaze__output {
+  opacity: 1;
+}
+
+.mt-idle-blaze__source,
+.mt-idle-blaze__content {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  padding: 0;
+  margin: -1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-idle-blaze {
+    display: none !important;
+  }
+}

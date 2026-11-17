@@ -4,6 +4,12 @@
   @param {object} [product] - The product object, available on product pages.
 {% enddoc %}
 
+{%- comment -%}
+  Font Awesome Kit (separate ownership). Paste kit ID in Theme settings → Icons.
+  See snippets/font-awesome.liquid and theme/AGENTS.md.
+{%- endcomment -%}
+{%- render 'font-awesome' -%}
+
 <script type="importmap">
   {
     "imports": {
@@ -279,8 +285,9 @@
 {%- comment -%}
   M0 → M3/M4 experience (WS5) — vendored ESM, no build step, fully removable (D10).
   Motion: hero / card / spec reveals + cart feedback (prefers-reduced-motion).
-  Sound: opt-in toggle (silent default) + soft add-to-cart cue.
+  Sound: opt-in toggle (silent default) + soft cart / strike cues. No ambient bed.
   Howler ships no ESM build, so it loads as a classic script → window.Howl.
+  Exposes window.MaisonSound for strike / last-call (maison-runtime).
 {%- endcomment -%}
 {{ 'maison-motion.css' | asset_url | stylesheet_tag }}
 <script

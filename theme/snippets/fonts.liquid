@@ -1,84 +1,310 @@
-{%- unless settings.type_body_font.system? -%}
-  {{ settings.type_body_font | font_url | preload_tag: as: 'font', type: 'font/woff2', fetchpriority: 'low' }}
-{%- endunless -%}
-{%- unless settings.type_subheading_font.system? -%}
-  {{ settings.type_subheading_font | font_url | preload_tag: as: 'font', type: 'font/woff2', fetchpriority: 'low' }}
-{%- endunless -%}
-{%- unless settings.type_heading_font.system? -%}
-  {{ settings.type_heading_font | font_url | preload_tag: as: 'font', type: 'font/woff2', fetchpriority: 'low' }}
-{%- endunless -%}
-{%- unless settings.type_accent_font.system? -%}
-  {{ settings.type_accent_font | font_url | preload_tag: as: 'font', type: 'font/woff2', fetchpriority: 'low' }}
-{%- endunless -%}
-
 {%- comment -%}
-  Brand heading face — Libre Baskerville (OFL, transitional serif).
-  High-contrast Baskerville class for luxury kitchenware display.
-  Latin 400 is preloaded (critical); 700 + italic load on demand.
-  Metric-overridden Georgia fallback keeps swap near-zero-CLS.
+  Maison Tavo brand faces — self-hosted Latin (+ Devanagari companion) WOFF2 only.
+  No Google Fonts / fonts.gstatic remote stylesheets.
+  Body: Bai Jamjuree · Accent/UI: Satoshi · Headers/highlights: Instrument Serif
+  Wordmark: Noto Serif Extra Thin (100) · Specs: JetBrains Mono · Devanagari: Noto Serif Devanagari
+  Preload only LCP-critical faces (body + display). Metric overrides keep fallbacks near zero CLS.
+  Horizon picker font preloads omitted — brand faces override those CSS variables.
 {%- endcomment -%}
-{{ 'libre-baskerville-latin-400-normal.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&family=Hanken+Grotesk:ital,wght@0,300..700;1,300..700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+{{ 'bai-jamjuree-latin-400-normal.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2' }}
+{{ 'instrument-serif-latin-400-normal.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2' }}
 
 <style>
+  /* ── Bai Jamjuree (body) ─────────────────────────────────────────── */
   @font-face {
-    font-family: 'Libre Baskerville';
+    font-family: 'Bai Jamjuree';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('{{ 'bai-jamjuree-latin-300-normal.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Bai Jamjuree';
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('{{ 'libre-baskerville-latin-400-normal.woff2' | asset_url }}') format('woff2');
+    src: url('{{ 'bai-jamjuree-latin-400-normal.woff2' | asset_url }}') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
-
   @font-face {
-    font-family: 'Libre Baskerville';
+    font-family: 'Bai Jamjuree';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('{{ 'bai-jamjuree-latin-500-normal.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Bai Jamjuree';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('{{ 'bai-jamjuree-latin-600-normal.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Bai Jamjuree Fallback';
+    src: local('Segoe UI'), local('Helvetica Neue'), local('Arial');
+    size-adjust: 104%;
+    ascent-override: 95%;
+    descent-override: 25%;
+    line-gap-override: 0%;
+  }
+
+  /* ── Satoshi (accent / UI) ───────────────────────────────────────── */
+  @font-face {
+    font-family: 'Satoshi';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url('{{ 'satoshi-latin-300-normal.woff2' | asset_url }}') format('woff2');
+  }
+  @font-face {
+    font-family: 'Satoshi';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('{{ 'satoshi-latin-400-normal.woff2' | asset_url }}') format('woff2');
+  }
+  @font-face {
+    font-family: 'Satoshi';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('{{ 'satoshi-latin-500-normal.woff2' | asset_url }}') format('woff2');
+  }
+  @font-face {
+    font-family: 'Satoshi';
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: url('{{ 'libre-baskerville-latin-700-normal.woff2' | asset_url }}') format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    src: url('{{ 'satoshi-latin-700-normal.woff2' | asset_url }}') format('woff2');
+  }
+  @font-face {
+    font-family: 'Satoshi Fallback';
+    src: local('Segoe UI'), local('Helvetica Neue'), local('Arial');
+    size-adjust: 101%;
+    ascent-override: 94%;
+    descent-override: 24%;
+    line-gap-override: 0%;
   }
 
+  /* ── Instrument Serif (headers & highlights) ─────────────────────── */
   @font-face {
-    font-family: 'Libre Baskerville';
+    font-family: 'Instrument Serif';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('{{ 'instrument-serif-latin-400-normal.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Instrument Serif';
     font-style: italic;
     font-weight: 400;
     font-display: swap;
-    src: url('{{ 'libre-baskerville-latin-400-italic.woff2' | asset_url }}') format('woff2');
+    src: url('{{ 'instrument-serif-latin-400-italic.woff2' | asset_url }}') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
   }
-
   @font-face {
-    font-family: 'Libre Baskerville Fallback';
-    src: local('Georgia');
-    size-adjust: 102%;
+    font-family: 'Instrument Serif Fallback';
+    src: local('Georgia'), local('Times New Roman');
+    size-adjust: 108%;
+    ascent-override: 90%;
+    descent-override: 22%;
+    line-gap-override: 0%;
+  }
+
+  /* ── Noto Serif Extra Thin (Maison Tavo wordmark) ────────────────── */
+  @font-face {
+    font-family: 'Noto Serif';
+    font-style: normal;
+    font-weight: 100;
+    font-display: swap;
+    src: url('{{ 'noto-serif-latin-100-normal.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Noto Serif';
+    font-style: normal;
+    font-weight: 200;
+    font-display: swap;
+    src: url('{{ 'noto-serif-latin-200-normal.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Noto Serif Wordmark Fallback';
+    src: local('Georgia'), local('Times New Roman');
+    size-adjust: 98%;
     ascent-override: 92%;
     descent-override: 24%;
+    line-gap-override: 0%;
+  }
+
+  /* ── JetBrains Mono (specs / prices / agent) ─────────────────────── */
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('{{ 'jetbrains-mono-latin-400-normal.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('{{ 'jetbrains-mono-latin-500-normal.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono Fallback';
+    src: local('ui-monospace'), local('Cascadia Mono'), local('Consolas'), local('Menlo');
+    size-adjust: 100%;
+    ascent-override: 92%;
+    descent-override: 24%;
+    line-gap-override: 0%;
+  }
+
+  /* ── Noto Serif Devanagari (eyebrow / kansa lockup) — 400 only ───── */
+  @font-face {
+    font-family: 'Noto Serif Devanagari';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('{{ 'noto-serif-devanagari-400-normal.woff2' | asset_url }}') format('woff2');
+    unicode-range: U+0900-097F, U+A8E0-A8FF, U+1CD0-1CFF;
+  }
+  @font-face {
+    font-family: 'Noto Serif Devanagari Fallback';
+    src: local('Nirmala UI'), local('Mangal'), local('Tiro Devanagari Hindi');
+    size-adjust: 100%;
   }
 
   :root {
-    --font-heading--family: 'Fraunces', 'Libre Baskerville', Georgia, serif;
-    --font-body--family: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono--family: 'JetBrains Mono', 'Anonymous Pro', monospace;
-    --font-devanagari--family: 'Noto Serif Devanagari', 'Tiro Devanagari Hindi', serif;
-    --brand-font-heading: var(--font-heading--family);
+    --font-body--family: 'Bai Jamjuree', 'Bai Jamjuree Fallback', system-ui, sans-serif;
+    --font-accent--family: 'Satoshi', 'Satoshi Fallback', system-ui, sans-serif;
+    --font-subheading--family: var(--font-accent--family);
+    --font-heading--family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
+    --font-highlight--family: var(--font-heading--family);
+    --font-wordmark--family: 'Noto Serif', 'Noto Serif Wordmark Fallback', Georgia, serif;
+    --font-mono--family: 'JetBrains Mono', 'JetBrains Mono Fallback', ui-monospace, monospace;
+    --font-devanagari--family: 'Noto Serif Devanagari', 'Noto Serif Devanagari Fallback', 'Tiro Devanagari Hindi', serif;
+
     --brand-font-body: var(--font-body--family);
+    --brand-font-accent: var(--font-accent--family);
+    --brand-font-heading: var(--font-heading--family);
+    --brand-font-highlight: var(--font-highlight--family);
+    --brand-font-wordmark: var(--font-wordmark--family);
     --brand-font-mono: var(--font-mono--family);
+
+    /*
+      Maison Utopia modular type scale (OWNER) — rem only, never px font-size.
+      Viewport: 320px → 1440px | Body (step 0): 1rem → 1.25rem
+      Ratio: mobile minor third 1.2 → desktop perfect fourth 1.333 (4/3)
+      Step n: min = 1×1.2^n , max = 1.25×(4/3)^n ; fluid = Utopia clamp(min, i + s·vw, max)
+      Preferred ratio: 1.333 (perfect fourth) at max viewport
+    */
+    --mt-type-xs: clamp(0.6944rem, 0.692rem + 0.0008vw, 0.7031rem); /* −2 */
+    --mt-type-sm: clamp(0.8333rem, 0.8036rem + 0.0093vw, 0.9375rem); /* −1 */
+    --mt-type-md: clamp(1rem, 0.9286rem + 0.0223vw, 1.25rem); /*  0 body */
+    --mt-type-lg: clamp(1.2rem, 1.0667rem + 0.0417vw, 1.6667rem); /* +1 */
+    --mt-type-xl: clamp(1.44rem, 1.2165rem + 0.0698vw, 2.2222rem); /* +2 */
+    --mt-type-2xl: clamp(1.728rem, 1.3752rem + 0.1103vw, 2.963rem); /* +3 */
+    --mt-type-3xl: clamp(2.0736rem, 1.5373rem + 0.1676vw, 3.9506rem); /* +4 */
+    --mt-type-4xl: clamp(2.4883rem, 1.6943rem + 0.2481vw, 5.2675rem); /* +5 hero */
+
+    /* Lint / Horizon bridges — alias the modular steps */
+    --font-size--fluid-xs: var(--mt-type-xs);
+    --font-size--fluid-sm: var(--mt-type-sm);
+    --font-size--fluid-md: var(--mt-type-md);
+    --font-size--fluid-lg: var(--mt-type-lg);
+    --font-size--fluid-xl: var(--mt-type-xl);
+    --font-size--fluid-2xl: var(--mt-type-2xl);
+    --font-size--fluid-3xl: var(--mt-type-3xl);
+    --font-size--fluid-display: var(--mt-type-4xl);
+
+    --font-size--brand-body: var(--mt-type-md);
+    --font-size--brand-accent: var(--mt-type-xs);
+    --font-size--brand-nav: var(--mt-type-sm);
+    --font-size--brand-button: var(--mt-type-xs);
+    --font-size--brand-heading: var(--mt-type-2xl);
+    --font-size--brand-highlight: var(--mt-type-lg);
+    /* Wordmarks sit outside the modular ladder (string-width / cqi) */
+    --font-size--brand-wordmark: clamp(1.25rem, 1.05rem + 0.8vw, 1.875rem);
+    --font-size--brand-wordmark-display: clamp(2.75rem, 1.4rem + 9cqi, 9rem);
+    /*
+      Splash wordmark ≈ 69vw string width for "Maison Tavo"
+      (Noto Serif 100 + −0.07em tracking → ~5.5em advance) → 69vw / 5.5.
+    */
+    --font-size--brand-wordmark-splash: clamp(2.75rem, calc(69vw / 5.5), 14rem);
+
+    --letter-spacing--wordmark: -0.07em;
+    --font-weight--wordmark: 100;
+
+    /* Early semantic --mt-type roles (Agents 2/3 apply; refreshed in theme-styles-variables) */
+    --mt-type-family-body: var(--font-body--family);
+    --mt-type-family-accent: var(--font-accent--family);
+    --mt-type-family-heading: var(--font-heading--family);
+    --mt-type-family-wordmark: var(--font-wordmark--family);
+    --mt-type-family-mono: var(--font-mono--family);
+    --mt-type-body: var(--mt-type-md);
+    --mt-type-accent: var(--mt-type-xs);
+    --mt-type-nav: var(--mt-type-sm);
+    --mt-type-button: var(--mt-type-xs);
+    --mt-type-lede: var(--mt-type-lg);
+    --mt-type-title: var(--mt-type-xl);
+    --mt-type-heading: var(--mt-type-2xl);
+    --mt-type-display: var(--mt-type-3xl);
+    --mt-type-display-lg: var(--mt-type-4xl);
+    --mt-type-mono: var(--mt-type-xs);
+    --mt-type-wordmark: var(--font-size--brand-wordmark);
+    --mt-type-wordmark-display: var(--font-size--brand-wordmark-display);
+    --mt-type-wordmark-splash: var(--font-size--brand-wordmark-splash);
+    --mt-type-tracking-heading: -0.02em;
+    --mt-type-tracking-wordmark: var(--letter-spacing--wordmark);
+    --mt-type-tracking-accent: 0.08em;
+    --mt-type-leading-body: 1.65;
+  }
+
+  html {
+    font-size: 100%;
   }
 
   h1, h2, h3, h4, .h1, .h2, .h3, .h4,
   .hero__content-wrapper .text-block.h2,
   .hero__content-wrapper .text-block.h1,
   .maison-editorial__title,
+  .maison-hero__headline {
+    font-family: var(--mt-type-family-heading, var(--font-heading--family));
+    letter-spacing: var(--mt-type-tracking-heading, -0.02em);
+  }
+
+  .maison-highlight,
+  .maison-hero__headline--italic,
+  em.maison-highlight {
+    font-family: var(--mt-type-family-heading, var(--font-highlight--family));
+    font-style: italic;
+  }
+
+  .maison-wordmark,
+  .header-logo,
+  .header__heading-text,
+  .header__heading-link,
+  .mt-veil__mark,
+  .mt-coda__word,
   .splash-intro__heading {
-    font-family: var(--font-heading--family);
-    letter-spacing: -0.015em;
+    font-family: var(--mt-type-family-wordmark, var(--font-wordmark--family));
+    font-weight: var(--font-weight--wordmark);
+    letter-spacing: var(--mt-type-tracking-wordmark, var(--letter-spacing--wordmark));
+    font-kerning: normal;
+    font-feature-settings: 'kern' 1, 'liga' 1;
   }
 
   .maison-devanagari {
-    font-family: var(--font-devanagari--family);
+    font-family: var(--mt-type-family-devanagari, var(--font-devanagari--family));
     letter-spacing: 0.04em;
   }
 </style>
