@@ -22,3 +22,17 @@ theme/locales/*~
 # MkDocs
 /site
 .venv/
+
+# Local agent / IDE scratch
+.kiro/
+tmp/
+**/tmp/
+
+# Shopify CLI theme-dev noise
+theme/.theme-dev.*
+theme/**/.theme-dev.*
+
+# One-off local scripts (never ship)
+theme/scripts/_fix-*.mjs
+theme/scripts/_port-*.mjs
+theme/scripts/_*.tmp.*
