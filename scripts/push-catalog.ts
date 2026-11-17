@@ -1,48 +1,59 @@
 /**
- * Push the Maison Tavo concept catalog to Shopify Admin.
+ * Push & audit the Maison Tavo concept catalog against Shopify Admin.
  *
- * Creates PRODUCT metafield definitions in namespace `specs` and draft,
- * unpublished products from `@maison-tavo/catalog` seed data. Idempotent:
- * skips definitions that already exist; creates missing products; on
- * `--apply`, refreshes existing drafts (title, description, tags, SEO,
- * metafields, variant SKU/price/weight) from seed. Optionally syncs
- * unpublished lineup collections and assigns products. Never publishes,
- * never deletes, never updates unrelated products.
+ * Architecture & operational guarantees:
+ *   1. Standardized Shopify Product Taxonomy (`category` GID) describes what each
+ *      object fundamentally is; `productType` holds Maison Tavo operational vocabulary
+ *      (e.g. "Kulhad", "Skillet"); Collections group products into brand ranges
+ *      (`terre-clay`, `forge-hybrid`, `forge-terre`, `kuro-strip`) and shopping
+ *      journeys (`cookware`, `tableware-pottery`, `care-sets`).
+ *   2. Repeatable specifications & engineering claims (material, lining, capacity,
+ *      dimensions, care instructions, dishwasher/microwave/food-contact suitability,
+ *      heat compatibility, risks, prototype tests) live in structured `specs.*`
+ *      metafields rather than stuffed into titles or buried only in prose.
+ *   3. Retains returned Shopify `product_id`, `variant_id`, `inventory_item_id`,
+ *      `category_id`, and `collection_id` alongside stable `sku` + `handle` in
+ *      `data/shopify-id-map.json`.
+ *   4. Never invents compare-at prices, physical weights, or live stock quantities.
+ *   5. Runs a 5-stage readiness diagnostic distinguishing:
+ *        - MISSING_FROM_ADMIN
+ *        - MISSING_FROM_COLLECTION
+ *        - MISSING_PRODUCT_MEDIA (verifies actual Shopify READY media records)
+ *        - MISSING_FROM_CHANNEL (distinguishes DRAFT / ACTIVE_UNPUBLISHED / PUBLISHED)
+ *        - UNAVAILABLE_TO_BUY (checks variant `availableForSale`, `tracked`,
+ *          `inventoryPolicy`, `inventoryQuantity`, stocked locations, shipping & weight)
  *
  * Usage (from repo root):
- *   bun scripts/push-catalog.ts              # dry-run (default)
- *   bun scripts/push-catalog.ts --apply      # mutate the store
- *   bun scripts/push-catalog.ts --apply --store maison-tavo.myshopify.com
- *
- * Auth (first match wins):
- *   1. SHOPIFY_ADMIN_API_TOKEN env (raw Admin token, optional Bearer prefix)
- *   2. Shopify CLI identity session (same token theme commands use)
- *   3. shopify store execute (requires prior `shopify store auth`)
- *
- * Prerequisites for CLI identity auth:
- *   shopify auth login
- *   (theme list against the store refreshes the session if needed)
- *
- * Env:
- *   SHOPIFY_FLAG_STORE          default store domain
- *   SHOPIFY_ADMIN_API_TOKEN     optional Admin API token override
- *   SHOPIFY_FLAG_STORE_PASSWORD storefront password (optional; never commit)
+ *   bun scripts/push-catalog.ts                    # dry-run seed sync + live 5-stage diagnostic
+ *   bun scripts/push-catalog.ts --offline          # pure offline dry-run against retained ID map
+ *   bun scripts/push-catalog.ts --apply            # create/refresh drafts, metafields, taxonomy & collections
+ *   bun scripts/push-catalog.ts --apply --publish  # activate + publish to Online Store
  */
 
 import {spawnSync} from 'node:child_process';
-import {homedir} from 'node:os';
+import {homedir, tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {readFileSync, existsSync} from 'node:fs';
-import {seedCatalog, type Lineup, type ProductSpec} from '../packages/catalog/src/index.ts';
+import {readFileSync, existsSync, writeFileSync, unlinkSync} from 'node:fs';
+import {
+  ShopifyIdMap,
+  seedCatalog,
+  type Lineup,
+  type ProductSpec,
+  type ShopifyIdMap as ShopifyIdMapType,
+} from '../packages/catalog/src/index.ts';
 
 const STORE =
   flagValue('--store') ??
   process.env.SHOPIFY_FLAG_STORE ??
   'maison-tavo.myshopify.com';
 const APPLY = process.argv.includes('--apply');
-const API_VERSION = '2025-10';
+const PUBLISH = process.argv.includes('--publish');
+const OFFLINE = process.argv.includes('--offline');
+const API_VERSION = '2026-04';
+const ONLINE_STORE_APP_HANDLE = 'online_store';
+const ID_MAP_PATH = join(import.meta.dir, '..', 'data', 'shopify-id-map.json');
 
-/** Unpublished custom collections keyed by seed lineup. */
+/** Brand-range collections keyed by seed lineup. */
 const LINEUP_COLLECTIONS: Array<{
   lineup: Lineup;
   handle: string;
@@ -79,6 +90,68 @@ const LINEUP_COLLECTIONS: Array<{
   },
 ];
 
+type Category = 'Cookware' | 'Tableware & Pottery' | 'Care & Sets';
+
+const CARE_SKUS = new Set([
+  'MT-FOR-OIL-250',
+  'MT-FOR-KIT-C01',
+  'MT-FOR-LID-26',
+  'MT-FOR-LID-30',
+  'MT-TER-STM-24',
+]);
+const TABLEWARE_SKUS = new Set([
+  'MT-TER-KUL-140',
+  'MT-TER-KUL-C180',
+  'MT-TER-PLT-34',
+  'MT-TER-BWL-220',
+  'MT-TER-PLT-28',
+  'MT-TER-BWL-S03',
+  'MT-TER-BWL-26',
+]);
+
+function categoryFor(spec: ProductSpec): Category {
+  if (CARE_SKUS.has(spec.sku)) return 'Care & Sets';
+  if (TABLEWARE_SKUS.has(spec.sku)) return 'Tableware & Pottery';
+  return 'Cookware';
+}
+
+const CATEGORY_COLLECTIONS: Array<{
+  category: Category;
+  handle: string;
+  title: string;
+  descriptionHtml: string;
+}> = [
+  {
+    category: 'Cookware',
+    handle: 'cookware',
+    title: 'Cookware',
+    descriptionHtml: '<p>Pans, vessels, knives and service tools organized by culinary task.</p>',
+  },
+  {
+    category: 'Tableware & Pottery',
+    handle: 'tableware-pottery',
+    title: 'Tableware & Pottery',
+    descriptionHtml: '<p>Clay-forward drinkware, dinnerware and shared-service pottery.</p>',
+  },
+  {
+    category: 'Care & Sets',
+    handle: 'care-sets',
+    title: 'Care & Sets',
+    descriptionHtml: '<p>Care rituals, replacement parts, steamers and composed sets.</p>',
+  },
+];
+
+const ALL_COLLECTIONS = [
+  ...LINEUP_COLLECTIONS.map((collection) => ({
+    ...collection,
+    products: () => seedCatalog.filter((product) => product.lineup === collection.lineup),
+  })),
+  ...CATEGORY_COLLECTIONS.map((collection) => ({
+    ...collection,
+    products: () => seedCatalog.filter((product) => categoryFor(product) === collection.category),
+  })),
+];
+
 type GraphqlResult = {
   data?: Record<string, unknown>;
   errors?: Array<{message: string}>;
@@ -91,19 +164,97 @@ type MetafieldDefSpec = {
   description: string;
 };
 
-/** Catalog-facing PRODUCT metafields under namespace `specs`. */
+/** Repeatable structured PRODUCT metafields under namespace `specs`. */
 export const SPECS_DEFINITIONS: MetafieldDefSpec[] = [
   {
     key: 'lineup',
     name: 'Lineup',
     type: 'single_line_text_field',
-    description: 'Product lineup (Terre Clay, Forge Hybrid, Forge × Terre, Kuro Strip).',
+    description: 'Brand range (Terre Clay, Forge Hybrid, Forge × Terre, Kuro Strip).',
   },
   {
     key: 'claim_status',
     name: 'Claim status',
     type: 'single_line_text_field',
     description: 'Evidence tier: CONCEPT_SPEC | PROTOTYPE_VALIDATED | VERIFIED.',
+  },
+  {
+    key: 'primary_material',
+    name: 'Primary material',
+    type: 'single_line_text_field',
+    description: 'Primary structural material of the object.',
+  },
+  {
+    key: 'lining_material',
+    name: 'Lining / food-contact material',
+    type: 'single_line_text_field',
+    description: 'Interior lining or food-contact surface material.',
+  },
+  {
+    key: 'capacity_ml',
+    name: 'Capacity (ml)',
+    type: 'number_integer',
+    description: 'Nominal vessel or bottle volume in millilitres where applicable.',
+  },
+  {
+    key: 'dimensions_summary',
+    name: 'Dimensions',
+    type: 'single_line_text_field',
+    description: 'Repeatable primary dimension or format specification.',
+  },
+  {
+    key: 'dishwasher_suitability',
+    name: 'Dishwasher suitability',
+    type: 'single_line_text_field',
+    description: 'Dishwasher claim tier: hand_wash_only | insert_only_pending_validation | pending_validation | not_applicable.',
+  },
+  {
+    key: 'microwave_suitability',
+    name: 'Microwave suitability',
+    type: 'single_line_text_field',
+    description: 'Microwave claim tier: not_microwave_safe | pending_validation | not_applicable.',
+  },
+  {
+    key: 'food_contact_suitability',
+    name: 'Food-contact suitability',
+    type: 'multi_line_text_field',
+    description: 'Food-contact boundary and migration validation status.',
+  },
+  {
+    key: 'care_instructions',
+    name: 'Care instructions',
+    type: 'multi_line_text_field',
+    description: 'Structured cleaning, drying and conditioning instructions.',
+  },
+  {
+    key: 'heat_compatibility',
+    name: 'Heat compatibility',
+    type: 'single_line_text_field',
+    description: 'Summary of intended heat compatibility and validation status.',
+  },
+  {
+    key: 'induction_compatible',
+    name: 'Induction compatible (target)',
+    type: 'boolean',
+    description: 'Whether the concept design targets induction coupling.',
+  },
+  {
+    key: 'heat_sources',
+    name: 'Heat sources',
+    type: 'list.single_line_text_field',
+    description: 'Intended heat sources (induction, gas, electric, oven, open_flame).',
+  },
+  {
+    key: 'engineering_risks',
+    name: 'Engineering risks',
+    type: 'list.single_line_text_field',
+    description: 'Known failure modes tracked for prototype testing.',
+  },
+  {
+    key: 'required_prototype_tests',
+    name: 'Required prototype tests',
+    type: 'list.single_line_text_field',
+    description: 'Validation gates required before promoting claim_status.',
   },
   {
     key: 'material_architecture',
@@ -128,12 +279,6 @@ export const SPECS_DEFINITIONS: MetafieldDefSpec[] = [
     name: 'Care hypothesis',
     type: 'multi_line_text_field',
     description: 'Care / wash hypothesis pending prototype validation.',
-  },
-  {
-    key: 'heat_sources',
-    name: 'Heat sources',
-    type: 'list.single_line_text_field',
-    description: 'Intended heat sources (induction, gas, electric, oven, open_flame).',
   },
   {
     key: 'agent_intents',
@@ -161,13 +306,30 @@ function flagValue(name: string): string | undefined {
   return process.argv[idx + 1];
 }
 
+function loadIdMap(): ShopifyIdMapType {
+  if (!existsSync(ID_MAP_PATH)) {
+    return {
+      store: STORE,
+      updated_at: new Date().toISOString(),
+      products_by_sku: {},
+      collections_by_handle: {},
+    };
+  }
+  return ShopifyIdMap.parse(JSON.parse(readFileSync(ID_MAP_PATH, 'utf8')));
+}
+
+function saveIdMap(map: ShopifyIdMapType): void {
+  map.updated_at = new Date().toISOString();
+  writeFileSync(ID_MAP_PATH, `${JSON.stringify(ShopifyIdMap.parse(map), null, 2)}\n`, 'utf8');
+}
+
 function shopifyEnv(): NodeJS.ProcessEnv {
   return {
     ...process.env,
     SHOPIFY_CLI_AGENT_INFO:
-      process.env.SHOPIFY_CLI_AGENT_INFO ?? 'n:cursor|v:none|p:none|m:composer',
+      process.env.SHOPIFY_CLI_AGENT_INFO ?? 'n:cursor|v:none|p:google|m:gemini-4-carbon',
     SHOPIFY_CLI_AGENT_IDS:
-      process.env.SHOPIFY_CLI_AGENT_IDS ?? 's:none|r:push-catalog|i:none',
+      process.env.SHOPIFY_CLI_AGENT_IDS ?? 'r:push-catalog',
   };
 }
 
@@ -219,7 +381,6 @@ function normalizeAdminToken(raw: string): string {
   if (token.startsWith('Bearer ') || token.startsWith('shpat_') || token.startsWith('shpca_')) {
     return token;
   }
-  // CLI identity tokens (atkn_…) must be sent as Bearer for Admin GraphQL.
   if (token.startsWith('atkn_')) return `Bearer ${token}`;
   return token;
 }
@@ -271,55 +432,105 @@ async function executeGraphqlDirect(
   return json;
 }
 
-function executeGraphqlCli(
+let cachedStoreExecuteDomain: string | undefined;
+
+async function storeExecuteDomain(): Promise<string> {
+  if (cachedStoreExecuteDomain) return cachedStoreExecuteDomain;
+  if (adminToken()) {
+    try {
+      const result = await executeGraphqlDirect(
+        `query ShopDomain { shop { myshopifyDomain } }`,
+      );
+      const domain = (
+        result.data?.shop as {myshopifyDomain?: string} | undefined
+      )?.myshopifyDomain;
+      if (domain) {
+        cachedStoreExecuteDomain = domain;
+        return domain;
+      }
+    } catch {
+      // fall through to STORE
+    }
+  }
+  cachedStoreExecuteDomain = STORE;
+  return cachedStoreExecuteDomain;
+}
+
+async function executeGraphqlCli(
   query: string,
   variables?: Record<string, unknown>,
   {mutate = false}: {mutate?: boolean} = {},
-): GraphqlResult {
+): Promise<GraphqlResult> {
+  const storeDomain = await storeExecuteDomain();
+  const stamp = `${process.pid}-${Date.now()}`;
+  const queryFile = join(tmpdir(), `maison-push-catalog-${stamp}.graphql`);
+  const variableFile = variables
+    ? join(tmpdir(), `maison-push-catalog-${stamp}.vars.json`)
+    : undefined;
+  writeFileSync(queryFile, query, 'utf8');
+  if (variableFile && variables) {
+    writeFileSync(variableFile, JSON.stringify(variables), 'utf8');
+  }
   const args = [
     'store',
     'execute',
     '--store',
-    STORE,
+    storeDomain,
     '--version',
     API_VERSION,
     '--json',
-    '--query',
-    query,
+    '--query-file',
+    queryFile,
   ];
-  if (variables) {
-    args.push('--variables', JSON.stringify(variables));
+  if (variableFile) {
+    args.push('--variable-file', variableFile);
   }
   if (mutate) {
     args.push('--allow-mutations');
   }
 
-  const result = spawnSync('shopify', args, {
-    encoding: 'utf8',
-    env: shopifyEnv(),
-    maxBuffer: 16 * 1024 * 1024,
-    shell: process.platform === 'win32',
-  });
+  try {
+    const result = spawnSync('shopify', args, {
+      encoding: 'utf8',
+      env: shopifyEnv(),
+      maxBuffer: 16 * 1024 * 1024,
+      shell: process.platform === 'win32',
+    });
 
-  if (result.status !== 0) {
-    const err = (result.stderr || result.stdout || '').trim();
-    throw new Error(`shopify store execute failed (exit ${result.status}): ${err}`);
-  }
+    if (result.status !== 0) {
+      const err = (result.stderr || result.stdout || '').trim();
+      throw new Error(`shopify store execute failed (exit ${result.status}): ${err}`);
+    }
 
-  const stdout = (result.stdout || '').trim();
-  const jsonStart = stdout.indexOf('{');
-  if (jsonStart === -1) {
-    throw new Error(`No JSON in shopify store execute output:\n${stdout}`);
+    const stdout = (result.stdout || '').trim();
+    const jsonStart = stdout.indexOf('{');
+    if (jsonStart === -1) {
+      throw new Error(`No JSON in shopify store execute output:\n${stdout}`);
+    }
+    const parsed = JSON.parse(stdout.slice(jsonStart)) as GraphqlResult &
+      Record<string, unknown>;
+    if ('data' in parsed || 'errors' in parsed) {
+      return parsed as GraphqlResult;
+    }
+    return {data: parsed};
+  } finally {
+    for (const file of [queryFile, variableFile]) {
+      if (!file) continue;
+      try {
+        unlinkSync(file);
+      } catch {
+        // ignore cleanup failures
+      }
+    }
   }
-  return JSON.parse(stdout.slice(jsonStart)) as GraphqlResult;
 }
 
 async function executeGraphql(
   query: string,
   variables?: Record<string, unknown>,
-  opts: {mutate?: boolean} = {},
+  opts: {mutate?: boolean; forceCli?: boolean} = {},
 ): Promise<GraphqlResult> {
-  if (adminToken()) {
+  if (!opts.forceCli && adminToken()) {
     return executeGraphqlDirect(query, variables);
   }
   return executeGraphqlCli(query, variables, opts);
@@ -337,69 +548,84 @@ function listValue(values: string[]): string {
   return JSON.stringify(values);
 }
 
-function productMetafields(spec: ProductSpec): Array<{
+export function productMetafields(spec: ProductSpec): Array<{
   namespace: string;
   key: string;
   type: string;
   value: string;
 }> {
-  return [
+  const fields: Array<{namespace: string; key: string; type: string; value: string}> = [
     {namespace: 'specs', key: 'lineup', type: 'single_line_text_field', value: spec.lineup},
-    {
-      namespace: 'specs',
-      key: 'claim_status',
-      type: 'single_line_text_field',
-      value: spec.claim_status,
-    },
-    {
-      namespace: 'specs',
-      key: 'material_architecture',
-      type: 'multi_line_text_field',
-      value: spec.material_architecture,
-    },
-    {
-      namespace: 'specs',
-      key: 'food_contact_strategy',
-      type: 'multi_line_text_field',
-      value: spec.food_contact_strategy,
-    },
-    {
-      namespace: 'specs',
-      key: 'fabrication_route',
-      type: 'multi_line_text_field',
-      value: spec.fabrication_route,
-    },
-    {
-      namespace: 'specs',
-      key: 'care_hypothesis',
-      type: 'multi_line_text_field',
-      value: spec.care_hypothesis,
-    },
-    {
-      namespace: 'specs',
-      key: 'heat_sources',
-      type: 'list.single_line_text_field',
-      value: listValue(spec.heat_sources),
-    },
-    {
-      namespace: 'specs',
-      key: 'agent_intents',
-      type: 'list.single_line_text_field',
-      value: listValue(spec.agent_intents),
-    },
-    {
-      namespace: 'specs',
-      key: 'negative_constraints',
-      type: 'list.single_line_text_field',
-      value: listValue(spec.negative_constraints),
-    },
-    {
-      namespace: 'specs',
-      key: 'concept_thesis',
-      type: 'multi_line_text_field',
-      value: spec.concept_thesis,
-    },
+    {namespace: 'specs', key: 'claim_status', type: 'single_line_text_field', value: spec.claim_status},
+    {namespace: 'specs', key: 'primary_material', type: 'single_line_text_field', value: spec.primary_material},
+    {namespace: 'specs', key: 'lining_material', type: 'single_line_text_field', value: spec.lining_material},
+    {namespace: 'specs', key: 'dimensions_summary', type: 'single_line_text_field', value: spec.dimensions_summary},
+    {namespace: 'specs', key: 'dishwasher_suitability', type: 'single_line_text_field', value: spec.dishwasher_suitability},
+    {namespace: 'specs', key: 'microwave_suitability', type: 'single_line_text_field', value: spec.microwave_suitability},
+    {namespace: 'specs', key: 'food_contact_suitability', type: 'multi_line_text_field', value: spec.food_contact_suitability},
+    {namespace: 'specs', key: 'care_instructions', type: 'multi_line_text_field', value: spec.care_instructions},
+    {namespace: 'specs', key: 'heat_compatibility', type: 'single_line_text_field', value: spec.heat_compatibility},
+    {namespace: 'specs', key: 'induction_compatible', type: 'boolean', value: spec.induction_compatible ? 'true' : 'false'},
+    {namespace: 'specs', key: 'heat_sources', type: 'list.single_line_text_field', value: listValue(spec.heat_sources)},
+    {namespace: 'specs', key: 'engineering_risks', type: 'list.single_line_text_field', value: listValue(spec.engineering_risks)},
+    {namespace: 'specs', key: 'required_prototype_tests', type: 'list.single_line_text_field', value: listValue(spec.required_prototype_tests)},
+    {namespace: 'specs', key: 'material_architecture', type: 'multi_line_text_field', value: spec.material_architecture},
+    {namespace: 'specs', key: 'food_contact_strategy', type: 'multi_line_text_field', value: spec.food_contact_strategy},
+    {namespace: 'specs', key: 'fabrication_route', type: 'multi_line_text_field', value: spec.fabrication_route},
+    {namespace: 'specs', key: 'care_hypothesis', type: 'multi_line_text_field', value: spec.care_hypothesis},
+    {namespace: 'specs', key: 'agent_intents', type: 'list.single_line_text_field', value: listValue(spec.agent_intents)},
+    {namespace: 'specs', key: 'negative_constraints', type: 'list.single_line_text_field', value: listValue(spec.negative_constraints)},
+    {namespace: 'specs', key: 'concept_thesis', type: 'multi_line_text_field', value: spec.concept_thesis},
   ];
+  if (spec.dimensions.capacity_ml !== undefined) {
+    fields.push({
+      namespace: 'specs',
+      key: 'capacity_ml',
+      type: 'number_integer',
+      value: String(Math.round(spec.dimensions.capacity_ml)),
+    });
+  }
+  return fields;
+}
+
+/** Resolve Shopify Standard Product Taxonomy category GIDs by breadcrumb fullName. */
+async function resolveTaxonomyCategories(
+  breadcrumbs: string[],
+): Promise<Map<string, string>> {
+  const unique = [...new Set(breadcrumbs.filter(Boolean))];
+  const resolved = new Map<string, string>();
+  const query = `query ResolveTaxonomy($search: String!) {
+    taxonomy {
+      categories(first: 10, search: $search) {
+        nodes {
+          id
+          name
+          fullName
+        }
+      }
+    }
+  }`;
+
+  for (const breadcrumb of unique) {
+    const leaf = breadcrumb.split('>').pop()!.trim();
+    const result = await executeGraphql(query, {search: leaf});
+    assertNoErrors(`taxonomy ${leaf}`, result);
+    const nodes =
+      (
+        result.data?.taxonomy as
+          | {categories: {nodes: Array<{id: string; name: string; fullName: string}>}}
+          | undefined
+      )?.categories.nodes ?? [];
+    const exact =
+      nodes.find((n) => n.fullName.toLowerCase() === breadcrumb.toLowerCase()) ??
+      nodes.find((n) => n.name.toLowerCase() === leaf.toLowerCase());
+    if (exact) {
+      resolved.set(breadcrumb, exact.id);
+    } else {
+      console.warn(`  warn: no exact Shopify taxonomy match for "${breadcrumb}" (searched "${leaf}")`);
+    }
+  }
+  return resolved;
 }
 
 async function existingDefinitionKeys(): Promise<Set<string>> {
@@ -421,18 +647,32 @@ async function existingDefinitionKeys(): Promise<Set<string>> {
 
 type ExistingProduct = {
   id: string;
+  handle: string;
   status: string;
+  categoryId?: string | null;
   variantId?: string;
+  inventoryItemId?: string;
+  sku?: string;
 };
 
-async function existingProductsByHandle(): Promise<Map<string, ExistingProduct>> {
+async function existingProductsIndex(): Promise<{
+  byHandle: Map<string, ExistingProduct>;
+  bySku: Map<string, ExistingProduct>;
+}> {
   const query = `query CatalogProducts($query: String!) {
     products(first: 50, query: $query) {
       nodes {
         id
         handle
         status
-        variants(first: 1) { nodes { id } }
+        category { id fullName }
+        variants(first: 1) {
+          nodes {
+            id
+            sku
+            inventoryItem { id }
+          }
+        }
       }
     }
   }`;
@@ -446,30 +686,45 @@ async function existingProductsByHandle(): Promise<Map<string, ExistingProduct>>
               id: string;
               handle: string;
               status: string;
-              variants: {nodes: Array<{id: string}>};
+              category?: {id: string; fullName: string} | null;
+              variants: {
+                nodes: Array<{
+                  id: string;
+                  sku?: string | null;
+                  inventoryItem?: {id: string} | null;
+                }>;
+              };
             }>;
           }
         | undefined
     )?.nodes ?? [];
-  return new Map(
-    nodes.map((n) => [
-      n.handle,
-      {
-        id: n.id,
-        status: n.status,
-        variantId: n.variants.nodes[0]?.id,
-      },
-    ]),
-  );
+
+  const byHandle = new Map<string, ExistingProduct>();
+  const bySku = new Map<string, ExistingProduct>();
+  for (const n of nodes) {
+    const v = n.variants.nodes[0];
+    const item: ExistingProduct = {
+      id: n.id,
+      handle: n.handle,
+      status: n.status,
+      categoryId: n.category?.id ?? null,
+      variantId: v?.id,
+      inventoryItemId: v?.inventoryItem?.id,
+      sku: v?.sku ?? undefined,
+    };
+    byHandle.set(n.handle, item);
+    if (item.sku) bySku.set(item.sku, item);
+  }
+  return {byHandle, bySku};
 }
 
 async function existingCollectionsByHandle(): Promise<Map<string, string>> {
-  const query = `query LineupCollections($query: String!) {
+  const query = `query AllCollections($query: String!) {
     collections(first: 25, query: $query) {
-      nodes { id handle }
+      nodes { id handle title }
     }
   }`;
-  const handles = LINEUP_COLLECTIONS.map((c) => c.handle);
+  const handles = ALL_COLLECTIONS.map((c) => c.handle);
   const result = await executeGraphql(query, {
     query: handles.map((h) => `handle:${h}`).join(' OR '),
   });
@@ -546,40 +801,59 @@ async function setVariantFields(
   productId: string,
   variantId: string,
   spec: ProductSpec,
-): Promise<void> {
+): Promise<{variantId: string; inventoryItemId?: string}> {
   const variantMutation = `mutation SetVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
     productVariantsBulkUpdate(productId: $productId, variants: $variants) {
-      productVariants { id sku price }
+      productVariants {
+        id
+        sku
+        price
+        inventoryItem { id }
+      }
       userErrors { field message }
     }
   }`;
+
+  const inventoryItem: Record<string, unknown> = {
+    sku: spec.sku,
+    tracked: true,
+    requiresShipping: true,
+  };
+  if (spec.cost_per_item_usd !== undefined) {
+    inventoryItem.cost = spec.cost_per_item_usd.toFixed(2);
+  }
+  if (spec.weight_grams !== undefined) {
+    inventoryItem.measurement = {
+      weight: {
+        value: spec.weight_grams,
+        unit: 'GRAMS',
+      },
+    };
+  }
+
+  const variantInput: Record<string, unknown> = {
+    id: variantId,
+    price: spec.price_usd.toFixed(2),
+    compareAtPrice: spec.compare_at_usd !== undefined ? spec.compare_at_usd.toFixed(2) : null,
+    inventoryPolicy: 'DENY',
+    inventoryItem,
+  };
+  if (spec.barcode) {
+    variantInput.barcode = spec.barcode;
+  }
 
   const variantResult = await executeGraphql(
     variantMutation,
     {
       productId,
-      variants: [
-        {
-          id: variantId,
-          price: spec.price_usd.toFixed(2),
-          inventoryItem: {
-            sku: spec.sku,
-            requiresShipping: true,
-            measurement: {
-              weight: {
-                value: spec.weight_grams,
-                unit: 'GRAMS',
-              },
-            },
-          },
-        },
-      ],
+      variants: [variantInput],
     },
     {mutate: true},
   );
   assertNoErrors(`productVariantsBulkUpdate ${spec.handle}`, variantResult);
 
   const variantPayload = variantResult.data?.productVariantsBulkUpdate as {
+    productVariants?: Array<{id: string; inventoryItem?: {id: string} | null}>;
     userErrors: Array<{message: string}>;
   };
   if (variantPayload.userErrors?.length) {
@@ -589,50 +863,82 @@ async function setVariantFields(
         .join('; ')}`,
     );
   }
+  const updatedVar = variantPayload.productVariants?.[0];
+  return {
+    variantId: updatedVar?.id ?? variantId,
+    inventoryItemId: updatedVar?.inventoryItem?.id ?? undefined,
+  };
 }
 
 async function updateProduct(
   existing: ExistingProduct,
   spec: ProductSpec,
-): Promise<{id: string; action: 'updated'}> {
+  categoryId?: string,
+): Promise<{
+  id: string;
+  variantId?: string;
+  inventoryItemId?: string;
+  categoryId?: string | null;
+  action: 'updated';
+}> {
+  const nextStatus = PUBLISH
+    ? 'ACTIVE'
+    : existing.status === 'ACTIVE'
+      ? 'ACTIVE'
+      : 'DRAFT';
   if (!APPLY) {
+    const weightNote = spec.weight_grams !== undefined ? `${spec.weight_grams}g` : 'unweighed';
     console.log(
-      `  [dry-run] would update ${spec.handle} (${spec.sku}) DRAFT $${spec.price_usd}`,
+      `  [dry-run] would update ${spec.handle} (${spec.sku}) ${nextStatus} $${spec.price_usd} [${weightNote}]`,
     );
-    return {id: existing.id, action: 'updated'};
+    return {
+      id: existing.id,
+      variantId: existing.variantId,
+      inventoryItemId: existing.inventoryItemId,
+      categoryId: categoryId ?? existing.categoryId ?? null,
+      action: 'updated',
+    };
   }
 
   const mutation = `mutation UpdateProduct($product: ProductUpdateInput!) {
     productUpdate(product: $product) {
-      product { id handle status }
+      product {
+        id
+        handle
+        status
+        category { id }
+      }
       userErrors { field message }
     }
   }`;
 
+  const productInput: Record<string, unknown> = {
+    id: existing.id,
+    title: spec.title,
+    descriptionHtml: spec.description_html,
+    vendor: spec.vendor,
+    productType: spec.product_type,
+    tags: spec.tags,
+    status: nextStatus,
+    seo: {
+      title: spec.seo_title ?? spec.title,
+      description: spec.seo_description ?? '',
+    },
+    metafields: productMetafields(spec),
+  };
+  if (categoryId) {
+    productInput.category = categoryId;
+  }
+
   const updateResult = await executeGraphql(
     mutation,
-    {
-      product: {
-        id: existing.id,
-        title: spec.title,
-        descriptionHtml: spec.description_html,
-        vendor: spec.vendor,
-        productType: spec.product_type,
-        tags: spec.tags,
-        status: 'DRAFT',
-        seo: {
-          title: spec.seo_title ?? spec.title,
-          description: spec.seo_description ?? '',
-        },
-        metafields: productMetafields(spec),
-      },
-    },
+    {product: productInput},
     {mutate: true},
   );
   assertNoErrors(`productUpdate ${spec.handle}`, updateResult);
 
   const updated = updateResult.data?.productUpdate as {
-    product?: {id: string; handle: string; status: string};
+    product?: {id: string; handle: string; status: string; category?: {id: string} | null};
     userErrors: Array<{message: string; field?: string[]}>;
   };
 
@@ -649,22 +955,37 @@ async function updateProduct(
   if (!variantId) {
     throw new Error(`productUpdate ${spec.handle}: missing default variant`);
   }
-  await setVariantFields(existing.id, variantId, spec);
+  const varInfo = await setVariantFields(existing.id, variantId, spec);
 
   console.log(
-    `  updated ${spec.handle} → ${updated.product.id} (${updated.product.status})`,
+    `  updated ${spec.handle} → ${updated.product.id} / ${varInfo.variantId} (${updated.product.status})`,
   );
-  return {id: updated.product.id, action: 'updated'};
+  return {
+    id: updated.product.id,
+    variantId: varInfo.variantId,
+    inventoryItemId: varInfo.inventoryItemId,
+    categoryId: updated.product.category?.id ?? categoryId ?? null,
+    action: 'updated',
+  };
 }
 
 async function createProduct(
   spec: ProductSpec,
-): Promise<{id: string; action: 'created'}> {
+  categoryId?: string,
+): Promise<{
+  id: string;
+  variantId?: string;
+  inventoryItemId?: string;
+  categoryId?: string | null;
+  action: 'created';
+}> {
+  const createStatus = PUBLISH ? 'ACTIVE' : 'DRAFT';
   if (!APPLY) {
+    const weightNote = spec.weight_grams !== undefined ? `${spec.weight_grams}g` : 'unweighed';
     console.log(
-      `  [dry-run] would create ${spec.handle} (${spec.sku}) DRAFT $${spec.price_usd}`,
+      `  [dry-run] would create ${spec.handle} (${spec.sku}) ${createStatus} $${spec.price_usd} [${weightNote}]`,
     );
-    return {id: `dry-run://${spec.handle}`, action: 'created'};
+    return {id: `dry-run://${spec.handle}`, categoryId: categoryId ?? null, action: 'created'};
   }
 
   const mutation = `mutation CreateProduct($product: ProductCreateInput!, $media: [CreateMediaInput!]) {
@@ -673,6 +994,7 @@ async function createProduct(
         id
         handle
         status
+        category { id }
         variants(first: 1) {
           nodes { id }
         }
@@ -681,14 +1003,14 @@ async function createProduct(
     }
   }`;
 
-  const productInput = {
+  const productInput: Record<string, unknown> = {
     title: spec.title,
     handle: spec.handle,
     descriptionHtml: spec.description_html,
     vendor: spec.vendor,
     productType: spec.product_type,
     tags: spec.tags,
-    status: 'DRAFT',
+    status: createStatus,
     seo: {
       title: spec.seo_title ?? spec.title,
       description: spec.seo_description ?? '',
@@ -701,6 +1023,9 @@ async function createProduct(
     ],
     metafields: productMetafields(spec),
   };
+  if (categoryId) {
+    productInput.category = categoryId;
+  }
 
   const createResult = await executeGraphql(
     mutation,
@@ -714,6 +1039,7 @@ async function createProduct(
       id: string;
       handle: string;
       status: string;
+      category?: {id: string} | null;
       variants: {nodes: Array<{id: string}>};
     };
     userErrors: Array<{message: string; field?: string[]}>;
@@ -733,32 +1059,48 @@ async function createProduct(
     throw new Error(`productCreate ${spec.handle}: missing default variant`);
   }
 
-  await setVariantFields(created.product.id, variantId, spec);
+  const varInfo = await setVariantFields(created.product.id, variantId, spec);
 
   console.log(
-    `  created ${spec.handle} → ${created.product.id} (${created.product.status})`,
+    `  created ${spec.handle} → ${created.product.id} / ${varInfo.variantId} (${created.product.status})`,
   );
-  return {id: created.product.id, action: 'created'};
+  return {
+    id: created.product.id,
+    variantId: varInfo.variantId,
+    inventoryItemId: varInfo.inventoryItemId,
+    categoryId: created.product.category?.id ?? categoryId ?? null,
+    action: 'created',
+  };
 }
 
-async function ensureLineupCollections(
+async function ensureCollections(
   productIdsByHandle: Map<string, string>,
+  idMap: ShopifyIdMapType,
 ): Promise<void> {
-  console.log('\nLineup collections:');
+  console.log('\nLineup and category collections:');
   const existing = await existingCollectionsByHandle();
   let created = 0;
   let updated = 0;
 
-  for (const col of LINEUP_COLLECTIONS) {
-    const productIds = seedCatalog
-      .filter((p) => p.lineup === col.lineup)
+  for (const col of ALL_COLLECTIONS) {
+    const existingId = existing.get(col.handle);
+    if (existingId) {
+      idMap.collections_by_handle[col.handle] = {
+        handle: col.handle,
+        title: col.title,
+        collection_id: existingId,
+      };
+    }
+
+    const productIds = col
+      .products()
       .map((p) => productIdsByHandle.get(p.handle))
       .filter((id): id is string => Boolean(id) && !id.startsWith('dry-run://'));
 
     if (!APPLY) {
       const verb = existing.has(col.handle) ? 'update' : 'create';
       console.log(
-        `  [dry-run] would ${verb} ${col.handle} (${productIds.length || seedCatalog.filter((p) => p.lineup === col.lineup).length} products)`,
+        `  [dry-run] would ${verb} ${col.handle} (${col.products().length} products)`,
       );
       continue;
     }
@@ -797,6 +1139,11 @@ async function ensureLineupCollections(
         throw new Error(`collectionCreate ${col.handle}: no collection returned`);
       }
       collectionId = payload.collection.id;
+      idMap.collections_by_handle[col.handle] = {
+        handle: col.handle,
+        title: col.title,
+        collection_id: collectionId,
+      };
       created += 1;
       console.log(`  created ${col.handle} → ${collectionId}`);
     } else {
@@ -843,7 +1190,6 @@ async function ensureLineupCollections(
           userErrors: Array<{message: string}>;
         };
         if (addPayload.userErrors?.length) {
-          // Already-in-collection is fine for idempotent re-runs.
           const fatal = addPayload.userErrors.filter(
             (e) => !/already|exist/i.test(e.message),
           );
@@ -865,128 +1211,392 @@ async function ensureLineupCollections(
   }
 }
 
+async function resolveOnlineStorePublicationId(): Promise<string> {
+  const query = `query OnlineStorePublication {
+    publications(first: 25) {
+      nodes {
+        id
+        name
+        app { handle }
+      }
+    }
+  }`;
+  try {
+    const result = await executeGraphql(query);
+    assertNoErrors('publications', result);
+    const nodes =
+      (
+        result.data?.publications as
+          | {
+              nodes: Array<{
+                id: string;
+                name?: string;
+                app?: {handle?: string} | null;
+              }>;
+            }
+          | undefined
+      )?.nodes ?? [];
+    const online = nodes.find(
+      (n) =>
+        n.app?.handle === ONLINE_STORE_APP_HANDLE ||
+        n.name === 'Online Store',
+    );
+    if (online) return online.id;
+    throw new Error(
+      `Online Store publication not found. Got: ${nodes
+        .map((n) => `${n.name ?? '?'} (${n.app?.handle ?? 'no-app'})`)
+        .join(', ')}`,
+    );
+  } catch (err) {
+    const fallback =
+      process.env.SHOPIFY_ONLINE_STORE_PUBLICATION_ID ??
+      'gid://shopify/Publication/369593221489';
+    console.warn(
+      `  warn: could not list publications (${err instanceof Error ? err.message.split('\n')[0] : err}); using ${fallback}`,
+    );
+    return fallback;
+  }
+}
+
+async function publishToOnlineStore(
+  resourceId: string,
+  publicationId: string,
+  label: string,
+): Promise<void> {
+  const mutation = `mutation PublishOnlineStore($id: ID!, $input: [PublicationInput!]!) {
+    publishablePublish(id: $id, input: $input) {
+      publishable {
+        ... on Product { id handle }
+        ... on Collection { id handle }
+      }
+      userErrors { field message }
+    }
+  }`;
+  let result: GraphqlResult;
+  try {
+    result = await executeGraphql(mutation, {id: resourceId, input: [{publicationId}]}, {mutate: true});
+    if (result.errors?.length) {
+      result = await executeGraphql(mutation, {id: resourceId, input: [{publicationId}]}, {mutate: true, forceCli: true});
+    }
+  } catch {
+    result = await executeGraphql(mutation, {id: resourceId, input: [{publicationId}]}, {mutate: true, forceCli: true});
+  }
+  assertNoErrors(`publishablePublish ${label}`, result);
+  const payload = result.data?.publishablePublish as {
+    userErrors: Array<{message: string}>;
+  };
+  if (payload.userErrors?.length) {
+    throw new Error(
+      `publishablePublish ${label}: ${payload.userErrors.map((e) => e.message).join('; ')}`,
+    );
+  }
+}
+
+async function activateProduct(productId: string, handle: string): Promise<void> {
+  const mutation = `mutation ActivateProduct($product: ProductUpdateInput!) {
+    productUpdate(product: $product) {
+      product { id handle status }
+      userErrors { field message }
+    }
+  }`;
+  const result = await executeGraphql(
+    mutation,
+    {product: {id: productId, status: 'ACTIVE'}},
+    {mutate: true},
+  );
+  assertNoErrors(`activate ${handle}`, result);
+  const payload = result.data?.productUpdate as {
+    product?: {status: string};
+    userErrors: Array<{message: string}>;
+  };
+  if (payload.userErrors?.length) {
+    throw new Error(
+      `activate ${handle}: ${payload.userErrors.map((e) => e.message).join('; ')}`,
+    );
+  }
+  if (payload.product?.status !== 'ACTIVE') {
+    throw new Error(`activate ${handle}: expected ACTIVE, got ${payload.product?.status}`);
+  }
+}
+
+async function publishSeedCatalog(
+  productIdsByHandle: Map<string, string>,
+  publicationId: string,
+): Promise<void> {
+  console.log('\nPublish to Online Store:');
+  console.log(`  publication: ${publicationId}`);
+
+  if (!APPLY) {
+    for (const spec of seedCatalog) {
+      const id = productIdsByHandle.get(spec.handle);
+      console.log(
+        `  [dry-run] would ACTIVE + publish product ${spec.handle} (${id ?? 'missing'})`,
+      );
+    }
+    for (const col of ALL_COLLECTIONS) {
+      console.log(`  [dry-run] would publish collection ${col.handle}`);
+    }
+    return;
+  }
+
+  let publishedProducts = 0;
+  for (const spec of seedCatalog) {
+    const id = productIdsByHandle.get(spec.handle);
+    if (!id || id.startsWith('dry-run://')) {
+      throw new Error(`Cannot publish missing product ${spec.handle}`);
+    }
+    await activateProduct(id, spec.handle);
+    await publishToOnlineStore(id, publicationId, `product:${spec.handle}`);
+    publishedProducts += 1;
+    console.log(`  published product ${spec.handle}`);
+  }
+
+  const collections = await existingCollectionsByHandle();
+  let publishedCollections = 0;
+  for (const col of ALL_COLLECTIONS) {
+    const id = collections.get(col.handle);
+    if (!id) {
+      throw new Error(`Cannot publish missing collection ${col.handle}`);
+    }
+    await publishToOnlineStore(id, publicationId, `collection:${col.handle}`);
+    publishedCollections += 1;
+    console.log(`  published collection ${col.handle}`);
+  }
+
+  console.log(
+    `Publish: products=${publishedProducts} collections=${publishedCollections}`,
+  );
+}
+
 function adminUrl(productGid: string): string {
   const numeric = productGid.split('/').pop();
   return `https://admin.shopify.com/store/maison-tavo/products/${numeric}`;
 }
 
-async function verify(): Promise<void> {
-  const handles = seedCatalog.map((p) => p.handle);
-  const query = `query Verify($query: String!) {
-    products(first: 25, query: $query) {
+/**
+ * 5-Stage Storefront & Purchasability Readiness Diagnostic.
+ * Separates Admin existence, Collection membership, Shopify Media attachment,
+ * Sales-channel publication, and Variant inventory/fulfillment purchasability.
+ */
+async function diagnoseCatalog(idMap: ShopifyIdMapType, publicationId?: string): Promise<void> {
+  const channelId =
+    publicationId ??
+    process.env.SHOPIFY_ONLINE_STORE_PUBLICATION_ID ??
+    'gid://shopify/Publication/369593221489';
+  const query = `query DiagnoseCatalog($query: String!, $publicationId: ID!) {
+    products(first: 50, query: $query) {
       nodes {
         id
         handle
         status
         vendor
-        tags
-        seo { title description }
-        options { name values }
-        variants(first: 1) {
-          nodes { sku price }
+        productType
+        onlineStoreUrl
+        publishedOnPublication(publicationId: $publicationId)
+        category { id fullName }
+        collections(first: 10) {
+          nodes { handle }
+        }
+        media(first: 5) {
+          nodes {
+            id
+            status
+            mediaContentType
+          }
+        }
+        variants(first: 5) {
+          nodes {
+            id
+            sku
+            price
+            availableForSale
+            inventoryPolicy
+            inventoryQuantity
+            inventoryItem {
+              id
+              tracked
+              requiresShipping
+              measurement {
+                weight { value unit }
+              }
+            }
+          }
         }
         lineup: metafield(namespace: "specs", key: "lineup") { value }
         claim_status: metafield(namespace: "specs", key: "claim_status") { value }
-        heat_sources: metafield(namespace: "specs", key: "heat_sources") { value }
-        concept_thesis: metafield(namespace: "specs", key: "concept_thesis") { value }
-        material_architecture: metafield(namespace: "specs", key: "material_architecture") { value }
+        primary_material: metafield(namespace: "specs", key: "primary_material") { value }
       }
     }
   }`;
 
-  const result = await executeGraphql(query, {
-    query: `handle:${handles.join(' OR handle:')}`,
-  });
-  assertNoErrors('verify', result);
+  let result: GraphqlResult;
+  try {
+    result = await executeGraphql(query, {
+      query: 'vendor:"Maison Tavo"',
+      publicationId: channelId,
+    });
+    if (result.errors?.length) {
+      result = await executeGraphql(
+        query,
+        {query: 'vendor:"Maison Tavo"', publicationId: channelId},
+        {forceCli: true},
+      );
+    }
+  } catch {
+    result = await executeGraphql(
+      query,
+      {query: 'vendor:"Maison Tavo"', publicationId: channelId},
+      {forceCli: true},
+    );
+  }
+  assertNoErrors('diagnoseCatalog', result);
 
-  const nodes =
-    (
-      result.data?.products as
-        | {
-            nodes: Array<{
-              id: string;
-              handle: string;
-              status: string;
-              vendor: string;
-              variants: {nodes: Array<{sku: string; price: string}>};
-              lineup?: {value: string} | null;
-              claim_status?: {value: string} | null;
-              material_architecture?: {value: string} | null;
-            }>;
-          }
-        | undefined
-    )?.nodes ?? [];
+  type DiagNode = {
+    id: string;
+    handle: string;
+    status: string;
+    vendor: string;
+    productType: string;
+    onlineStoreUrl?: string | null;
+    category?: {id: string; fullName: string} | null;
+    publishedOnPublication?: boolean;
+    collections: {nodes: Array<{handle: string}>};
+    media: {nodes: Array<{id: string; status: string; mediaContentType: string}>};
+    variants: {
+      nodes: Array<{
+        id: string;
+        sku?: string | null;
+        price: string;
+        availableForSale: boolean;
+        inventoryPolicy: string;
+        inventoryQuantity?: number | null;
+        inventoryItem?: {
+          id: string;
+          tracked: boolean;
+          requiresShipping: boolean;
+          measurement?: {weight?: {value: number; unit: string} | null} | null;
+          inventoryLevels?: {nodes: Array<{location: {id: string; name: string}}>};
+        } | null;
+      }>;
+    };
+    lineup?: {value: string} | null;
+    claim_status?: {value: string} | null;
+    primary_material?: {value: string} | null;
+  };
 
-  console.log('\nVerification:');
-  let ok = 0;
-  let missing = 0;
-  for (const handle of handles) {
-    const node = nodes.find((n) => n.handle === handle);
+  const nodes = ((result.data?.products as {nodes: DiagNode[]} | undefined)?.nodes) ?? [];
+  const byHandle = new Map(nodes.map((n) => [n.handle, n]));
+
+  console.log('\n5-Stage Storefront & Purchasability Readiness Diagnostic:');
+  let adminOk = 0;
+  let collectionOk = 0;
+  let mediaReady = 0;
+  let channelLive = 0;
+  let purchasableNow = 0;
+
+  for (const spec of seedCatalog) {
+    const node = byHandle.get(spec.handle);
     if (!node) {
-      console.log(`  MISSING ${handle}`);
-      missing += 1;
+      console.log(`  [1:MISSING_FROM_ADMIN] ${spec.sku} (${spec.handle})`);
       continue;
     }
+
     const variant = node.variants.nodes[0];
-    const seed = seedCatalog.find((p) => p.handle === handle)!;
-    const skuOk = variant?.sku === seed.sku;
-    const metaOk = Boolean(node.lineup?.value && node.claim_status?.value);
-    if (skuOk && metaOk && node.status === 'DRAFT') ok += 1;
-    console.log(
-      `  ${handle}: ${node.status} vendor=${node.vendor} sku=${variant?.sku} price=${variant?.price} lineup=${node.lineup?.value ?? '∅'} claim=${node.claim_status?.value ?? '∅'}`,
+    if (variant) {
+      idMap.products_by_sku[spec.sku] = {
+        sku: spec.sku,
+        handle: spec.handle,
+        product_id: node.id,
+        variant_id: variant.id,
+        inventory_item_id: variant.inventoryItem?.id ?? null,
+        category_id: node.category?.id ?? null,
+      };
+    }
+
+    const skuMatch = variant?.sku === spec.sku;
+    const priceMatch = Number(variant?.price ?? 0) === spec.price_usd;
+    if (skuMatch && priceMatch) adminOk += 1;
+
+    const expectedLineupHandle = LINEUP_COLLECTIONS.find((c) => c.lineup === spec.lineup)!.handle;
+    const expectedCatHandle = CATEGORY_COLLECTIONS.find((c) => c.category === categoryFor(spec))!.handle;
+    const memberHandles = new Set(node.collections.nodes.map((c) => c.handle));
+    const inBothCollections =
+      memberHandles.has(expectedLineupHandle) && memberHandles.has(expectedCatHandle);
+    if (inBothCollections) collectionOk += 1;
+
+    const readyImages = node.media.nodes.filter(
+      (m) => m.mediaContentType === 'IMAGE' && m.status === 'READY',
     );
+    const hasMedia = readyImages.length > 0;
+    if (hasMedia) mediaReady += 1;
+
+    const isPublished =
+      node.status === 'ACTIVE' &&
+      (node.publishedOnPublication === true || Boolean(node.onlineStoreUrl));
+    if (isPublished) channelLive += 1;
+
+    const invQty = variant?.inventoryQuantity ?? 0;
+    const tracked = variant?.inventoryItem?.tracked ?? false;
+    const weightVal = variant?.inventoryItem?.measurement?.weight?.value ?? 0;
+    const canBuy = Boolean(variant?.availableForSale);
+    if (canBuy) purchasableNow += 1;
+
+    const stageFlags = [
+      skuMatch && priceMatch ? 'ADMIN:OK' : 'ADMIN:MISMATCH',
+      node.category ? 'TAXONOMY:SET' : 'TAXONOMY:UNSET',
+      inBothCollections ? 'COLLECTIONS:OK' : 'COLLECTIONS:INCOMPLETE',
+      hasMedia ? `MEDIA:${readyImages.length}_READY` : 'MEDIA:MISSING',
+      isPublished
+        ? 'CHANNEL:PUBLISHED'
+        : node.status === 'ACTIVE'
+          ? 'CHANNEL:ACTIVE_UNPUBLISHED'
+          : 'CHANNEL:DRAFT',
+      canBuy
+        ? 'BUY:AVAILABLE'
+        : `BUY:UNAVAILABLE(tracked=${tracked},qty=${invQty},policy=${variant?.inventoryPolicy ?? '?'})`,
+      weightVal > 0 ? `WEIGHT:${weightVal}g` : 'WEIGHT:UNWEIGHED_CONCEPT',
+    ];
+
+    console.log(`  ${spec.sku} (${spec.handle}) → ${stageFlags.join(' | ')}`);
     console.log(`    ${adminUrl(node.id)}`);
   }
-  console.log(`Verify tally: ok=${ok} missing=${missing} expected=${handles.length}`);
 
-  const colQuery = `query VerifyCols($query: String!) {
-    collections(first: 10, query: $query) {
-      nodes {
-        id
-        handle
-        title
-        productsCount { count }
-      }
-    }
-  }`;
-  const colResult = await executeGraphql(colQuery, {
-    query: LINEUP_COLLECTIONS.map((c) => `handle:${c.handle}`).join(' OR '),
-  });
-  assertNoErrors('verify collections', colResult);
-  const cols =
-    (
-      colResult.data?.collections as
-        | {
-            nodes: Array<{
-              handle: string;
-              title: string;
-              productsCount: {count: number};
-            }>;
-          }
-        | undefined
-    )?.nodes ?? [];
-  console.log('\nCollection verification:');
-  for (const col of LINEUP_COLLECTIONS) {
-    const node = cols.find((c) => c.handle === col.handle);
-    const expected = seedCatalog.filter((p) => p.lineup === col.lineup).length;
-    if (!node) {
-      console.log(`  MISSING ${col.handle} (expected ${expected} products)`);
-      continue;
-    }
-    console.log(
-      `  ${col.handle}: "${node.title}" products=${node.productsCount.count} (expected ${expected})`,
-    );
-  }
+  console.log(
+    `\nReadiness summary (of ${seedCatalog.length} SKUs): admin_ok=${adminOk}, collections_ok=${collectionOk}, media_ready=${mediaReady}, channel_published=${channelLive}, purchasable_now=${purchasableNow}`,
+  );
 }
 
 async function main(): Promise<void> {
-  const authMode = adminToken()
-    ? 'CLI identity / Admin token'
-    : 'shopify store execute';
+  const idMap = loadIdMap();
+  const authMode = OFFLINE
+    ? 'offline (no network calls)'
+    : adminToken()
+      ? 'CLI identity / Admin token'
+      : 'shopify store execute';
   console.log(`Store: ${STORE}`);
   console.log(`Auth:  ${authMode}`);
-  console.log(`Mode:  ${APPLY ? 'APPLY (mutations enabled)' : 'DRY-RUN (no mutations)'}`);
+  console.log(
+    `Mode:  ${OFFLINE ? 'OFFLINE DRY-RUN' : APPLY ? 'APPLY (mutations enabled)' : 'DRY-RUN (no mutations)'}${PUBLISH ? ' + PUBLISH' : ''}`,
+  );
   console.log(`SKUs:  ${seedCatalog.length}`);
+
+  if (OFFLINE) {
+    console.log(`\nLoaded retained ID map (${Object.keys(idMap.products_by_sku).length} products, ${Object.keys(idMap.collections_by_handle).length} collections).`);
+    for (const spec of seedCatalog) {
+      const retained = idMap.products_by_sku[spec.sku];
+      const fields = productMetafields(spec);
+      console.log(
+        `  [offline] ${spec.sku} (${spec.handle}) → ${retained?.product_id ?? 'unmapped'} | category="${spec.product_category}" | type="${spec.product_type}" | metafields=${fields.length}`,
+      );
+    }
+    return;
+  }
+
+  console.log('\nStandardized Shopify Product Taxonomy lookup:');
+  const taxonomyByBreadcrumb = await resolveTaxonomyCategories(
+    seedCatalog.map((s) => s.product_category),
+  );
+  console.log(`Taxonomy categories resolved: ${taxonomyByBreadcrumb.size}`);
 
   console.log('\nMetafield definitions (namespace specs):');
   const existing = await existingDefinitionKeys();
@@ -1005,38 +1615,58 @@ async function main(): Promise<void> {
   console.log(`Defs: created=${createdDefs} skipped=${skippedDefs}`);
 
   console.log('\nProducts:');
-  const byHandle = await existingProductsByHandle();
+  const {byHandle, bySku} = await existingProductsIndex();
   const productIds: Array<{handle: string; id: string; action: string}> = [];
   let createdProducts = 0;
   let updatedProducts = 0;
 
   for (const spec of seedCatalog) {
-    const existingProduct = byHandle.get(spec.handle);
+    const categoryId = taxonomyByBreadcrumb.get(spec.product_category);
+    const existingProduct = bySku.get(spec.sku) ?? byHandle.get(spec.handle);
     if (existingProduct) {
-      const {id, action} = await updateProduct(existingProduct, spec);
-      productIds.push({handle: spec.handle, id, action});
+      const updated = await updateProduct(existingProduct, spec, categoryId);
+      productIds.push({handle: spec.handle, id: updated.id, action: updated.action});
+      idMap.products_by_sku[spec.sku] = {
+        sku: spec.sku,
+        handle: spec.handle,
+        product_id: updated.id,
+        variant_id: updated.variantId ?? null,
+        inventory_item_id: updated.inventoryItemId ?? null,
+        category_id: updated.categoryId ?? null,
+      };
       updatedProducts += 1;
       continue;
     }
-    const {id, action} = await createProduct(spec);
-    productIds.push({handle: spec.handle, id, action});
-    if (action === 'created') createdProducts += 1;
+    const created = await createProduct(spec, categoryId);
+    productIds.push({handle: spec.handle, id: created.id, action: created.action});
+    if (!created.id.startsWith('dry-run://')) {
+      idMap.products_by_sku[spec.sku] = {
+        sku: spec.sku,
+        handle: spec.handle,
+        product_id: created.id,
+        variant_id: created.variantId ?? null,
+        inventory_item_id: created.inventoryItemId ?? null,
+        category_id: created.categoryId ?? null,
+      };
+    }
+    if (created.action === 'created') createdProducts += 1;
   }
   console.log(`Products: created=${createdProducts} updated=${updatedProducts}`);
 
-  const idMap = new Map(productIds.map((row) => [row.handle, row.id]));
-  await ensureLineupCollections(idMap);
+  const idMapByHandle = new Map(productIds.map((row) => [row.handle, row.id]));
+  await ensureCollections(idMapByHandle, idMap);
 
-  if (APPLY || byHandle.size > 0) {
-    await verify();
-  } else {
-    console.log('\nVerification skipped in dry-run with no existing products.');
+  let publicationId: string | undefined;
+  if (PUBLISH) {
+    publicationId = await resolveOnlineStorePublicationId();
+    await publishSeedCatalog(idMapByHandle, publicationId);
   }
 
-  console.log('\nSummary IDs:');
-  for (const row of productIds) {
-    console.log(`  ${row.handle}\t${row.id}\t${row.action}`);
-  }
+  await diagnoseCatalog(idMap, publicationId);
+  saveIdMap(idMap);
+  console.log(`\nRetained Shopify ID ledger updated at data/shopify-id-map.json`);
 }
 
-await main();
+if (import.meta.main) {
+  await main();
+}

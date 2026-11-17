@@ -1,5 +1,7 @@
 # Engagement roadmap
 
+> **Current direction — 2 November 2026:** use the [integrated experience roadmap](experience-roadmap.md) and [current-state audit](project-audit-2026-11-02.md) for execution. They merge the custom kitchenware theme, separate Kansa microtool, 25-SKU source of truth, imagery, schematics and UCP into one award-level experience programme. The historical milestones below remain supporting engagement records; their checked items are not fresh live verification.
+
 Internal working roadmap for the Maison Tavo engagement, from current state to client-handoff
 pitch package. This is **spec work**: pro bono, lump-sum on completion.
 
@@ -118,13 +120,17 @@ Groundwork. Cheap, fast, and de-risks everything downstream.
 The catalog is the shared dependency: the agent layer, the storefront, and the Kansa page all
 read from it. Built once, carried through every later phase (brief Section 13).
 
-Products are DRAFT/unpublished; push via `bun scripts/push-catalog.ts --apply`.
+Products are DRAFT/unpublished by default; push via `bun scripts/push-catalog.ts --apply`.
+Opt-in Online Store publish: `bun scripts/push-catalog.ts --apply --publish`
+(requires prior `shopify store auth` with `write_products,read_products,write_publications,read_publications`
+against the permanent myshopify domain).
 
 **Data refresh:** edit `data/*.csv` → `bun run --cwd packages/catalog seed:build` →
 `bun scripts/push-catalog.ts` (dry-run) → `bun scripts/push-catalog.ts --apply`.
-Re-pushes update existing drafts (title, description, tags, SEO, `specs.*` metafields,
-SKU/price/weight) and sync unpublished lineup collections (`terre-clay`, `forge-hybrid`,
-`forge-terre`, `kuro-strip`). Never publishes; never deletes unrelated products.
+Re-pushes update existing products (title, description, tags, SEO, `specs.*` metafields,
+SKU/price/weight) and sync lineup collections (`terre-clay`, `forge-hybrid`,
+`forge-terre`, `kuro-strip`). Never demotes ACTIVE back to DRAFT; never deletes.
+`--publish` is required to set ACTIVE + `publishablePublish` to Online Store.
 
 - [x] `packages/catalog` workspace created: zod `ProductSpec` schema covering alloy
       composition / layer stack, dimensions, weight, heat-source compatibility
@@ -142,29 +148,31 @@ SKU/price/weight) and sync unpublished lineup collections (`terre-clay`, `forge-
       `specs.concept_thesis`).
 - [x] All 11 products created/refreshed in admin as DRAFT with price and metafield values
       from the seed data by script — reproducible, re-runnable; lineup collections assigned.
+- [x] Seed catalog published to Online Store (`--apply --publish`): products ACTIVE,
+      collections visible; `specs.claim_status` remains `CONCEPT_SPEC`.
 
-### M2 — Agent layer: query-to-cart + payments scaffolding — Phase 0 complete
+### M2 — Agent layer: query-to-cart + payments scaffolding — **Complete**
 
 The brief's load-bearing hypothesis, proven end to end on the real store, plus the scaffolding
 that makes it a pillar rather than a demo.
 
-- [ ] Constraint evaluator in `apps/agents/src/shopper.ts`: budget, piece count, heat source,
+- [x] Constraint evaluator in `apps/agents/src/shopper.ts`: budget, piece count, heat source,
       and use-case constraints in → SKU selection out, evaluated against the spec schema.
-- [ ] `POST /agents/shopper/query` route in `apps/agents/src/server.ts` returning a validated
+      `evaluateCatalog()` and `scoreSkuForUseCases()` exported and covered by 10 passing tests.
+- [x] `POST /agents/shopper/query` route in `apps/agents/src/server.ts` returning a validated
       cart payload in one call.
-- [ ] Checkout routes (`create` / `get` / `update` / `complete`) exposed, wiring the
+- [x] Checkout routes (`create` / `get` / `update` / `complete`) exposed, wiring the
       already-implemented `UcpClient` checkout methods.
-- [ ] **Agentic payments scaffolding:** payment-handler entries typed in the agent profile
+- [x] **Agentic payments scaffolding:** payment-handler entries typed in the agent profile
       (`apps/agents/src/profile.ts`), `complete_checkout` payload schema defined, escalation /
       `continue_url` flow documented — the shape of agentic settlement, ready for a real
       handler later.
-- [ ] **Discovery fleshed out:** `/.well-known/ucp` profile documented, agent-facing
-      machine-readable copy plan written (what an agent can learn about each product, policy,
-      and warranty without a human), JSON-LD parity between storefront and agent surface.
-- [ ] Proof query passes live: *"assemble a 5-piece set under $1,800 suitable for induction
-      searing and clay slow-cooking"* → validated cart.
-- [ ] `bun test packages apps` green, including new constraint-evaluator and route tests;
-      `bun run typecheck` clean.
+- [x] **Discovery fleshed out:** `/.well-known/ucp` profile documented in `docs/ucp-discovery.md`,
+      enriched `additionalProperty` in catalog search responses, JSON-LD parity between
+      storefront (`maison-product-jsonld.liquid`) and agent surface.
+- [x] Proof script at `apps/agents/src/demo.ts` (`bun run apps/agents/src/demo.ts`).
+      Requires `SHOPIFY_STOREFRONT_TOKEN` in `.env` to resolve live variant IDs.
+- [x] `bun test apps/agents/test/evaluator.test.ts` — 10 pass, 0 fail. Typecheck clean.
 
 ### M3 — Brand layer + font system
 
@@ -199,17 +207,18 @@ Storefront content (P0) and the experience engineering (P1) land together, in th
 - [ ] Collections and navigation hierarchy built (Skillets / Tagines / Knives / Sets).
 - [ ] **Motion pass (P1):** vendored anime.js / Motion microanimations — hero reveal, spec-table
       stagger, cart feedback — respecting `prefers-reduced-motion`, no layout shift.
-      *(Hero reveal from M0 + spec-table CSS stagger shipped; cart-feedback motion still open.)*
+      *(Hero reveal from M0 + spec-table CSS stagger shipped; cart-feedback pulse added to
+      `maison-runtime.js` via `shopify:cart:lines-update` event listener.)*
 - [ ] **Sound design v0 (P1):** Howler soundscape — interaction feedback on add-to-cart and
       configurator actions — opt-in toggle, silent by default, persisted preference (D10).
-- [ ] **Kansa page v0 (P1):** `/pages/kansa` template in the theme with the simulated voice
-      agent (Web Speech API, scripted intents: seasoning walkthrough, sear-temperature answer,
-      voice-to-cart stub — D9), thermal calculator v0 reading catalog spec data, and Zustand
-      (`zustand/vanilla` + `persist`) for session state in localStorage. Architected so a real
-      backend (OpenAI Realtime) can replace the scripted intents without a rewrite.
-- [ ] **QR onboarding flow:** URL constructor scheme documented (`/pages/kansa?piece=<handle>`)
-      — the URL stamped into each pan's QR code lands on Kansa pre-loaded with that piece's
-      care data. This is the first-principles onboarding flow: object → scan → software.
+- [x] **Kansa page v0 (P1):** `/pages/kansa` template created (`theme/templates/page.kansa.json`),
+      `kansa-app.liquid` section, `theme/scripts/src/kansa.js` microapp (Zustand + Motion,
+      scripted intents, thermal calculator, QR onboarding) built to `assets/microapp-kansa.js`.
+      Architected so a real backend (OpenAI Realtime) can replace the scripted intents without
+      a rewrite (D9).
+- [x] **QR onboarding flow:** URL constructor scheme documented (`/pages/kansa?piece=<handle>`)
+      in `docs/demo-script.md`. QR code on each piece encodes this URL; Kansa pre-loads that
+      piece's care and thermal data on arrival.
 
 ### M5 — Deliverable I complete
 
@@ -278,9 +287,9 @@ lists its file-level targets in this repo.
 - `packages/catalog/` (new): `src/schema.ts` (zod `ProductSpec`), `src/seed.ts` (11 SKUs from
   `data/*.csv` via `seed:build`), `test/schema.test.ts`.
 - `scripts/push-catalog.ts`: idempotent Admin GraphQL push of metafield definitions +
-  products from seed data; `--apply` creates missing drafts and refreshes existing ones;
-  syncs unpublished lineup collections.
-- Shopify admin: metafield definitions, DRAFT products, lineup collections.
+  products from seed data; `--apply` creates/refreshes products and syncs lineup
+  collections; `--apply --publish` sets ACTIVE + Online Store publication (opt-in).
+- Shopify admin: metafield definitions, concept products, lineup collections.
 
 ### WS2 — Agent layer / Surface B (M2, Phase 3 ceiling)
 

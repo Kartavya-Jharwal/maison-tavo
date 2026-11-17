@@ -1,5 +1,6 @@
 import {describe, expect, test} from 'bun:test';
-import {Catalog, seedCatalog, sourceRegister, toShopifyRow} from '../src';
+import {readFileSync} from 'node:fs';
+import {Catalog, ShopifyIdMap, seedCatalog, sourceRegister, toShopifyRow} from '../src';
 
 const catalog = Catalog.parse(seedCatalog);
 
@@ -13,6 +14,12 @@ const PERFORMANCE_NUMBER = /\d+(\.\d+)?\s*(°\s?C|degrees?|ml|mm|cm|cycles?|wash
 const CLAIM_BEARING_FIELDS = [
   'description_html',
   'concept_thesis',
+  'primary_material',
+  'lining_material',
+  'dimensions_summary',
+  'food_contact_suitability',
+  'care_instructions',
+  'heat_compatibility',
   'material_architecture',
   'interaction_performance_intent',
   'care_hypothesis',
@@ -22,6 +29,58 @@ const CLAIM_BEARING_FIELDS = [
 describe('Catalog seed data', () => {
   test('seed data validates against the Catalog schema', () => {
     expect(catalog.length).toBe(seedCatalog.length);
+  });
+
+  test('assortment is reconciled to the 25-SKU target', () => {
+    expect(catalog.length).toBe(25);
+    expect(new Set(catalog.map((product) => product.sku)).size).toBe(25);
+    expect(catalog.some((product) => product.product_type === 'Cookware care kit')).toBe(true);
+    expect(catalog.some((product) => product.product_type === 'Replacement lid')).toBe(true);
+    expect(catalog.some((product) => product.product_type === 'Bamboo steamer')).toBe(true);
+  });
+
+  test('product_category uses standardized Shopify taxonomy rather than brand range names', () => {
+    for (const product of catalog) {
+      expect(product.product_category.startsWith('Home & Garden > Kitchen & Dining >')).toBe(true);
+      expect(product.product_category).not.toContain('Terre Clay');
+      expect(product.product_category).not.toContain('Forge Hybrid');
+      expect(product.product_category).not.toContain('Kuro Strip');
+      expect(product.product_category).not.toContain('Kitchen Caddies');
+    }
+  });
+
+  test('repeatable specifications and suitability claims are populated for metafields', () => {
+    for (const product of catalog) {
+      expect(product.primary_material.length).toBeGreaterThan(3);
+      expect(product.lining_material.length).toBeGreaterThan(3);
+      expect(product.dimensions_summary.length).toBeGreaterThan(3);
+      expect(product.food_contact_suitability).toContain(product.claim_status);
+      expect(product.care_instructions).toContain(product.claim_status);
+      expect(product.heat_compatibility.length).toBeGreaterThan(3);
+      expect(product.compare_at_usd).toBeUndefined();
+    }
+  });
+
+  test('unprototyped assortment extensions do not carry invented weights', () => {
+    const extensionTagine = catalog.find((p) => p.sku === 'MT-HYB-TAG-28')!;
+    expect(extensionTagine.weight_grams).toBeUndefined();
+    const row = toShopifyRow(extensionTagine);
+    expect(row['Weight value (grams)']).toBe('');
+    expect(row['Weight unit for display']).toBe('');
+  });
+
+  test('retained Shopify ID map covers all 25 SKUs and 7 collections', () => {
+    const raw = JSON.parse(
+      readFileSync(new URL('../../../data/shopify-id-map.json', import.meta.url), 'utf8'),
+    );
+    const parsed = ShopifyIdMap.parse(raw);
+    for (const product of catalog) {
+      const entry = parsed.products_by_sku[product.sku];
+      expect(entry).toBeDefined();
+      expect(entry?.handle).toBe(product.handle);
+      expect(entry?.product_id).toStartWith('gid://shopify/Product/');
+    }
+    expect(Object.keys(parsed.collections_by_handle).length).toBe(7);
   });
 
   test('SKU count matches the specs CSV row count', async () => {
@@ -34,8 +93,6 @@ describe('Catalog seed data', () => {
 
   test('every SKU carries an explicit claim status', () => {
     for (const product of catalog) {
-      // All current listings are concept-stage; promotion requires the
-      // product's required_prototype_tests to be executed.
       expect(product.claim_status).toBe('CONCEPT_SPEC');
     }
   });
@@ -60,7 +117,6 @@ describe('Catalog seed data', () => {
         }
       }
     }
-    // Guard against a vacuous pass: the concept catalogue is full of numbers.
     expect(checked).toBeGreaterThan(0);
   });
 

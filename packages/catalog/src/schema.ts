@@ -24,6 +24,21 @@ export type Lineup = z.infer<typeof Lineup>;
 export const ClaimStatus = z.enum(['CONCEPT_SPEC', 'PROTOTYPE_VALIDATED', 'VERIFIED']);
 export type ClaimStatus = z.infer<typeof ClaimStatus>;
 
+export const DishwasherSuitability = z.enum([
+  'hand_wash_only',
+  'insert_only_pending_validation',
+  'pending_validation',
+  'not_applicable',
+]);
+export type DishwasherSuitability = z.infer<typeof DishwasherSuitability>;
+
+export const MicrowaveSuitability = z.enum([
+  'not_microwave_safe',
+  'pending_validation',
+  'not_applicable',
+]);
+export type MicrowaveSuitability = z.infer<typeof MicrowaveSuitability>;
+
 /** Provenance register entry ID, e.g. 'R04' (data/maison-tavo-new-listings-sources.csv). */
 export const SourceId = z.string().regex(/^R\d{2}$/);
 export type SourceId = z.infer<typeof SourceId>;
@@ -71,6 +86,15 @@ export const ProductSpec = z.object({
   claim_status: ClaimStatus,
   reference_class: z.string(),
   concept_thesis: z.string(),
+  /** Repeatable structured material & compatibility specifications for metafields. */
+  primary_material: z.string(),
+  lining_material: z.string(),
+  dimensions_summary: z.string(),
+  dishwasher_suitability: DishwasherSuitability,
+  microwave_suitability: MicrowaveSuitability,
+  food_contact_suitability: z.string(),
+  care_instructions: z.string(),
+  heat_compatibility: z.string(),
   material_architecture: z.string(),
   food_contact_strategy: z.string(),
   fabrication_route: z.string(),
@@ -93,10 +117,14 @@ export const ProductSpec = z.object({
 
   /** Dollars as listed in the Shopify import. */
   price_usd: z.number().positive(),
+  /** Optional operational unit cost; omitted unless verified. */
+  cost_per_item_usd: z.number().positive().optional(),
+  /** Genuine reference price only; never fabricated for fake strikethroughs. */
   compare_at_usd: z.number().positive().optional(),
   /** GTIN/barcode; concept listings do not have one yet. */
   barcode: z.string().optional(),
-  weight_grams: z.number().positive(),
+  /** Physical weight in grams; omitted when a concept SKU has not been weighed yet. */
+  weight_grams: z.number().positive().optional(),
   /** Raw Shopify variant option, e.g. {name: 'Capacity', value: '140 ml'}. */
   variant_option: z.object({name: z.string(), value: z.string()}),
   dimensions: Dimensions,

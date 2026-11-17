@@ -1,6 +1,5 @@
-import {existsSync} from 'node:fs';
-import {join} from 'node:path';
 import {parseArgs} from 'node:util';
+import {resolveTls} from './tls';
 
 const {values} = parseArgs({
   options: {
@@ -15,18 +14,12 @@ if (!values.target || !values.port) {
 }
 
 const target = new URL(values.target);
-const certDir = join(import.meta.dir, '../.certs');
-const cert = join(certDir, 'localhost.pem');
-const key = join(certDir, 'localhost-key.pem');
-
-if (!existsSync(cert) || !existsSync(key)) {
-  console.error('Local HTTPS certificate is missing. Run `bun run certs` first.');
-  process.exit(1);
-}
+const tls = resolveTls();
+console.log(`TLS ${tls.source}: ${tls.cert}`);
 
 const server = Bun.serve({
   port: Number(values.port),
-  tls: {cert: Bun.file(cert), key: Bun.file(key)},
+  tls: {cert: Bun.file(tls.cert), key: Bun.file(tls.key)},
   async fetch(req) {
     const url = new URL(req.url);
     url.protocol = target.protocol;

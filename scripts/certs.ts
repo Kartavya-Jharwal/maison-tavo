@@ -1,7 +1,8 @@
 import {mkdirSync} from 'node:fs';
 import {join} from 'node:path';
+import {existingMkcertCa, projectCertDir} from './tls';
 
-const certDir = join(import.meta.dir, '../.certs');
+const certDir = projectCertDir();
 mkdirSync(certDir, {recursive: true});
 
 function run(args: string[]) {
@@ -12,7 +13,13 @@ function run(args: string[]) {
   }
 }
 
-run(['-install']);
+const caroot = existingMkcertCa();
+if (caroot) {
+  console.log(`Using existing mkcert CA at ${caroot}`);
+} else {
+  run(['-install']);
+}
+
 run([
   '-cert-file',
   join(certDir, 'localhost.pem'),
@@ -23,4 +30,4 @@ run([
   '::1',
 ]);
 
-console.log(`Certificates written to ${certDir}`);
+console.log(`Leaf certificates written to ${certDir} (signed by the machine CA)`);

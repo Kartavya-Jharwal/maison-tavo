@@ -1,7 +1,5 @@
 import {existsSync} from 'node:fs';
-import {join} from 'node:path';
-
-const certDir = join(import.meta.dir, '../../../.certs');
+import {resolveTls} from '../../../scripts/tls';
 
 function required(name: string): string {
   const value = Bun.env[name];
@@ -15,15 +13,17 @@ export const config = {
   get agentProfileUrl() {
     return required('UCP_AGENT_PROFILE_URL');
   },
-  tls: {
-    cert: join(certDir, 'localhost.pem'),
-    key: join(certDir, 'localhost-key.pem'),
+  get tls() {
+    const paths = resolveTls();
+    return {cert: paths.cert, key: paths.key, source: paths.source};
   },
 };
 
 export function loadTls() {
-  if (!existsSync(config.tls.cert) || !existsSync(config.tls.key)) {
+  const {cert, key, source} = config.tls;
+  if (!existsSync(cert) || !existsSync(key)) {
     throw new Error('Local HTTPS certificate is missing. Run `bun run certs` from the repo root.');
   }
-  return {cert: Bun.file(config.tls.cert), key: Bun.file(config.tls.key)};
+  console.log(`TLS ${source}: ${cert}`);
+  return {cert: Bun.file(cert), key: Bun.file(key)};
 }

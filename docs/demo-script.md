@@ -32,9 +32,9 @@ command, real Shopify cart, assembled entirely from spec constraints with zero m
 product selection.
 
 **Beat 5 — Kansa (50–60s)**
-Navigate to `/pages/kansa`. Click the microphone and ask: "What are the heat sources
-for this piece?" The scripted intent fires. Try adding `?piece=forge-relay-dual-mass-skillet`
-to the URL — Kansa pre-loads with that piece's thermal data.
+Navigate to `/pages/kansa`. Use a job card or the microphone and ask: "What are the heat sources
+for this piece?" Fixture answer + thermal matrix. Try `?piece=forge-relay-dual-mass-skillet`
+— Kansa pre-loads that piece. Sight (AR poster) and Look (photo triage) are secondary senses.
 
 ---
 
@@ -113,9 +113,11 @@ piece's care and thermal data. Object → scan → software (D7).
 intents sit behind an interface that OpenAI Realtime API can replace without a rewrite.
 V0 proves the interaction design and data architecture. Real AI model is Phase 3 pitch scope.
 
-**Thermal calculator:** Reads `heat_sources` from the product AJAX API response and
-renders a compatibility table. The calculator is the clearest object-to-software
-demonstration in the store.
+**Thermal calculator:** Reads `heat_sources` from `kansa-catalog.json` (projected from
+`packages/catalog`) and renders a compatibility matrix — not invented Watt numbers.
+
+**Jobs / fixtures:** Empty state job cards drive deterministic fixture answers (no live
+token model). HTML first frame paints before `microapp-kansa.js` hydrates.
 
 ---
 

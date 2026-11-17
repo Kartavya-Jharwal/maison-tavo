@@ -1,13 +1,15 @@
-import { animate } from 'motion';
-import { loadCatalog, readSession, writeSession } from './catalog.js';
-import { matchIntent, buildFixtureAnswer, thermalMatrix } from './engine.js';
+import gsap from 'gsap';
+import { loadCatalog } from './catalog.js';
+import { matchIntent, buildFixtureAnswer, thermalMatrix, activityFor } from './engine.js';
 import { remediesFor, suggestRemedyFromCues } from './remedies.js';
 import { createWebSpeechRecognition, createWebSpeechSynthesis } from './speech.js';
+import { kansaStore, soundEnabled, motionReduced } from './store.js';
+import { CV_CONFIRM_CHIPS } from './fixtures.js';
 
 const ALL_HEAT = ['induction', 'gas', 'electric', 'oven', 'open_flame'];
 
 function preferReducedMotion() {
-  return window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+  return motionReduced();
 }
 
 function escapeHtml(s) {
@@ -30,35 +32,39 @@ export class KansaApp {
     this.root = root;
     this.byHandle = catalog.byHandle;
     this.list = catalog.list;
-    this.activeTab = 'chat';
     this.listening = false;
     this.error = null;
-    this.messages = [];
-    this.followUps = [];
     this.unknownHandle = null;
     this.cvSuggestion = null;
-    this.arReady = false;
+    this.cvStep = 'capture'; // capture | confirm
+    this.activity = null;
+    this.composerDraft = '';
+    this.abortTalk = null;
+
+    const session = kansaStore.getState();
+    this.activeTab = session.activeTab || 'chat';
+    this.messages = session.messages || [];
+    this.followUps = session.followUps || [];
 
     const params = new URLSearchParams(window.location.search);
     const pieceParam = params.get('piece');
-    const session = readSession();
 
     if (pieceParam) {
       if (this.byHandle[pieceParam]) {
         this.selectedPiece = this.byHandle[pieceParam];
+        kansaStore.getState().setHandle(pieceParam);
+        this.messages = [];
+        this.followUps = [];
       } else {
         this.unknownHandle = pieceParam;
         this.selectedPiece = null;
       }
     } else if (session?.handle && this.byHandle[session.handle]) {
       this.selectedPiece = this.byHandle[session.handle];
-      if (Array.isArray(session.messages) && session.messages.length) {
-        this.messages = session.messages;
-      }
-      if (session.activeTab) this.activeTab = session.activeTab;
     } else {
       this.selectedPiece =
         this.byHandle['forge-relay-dual-mass-skillet'] || this.list[0] || null;
+      if (this.selectedPiece) kansaStore.getState().setHandle(this.selectedPiece.handle);
     }
 
     this.speechIn = createWebSpeechRecognition();
@@ -143,11 +149,12 @@ export class KansaApp {
   }
 
   persist() {
-    writeSession({
+    kansaStore.setState({
       handle: this.selectedPiece?.handle || null,
-      messages: this.messages.slice(-40),
       activeTab: this.activeTab,
     });
+    kansaStore.getState().setTab(this.activeTab);
+    kansaStore.getState().setMessages(this.messages, this.followUps);
   }
 
   selectPiece(handle) {
@@ -157,9 +164,12 @@ export class KansaApp {
     this.messages = [];
     this.followUps = [];
     this.cvSuggestion = null;
+    this.cvStep = 'capture';
+    this.activity = null;
+    kansaStore.getState().setHandle(handle);
     this.syncUrl();
-    this.persist();
     this.render();
+    this.revealStage();
   }
 
   startListening() {
@@ -179,32 +189,47 @@ export class KansaApp {
    */
   processQuery(query) {
     if (!query || !query.trim()) return;
+    if (this.abortTalk) {
+      clearTimeout(this.abortTalk);
+      this.abortTalk = null;
+    }
+
     const userText = query.trim();
     this.messages.push({ role: 'user', text: userText });
+    this.composerDraft = '';
 
     const { intent, confidence } = matchIntent(userText);
-    const intentId = intent || 'default';
-    const fixture = buildFixtureAnswer(this.selectedPiece, intentId === 'default' ? '' : intentId);
-
-    if (!intent && confidence < 0.35) {
-      const fallback = buildFixtureAnswer(this.selectedPiece, '');
-      this.pushAssistant(fallback);
-    } else {
-      this.pushAssistant(fixture);
-    }
-
-    // Mode shortcuts from tools
-    if (fixture.tools.includes('check_heat')) this.activeTab = 'thermal';
-    if (fixture.tools.includes('open_triage')) this.activeTab = 'diagnostic';
-    if (fixture.tools.includes('open_ar')) this.activeTab = 'ar';
-    if (fixture.tools.includes('cv_triage') && intentId === 'cv_triage') this.activeTab = 'look';
-
-    this.persist();
+    const intentId = intent && confidence >= 0.35 ? intent : 'default';
+    const meta = activityFor(intentId === 'default' ? 'default' : intentId);
+    this.activity = meta.activity;
     this.render();
-    this.animateAnswer();
-    if (!preferReducedMotion()) {
-      this.speechOut.speak(fixture.text);
-    }
+
+    const fixture = buildFixtureAnswer(
+      this.selectedPiece,
+      intentId === 'default' ? '' : intentId,
+    );
+
+    this.abortTalk = window.setTimeout(() => {
+      this.activity = null;
+      this.pushAssistant(fixture);
+
+      if (fixture.tools?.includes('check_heat') && intentId === 'heat_check') {
+        /* keep chat; tool card embeds thermal */
+      }
+      if (fixture.tools?.includes('open_ar') && intentId === 'ar_place') this.activeTab = 'ar';
+      if (fixture.tools?.includes('cv_triage') && intentId === 'cv_triage') this.activeTab = 'look';
+      if (fixture.tools?.includes('open_triage') && intentId === 'triage') {
+        /* stay in chat with triage tool card */
+      }
+
+      this.persist();
+      this.render();
+      this.animateAnswer();
+      if (soundEnabled() && !preferReducedMotion()) {
+        this.speechOut.speak(fixture.text);
+      }
+      this.abortTalk = null;
+    }, preferReducedMotion() ? 0 : 280);
   }
 
   /**
@@ -220,12 +245,92 @@ export class KansaApp {
     this.followUps = fixture.followUps || [];
   }
 
+  fillComposer(text) {
+    this.composerDraft = text;
+    this.render();
+    const input = this.root.querySelector('#kansa-text-field');
+    if (input) {
+      input.value = text;
+      input.focus();
+      input.setSelectionRange(text.length, text.length);
+    }
+  }
+
   animateAnswer() {
     if (preferReducedMotion()) return;
     const card = this.root.querySelector('.kansa-msg--assistant:last-child');
     if (card) {
-      animate(card, { opacity: [0, 1] }, { duration: 0.4, easing: 'ease-out' });
+      gsap.fromTo(card, { autoAlpha: 0, y: 6 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power2.out' });
     }
+  }
+
+  revealStage() {
+    if (preferReducedMotion()) return;
+    const stage = this.root.querySelector('.kansa-stage');
+    if (stage) {
+      gsap.fromTo(stage, { autoAlpha: 0.65 }, { autoAlpha: 1, duration: 0.35, ease: 'power2.out' });
+    }
+  }
+
+  /**
+   * Generative tool cards beside answers (plan Amendment I).
+   * @param {string[]} tools
+   */
+  renderToolCards(tools) {
+    const p = this.selectedPiece;
+    if (!tools?.length) return '';
+    const cards = [];
+    for (const t of tools.slice(0, 3)) {
+      if (t === 'check_heat' && p) {
+        const rows = thermalMatrix(p).filter((r) => r.status === 'compatible');
+        cards.push(`
+          <button type="button" class="kansa-tool-card" data-tool="check_heat">
+            <span class="kansa-tool-card__kicker">Heat</span>
+            <span class="kansa-tool-card__body">${
+              rows.length
+                ? escapeHtml(rows.map((r) => r.source.replace('_', ' ')).join(' · '))
+                : 'Open thermal matrix'
+            }</span>
+          </button>`);
+      } else if (t === 'open_care_ritual') {
+        cards.push(`
+          <button type="button" class="kansa-tool-card" data-tool="open_care_ritual">
+            <span class="kansa-tool-card__kicker">Rites</span>
+            <span class="kansa-tool-card__body">Full ${escapeHtml(
+              p?.ritualTrack === 'clay' ? 'clay' : 'metal',
+            )} care covenant</span>
+          </button>`);
+      } else if (t === 'link_product' || t === 'lookup_piece') {
+        cards.push(`
+          <a class="kansa-tool-card" data-tool="link_product" href="${escapeHtml(
+            p?.productUrl || '#',
+          )}">
+            <span class="kansa-tool-card__kicker">Product</span>
+            <span class="kansa-tool-card__body">${escapeHtml(
+              p?.title || 'View in catalogue',
+            )} — add to bag on the PDP</span>
+          </a>`);
+      } else if (t === 'open_triage') {
+        cards.push(`
+          <button type="button" class="kansa-tool-card" data-tool="open_triage">
+            <span class="kansa-tool-card__kicker">Triage</span>
+            <span class="kansa-tool-card__body">Surface restoration cards</span>
+          </button>`);
+      } else if (t === 'open_ar') {
+        cards.push(`
+          <button type="button" class="kansa-tool-card" data-tool="open_ar">
+            <span class="kansa-tool-card__kicker">Sight</span>
+            <span class="kansa-tool-card__body">Place the piece in the room</span>
+          </button>`);
+      } else if (t === 'cv_triage') {
+        cards.push(`
+          <button type="button" class="kansa-tool-card" data-tool="cv_triage">
+            <span class="kansa-tool-card__kicker">Look</span>
+            <span class="kansa-tool-card__body">Photograph the cooking surface</span>
+          </button>`);
+      }
+    }
+    return cards.length ? `<div class="kansa-tool-cards">${cards.join('')}</div>` : '';
   }
 
   jumpToCare(track) {
@@ -335,9 +440,10 @@ export class KansaApp {
       followUps: ['Show care rites', 'Heat sources?'],
     });
     this.activeTab = 'chat';
+    this.cvSuggestion = null;
     this.persist();
     this.render();
-    if (!preferReducedMotion()) this.speechOut.speak(rem.fix);
+    if (soundEnabled() && !preferReducedMotion()) this.speechOut.speak(rem.fix);
   }
 
   copyLastAnswer() {
@@ -466,23 +572,23 @@ export class KansaApp {
   }
 
   renderChat(jobs) {
-    const empty = this.messages.length === 0;
+    const empty = this.messages.length === 0 && !this.activity;
     return `
       <div class="kansa-chat-panel">
         ${
           empty
             ? `
           <div class="kansa-welcome">
-            <h2 class="kansa-panel-heading">What do you need?</h2>
-            <p class="kansa-panel-sub">Four doors into the house. Speak, or begin with a job.</p>
-            <div class="kansa-jobs" aria-label="Suggested jobs">
+            <h2 class="kansa-panel-heading" data-mt-scroll="chapter">What do you need?</h2>
+            <p class="kansa-panel-sub">Choose a job — it fills the composer so you can edit before asking.</p>
+            <div class="kansa-jobs" aria-label="Suggested jobs" data-mt-scroll="stagger">
               <div class="kansa-jobs-grid">
                 ${jobs
                   .map(
                     (j) => `
-                  <button type="button" class="kansa-job-card" data-job-q="${escapeHtml(
+                  <button type="button" class="kansa-job-card" data-job-fill="${escapeHtml(
                     j.q,
-                  )}" data-strike>
+                  )}" data-mt-scroll-item data-strike>
                     <span class="kansa-job-label">${escapeHtml(j.label)}</span>
                     <span class="kansa-job-lede">${escapeHtml(j.lede || '')}</span>
                   </button>`,
@@ -502,25 +608,18 @@ export class KansaApp {
                   <div class="kansa-msg kansa-msg--assistant">
                     <p class="kansa-answer-kicker">${escapeHtml(m.tag || 'Kansa')}</p>
                     <p class="kansa-answer-text">${escapeHtml(m.text)}</p>
-                    ${
-                      m.tools?.length
-                        ? `<div class="kansa-tool-row">${m.tools
-                            .slice(0, 2)
-                            .map(
-                              (t) =>
-                                `<button type="button" class="kansa-tool-btn" data-tool="${escapeHtml(
-                                  t,
-                                )}">${escapeHtml(toolLabel(t))}</button>`,
-                            )
-                            .join('')}</div>`
-                        : ''
-                    }
+                    ${this.renderToolCards(m.tools || [])}
                   </div>`;
               })
               .join('')}
+            ${
+              this.activity
+                ? `<div class="kansa-activity" role="status">${escapeHtml(this.activity)}</div>`
+                : ''
+            }
           </div>
           ${
-            this.followUps.length
+            this.followUps.length && !this.activity
               ? `<div class="kansa-chips" aria-label="Continue">
                   ${this.followUps
                     .slice(0, 3)
@@ -534,13 +633,17 @@ export class KansaApp {
                 </div>`
               : ''
           }
-          <div class="kansa-answer-actions">
+          ${
+            !this.activity
+              ? `<div class="kansa-answer-actions">
             <button type="button" class="kansa-text-btn" id="kansa-replay">Read aloud</button>
             <button type="button" class="kansa-text-btn" id="kansa-copy">Copy</button>
             <button type="button" class="kansa-text-btn kansa-text-btn--accent" id="kansa-goto-ritual" data-track="${
               this.selectedPiece?.ritualTrack || 'metal'
             }">Care rites</button>
           </div>`
+              : ''
+          }`
         }
 
         <div class="kansa-composer">
@@ -553,7 +656,9 @@ export class KansaApp {
             <span class="kansa-mic-text">${this.listening ? 'Listening' : 'Voice'}</span>
           </button>
           <form class="kansa-input-form" id="kansa-form">
-            <input type="text" class="kansa-text-input" id="kansa-text-field" placeholder="Ask Kansa…" autocomplete="off" />
+            <input type="text" class="kansa-text-input" id="kansa-text-field" placeholder="Ask Kansa…" autocomplete="off" value="${escapeHtml(
+              this.composerDraft,
+            )}" />
             <button type="submit" class="kansa-send-btn" data-strike>Ask</button>
           </form>
         </div>
@@ -719,15 +824,17 @@ export class KansaApp {
   }
 
   renderLook() {
+    const cat = this.selectedPiece?.materialCategory || 'metal';
+    const chipSet = CV_CONFIRM_CHIPS[cat] || CV_CONFIRM_CHIPS.metal;
     const rem = this.cvSuggestion
-      ? remediesFor(this.selectedPiece?.materialCategory || 'metal')[this.cvSuggestion.key]
+      ? remediesFor(cat)[this.cvSuggestion.key]
       : null;
     return `
       <div class="kansa-look-panel kansa-panel">
         <header class="kansa-panel__header">
           <p class="kansa-eyebrow">Look</p>
           <h2 class="kansa-panel-heading">Show the surface</h2>
-          <p class="kansa-panel-sub">One photograph. A suggested triage. You confirm before any remedy.</p>
+          <p class="kansa-panel-sub">Photograph, then confirm what you see. No silent diagnosis.</p>
         </header>
         <div class="kansa-look-stage">
           ${
@@ -746,14 +853,28 @@ export class KansaApp {
           </label>
         </div>
         ${
-          rem
+          this.cvSuggestion
             ? `<div class="kansa-look-verdict">
-                <p class="kansa-answer-kicker">${escapeHtml(rem.label)}</p>
-                <p class="kansa-answer-text">${escapeHtml(rem.cause)}</p>
-                <p class="kansa-remedy-fix">${escapeHtml(rem.fix)}</p>
+                <p class="kansa-answer-kicker">Confirm what you see</p>
+                <div class="kansa-chips kansa-chips--cv" role="group" aria-label="Surface confirm">
+                  ${chipSet
+                    .map(
+                      (c) => `
+                    <button type="button" class="kansa-chip ${
+                      this.cvSuggestion.key === c.key ? 'is-active' : ''
+                    }" data-cv-key="${escapeHtml(c.key)}">${escapeHtml(c.label)}</button>`,
+                    )
+                    .join('')}
+                </div>
+                ${
+                  rem
+                    ? `<p class="kansa-answer-text">${escapeHtml(rem.cause)}</p>
+                       <p class="kansa-remedy-fix">${escapeHtml(rem.fix)}</p>`
+                    : ''
+                }
                 <div class="kansa-answer-actions">
-                  <button type="button" class="kansa-send-btn" id="kansa-cv-confirm" data-strike>Confirm</button>
-                  <button type="button" class="kansa-text-btn" id="kansa-cv-reject">Not this</button>
+                  <button type="button" class="kansa-send-btn" id="kansa-cv-confirm" data-strike>Confirm remedy</button>
+                  <button type="button" class="kansa-text-btn" id="kansa-cv-reject">Start over</button>
                 </div>
               </div>`
             : ''
@@ -772,6 +893,12 @@ export class KansaApp {
         this.activeTab = btn.dataset.tab;
         this.persist();
         this.render();
+        this.revealStage();
+        if (window.MaisonRuntime?.initInViewReveals) {
+          window.MaisonRuntime.initInViewReveals(this.root);
+        } else {
+          document.dispatchEvent(new CustomEvent('maison:page-enter'));
+        }
       });
     });
     const mic = this.root.querySelector('#kansa-mic-trigger');
@@ -789,17 +916,28 @@ export class KansaApp {
       });
     }
 
-    this.root.querySelectorAll('.kansa-chip, .kansa-job-card').forEach((el) => {
+    this.root.querySelectorAll('.kansa-job-card[data-job-fill]').forEach((el) => {
+      el.addEventListener('click', () => this.fillComposer(el.dataset.jobFill || ''));
+    });
+    this.root.querySelectorAll('.kansa-chip[data-q]').forEach((el) => {
       el.addEventListener('click', () => {
-        const q = el.dataset.q || el.dataset.jobQ;
-        if (!q) return;
-        // Fill composer pattern: if job, prefer send for ready jobs
-        this.processQuery(q);
+        if (el.dataset.q) this.processQuery(el.dataset.q);
+      });
+    });
+    this.root.querySelectorAll('.kansa-chip[data-cv-key]').forEach((el) => {
+      el.addEventListener('click', () => {
+        if (!this.cvSuggestion) return;
+        this.cvSuggestion = { ...this.cvSuggestion, key: el.dataset.cvKey };
+        this.render();
       });
     });
 
-    this.root.querySelectorAll('.kansa-tool-btn').forEach((btn) => {
-      btn.addEventListener('click', () => this.runTool(btn.dataset.tool));
+    this.root.querySelectorAll('.kansa-tool-btn, .kansa-tool-card[data-tool]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        if (btn.tagName === 'A') return;
+        e.preventDefault();
+        this.runTool(btn.dataset.tool);
+      });
     });
 
     this.root.querySelectorAll('[data-track]').forEach((link) => {

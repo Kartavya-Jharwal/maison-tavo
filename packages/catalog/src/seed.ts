@@ -99,6 +99,14 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "hybrid hospitality drinkware",
     "concept_thesis": "Separate expressive shell from hygienic drink interface.",
+    "primary_material": "High-fired earthenware shell",
+    "lining_material": "Removable 18/8 stainless steel drink liner",
+    "dimensions_summary": "140 ml capacity",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Stainless liner is the intended food-contact surface; rim must avoid exposed adhesive or moisture traps.",
+    "care_instructions": "[CONCEPT_SPEC] Separate components; hand wash initial prototype.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
     "material_architecture": "Lower high-fired earthenware shell + removable thin 18/8 stainless liner + isolated junction.",
     "food_contact_strategy": "Stainless liner is the intended food-contact surface; rim must avoid exposed adhesive or moisture traps.",
     "fabrication_route": "Slip-cast or press-mould shell; drawn/spun liner; dry seat or food-safe isolation ring; laser mark only after glaze trials.",
@@ -175,6 +183,14 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "modular hospitality drinkware",
     "concept_thesis": "Make breakage replaceable while preserving a clay lip and beverage surface.",
+    "primary_material": "Vitrified earthenware bowl with spun stainless chassis",
+    "lining_material": "Food-safe vitrified ceramic glaze",
+    "dimensions_summary": "180 ml capacity",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Clay/glaze contacts beverage; metal is external support.",
+    "care_instructions": "[CONCEPT_SPEC] Disassemble to wash; no microwave; dishwasher only after validation.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
     "material_architecture": "Glazed/vitrified earthenware upper bowl + spun stainless lower chassis + reversible retained joint.",
     "food_contact_strategy": "Clay/glaze contacts beverage; metal is external support.",
     "fabrication_route": "High-fire clay insert; spun metal chassis; gasket or captive mechanical ring; inspect joint for drainage.",
@@ -247,6 +263,14 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "laser-marked ceramic tabletop",
     "concept_thesis": "Use laser marking as permanent ornament, identity and provenance layer.",
+    "primary_material": "High-fired stoneware",
+    "lining_material": "Vitrified food-contact ceramic glaze",
+    "dimensions_summary": "34 cm diameter (34 cm)",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "pending_validation",
+    "food_contact_suitability": "[CONCEPT_SPEC] Glaze/body must pass migration and cleanability testing after marking.",
+    "care_instructions": "[CONCEPT_SPEC] Non-abrasive wash; commercial dishwasher status pending.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
     "material_architecture": "High-fired stoneware body; tested glaze field; unmarked food-contact zone until validated.",
     "food_contact_strategy": "Glaze/body must pass migration and cleanability testing after marking.",
     "fabrication_route": "Create flat and curved coupons across glaze variants; map power/speed; inspect under magnification; wash-cycle before vessel trial.",
@@ -318,6 +342,14 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "personalised hospitality drinkware",
     "concept_thesis": "Create permanent, serialisable decoration without decals.",
+    "primary_material": "High-fired stoneware",
+    "lining_material": "Vitrified interior ceramic glaze",
+    "dimensions_summary": "220 ml capacity",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "pending_validation",
+    "food_contact_suitability": "[CONCEPT_SPEC] Interior remains unmarked glaze; exterior mark must not undermine lip or grip.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash initial prototype; dishwasher after cycle validation.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
     "material_architecture": "High-fired stoneware cup; glazed interior; controlled exterior marking band.",
     "food_contact_strategy": "Interior remains unmarked glaze; exterior mark must not undermine lip or grip.",
     "fabrication_route": "Laser-test cylindrical coupons using rotary fixture and dynamic focus; mark after glaze only if crack-free.",
@@ -386,6 +418,14 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "modular mixed-metal cookware",
     "concept_thesis": "Switch between fast response and thermal mass through a removable component.",
+    "primary_material": "Nitrided carbon steel with removable cast-bronze thermal ring",
+    "lining_material": "Unlined seasoned carbon steel (external bronze ring non-food-contact)",
+    "dimensions_summary": "26 cm diameter (26 cm)",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Carbon steel is intended food-contact surface; ring must remain external.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash; dry and oil steel; remove ring before washing.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
     "material_architecture": "Thin nitrided carbon-steel vessel + removable non-food-contact bronze thermal ring + steel handle.",
     "food_contact_strategy": "Carbon steel is intended food-contact surface; ring must remain external.",
     "fabrication_route": "Deep-draw/spin carbon body; nitride or season; cast/machine ring; positive mechanical lock with cold-state removal only.",
@@ -463,6 +503,14 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "split-function cookware",
     "concept_thesis": "Map material to task across one product: sear, rest and serve.",
+    "primary_material": "Nitrided carbon steel with cast-bronze service block",
+    "lining_material": "Unlined carbon steel sear zone + removable 18/8 stainless service tray",
+    "dimensions_summary": "46 × 28 cm",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Steel griddle and stainless tray contact food; bronze does not.",
+    "care_instructions": "[CONCEPT_SPEC] Disassemble; hand wash steel; tray dishwasher target pending.",
+    "heat_compatibility": "CONCEPT_SPEC target: gas (not induction-compatible; requires prototype thermal validation).",
     "material_architecture": "Nitrided carbon-steel griddle + cast-bronze service mass + removable stainless food tray.",
     "food_contact_strategy": "Steel griddle and stainless tray contact food; bronze does not.",
     "fabrication_route": "Laser-cut/form steel; cast/machine bronze block; sliding expansion joint; drawn stainless tray.",
@@ -539,6 +587,14 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "nested oven-to-table cookware",
     "concept_thesis": "Separate thermal cooking performance from tactile table presentation.",
+    "primary_material": "Clad stainless steel insert with high-fired ceramic cradle",
+    "lining_material": "18/10 stainless steel cooking surface",
+    "dimensions_summary": "34 × 24 cm",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Stainless insert contacts food; cradle is support only.",
+    "care_instructions": "[CONCEPT_SPEC] Insert dishwasher target; cradle hand wash; never heat empty cradle on hob.",
+    "heat_compatibility": "CONCEPT_SPEC target: oven, induction (induction target yes; requires prototype thermal validation).",
     "material_architecture": "Fully-clad stainless roasting insert + non-hob ceramic cradle + insulating contact points.",
     "food_contact_strategy": "Stainless insert contacts food; cradle is support only.",
     "fabrication_route": "Form clad insert; high-fire cradle to tolerance; laser mark exterior; create drainage and lift clearances.",
@@ -613,6 +669,14 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "integral metal-frame knife",
     "concept_thesis": "Turn full-tang logic into a visible continuous structural strip.",
+    "primary_material": "Continuous nitrogen-treated stainless steel strip",
+    "lining_material": "Unlined monolithic blade with replaceable grip sleeve",
+    "dimensions_summary": "200 mm blade length",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_applicable",
+    "food_contact_suitability": "[CONCEPT_SPEC] Blade is food contact; open frame must not create inaccessible soil traps.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash; remove sleeve only for deep service per final design.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
     "material_architecture": "Single nitrogen-treated stainless or alternative steel strip target + removable high-temperature grip sleeve.",
     "food_contact_strategy": "Blade is food contact; open frame must not create inaccessible soil traps.",
     "fabrication_route": "Laser-cut blank; forge/grind blade zone; bend/form handle loop if metallurgy permits; heat treat; finish; sleeve mould.",
@@ -687,6 +751,14 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "hybrid-edge chef-format knife",
     "concept_thesis": "Combine skin-gripping serration with a sharpenable board-contact heel.",
+    "primary_material": "High-carbon stainless steel strip",
+    "lining_material": "Unlined hybrid micro-scalloped / plain steel blade",
+    "dimensions_summary": "180 mm blade length",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_applicable",
+    "food_contact_suitability": "[CONCEPT_SPEC] Blade contact only; serrations must be cleanable and corrosion-resistant.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash; specialist serration service; plain heel whetstone-compatible.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
     "material_architecture": "Thin high-carbon stainless blade target; 120 mm shallow micro-scalloped field + 60 mm plain heel + continuous metal strip handle.",
     "food_contact_strategy": "Blade contact only; serrations must be cleanable and corrosion-resistant.",
     "fabrication_route": "Laser-cut/forged blank; grind distal taper; CNC or wheel-grind repeatable scallops; deburr and passivate; removable grip sleeve.",
@@ -760,6 +832,14 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "micro-scalloped utility knife",
     "concept_thesis": "Create low-force skin entry in a compact prep format.",
+    "primary_material": "High-carbon stainless steel strip",
+    "lining_material": "Unlined micro-scalloped steel blade",
+    "dimensions_summary": "150 mm blade length",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_applicable",
+    "food_contact_suitability": "[CONCEPT_SPEC] Stainless blade target; open frame and sleeve interface must be fully cleanable.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash; specialist sharpening.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
     "material_architecture": "Thin high-carbon stainless blade target + fine scallops + continuous strip frame + removable grip web.",
     "food_contact_strategy": "Stainless blade target; open frame and sleeve interface must be fully cleanable.",
     "fabrication_route": "Blank, heat treat, precision scallop grind, passivation, frame forming, removable sleeve.",
@@ -833,6 +913,14 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "mixed-material serving utensil",
     "concept_thesis": "Put resilient metal at the food interface and expressive clay at the hand interface.",
+    "primary_material": "Spring steel strip with removable ceramic grip pads",
+    "lining_material": "Unlined spring-steel food-contact tips",
+    "dimensions_summary": "24 cm length",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "not_applicable",
+    "food_contact_suitability": "[CONCEPT_SPEC] Steel tips contact food; pads remain outside contact zone.",
+    "care_instructions": "[CONCEPT_SPEC] Remove pads for cleaning until washability validated.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
     "material_architecture": "Continuous spring steel body + removable high-fired ceramic thumb pads.",
     "food_contact_strategy": "Steel tips contact food; pads remain outside contact zone.",
     "fabrication_route": "Laser-cut/bend spring strip; high-fire pad pair; mechanical snap carrier; exterior laser marking.",
@@ -879,6 +967,1072 @@ export const seedCatalog: Catalog = [
     },
     "dimensions": {
       "length_cm": 24
+    },
+    "heat_sources": [],
+    "induction_compatible": false
+  },
+  {
+    "handle": "forge-terre-tagine-28",
+    "title": "Forge–Terre Compact Tagine",
+    "sku": "MT-HYB-TAG-28",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Tagines",
+    "product_type": "Tagine",
+    "tags": [
+      "Forge × Terre",
+      "Tagine",
+      "Earthenware",
+      "Stainless Steel",
+      "Hospitality",
+      "Concept Spec"
+    ],
+    "lineup": "Forge × Terre",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "tagine",
+    "concept_thesis": "Traditional all-clay tagines crack easily on modern induction hobs. Separating the thermal base from the vapour-return cone preserves aromatic condensation while keeping hob contact predictable.",
+    "primary_material": "Clad 18/10 stainless steel base with high-fired earthenware cone",
+    "lining_material": "18/10 stainless cooking face + vitrified interior cone glaze",
+    "dimensions_summary": "28 cm diameter (28 cm)",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] 18/10 stainless steel contacts simmering food; glazed interior cone contacts condensing steam only after migration validation.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash ceramic cone; stainless base targets commercial washing pending validation.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Clad 18/10 stainless cooking base + vented high-fired earthenware cone.",
+    "food_contact_strategy": "18/10 stainless steel contacts simmering food; glazed interior cone contacts condensing steam only after migration validation.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Slow braises, spiced reductions and tableside presentation for up to four guests.",
+    "care_hypothesis": "Hand wash ceramic cone; stainless base targets commercial washing pending validation.",
+    "engineering_risks": [
+      "Thermal shock on cone",
+      "steam vent velocity",
+      "rim seating tolerance",
+      "handle heat."
+    ],
+    "required_prototype_tests": [
+      "Thermal cycling",
+      "steam condensation mapping",
+      "lid seating drop",
+      "induction flatness",
+      "glaze migration."
+    ],
+    "agent_intents": [
+      "tagine",
+      "slow cooking",
+      "clay slow-cooking",
+      "induction tagine",
+      "braising vessel"
+    ],
+    "negative_constraints": [
+      "ceramic cone directly on hob",
+      "guaranteed dishwasher-safe cone"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A two-part braising tagine pairing an induction-ready clad stainless base with a high-fired earthenware condensation cone for four-person table service.</p><h3>Why it exists</h3><p>Traditional all-clay tagines crack easily on modern induction hobs. Separating the thermal base from the vapour-return cone preserves aromatic condensation while keeping hob contact predictable.</p><h3>Service &amp; kitchen role</h3><p>Slow braises, spiced reductions and tableside presentation for up to four guests.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Forge–Terre Compact Tagine | Maison Tavo",
+    "seo_description": "A two-part braising tagine pairing an induction-ready clad stainless base with a high-fired earthenware condensation cone for four-person table service.",
+    "price_usd": 340,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "28 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 28
+    },
+    "heat_sources": [
+      "induction",
+      "gas",
+      "electric"
+    ],
+    "induction_compatible": true
+  },
+  {
+    "handle": "forge-terre-tagine-32",
+    "title": "Forge–Terre Shared Tagine",
+    "sku": "MT-HYB-TAG-32",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Tagines",
+    "product_type": "Tagine",
+    "tags": [
+      "Forge × Terre",
+      "Tagine",
+      "Earthenware",
+      "Stainless Steel",
+      "Hospitality",
+      "Concept Spec"
+    ],
+    "lineup": "Forge × Terre",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "tagine",
+    "concept_thesis": "Scales the decoupled metal-and-clay tagine architecture to shared feast portions without forcing staff to carry a fragile all-ceramic cooking base from stove to table.",
+    "primary_material": "Clad 18/10 stainless steel base with high-fired earthenware cone",
+    "lining_material": "18/10 stainless cooking face + vitrified interior cone glaze",
+    "dimensions_summary": "32 cm diameter (32 cm)",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] 18/10 stainless steel contacts food; interior cone glaze requires post-firing migration verification.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash ceramic cone; never place cone directly on a burner.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Clad 18/10 stainless cooking base + wide high-fired earthenware cone.",
+    "food_contact_strategy": "18/10 stainless steel contacts food; interior cone glaze requires post-firing migration verification.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Shared slow-simmered centrepieces, whole-vegetable braises and hospitality table service.",
+    "care_hypothesis": "Hand wash ceramic cone; never place cone directly on a burner.",
+    "engineering_risks": [
+      "Thermal shock",
+      "loaded lifting ergonomics",
+      "steam venting",
+      "rim seating stability."
+    ],
+    "required_prototype_tests": [
+      "Loaded lift ergonomics",
+      "thermal cycling",
+      "steam mapping",
+      "induction flatness",
+      "glaze migration."
+    ],
+    "agent_intents": [
+      "large tagine",
+      "slow cooking",
+      "clay slow-cooking",
+      "shared service",
+      "induction tagine"
+    ],
+    "negative_constraints": [
+      "ceramic cone directly on hob",
+      "dishwasher-safe cone before testing"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A wide shared-format braising tagine built for banquet and family-style service, combining a clad stainless base with a tall earthenware vapour cone.</p><h3>Why it exists</h3><p>Scales the decoupled metal-and-clay tagine architecture to shared feast portions without forcing staff to carry a fragile all-ceramic cooking base from stove to table.</p><h3>Service &amp; kitchen role</h3><p>Shared slow-simmered centrepieces, whole-vegetable braises and hospitality table service.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Forge–Terre Shared Tagine | Maison Tavo",
+    "seo_description": "A wide shared-format braising tagine built for banquet and family-style service, combining a clad stainless base with a tall earthenware vapour cone.",
+    "price_usd": 395,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "32 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 32
+    },
+    "heat_sources": [
+      "induction",
+      "gas",
+      "electric"
+    ],
+    "induction_compatible": true
+  },
+  {
+    "handle": "forge-relay-tava-26",
+    "title": "Forge Relay Compact Tava",
+    "sku": "MT-FOR-TAV-26",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Griddles & Grill Pans",
+    "product_type": "Tava",
+    "tags": [
+      "Forge Hybrid",
+      "Tava",
+      "Carbon Steel",
+      "Bronze",
+      "Induction",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "tava",
+    "concept_thesis": "Gives cooks fast, seasoning-capable carbon-steel heat response with a thermally isolated bronze handle bridge designed to stay manageable during rapid roti turnarounds.",
+    "primary_material": "Nitrided carbon steel with bronze-isolated handle",
+    "lining_material": "Unlined seasoned carbon steel",
+    "dimensions_summary": "26 cm diameter (26 cm)",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze bridge stays external to the cooking face.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm without soaking; dry over low heat and wipe with seasoning oil.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Nitrided carbon-steel cooking plate + bronze-isolated stainless handle.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze bridge stays external to the cooking face.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Roti, chapati, paratha, uttapam and dry spice toasting on standard domestic hobs.",
+    "care_hypothesis": "Hand wash warm without soaking; dry over low heat and wipe with seasoning oil.",
+    "engineering_risks": [
+      "High-heat warping on undersized induction coils",
+      "seasoning wear",
+      "handle heat creep."
+    ],
+    "required_prototype_tests": [
+      "Induction flatness cycling",
+      "surface thermal map",
+      "handle temperature rise",
+      "corrosion."
+    ],
+    "agent_intents": [
+      "tava",
+      "roti griddle",
+      "flatbread pan",
+      "induction griddle",
+      "high-heat searing"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "prolonged acidic soaking"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A low-wall carbon-steel tava engineered for daily flatbreads, parathas and quick dry-roasting on single induction or gas burners.</p><h3>Why it exists</h3><p>Gives cooks fast, seasoning-capable carbon-steel heat response with a thermally isolated bronze handle bridge designed to stay manageable during rapid roti turnarounds.</p><h3>Service &amp; kitchen role</h3><p>Roti, chapati, paratha, uttapam and dry spice toasting on standard domestic hobs.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Forge Relay Compact Tava | Maison Tavo",
+    "seo_description": "A low-wall carbon-steel tava engineered for daily flatbreads, parathas and quick dry-roasting on single induction or gas burners.",
+    "price_usd": 190,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "26 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 26
+    },
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true
+  },
+  {
+    "handle": "forge-relay-tava-30",
+    "title": "Forge Relay Wide Tava",
+    "sku": "MT-FOR-TAV-30",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Griddles & Grill Pans",
+    "product_type": "Tava",
+    "tags": [
+      "Forge Hybrid",
+      "Tava",
+      "Carbon Steel",
+      "Bronze",
+      "Induction",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "tava",
+    "concept_thesis": "Extends the Relay griddle geometry for wider batter spreads while preserving flat hob contact and an isolated handle junction.",
+    "primary_material": "Heavy-gauge nitrided carbon steel with bronze-isolated handle",
+    "lining_material": "Unlined seasoned carbon steel",
+    "dimensions_summary": "30 cm diameter (30 cm)",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collar remains non-food-contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry immediately on heat and condition lightly with seasoning oil.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Heavy-gauge nitrided carbon-steel plate + bronze-isolated handle + helper tab.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collar remains non-food-contact.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Crisp dosas, chillas, smash searing and wide flatbread service.",
+    "care_hypothesis": "Hand wash warm; dry immediately on heat and condition lightly with seasoning oil.",
+    "engineering_risks": [
+      "Edge-to-centre temperature delta on small coils",
+      "warping",
+      "helper-tab burn risk."
+    ],
+    "required_prototype_tests": [
+      "Edge-to-centre thermal gradient",
+      "flatness cycling",
+      "dosa release trials",
+      "handle temperature."
+    ],
+    "agent_intents": [
+      "wide tava",
+      "dosa pan",
+      "roti griddle",
+      "smash searing",
+      "carbon steel griddle"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "cold-water quench while hot"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>An expanded carbon-steel tava with sweeping perimeter access for crisp dosas, rumali-style breads and two-item pass searing.</p><h3>Why it exists</h3><p>Extends the Relay griddle geometry for wider batter spreads while preserving flat hob contact and an isolated handle junction.</p><h3>Service &amp; kitchen role</h3><p>Crisp dosas, chillas, smash searing and wide flatbread service.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Forge Relay Wide Tava | Maison Tavo",
+    "seo_description": "An expanded carbon-steel tava with sweeping perimeter access for crisp dosas, rumali-style breads and two-item pass searing.",
+    "price_usd": 225,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "30 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 30
+    },
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true
+  },
+  {
+    "handle": "forge-relay-kadai-24",
+    "title": "Forge Relay Kadai",
+    "sku": "MT-FOR-KAD-24",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Woks",
+    "product_type": "Kadai",
+    "tags": [
+      "Forge Hybrid",
+      "Kadai",
+      "Carbon Steel",
+      "Bronze",
+      "Induction",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "kadai",
+    "concept_thesis": "Bridges traditional curved kadai tossing geometry with a calibrated flat induction foot and twin loop handles for balanced oven-to-table movement.",
+    "primary_material": "Spun nitrided carbon steel with bronze-isolated loop handles",
+    "lining_material": "Unlined seasoned carbon steel",
+    "dimensions_summary": "24 cm diameter (24 cm)",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Nitrided carbon steel forms the entire interior cooking surface; external bronze collars do not contact food.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash; dry thoroughly over heat and oil lightly; avoid long acidic simmers before patina matures.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Spun nitrided carbon-steel vessel + twin bronze-isolated stainless loop handles.",
+    "food_contact_strategy": "Nitrided carbon steel forms the entire interior cooking surface; external bronze collars do not contact food.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Tadka tempering, dry bhuna reductions, shallow-to-deep frying and wok-adjacent tossing.",
+    "care_hypothesis": "Hand wash; dry thoroughly over heat and oil lightly; avoid long acidic simmers before patina matures.",
+    "engineering_risks": [
+      "Hot-oil tip stability",
+      "loop handle heat transfer",
+      "early patina stripping under acidic sauces."
+    ],
+    "required_prototype_tests": [
+      "Tip-angle stability",
+      "hot-oil thermal mapping",
+      "loop handle temperature",
+      "acid-cycle seasoning test."
+    ],
+    "agent_intents": [
+      "kadai",
+      "curry vessel",
+      "tadka pan",
+      "deep frying",
+      "induction wok"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "unattended deep frying",
+      "long acidic storage"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A flat-seated, deep-bellied carbon-steel kadai shaped for mustard-seed tempering, brisk reductions and small-batch frying across gas and induction.</p><h3>Why it exists</h3><p>Bridges traditional curved kadai tossing geometry with a calibrated flat induction foot and twin loop handles for balanced oven-to-table movement.</p><h3>Service &amp; kitchen role</h3><p>Tadka tempering, dry bhuna reductions, shallow-to-deep frying and wok-adjacent tossing.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Forge Relay Kadai | Maison Tavo",
+    "seo_description": "A flat-seated, deep-bellied carbon-steel kadai shaped for mustard-seed tempering, brisk reductions and small-batch frying across gas and induction.",
+    "price_usd": 275,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "24 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 24
+    },
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true
+  },
+  {
+    "handle": "forge-relay-saucepot-20",
+    "title": "Forge Relay Saucepot",
+    "sku": "MT-FOR-SAU-20",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Saucepans",
+    "product_type": "Saucepot",
+    "tags": [
+      "Forge Hybrid",
+      "Saucepot",
+      "Stainless Steel",
+      "Bronze",
+      "Induction",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "saucepot",
+    "concept_thesis": "Acidic dals and tomato reductions punish bare carbon steel; switching the wet-cooking vessel to non-reactive stainless while keeping a removable bronze heat collar preserves the Relay system logic.",
+    "primary_material": "Fully-clad 18/10 stainless steel with removable bronze collar",
+    "lining_material": "Non-reactive 18/10 stainless steel interior",
+    "dimensions_summary": "20 cm diameter (20 cm)",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Non-reactive 18/10 stainless steel contacts all liquids and acidic ingredients; bronze collar stays external.",
+    "care_instructions": "[CONCEPT_SPEC] Remove bronze collar before washing; stainless pot targets dishwasher validation; hand wipe collar.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric, oven (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Fully-clad 18/10 stainless vessel + removable external cast-bronze thermal collar.",
+    "food_contact_strategy": "Non-reactive 18/10 stainless steel contacts all liquids and acidic ingredients; bronze collar stays external.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Simmering dals, acidic sauces, grains, chai reductions and tableside hot-holding.",
+    "care_hypothesis": "Remove bronze collar before washing; stainless pot targets dishwasher validation; hand wipe collar.",
+    "engineering_risks": [
+      "Collar retention lock",
+      "moisture trapped under collar",
+      "pour-lip dribble."
+    ],
+    "required_prototype_tests": [
+      "Boil-rate mapping",
+      "collar lock endurance",
+      "pour cleanliness",
+      "500 wash cycles on stainless vessel."
+    ],
+    "agent_intents": [
+      "saucepot",
+      "dal pot",
+      "acidic sauce pan",
+      "grain pot",
+      "induction saucepan"
+    ],
+    "negative_constraints": [
+      "washing with collar attached",
+      "removing collar while hot"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>An everyday clad stainless saucepot for dals, stocks, tamarind reductions and grains, paired with a removable external bronze thermal collar.</p><h3>Why it exists</h3><p>Acidic dals and tomato reductions punish bare carbon steel; switching the wet-cooking vessel to non-reactive stainless while keeping a removable bronze heat collar preserves the Relay system logic.</p><h3>Service &amp; kitchen role</h3><p>Simmering dals, acidic sauces, grains, chai reductions and tableside hot-holding.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Forge Relay Saucepot | Maison Tavo",
+    "seo_description": "An everyday clad stainless saucepot for dals, stocks, tamarind reductions and grains, paired with a removable external bronze thermal collar.",
+    "price_usd": 285,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "20 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 20
+    },
+    "heat_sources": [
+      "induction",
+      "gas",
+      "electric",
+      "oven"
+    ],
+    "induction_compatible": true
+  },
+  {
+    "handle": "rekha-dinner-plate-28",
+    "title": "Rekhā Dinner Plate",
+    "sku": "MT-TER-PLT-28",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Tableware > Dinnerware > Plates",
+    "product_type": "Dinner plate",
+    "tags": [
+      "Terre Clay",
+      "Dinner Plate",
+      "Laser Marked",
+      "Ceramic",
+      "Hospitality",
+      "Concept Spec"
+    ],
+    "lineup": "Terre Clay",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "dinner plate",
+    "concept_thesis": "Gives dining rooms durable, stack-considered stoneware with permanent batch and edition notation instead of printed backstamps or decals that wear away.",
+    "primary_material": "High-fired stoneware",
+    "lining_material": "Vitrified food-contact ceramic glaze",
+    "dimensions_summary": "28 cm diameter (28 cm)",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "pending_validation",
+    "food_contact_suitability": "[CONCEPT_SPEC] Unmarked vitrified centre glaze contacts plated food; laser register stays on the outer rim/underside until abrasion-tested.",
+    "care_instructions": "[CONCEPT_SPEC] Non-abrasive wash; commercial rack-washer durability pending coupon validation.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+    "material_architecture": "High-fired stoneware body + vitrified food-contact glaze + exterior/rim laser register.",
+    "food_contact_strategy": "Unmarked vitrified centre glaze contacts plated food; laser register stays on the outer rim/underside until abrasion-tested.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Composed main courses, thali-adjacent contemporary plating and tasting-menu service.",
+    "care_hypothesis": "Non-abrasive wash; commercial rack-washer durability pending coupon validation.",
+    "engineering_risks": [
+      "Cutlery metal-marking on matte glazes",
+      "stacking foot abrasion",
+      "rim chipping."
+    ],
+    "required_prototype_tests": [
+      "Lead/cadmium migration",
+      "cutlery mar test",
+      "500 commercial rack washes",
+      "edge-chip impact."
+    ],
+    "agent_intents": [
+      "dinner plate",
+      "ceramic tableware",
+      "hospitality plate",
+      "laser-marked stoneware"
+    ],
+    "negative_constraints": [
+      "oven broiler use",
+      "deep laser ablation on central knife-contact zone"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R04"
+    ],
+    "description_html": "<p>A low-rimmed stoneware main-course plate carrying a quiet laser-marked perimeter provenance band while keeping the central plating field calm and smooth.</p><h3>Why it exists</h3><p>Gives dining rooms durable, stack-considered stoneware with permanent batch and edition notation instead of printed backstamps or decals that wear away.</p><h3>Service &amp; kitchen role</h3><p>Composed main courses, thali-adjacent contemporary plating and tasting-menu service.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Rekhā Dinner Plate | Maison Tavo",
+    "seo_description": "A low-rimmed stoneware main-course plate carrying a quiet laser-marked perimeter provenance band while keeping the central plating field calm and smooth.",
+    "price_usd": 68,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "28 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 28
+    },
+    "heat_sources": [],
+    "induction_compatible": false
+  },
+  {
+    "handle": "rekha-condiment-bowl-set",
+    "title": "Rekhā Condiment Bowl Set",
+    "sku": "MT-TER-BWL-S03",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Tableware > Dinnerware > Bowls",
+    "product_type": "Bowl set",
+    "tags": [
+      "Terre Clay",
+      "Bowl Set",
+      "Laser Marked",
+      "Ceramic",
+      "Hospitality",
+      "Concept Spec"
+    ],
+    "lineup": "Terre Clay",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "bowl set",
+    "concept_thesis": "Brings traditional Indian condiment cadence to contemporary hospitality tables in a nested, glaze-protected stoneware format.",
+    "primary_material": "High-fired stoneware",
+    "lining_material": "Vitrified stain-resistant interior ceramic glaze",
+    "dimensions_summary": "Set: 3 bowls (90 ml each)",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "pending_validation",
+    "food_contact_suitability": "[CONCEPT_SPEC] Smooth vitrified interior glaze resists turmeric, chilli oil and tamarind staining pending coupon validation.",
+    "care_instructions": "[CONCEPT_SPEC] Non-abrasive wash; stack only when dry; commercial dishwasher status pending.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+    "material_architecture": "Three high-fired stoneware bowls + vitrified interior glaze + laser-marked exterior bands.",
+    "food_contact_strategy": "Smooth vitrified interior glaze resists turmeric, chilli oil and tamarind staining pending coupon validation.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Chutneys, achar, raita, flaky salt and tableside spice accompaniments.",
+    "care_hypothesis": "Non-abrasive wash; stack only when dry; commercial dishwasher status pending.",
+    "engineering_risks": [
+      "Turmeric/acid staining on semi-matte glazes",
+      "nesting rim chips",
+      "mark contrast variation."
+    ],
+    "required_prototype_tests": [
+      "24-hour turmeric/tamarind stain test",
+      "glaze migration",
+      "nested stack abrasion",
+      "500 wash cycles."
+    ],
+    "agent_intents": [
+      "condiment bowls",
+      "katori set",
+      "chutney bowls",
+      "ceramic set",
+      "hospitality tabletop"
+    ],
+    "negative_constraints": [
+      "direct flame",
+      "commercial dishwasher claim before validation"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R04"
+    ],
+    "description_html": "<p>A trio of compact stoneware katori-scale bowls for chutneys, pickles, finishing salts and table condiments, marked with serialised exterior registers.</p><h3>Why it exists</h3><p>Brings traditional Indian condiment cadence to contemporary hospitality tables in a nested, glaze-protected stoneware format.</p><h3>Service &amp; kitchen role</h3><p>Chutneys, achar, raita, flaky salt and tableside spice accompaniments.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Rekhā Condiment Bowl Set | Maison Tavo",
+    "seo_description": "A trio of compact stoneware katori-scale bowls for chutneys, pickles, finishing salts and table condiments, marked with serialised exterior registers.",
+    "price_usd": 92,
+    "variant_option": {
+      "name": "Set",
+      "value": "3 bowls (90 ml each)"
+    },
+    "dimensions": {
+      "capacity_ml": 90
+    },
+    "heat_sources": [],
+    "induction_compatible": false
+  },
+  {
+    "handle": "rekha-serving-bowl-26",
+    "title": "Rekhā Serving Bowl",
+    "sku": "MT-TER-BWL-26",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Tableware > Serveware > Serving Bowls",
+    "product_type": "Serving bowl",
+    "tags": [
+      "Terre Clay",
+      "Serving Bowl",
+      "Laser Marked",
+      "Ceramic",
+      "Hospitality",
+      "Concept Spec"
+    ],
+    "lineup": "Terre Clay",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "serving bowl",
+    "concept_thesis": "Pairs with the Rekhā Serving Platter to complete deep and flat shared-service silhouettes on the table without competing visually with the dish.",
+    "primary_material": "High-fired stoneware",
+    "lining_material": "Vitrified interior ceramic glaze",
+    "dimensions_summary": "26 cm diameter (26 cm)",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "pending_validation",
+    "food_contact_suitability": "[CONCEPT_SPEC] Fully glazed interior bowl contacts hot and dressed dishes; exterior band remains outside food contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand or gentle rack wash pending commercial cycle testing; never place on a burner.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+    "material_architecture": "High-fired stoneware vessel + smooth interior glaze + rotary laser-marked exterior band.",
+    "food_contact_strategy": "Fully glazed interior bowl contacts hot and dressed dishes; exterior band remains outside food contact.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Shared rice, dressed greens, flatbread service and hot vegetable sides at the table.",
+    "care_hypothesis": "Hand or gentle rack wash pending commercial cycle testing; never place on a burner.",
+    "engineering_risks": [
+      "Thermal shock from boiling fills",
+      "loaded one-hand carry slip",
+      "rim chipping."
+    ],
+    "required_prototype_tests": [
+      "Hot-fill thermal shock",
+      "glaze migration",
+      "loaded grip ergonomics",
+      "500 wash cycles."
+    ],
+    "agent_intents": [
+      "serving bowl",
+      "shared bowl",
+      "ceramic serveware",
+      "hospitality tableware"
+    ],
+    "negative_constraints": [
+      "stovetop or open-flame heating",
+      "unverified dishwasher guarantee"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R04"
+    ],
+    "description_html": "<p>A generous stoneware shared bowl shaped for rice, salads, breads and family-style curries, grounded by a recessed foot and exterior contour notation.</p><h3>Why it exists</h3><p>Pairs with the Rekhā Serving Platter to complete deep and flat shared-service silhouettes on the table without competing visually with the dish.</p><h3>Service &amp; kitchen role</h3><p>Shared rice, dressed greens, flatbread service and hot vegetable sides at the table.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Rekhā Serving Bowl | Maison Tavo",
+    "seo_description": "A generous stoneware shared bowl shaped for rice, salads, breads and family-style curries, grounded by a recessed foot and exterior contour notation.",
+    "price_usd": 125,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "26 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 26
+    },
+    "heat_sources": [],
+    "induction_compatible": false
+  },
+  {
+    "handle": "forge-seasoning-oil",
+    "title": "Forge Seasoning Oil",
+    "sku": "MT-FOR-OIL-250",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories",
+    "product_type": "Cookware care oil",
+    "tags": [
+      "Forge Hybrid",
+      "Care",
+      "Seasoning Oil",
+      "Cookware Accessory",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "cookware care oil",
+    "concept_thesis": "Over-oiling is the most common cause of sticky carbon-steel seasoning; a dedicated micro-pour dispenser helps cooks apply thin, even maintenance films after washing.",
+    "primary_material": "Refined high-smoke-point culinary plant oil blend in amber glass",
+    "lining_material": "Not applicable (consumable care oil)",
+    "dimensions_summary": "250 ml capacity",
+    "dishwasher_suitability": "not_applicable",
+    "microwave_suitability": "not_applicable",
+    "food_contact_suitability": "[CONCEPT_SPEC] Formulated strictly from food-contact-safe culinary oil stocks; requires allergen, oxidation and regulatory label review.",
+    "care_instructions": "[CONCEPT_SPEC] Cap tightly after use and store away from heat and direct sunlight.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+    "material_architecture": "Food-grade refined plant oil blend target + amber glass bottle + metered pour insert.",
+    "food_contact_strategy": "Formulated strictly from food-contact-safe culinary oil stocks; requires allergen, oxidation and regulatory label review.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Post-wash rust protection and oven/stovetop seasoning maintenance on Forge carbon-steel surfaces.",
+    "care_hypothesis": "Cap tightly after use and store away from heat and direct sunlight.",
+    "engineering_risks": [
+      "Lipid rancidity over shelf life",
+      "allergen labelling omissions",
+      "oil leakage in transit."
+    ],
+    "required_prototype_tests": [
+      "Accelerated oxidation shelf-life",
+      "smoke-point lab check",
+      "transit leak test",
+      "food-contact & allergen compliance."
+    ],
+    "agent_intents": [
+      "seasoning oil",
+      "carbon steel care",
+      "pan maintenance",
+      "rust prevention"
+    ],
+    "negative_constraints": [
+      "culinary health claims",
+      "unverified smoke-point numbers",
+      "aerosol propellant"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A refined, high-smoke-point plant oil formulation packaged in UV-shielding amber glass with a controlled-drop pourer for conditioning carbon-steel cookware.</p><h3>Why it exists</h3><p>Over-oiling is the most common cause of sticky carbon-steel seasoning; a dedicated micro-pour dispenser helps cooks apply thin, even maintenance films after washing.</p><h3>Service &amp; kitchen role</h3><p>Post-wash rust protection and oven/stovetop seasoning maintenance on Forge carbon-steel surfaces.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Forge Seasoning Oil | Maison Tavo",
+    "seo_description": "A refined, high-smoke-point plant oil formulation packaged in UV-shielding amber glass with a controlled-drop pourer for conditioning carbon-steel cookware.",
+    "price_usd": 28,
+    "variant_option": {
+      "name": "Volume",
+      "value": "250 ml"
+    },
+    "dimensions": {
+      "capacity_ml": 250
+    },
+    "heat_sources": [],
+    "induction_compatible": false
+  },
+  {
+    "handle": "forge-care-ritual-kit",
+    "title": "Forge Care Ritual Kit",
+    "sku": "MT-FOR-KIT-C01",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories",
+    "product_type": "Cookware care kit",
+    "tags": [
+      "Forge Hybrid",
+      "Care Kit",
+      "Cookware Accessory",
+      "Set",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "cookware care kit",
+    "concept_thesis": "Turns raw-metal cookware maintenance from guesswork into a repeatable three-minute post-cook ritual for home cooks and prep stations.",
+    "primary_material": "Refined plant oil, untreated beech/tampico brush, woven cotton cloth",
+    "lining_material": "Not applicable (maintenance care kit)",
+    "dimensions_summary": "Set: 4-piece kit",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_applicable",
+    "food_contact_suitability": "[CONCEPT_SPEC] Oil and brush bristles touch food-contact pan surfaces and require food-safe material certification.",
+    "care_instructions": "[CONCEPT_SPEC] Rinse brush and stand bristles-down to dry; launder oil-saturated cloths cool and line-dry flat away from heat.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+    "material_architecture": "Seasoning oil bottle + untreated beech/tampico scrub brush + woven cotton cloth + printed care card.",
+    "food_contact_strategy": "Oil and brush bristles touch food-contact pan surfaces and require food-safe material certification.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Warm-water deglaze scrubbing, dry buffing and thin-film conditioning of carbon-steel cookware.",
+    "care_hypothesis": "Rinse brush and stand bristles-down to dry; launder oil-saturated cloths cool and line-dry flat away from heat.",
+    "engineering_risks": [
+      "Oil-soaked cloth spontaneous heating if tumble-dried hot",
+      "bristle shedding",
+      "timber splitting."
+    ],
+    "required_prototype_tests": [
+      "Bristle pull retention",
+      "wet-dry brush split cycling",
+      "spontaneous-heating warning prominence",
+      "transit drop."
+    ],
+    "agent_intents": [
+      "cookware care kit",
+      "seasoning kit",
+      "pan maintenance set",
+      "gift add-on"
+    ],
+    "negative_constraints": [
+      "tumble-drying oil-soaked cloths",
+      "use on delicate mirror-polished silver or unsealed clay"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A complete maintenance kit assembling seasoning oil, a stiff natural-fibre scrub brush, a lint-low cotton buffing cloth and a waterproof care protocol card.</p><h3>Why it exists</h3><p>Turns raw-metal cookware maintenance from guesswork into a repeatable three-minute post-cook ritual for home cooks and prep stations.</p><h3>Service &amp; kitchen role</h3><p>Warm-water deglaze scrubbing, dry buffing and thin-film conditioning of carbon-steel cookware.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Forge Care Ritual Kit | Maison Tavo",
+    "seo_description": "A complete maintenance kit assembling seasoning oil, a stiff natural-fibre scrub brush, a lint-low cotton buffing cloth and a waterproof care protocol card.",
+    "price_usd": 72,
+    "variant_option": {
+      "name": "Set",
+      "value": "4-piece kit"
+    },
+    "dimensions": {},
+    "heat_sources": [],
+    "induction_compatible": false
+  },
+  {
+    "handle": "forge-relay-lid-26",
+    "title": "Forge Relay Skillet Lid",
+    "sku": "MT-FOR-LID-26",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories > Pot & Pan Lids",
+    "product_type": "Replacement lid",
+    "tags": [
+      "Forge Hybrid",
+      "Replacement Lid",
+      "Cookware Accessory",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "replacement lid",
+    "concept_thesis": "Sold separately so kitchens buy only the covers their stations need, and can replace a damaged lid without discarding the underlying pan.",
+    "primary_material": "Tempered glass with 18/8 stainless rim and bronze-isolated handle",
+    "lining_material": "Uncoated tempered glass and 18/8 stainless steam interface",
+    "dimensions_summary": "26 cm diameter (26 cm vessels)",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Glass underside and 18/8 stainless rim contact rising steam and condensate; bronze accent stays external.",
+    "care_instructions": "[CONCEPT_SPEC] Cool before washing; hand wash recommended until thermal-cycle dishwasher validation completes.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+    "material_architecture": "Tempered viewing glass target + 18/8 stainless step rim + bronze-isolated bridge handle.",
+    "food_contact_strategy": "Glass underside and 18/8 stainless rim contact rising steam and condensate; bronze accent stays external.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Covered basting, steam-finishing greens or flatbreads, and splatter containment on 26 cm Forge vessels.",
+    "care_hypothesis": "Cool before washing; hand wash recommended until thermal-cycle dishwasher validation completes.",
+    "engineering_risks": [
+      "Tempered glass thermal shock",
+      "rim-step fit mismatch across production batches",
+      "hot bridge handle."
+    ],
+    "required_prototype_tests": [
+      "Thermal-shock quench test",
+      "impact fragmentation",
+      "go/no-go rim gauge",
+      "handle temperature."
+    ],
+    "agent_intents": [
+      "skillet lid",
+      "26 cm lid",
+      "replacement lid",
+      "cookware cover"
+    ],
+    "negative_constraints": [
+      "universal fit across non-Maison Tavo pans",
+      "broiler use before glass rating verification"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A stepped stainless-and-glass service lid sized for the Forge Relay Dual-Mass Skillet and Compact Tava to trap steam for finishing, melting and covered simmering.</p><h3>Why it exists</h3><p>Sold separately so kitchens buy only the covers their stations need, and can replace a damaged lid without discarding the underlying pan.</p><h3>Service &amp; kitchen role</h3><p>Covered basting, steam-finishing greens or flatbreads, and splatter containment on 26 cm Forge vessels.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Forge Relay Skillet Lid | Maison Tavo",
+    "seo_description": "A stepped stainless-and-glass service lid sized for the Forge Relay Dual-Mass Skillet and Compact Tava to trap steam for finishing, melting and covered simmering.",
+    "price_usd": 64,
+    "variant_option": {
+      "name": "Compatibility",
+      "value": "26 cm vessels"
+    },
+    "dimensions": {
+      "diameter_cm": 26
+    },
+    "heat_sources": [],
+    "induction_compatible": false
+  },
+  {
+    "handle": "forge-relay-lid-30",
+    "title": "Forge Relay Wide Tava Lid",
+    "sku": "MT-FOR-LID-30",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories > Pot & Pan Lids",
+    "product_type": "Replacement lid",
+    "tags": [
+      "Forge Hybrid",
+      "Replacement Lid",
+      "Cookware Accessory",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "replacement lid",
+    "concept_thesis": "Provides optional vapour capture on open 30 cm griddle surfaces while remaining an independently replaceable component.",
+    "primary_material": "Domed tempered glass with 18/8 stainless rim and bronze-isolated handle",
+    "lining_material": "Uncoated tempered glass and 18/8 stainless steam interface",
+    "dimensions_summary": "30 cm diameter (30 cm vessels)",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Glass dome and stainless rim contact steam; external bronze detail stays outside condensate path.",
+    "care_instructions": "[CONCEPT_SPEC] Allow to cool before washing; hand wash until commercial dishwasher testing is complete.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+    "material_architecture": "Domed tempered glass target + 18/8 stainless step rim + bronze-isolated bridge handle.",
+    "food_contact_strategy": "Glass dome and stainless rim contact steam; external bronze detail stays outside condensate path.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Steam-setting uttapam and eggs, covered finishing on the Wide Tava, and pass warm-holding.",
+    "care_hypothesis": "Allow to cool before washing; hand wash until commercial dishwasher testing is complete.",
+    "engineering_risks": [
+      "Glass impact breakage at wider span",
+      "condensate run-off onto hot griddle",
+      "handle heat."
+    ],
+    "required_prototype_tests": [
+      "Span impact test",
+      "thermal shock",
+      "condensate drip path",
+      "rim tolerance check."
+    ],
+    "agent_intents": [
+      "wide lid",
+      "30 cm lid",
+      "tava dome",
+      "replacement lid"
+    ],
+    "negative_constraints": [
+      "universal pan compatibility",
+      "high-heat broiler exposure"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A wide domed cover engineered to clear tall ingredients on the Forge Relay Wide Tava during covered steaming, melting and pass holding.</p><h3>Why it exists</h3><p>Provides optional vapour capture on open 30 cm griddle surfaces while remaining an independently replaceable component.</p><h3>Service &amp; kitchen role</h3><p>Steam-setting uttapam and eggs, covered finishing on the Wide Tava, and pass warm-holding.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Forge Relay Wide Tava Lid | Maison Tavo",
+    "seo_description": "A wide domed cover engineered to clear tall ingredients on the Forge Relay Wide Tava during covered steaming, melting and pass holding.",
+    "price_usd": 72,
+    "variant_option": {
+      "name": "Compatibility",
+      "value": "30 cm vessels"
+    },
+    "dimensions": {
+      "diameter_cm": 30
+    },
+    "heat_sources": [],
+    "induction_compatible": false
+  },
+  {
+    "handle": "terre-bamboo-steamer-24",
+    "title": "Terre Bamboo Steamer",
+    "sku": "MT-TER-STM-24",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories > Steamer Baskets",
+    "product_type": "Bamboo steamer",
+    "tags": [
+      "Terre Clay",
+      "Bamboo Steamer",
+      "Cookware Accessory",
+      "Hospitality",
+      "Concept Spec"
+    ],
+    "lineup": "Terre Clay",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "bamboo steamer",
+    "concept_thesis": "Raw bamboo rims char and warp when perched directly inside hot metal walls; a dedicated ceramic docking collar protects the basket and turns the Kadai into a multi-tier steamer.",
+    "primary_material": "Untreated woven bamboo baskets with glazed stoneware docking ring",
+    "lining_material": "Unlacquered natural bamboo slats + vitrified ceramic docking collar",
+    "dimensions_summary": "24 cm diameter (24 cm (2 tiers))",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_applicable",
+    "food_contact_suitability": "[CONCEPT_SPEC] Untreated food-contact bamboo slats and lead-free glazed ceramic ring; zero synthetic lacquers or glues in the steam path.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash quickly in warm water without soaking; air-dry completely upright before storing.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+    "material_architecture": "Two untreated woven bamboo baskets + woven dome lid + high-fired glazed stoneware docking ring.",
+    "food_contact_strategy": "Untreated food-contact bamboo slats and lead-free glazed ceramic ring; zero synthetic lacquers or glues in the steam path.",
+    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
+    "interaction_performance_intent": "Idli-adjacent steamed cakes, dumplings, buns, delicate fish and table-presented stacked steaming.",
+    "care_hypothesis": "Hand wash quickly in warm water without soaking; air-dry completely upright before storing.",
+    "engineering_risks": [
+      "Mould growth if stored damp",
+      "bamboo splintering",
+      "ceramic ring thermal shock over dry boil."
+    ],
+    "required_prototype_tests": [
+      "Humidity/mould dry-time test",
+      "splinter inspection",
+      "Kadai rim fit",
+      "boil-dry thermal shock",
+      "adhesive-free verification."
+    ],
+    "agent_intents": [
+      "bamboo steamer",
+      "dumpling steamer",
+      "kadai steamer",
+      "two-tier steamer"
+    ],
+    "negative_constraints": [
+      "dishwasher use",
+      "soaking in water",
+      "direct burner contact without water vessel"
+    ],
+    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A two-tier woven bamboo steamer paired with a glazed stoneware adapter ring that seats cleanly over the Forge Relay Kadai without scorching the bamboo.</p><h3>Why it exists</h3><p>Raw bamboo rims char and warp when perched directly inside hot metal walls; a dedicated ceramic docking collar protects the basket and turns the Kadai into a multi-tier steamer.</p><h3>Service &amp; kitchen role</h3><p>Idli-adjacent steamed cakes, dumplings, buns, delicate fish and table-presented stacked steaming.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
+    "seo_title": "Terre Bamboo Steamer | Maison Tavo",
+    "seo_description": "A two-tier woven bamboo steamer paired with a glazed stoneware adapter ring that seats cleanly over the Forge Relay Kadai without scorching the bamboo.",
+    "price_usd": 88,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "24 cm (2 tiers)"
+    },
+    "dimensions": {
+      "diameter_cm": 24
     },
     "heat_sources": [],
     "induction_compatible": false

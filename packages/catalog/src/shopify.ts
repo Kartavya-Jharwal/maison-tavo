@@ -23,11 +23,12 @@ export interface ShopifyRow {
   'Option1 value': string;
   Price: string;
   'Compare-at price': string;
+  'Cost per item': string;
   'Charge tax': 'TRUE';
   'Inventory tracker': 'shopify';
   'Continue selling when out of stock': 'DENY';
   'Weight value (grams)': string;
-  'Weight unit for display': 'g';
+  'Weight unit for display': 'g' | '';
   'Requires shipping': 'TRUE';
   'Fulfillment service': 'manual';
   'Gift card': 'FALSE';
@@ -53,11 +54,12 @@ export function toShopifyRow(spec: ProductSpec): ShopifyRow {
     'Option1 value': spec.variant_option.value,
     Price: spec.price_usd.toFixed(2),
     'Compare-at price': spec.compare_at_usd?.toFixed(2) ?? '',
+    'Cost per item': spec.cost_per_item_usd?.toFixed(2) ?? '',
     'Charge tax': 'TRUE',
     'Inventory tracker': 'shopify',
     'Continue selling when out of stock': 'DENY',
-    'Weight value (grams)': String(spec.weight_grams),
-    'Weight unit for display': 'g',
+    'Weight value (grams)': spec.weight_grams !== undefined ? String(spec.weight_grams) : '',
+    'Weight unit for display': spec.weight_grams !== undefined ? 'g' : '',
     'Requires shipping': 'TRUE',
     'Fulfillment service': 'manual',
     'Gift card': 'FALSE',

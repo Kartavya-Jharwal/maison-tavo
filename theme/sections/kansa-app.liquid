@@ -20,15 +20,15 @@
   <div class="kansa-shell__atmosphere" aria-hidden="true"></div>
 
   <div class="kansa-shell__inner section--page-width">
-    <header class="kansa-shell__header">
+    <header class="kansa-shell__header" data-mt-scroll="chapter">
       <p class="kansa-eyebrow">Kansa</p>
       {%- if section.settings.heading != blank -%}
-        <h1 class="kansa-shell__heading">{{ section.settings.heading | escape }}</h1>
+        <h1 class="kansa-shell__heading" data-mt-scroll="kinetic">{{ section.settings.heading | escape }}</h1>
       {%- endif -%}
       {%- if section.settings.subheading != blank -%}
-        <p class="kansa-shell__subheading">{{ section.settings.subheading | escape }}</p>
+        <p class="kansa-shell__subheading" data-mt-scroll>{{ section.settings.subheading | escape }}</p>
       {%- endif -%}
-      <p class="kansa-shell__room">
+      <p class="kansa-shell__room" data-mt-scroll="beat">
         <a href="{{ routes.collections_url }}">Catalogue</a>
         <span aria-hidden="true">·</span>
         <a href="/pages/care">Care</a>
@@ -82,16 +82,16 @@
 
 {% stylesheet %}
   .kansa-shell {
-    --kansa-ink: var(--mt-color-soot, #14110f);
-    --kansa-paper: var(--mt-color-bone, #f7f2e9);
-    --kansa-wash: var(--mt-color-limewash, #efe8dc);
-    --kansa-bell: var(--mt-color-bell, #b8893a);
-    --kansa-ember: var(--mt-color-ember, #e2552b);
-    --kansa-steel: var(--mt-color-steel, #8c9094);
-    --kansa-chamber: #161311;
-    --kansa-chamber-lift: #1e1a16;
-    --kansa-line: rgba(184, 137, 58, 0.28);
-    --kansa-mute: rgba(247, 242, 233, 0.58);
+    --kansa-ink: var(--mt-surface-ink);
+    --kansa-paper: var(--mt-surface-raised);
+    --kansa-wash: var(--mt-surface-canvas);
+    --kansa-bell: var(--mt-surface-accent);
+    --kansa-ember: var(--mt-surface-heat);
+    --kansa-steel: var(--mt-surface-steel);
+    --kansa-chamber: var(--glass-surface-dark);
+    --kansa-chamber-lift: var(--glass-surface-dark-elevated);
+    --kansa-line: var(--mt-surface-border);
+    --kansa-mute: rgb(var(--mt-color-bone-rgb) / 0.58);
     position: relative;
     isolation: isolate;
     color: var(--kansa-ink);
@@ -106,9 +106,9 @@
     z-index: 0;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 80% 55% at 50% -10%, rgba(184, 137, 58, 0.14), transparent 55%),
-      radial-gradient(ellipse 50% 40% at 100% 80%, rgba(142, 75, 53, 0.08), transparent 50%),
-      linear-gradient(180deg, var(--kansa-wash) 0%, #e7dfd2 100%);
+      radial-gradient(ellipse 80% 55% at 50% -10%, rgb(var(--mt-color-bell-rgb) / 0.14), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 100% 80%, rgb(var(--mt-color-clay-rgb) / 0.08), transparent 50%),
+      linear-gradient(180deg, var(--mt-surface-canvas) 0%, var(--mt-color-limewash) 100%);
   }
 
   .kansa-shell__inner {
@@ -126,8 +126,8 @@
 
   .kansa-eyebrow {
     margin: 0 0 0.85rem;
-    font-family: var(--font-mono--family, ui-monospace, monospace);
-    font-size: 0.6875rem;
+    font-family: var(--font-mono--family);
+    font-size: var(--font-size--2xs);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--kansa-bell);
@@ -135,9 +135,9 @@
 
   .kansa-shell__heading {
     margin: 0 0 1rem;
-    font-family: var(--font-heading--family, 'Instrument Serif', Georgia, serif);
+    font-family: var(--font-heading--family);
     font-size: clamp(3rem, 8vw, 5.25rem);
-    font-weight: 400;
+    font-weight: var(--font-heading--weight, 400);
     letter-spacing: -0.035em;
     line-height: 0.98;
     color: var(--kansa-ink);
@@ -145,10 +145,11 @@
 
   .kansa-shell__subheading {
     margin: 0;
-    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+    font-family: var(--font-body--family);
+    font-size: var(--font-size--lg);
     line-height: 1.55;
     max-width: 32ch;
-    color: rgba(20, 17, 15, 0.72);
+    color: rgb(var(--mt-color-soot-rgb) / 0.72);
   }
 
   .kansa-shell__room {
@@ -156,11 +157,11 @@
     flex-wrap: wrap;
     gap: 0.55rem 0.85rem;
     margin: 1.5rem 0 0;
-    font-family: var(--font-mono--family, ui-monospace, monospace);
-    font-size: 0.72rem;
+    font-family: var(--font-mono--family);
+    font-size: var(--font-size--2xs);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(20, 17, 15, 0.55);
+    color: rgb(var(--mt-color-soot-rgb) / 0.55);
   }
 
   .kansa-shell__room a {
@@ -178,19 +179,18 @@
     outline-offset: 3px;
   }
 
-  /* Chamber */
+  /* Chamber — soot glass over limewash (token surfaces) */
   .kansa-chamber,
   .kansa-ssr {
     background:
-      linear-gradient(165deg, rgba(184, 137, 58, 0.07), transparent 35%),
-      var(--kansa-chamber);
-    border: 1px solid var(--kansa-line);
+      linear-gradient(165deg, var(--glass-surface-bronze), transparent 40%),
+      var(--mt-surface-ink);
+    border: 1px solid var(--glass-border-bronze);
     border-radius: 2px;
     color: var(--kansa-paper);
     padding: clamp(1.75rem, 4vw, 2.75rem);
-    box-shadow:
-      0 1px 0 rgba(247, 242, 233, 0.04) inset,
-      0 28px 60px rgba(20, 17, 15, 0.18);
+    backdrop-filter: var(--glass-blur-sm);
+    box-shadow: var(--glass-shadow-lg);
   }
 
   .kansa-ssr {
@@ -536,6 +536,68 @@
     font-size: clamp(1.05rem, 2vw, 1.2rem);
     line-height: 1.7;
     color: var(--kansa-paper);
+  }
+
+  .kansa-activity {
+    font-family: var(--font-mono--family);
+    font-size: var(--font-size--2xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--kansa-bell);
+    padding-block: 0.35rem;
+  }
+
+  .kansa-tool-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+    margin-block-start: 1.25rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .kansa-tool-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .kansa-tool-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    text-align: left;
+    text-decoration: none;
+    background: var(--glass-surface-bronze);
+    border: 1px solid var(--glass-border-bronze);
+    border-radius: 2px;
+    color: var(--kansa-paper);
+    padding: 0.9rem 1rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color var(--dur-fast) var(--ease-strike);
+  }
+
+  .kansa-tool-card:hover {
+    border-color: var(--kansa-bell);
+  }
+
+  .kansa-tool-card__kicker {
+    font-family: var(--font-mono--family);
+    font-size: var(--font-size--3xs);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--kansa-bell);
+  }
+
+  .kansa-tool-card__body {
+    font-size: var(--font-size--sm);
+    line-height: 1.45;
+    color: var(--kansa-mute);
+  }
+
+  .kansa-chip.is-active {
+    color: var(--kansa-bell);
+    border-block-end-color: var(--kansa-bell);
   }
 
   .kansa-tool-row,

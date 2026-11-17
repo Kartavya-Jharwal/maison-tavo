@@ -1,5 +1,5 @@
 site_name: Maison Tavo
-site_description: Documentation for the Maison Tavo headless storefront.
+site_description: Maison Tavo kitchenware concept, custom Shopify flagship, Kansa companion and commerce case study.
 site_url: https://kartavya-jharwal.github.io/maison-tavo/
 repo_url: https://github.com/Kartavya-Jharwal/maison-tavo
 repo_name: Kartavya-Jharwal/maison-tavo
@@ -60,7 +60,16 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Roadmap: roadmap.md
+  - Awwwards SOTY 2026 Grand Plan: awwwards-grand-plan.md
+  - Maison Tavo explained: maison-tavo.md
+  - Experience roadmap: experience-roadmap.md
+  - Programme register: programme-register.md
+  - Delivery plan: delivery-plan.md
+  - Design: design.md
+  - Architecture: architecture.md
+  - Research and proof: research-and-proof.md
+  - Current-state audit: project-audit-2026-11-02.md
+  - Engagement register: roadmap.md
   - Decisions: decisions.md
   - Getting started: getting-started.md
   - Storefront: storefront.md

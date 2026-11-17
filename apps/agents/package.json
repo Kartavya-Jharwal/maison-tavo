@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "bun --watch src/server.ts",
     "start": "bun src/server.ts",
-    "typecheck": "tsc --noEmit -p ."
+    "typecheck": "tsc --noEmit -p .",
+    "demo": "bun run src/demo.ts"
   },
   "dependencies": {
+    "@maison-tavo/catalog": "workspace:*",
     "@maison-tavo/ucp": "workspace:*",
     "zod": "^4.6.5"
   }

@@ -1,0 +1,243 @@
+{
+  "store": "maison-tavo.myshopify.com",
+  "updated_at": "2026-11-11T14:25:06.498Z",
+  "products_by_sku": {
+    "MT-TER-KUL-140": {
+      "sku": "MT-TER-KUL-140",
+      "handle": "ardh-metal-lined-kulhad",
+      "product_id": "gid://shopify/Product/16027615887729",
+      "variant_id": "gid://shopify/ProductVariant/67582584947057",
+      "inventory_item_id": "gid://shopify/InventoryItem/69566524555633",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-10-5-5"
+    },
+    "MT-TER-KUL-C180": {
+      "sku": "MT-TER-KUL-C180",
+      "handle": "ardh-clay-lined-kulhad",
+      "product_id": "gid://shopify/Product/16027615920497",
+      "variant_id": "gid://shopify/ProductVariant/67582584979825",
+      "inventory_item_id": "gid://shopify/InventoryItem/69566524588401",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-10-5-5"
+    },
+    "MT-TER-PLT-34": {
+      "sku": "MT-TER-PLT-34",
+      "handle": "rekha-laser-marked-serving-platter",
+      "product_id": "gid://shopify/Product/16027615953265",
+      "variant_id": "gid://shopify/ProductVariant/67582585012593",
+      "inventory_item_id": "gid://shopify/InventoryItem/69566524621169",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-10-7-8"
+    },
+    "MT-TER-BWL-220": {
+      "sku": "MT-TER-BWL-220",
+      "handle": "rekha-laser-marked-chai-bowl",
+      "product_id": "gid://shopify/Product/16027615986033",
+      "variant_id": "gid://shopify/ProductVariant/67582585045361",
+      "inventory_item_id": "gid://shopify/InventoryItem/69566524653937",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-10-5-5"
+    },
+    "MT-FOR-RLY-26": {
+      "sku": "MT-FOR-RLY-26",
+      "handle": "forge-relay-dual-mass-skillet",
+      "product_id": "gid://shopify/Product/16027616018801",
+      "variant_id": "gid://shopify/ProductVariant/67582585078129",
+      "inventory_item_id": "gid://shopify/InventoryItem/69566524686705",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-13-2"
+    },
+    "MT-FOR-PLN-46": {
+      "sku": "MT-FOR-PLN-46",
+      "handle": "forge-split-field-plancha",
+      "product_id": "gid://shopify/Product/16027616051569",
+      "variant_id": "gid://shopify/ProductVariant/67582585110897",
+      "inventory_item_id": "gid://shopify/InventoryItem/69566524719473",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-7"
+    },
+    "MT-HYB-RST-34": {
+      "sku": "MT-HYB-RST-34",
+      "handle": "forge-terre-nested-roaster",
+      "product_id": "gid://shopify/Product/16027616084337",
+      "variant_id": "gid://shopify/ProductVariant/67582585143665",
+      "inventory_item_id": "gid://shopify/InventoryItem/69566524752241",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-1-11"
+    },
+    "MT-KUR-STR-200": {
+      "sku": "MT-KUR-STR-200",
+      "handle": "kuro-strip-200-chefs-knife",
+      "product_id": "gid://shopify/Product/16027616117105",
+      "variant_id": "gid://shopify/ProductVariant/67582585176433",
+      "inventory_item_id": "gid://shopify/InventoryItem/69566524785009",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-8-39-2"
+    },
+    "MT-KUR-TRC-180": {
+      "sku": "MT-KUR-TRC-180",
+      "handle": "kuro-trace-180-hybrid-edge-knife",
+      "product_id": "gid://shopify/Product/16027616149873",
+      "variant_id": "gid://shopify/ProductVariant/67582585209201",
+      "inventory_item_id": "gid://shopify/InventoryItem/69566524817777",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-8-39-2"
+    },
+    "MT-KUR-UTL-150": {
+      "sku": "MT-KUR-UTL-150",
+      "handle": "kuro-trace-150-micro-scalloped-utility-knife",
+      "product_id": "gid://shopify/Product/16027616182641",
+      "variant_id": "gid://shopify/ProductVariant/67582585241969",
+      "inventory_item_id": "gid://shopify/InventoryItem/69566524850545",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-8-39"
+    },
+    "MT-HYB-TNG-24": {
+      "sku": "MT-HYB-TNG-24",
+      "handle": "forge-terre-service-tongs",
+      "product_id": "gid://shopify/Product/16027616215409",
+      "variant_id": "gid://shopify/ProductVariant/67582585274737",
+      "inventory_item_id": "gid://shopify/InventoryItem/69566524883313",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-8-76"
+    },
+    "MT-HYB-TAG-28": {
+      "sku": "MT-HYB-TAG-28",
+      "handle": "forge-terre-tagine-28",
+      "product_id": "gid://shopify/Product/16139895406961",
+      "variant_id": "gid://shopify/ProductVariant/68283392426353",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278508183921",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-16-2"
+    },
+    "MT-HYB-TAG-32": {
+      "sku": "MT-HYB-TAG-32",
+      "handle": "forge-terre-tagine-32",
+      "product_id": "gid://shopify/Product/16139895439729",
+      "variant_id": "gid://shopify/ProductVariant/68283392459121",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278508216689",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-16-2"
+    },
+    "MT-FOR-TAV-26": {
+      "sku": "MT-FOR-TAV-26",
+      "handle": "forge-relay-tava-26",
+      "product_id": "gid://shopify/Product/16139895472497",
+      "variant_id": "gid://shopify/ProductVariant/68283392491889",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278508249457",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-7"
+    },
+    "MT-FOR-TAV-30": {
+      "sku": "MT-FOR-TAV-30",
+      "handle": "forge-relay-tava-30",
+      "product_id": "gid://shopify/Product/16139895538033",
+      "variant_id": "gid://shopify/ProductVariant/68283392983409",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278508282225",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-7"
+    },
+    "MT-FOR-KAD-24": {
+      "sku": "MT-FOR-KAD-24",
+      "handle": "forge-relay-kadai-24",
+      "product_id": "gid://shopify/Product/16139895603569",
+      "variant_id": "gid://shopify/ProductVariant/68283393180017",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278508937585",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-17"
+    },
+    "MT-FOR-SAU-20": {
+      "sku": "MT-FOR-SAU-20",
+      "handle": "forge-relay-saucepot-20",
+      "product_id": "gid://shopify/Product/16139895669105",
+      "variant_id": "gid://shopify/ProductVariant/68283393671537",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278509429105",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-11"
+    },
+    "MT-TER-PLT-28": {
+      "sku": "MT-TER-PLT-28",
+      "handle": "rekha-dinner-plate-28",
+      "product_id": "gid://shopify/Product/16139895734641",
+      "variant_id": "gid://shopify/ProductVariant/68283394163057",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278509920625",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-10-4-3"
+    },
+    "MT-TER-BWL-S03": {
+      "sku": "MT-TER-BWL-S03",
+      "handle": "rekha-condiment-bowl-set",
+      "product_id": "gid://shopify/Product/16139895832945",
+      "variant_id": "gid://shopify/ProductVariant/68283394687345",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278510444913",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-10-4-1"
+    },
+    "MT-TER-BWL-26": {
+      "sku": "MT-TER-BWL-26",
+      "handle": "rekha-serving-bowl-26",
+      "product_id": "gid://shopify/Product/16139895898481",
+      "variant_id": "gid://shopify/ProductVariant/68283395211633",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278510969201",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-10-7-14"
+    },
+    "MT-FOR-OIL-250": {
+      "sku": "MT-FOR-OIL-250",
+      "handle": "forge-seasoning-oil",
+      "product_id": "gid://shopify/Product/16139895964017",
+      "variant_id": "gid://shopify/ProductVariant/68283395703153",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278511460721",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-5"
+    },
+    "MT-FOR-KIT-C01": {
+      "sku": "MT-FOR-KIT-C01",
+      "handle": "forge-care-ritual-kit",
+      "product_id": "gid://shopify/Product/16139896029553",
+      "variant_id": "gid://shopify/ProductVariant/68283396194673",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278511952241",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-5"
+    },
+    "MT-FOR-LID-26": {
+      "sku": "MT-FOR-LID-26",
+      "handle": "forge-relay-lid-26",
+      "product_id": "gid://shopify/Product/16139896095089",
+      "variant_id": "gid://shopify/ProductVariant/68283396686193",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278512443761",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-5-2"
+    },
+    "MT-FOR-LID-30": {
+      "sku": "MT-FOR-LID-30",
+      "handle": "forge-relay-lid-30",
+      "product_id": "gid://shopify/Product/16139896160625",
+      "variant_id": "gid://shopify/ProductVariant/68283397177713",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278512935281",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-5-2"
+    },
+    "MT-TER-STM-24": {
+      "sku": "MT-TER-STM-24",
+      "handle": "terre-bamboo-steamer-24",
+      "product_id": "gid://shopify/Product/16139896226161",
+      "variant_id": "gid://shopify/ProductVariant/68283397669233",
+      "inventory_item_id": "gid://shopify/InventoryItem/70278513426801",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-5-4"
+    }
+  },
+  "collections_by_handle": {
+    "terre-clay": {
+      "handle": "terre-clay",
+      "title": "Terre Clay",
+      "collection_id": "gid://shopify/Collection/710735036785"
+    },
+    "forge-hybrid": {
+      "handle": "forge-hybrid",
+      "title": "Forge Hybrid",
+      "collection_id": "gid://shopify/Collection/710735069553"
+    },
+    "forge-terre": {
+      "handle": "forge-terre",
+      "title": "Forge × Terre",
+      "collection_id": "gid://shopify/Collection/710735102321"
+    },
+    "kuro-strip": {
+      "handle": "kuro-strip",
+      "title": "Kuro Strip",
+      "collection_id": "gid://shopify/Collection/710735135089"
+    },
+    "cookware": {
+      "handle": "cookware",
+      "title": "Cookware",
+      "collection_id": "gid://shopify/Collection/714717135217"
+    },
+    "tableware-pottery": {
+      "handle": "tableware-pottery",
+      "title": "Tableware & Pottery",
+      "collection_id": "gid://shopify/Collection/714717167985"
+    },
+    "care-sets": {
+      "handle": "care-sets",
+      "title": "Care & Sets",
+      "collection_id": "gid://shopify/Collection/714717200753"
+    }
+  }
+}

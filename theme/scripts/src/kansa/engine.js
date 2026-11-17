@@ -1,8 +1,40 @@
 /**
  * Local intent matcher + fixture answers (no live model).
+ * Fuzzy scoring mirrors Fuse-style token overlap without a heavy dep.
  */
 
+import { INTENT_ACTIVITY } from './fixtures.js';
+
 const HEAT_ALL = ['induction', 'gas', 'electric', 'oven', 'open_flame'];
+
+/** Levenshtein distance capped for short tokens (typo tolerance). */
+function editDistance(a, b) {
+  if (a === b) return 0;
+  if (!a.length) return b.length;
+  if (!b.length) return a.length;
+  if (Math.abs(a.length - b.length) > 2) return 99;
+  const row = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 0; i < a.length; i++) {
+    let prev = i;
+    row[0] = i + 1;
+    for (let j = 0; j < b.length; j++) {
+      const tmp = row[j + 1];
+      const cost = a[i] === b[j] ? 0 : 1;
+      row[j + 1] = Math.min(row[j + 1] + 1, row[j] + 1, prev + cost);
+      prev = tmp;
+    }
+  }
+  return row[b.length];
+}
+
+function fuzzyTokenHit(queryTokens, phraseTok) {
+  if (phraseTok.length < 4) return queryTokens.includes(phraseTok);
+  return queryTokens.some((qt) => {
+    if (qt === phraseTok) return true;
+    if (qt.length < 4) return false;
+    return editDistance(qt, phraseTok) <= 1;
+  });
+}
 
 /** @type {{ id: string, phrases: string[], weight?: number }[]} */
 export const INTENT_REGISTRY = [
@@ -130,6 +162,7 @@ export function matchIntent(query) {
     .trim();
   if (!q) return { intent: null, confidence: 0, ranked: [] };
 
+  const qTokens = q.split(/\s+/).filter(Boolean);
   const ranked = INTENT_REGISTRY.map((entry) => {
     let best = 0;
     for (const phrase of entry.phrases) {
@@ -147,12 +180,12 @@ export function matchIntent(query) {
       }
       best = Math.max(best, tokenOverlap(q, phrase) * 0.85);
       const stop = new Set(['this', 'that', 'with', 'from', 'have', 'into', 'your', 'about']);
-      for (const tok of phrase.split(' ')) {
-        if (tok.length > 4 && !stop.has(tok)) {
-          const tre = new RegExp(`(?:^|\\s)${tok}(?:\\s|$)`);
-          if (tre.test(q)) best = Math.max(best, 0.55);
-        }
+      const pTokens = phrase.split(' ').filter((t) => t.length > 3 && !stop.has(t));
+      let hits = 0;
+      for (const tok of pTokens) {
+        if (fuzzyTokenHit(qTokens, tok)) hits += 1;
       }
+      if (pTokens.length) best = Math.max(best, (hits / pTokens.length) * 0.75);
     }
     return { id: entry.id, score: best };
   }).sort((a, b) => b.score - a.score);
@@ -345,6 +378,10 @@ export function thermalMatrix(piece) {
     if (hasAny) return { source, status: 'not' };
     return { source, status: 'unknown' };
   });
+}
+
+export function activityFor(intentId) {
+  return INTENT_ACTIVITY[intentId] || INTENT_ACTIVITY.default;
 }
 
 export { HEAT_ALL };

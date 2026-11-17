@@ -18,6 +18,13 @@ Store: [maison-tavo.myshopify.com](https://maison-tavo.myshopify.com)
 
 Requires [Bun](https://bun.sh/) and [mkcert](https://github.com/FiloSottile/mkcert) for local HTTPS.
 
+This machine already has an mkcert CA (typically `%LOCALAPPDATA%\mkcert`). `bun run certs` reuses it and only writes leaf certs for `localhost` into `.certs/`. It does not install a second CA. To point at existing leaf files instead:
+
+```bash
+set MAISON_TLS_CERT=C:\path\to\localhost.pem
+set MAISON_TLS_KEY=C:\path\to\localhost-key.pem
+```
+
 ```bash
 bun install
 bun run certs

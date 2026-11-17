@@ -17,6 +17,8 @@
     "typecheck": "bun run --filter '@maison-tavo/ucp' --filter '@maison-tavo/catalog' --filter '@maison-tavo/agents' typecheck",
     "test": "bun test packages apps",
     "theme:check": "bun run --cwd theme check",
+    "theme:lint": "bun run --cwd theme design:lint",
+    "theme:lint:all": "bun run --cwd theme lint",
     "theme:build": "bun run --cwd theme build"
   },
   "devDependencies": {
