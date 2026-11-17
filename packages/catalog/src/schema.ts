@@ -62,12 +62,28 @@ export type SourceRegister = z.infer<typeof SourceRegister>;
  * (e.g. Capacity '140 ml', Diameter '34 cm', Size '46 × 28 cm').
  */
 export const Dimensions = z.object({
+  /** Inner rim-to-rim diameter when applicable (cm). */
   diameter_cm: z.number().positive().optional(),
+  /** Outer induction foot / base diameter target (cm). */
+  base_diameter_cm: z.number().positive().optional(),
+  /** Vessel or wall height target (cm). */
+  height_cm: z.number().positive().optional(),
   length_cm: z.number().positive().optional(),
   width_cm: z.number().positive().optional(),
   capacity_ml: z.number().positive().optional(),
+  /** Induction coil zone target (14.5 / 18 / 21 cm). */
+  induction_coil_zone_cm: z.number().positive().optional(),
 });
 export type Dimensions = z.infer<typeof Dimensions>;
+
+export const MediaMode = z.enum(['Human', 'Engineer', 'Machine']);
+export type MediaMode = z.infer<typeof MediaMode>;
+
+export const MediaShot = z.object({
+  mode: MediaMode,
+  shot: z.string(),
+});
+export type MediaShot = z.infer<typeof MediaShot>;
 
 export const ProductSpec = z.object({
   handle: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
@@ -86,6 +102,12 @@ export const ProductSpec = z.object({
   claim_status: ClaimStatus,
   reference_class: z.string(),
   concept_thesis: z.string(),
+  /** One-liner for cards / quick scan. */
+  quick_summary: z.string().optional(),
+  /** Deeper lineup copy beyond the thesis. */
+  lineup_copy: z.string().optional(),
+  /** Suggested use-case / recipe prompt (separate from thesis). */
+  suggested_use_case: z.string().optional(),
   /** Repeatable structured material & compatibility specifications for metafields. */
   primary_material: z.string(),
   lining_material: z.string(),
@@ -115,7 +137,10 @@ export const ProductSpec = z.object({
   seo_title: z.string().optional(),
   seo_description: z.string().optional(),
 
-  /** Dollars as listed in the Shopify import. */
+  /**
+   * List price in shop currency (GBP for maison-tavo).
+   * Field name is historical (`price_usd`); do not treat as a USD claim.
+   */
   price_usd: z.number().positive(),
   /** Optional operational unit cost; omitted unless verified. */
   cost_per_item_usd: z.number().positive().optional(),
@@ -130,6 +155,21 @@ export const ProductSpec = z.object({
   dimensions: Dimensions,
   heat_sources: z.array(HeatSource),
   induction_compatible: z.boolean(),
+
+  /** Handle layout vocabulary for Forge (and future lines). */
+  handle_configuration: z.string().optional(),
+  /** Compatible lid SKU(s) or seating note. */
+  lid_compatibility: z.string().optional(),
+  /** Whether Kansa should treat this SKU as voice-addressable. */
+  works_with_kansa: z.boolean().optional(),
+  /** Maintenance kit SKU this piece pairs with. */
+  pairs_with_care_kit: z.string().optional(),
+  /** Component SKUs when this listing is a curated set/bundle. */
+  bundle_components: z.array(z.string()).optional(),
+  /** Vessel shape key for Forge matrix filtering. */
+  vessel_shape: z.string().optional(),
+  /** 5–6 shot media plan across Human / Engineer / Machine modes. */
+  media_plan: z.array(MediaShot).optional(),
 });
 export type ProductSpec = z.infer<typeof ProductSpec>;
 

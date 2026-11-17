@@ -17,6 +17,11 @@ import type {
   ProductSpec,
   SourceRegister,
 } from '../src/schema';
+import {
+  ALL_FORGE_LAUNCH_SKUS,
+  FORGE_SPECIALTY_UPDATES,
+  forgeBySku,
+} from '../src/forge-matrix';
 
 const DATA_DIR = new URL('../../../data/', import.meta.url);
 const OUT_FILE = new URL('../src/seed.ts', import.meta.url);
@@ -97,7 +102,16 @@ function parseDimensions(optionName: string, optionValue: string): Dimensions {
 
 function formatDimensionsSummary(optionName: string, optionValue: string, dims: Dimensions): string {
   if (dims.length_cm && dims.width_cm) return `${dims.length_cm} × ${dims.width_cm} cm`;
-  if (dims.diameter_cm) return `${dims.diameter_cm} cm diameter (${optionValue})`;
+  if (dims.diameter_cm) {
+    const parts = [`${dims.diameter_cm} cm inner rim-to-rim`];
+    if (dims.base_diameter_cm) parts.push(`base ≈ ${dims.base_diameter_cm} cm`);
+    if (dims.height_cm) parts.push(`height ≈ ${dims.height_cm} cm`);
+    if (dims.induction_coil_zone_cm) {
+      parts.push(`induction coil zone target ≈ ${dims.induction_coil_zone_cm} cm`);
+    }
+    if (dims.capacity_ml) parts.push(`capacity target ≈ ${dims.capacity_ml} ml`);
+    return `${parts.join('; ')} (${optionValue})`;
+  }
   if (dims.capacity_ml && optionName !== 'Set') return `${dims.capacity_ml} ml capacity`;
   if (dims.length_cm && optionName === 'Blade length') return `${dims.length_cm * 10} mm blade length`;
   if (dims.length_cm) return `${dims.length_cm} cm length`;
@@ -297,6 +311,26 @@ const STRUCTURED_SPECS_BY_SKU: Record<string, StructuredSpecs> = {
   },
 };
 
+for (const forge of ALL_FORGE_LAUNCH_SKUS) {
+  STRUCTURED_SPECS_BY_SKU[forge.sku] = {
+    primary_material: forge.primary_material,
+    lining_material: forge.lining_material,
+    dishwasher_suitability: forge.heat_sources.length
+      ? forge.primary_material.toLowerCase().includes('stainless')
+        ? 'insert_only_pending_validation'
+        : 'hand_wash_only'
+      : 'pending_validation',
+    microwave_suitability: forge.heat_sources.length ? 'not_microwave_safe' : 'not_applicable',
+  };
+  HEAT_BY_SKU[forge.sku] = {
+    heat_sources: forge.heat_sources,
+    induction_compatible: forge.induction_compatible,
+  };
+  if (!SOURCES_BY_SKU[forge.sku]) {
+    SOURCES_BY_SKU[forge.sku] = ['R01', 'R02', 'R03'];
+  }
+}
+
 function formatHeatCompatibility(heat: {heat_sources: HeatSource[]; induction_compatible: boolean}): string {
   if (heat.heat_sources.length === 0) {
     return 'Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).';
@@ -344,6 +378,20 @@ const catalog: Catalog = specRows.map((spec): ProductSpec => {
   const claimStatus = spec['Claim status'] as ProductSpec['claim_status'];
   const foodContactStrategy = spec['Food-contact strategy']!;
   const careHypothesis = spec['Care hypothesis']!;
+  const forge = forgeBySku().get(sku);
+  const specialty = FORGE_SPECIALTY_UPDATES.find((row) => row.sku === sku);
+  if (forge?.rim_diameter_cm) dimensions.diameter_cm = forge.rim_diameter_cm;
+  if (forge?.base_diameter_cm) dimensions.base_diameter_cm = forge.base_diameter_cm;
+  if (forge?.height_cm) dimensions.height_cm = forge.height_cm;
+  if (forge?.capacity_ml) dimensions.capacity_ml = forge.capacity_ml;
+  if (forge?.induction_coil_zone_cm) {
+    dimensions.induction_coil_zone_cm = forge.induction_coil_zone_cm;
+  } else if (specialty?.induction_coil_zone_cm) {
+    dimensions.induction_coil_zone_cm = specialty.induction_coil_zone_cm;
+  }
+  if (specialty?.rim_diameter_cm && !dimensions.diameter_cm) {
+    dimensions.diameter_cm = specialty.rim_diameter_cm;
+  }
 
   return {
     handle: spec['URL handle']!,
@@ -358,6 +406,9 @@ const catalog: Catalog = specRows.map((spec): ProductSpec => {
     claim_status: claimStatus,
     reference_class: spec['Reference class']!,
     concept_thesis: spec['Concept thesis']!,
+    quick_summary: forge?.quick_summary ?? specialty?.quick_summary,
+    lineup_copy: forge?.lineup_copy,
+    suggested_use_case: forge?.suggested_use_case,
     primary_material: structured.primary_material,
     lining_material: structured.lining_material,
     dimensions_summary: formatDimensionsSummary(optionName, optionValue, dimensions),
@@ -389,6 +440,13 @@ const catalog: Catalog = specRows.map((spec): ProductSpec => {
     dimensions,
     heat_sources: heat.heat_sources,
     induction_compatible: heat.induction_compatible,
+    handle_configuration: forge?.handle_configuration ?? specialty?.handle_configuration,
+    lid_compatibility: forge?.lid_compatibility ?? specialty?.lid_compatibility,
+    works_with_kansa: forge?.works_with_kansa ?? specialty?.works_with_kansa ?? true,
+    pairs_with_care_kit: forge?.pairs_with_care_kit ?? specialty?.pairs_with_care_kit,
+    bundle_components: forge?.bundle_components,
+    vessel_shape: forge?.vessel_shape ?? specialty?.vessel_shape,
+    media_plan: forge?.media_plan,
   };
 });
 

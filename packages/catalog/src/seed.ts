@@ -159,7 +159,8 @@ export const seedCatalog: Catalog = [
       "capacity_ml": 140
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "ardh-clay-lined-kulhad",
@@ -241,7 +242,8 @@ export const seedCatalog: Catalog = [
       "capacity_ml": 180
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "rekha-laser-marked-serving-platter",
@@ -265,7 +267,7 @@ export const seedCatalog: Catalog = [
     "concept_thesis": "Use laser marking as permanent ornament, identity and provenance layer.",
     "primary_material": "High-fired stoneware",
     "lining_material": "Vitrified food-contact ceramic glaze",
-    "dimensions_summary": "34 cm diameter (34 cm)",
+    "dimensions_summary": "34 cm inner rim-to-rim (34 cm)",
     "dishwasher_suitability": "pending_validation",
     "microwave_suitability": "pending_validation",
     "food_contact_suitability": "[CONCEPT_SPEC] Glaze/body must pass migration and cleanability testing after marking.",
@@ -319,7 +321,8 @@ export const seedCatalog: Catalog = [
       "diameter_cm": 34
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "rekha-laser-marked-chai-bowl",
@@ -394,7 +397,8 @@ export const seedCatalog: Catalog = [
       "capacity_ml": 220
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "forge-relay-dual-mass-skillet",
@@ -418,9 +422,10 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "modular mixed-metal cookware",
     "concept_thesis": "Switch between fast response and thermal mass through a removable component.",
+    "quick_summary": "Signature modular dual-mass skillet — specialty above the standard fry ladder.",
     "primary_material": "Nitrided carbon steel with removable cast-bronze thermal ring",
     "lining_material": "Unlined seasoned carbon steel (external bronze ring non-food-contact)",
-    "dimensions_summary": "26 cm diameter (26 cm)",
+    "dimensions_summary": "26 cm inner rim-to-rim; induction coil zone target ≈ 18 cm (26 cm)",
     "dishwasher_suitability": "hand_wash_only",
     "microwave_suitability": "not_microwave_safe",
     "food_contact_suitability": "[CONCEPT_SPEC] Carbon steel is intended food-contact surface; ring must remain external.",
@@ -467,20 +472,26 @@ export const seedCatalog: Catalog = [
     "description_html": "<p>A lightweight searing pan that uses two material behaviours instead of forcing one metal to perform every job.</p><h3>Working body</h3><p>A thin nitrided carbon-steel bowl provides direct, responsive searing and a seasoning-capable cooking surface.</p><h3>Thermal ring</h3><p>A removable cast-bronze outer ring seats around the lower wall as a heat reservoir and tabletop trivet. Removing it restores a lighter line-cook mode; fitting it slows temperature loss for table service.</p><h3>System logic</h3><p>The ring is not represented as a permanent bonded layer. Keeping it mechanically separate makes cleanability, repair and contradictory thermal behaviours explicit.</p><p><strong>Concept-spec notice:</strong> Nitriding, bronze alloy, fit tolerance, hot handling, induction behaviour and food-contact boundary require engineering validation.</p>",
     "seo_title": "Forge Relay Dual-Mass Skillet | Maison Tavo",
     "seo_description": "A modular 26 cm carbon-steel skillet concept with a removable bronze thermal ring for cookline and table modes.",
-    "price_usd": 320,
+    "price_usd": 175,
     "weight_grams": 2100,
     "variant_option": {
       "name": "Diameter",
       "value": "26 cm"
     },
     "dimensions": {
-      "diameter_cm": 26
+      "diameter_cm": 26,
+      "induction_coil_zone_cm": 18
     },
     "heat_sources": [
       "induction",
       "gas"
     ],
-    "induction_compatible": true
+    "induction_compatible": true,
+    "handle_configuration": "stick",
+    "lid_compatibility": "Specialty Relay lid 26 (MT-FOR-LID-26) if held",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "specialty"
   },
   {
     "handle": "forge-split-field-plancha",
@@ -503,6 +514,7 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "split-function cookware",
     "concept_thesis": "Map material to task across one product: sear, rest and serve.",
+    "quick_summary": "Split-field plancha specialty — outside the round diameter matrix.",
     "primary_material": "Nitrided carbon steel with cast-bronze service block",
     "lining_material": "Unlined carbon steel sear zone + removable 18/8 stainless service tray",
     "dimensions_summary": "46 × 28 cm",
@@ -551,7 +563,7 @@ export const seedCatalog: Catalog = [
     "description_html": "<p>A plancha concept that physically divides two cooking materials across one continuous service object.</p><h3>Steel zone</h3><p>Two-thirds of the surface is nitrided carbon steel for high-heat searing, browning and scraping.</p><h3>Bronze service zone</h3><p>A raised cast-bronze end platform is thermally coupled but isolated from direct food contact by a removable stainless tray. It holds cooked items, sauces or garnishes while the steel zone remains active.</p><h3>Hospitality choreography</h3><p>The pan moves from twin-burner cooking to tableside finishing without becoming a decorative serving board disconnected from the cooking process.</p><p><strong>Concept-spec notice:</strong> This speculative assembly requires validation for differential expansion, flatness, safe lifting, induction coverage and removable-tray hygiene.</p>",
     "seo_title": "Forge Split-Field Plancha | Maison Tavo",
     "seo_description": "A twin-burner mixed-material plancha concept separating active carbon-steel searing from a stainless-lined bronze service zone.",
-    "price_usd": 480,
+    "price_usd": 220,
     "weight_grams": 4900,
     "variant_option": {
       "name": "Size",
@@ -564,7 +576,12 @@ export const seedCatalog: Catalog = [
     "heat_sources": [
       "gas"
     ],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "handle_configuration": "dual_loops",
+    "lid_compatibility": "Not lid-ecosystem; open plancha",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "specialty"
   },
   {
     "handle": "forge-terre-nested-roaster",
@@ -647,7 +664,8 @@ export const seedCatalog: Catalog = [
       "oven",
       "induction"
     ],
-    "induction_compatible": true
+    "induction_compatible": true,
+    "works_with_kansa": true
   },
   {
     "handle": "kuro-strip-200-chefs-knife",
@@ -728,7 +746,8 @@ export const seedCatalog: Catalog = [
       "length_cm": 20
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "kuro-trace-180-hybrid-edge-knife",
@@ -810,7 +829,8 @@ export const seedCatalog: Catalog = [
       "length_cm": 18
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "kuro-trace-150-micro-scalloped-utility-knife",
@@ -890,7 +910,8 @@ export const seedCatalog: Catalog = [
       "length_cm": 15
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "forge-terre-service-tongs",
@@ -969,7 +990,8 @@ export const seedCatalog: Catalog = [
       "length_cm": 24
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "forge-terre-tagine-28",
@@ -993,7 +1015,7 @@ export const seedCatalog: Catalog = [
     "concept_thesis": "Traditional all-clay tagines crack easily on modern induction hobs. Separating the thermal base from the vapour-return cone preserves aromatic condensation while keeping hob contact predictable.",
     "primary_material": "Clad 18/10 stainless steel base with high-fired earthenware cone",
     "lining_material": "18/10 stainless cooking face + vitrified interior cone glaze",
-    "dimensions_summary": "28 cm diameter (28 cm)",
+    "dimensions_summary": "28 cm inner rim-to-rim (28 cm)",
     "dishwasher_suitability": "insert_only_pending_validation",
     "microwave_suitability": "not_microwave_safe",
     "food_contact_suitability": "[CONCEPT_SPEC] 18/10 stainless steel contacts simmering food; glazed interior cone contacts condensing steam only after migration validation.",
@@ -1050,7 +1072,8 @@ export const seedCatalog: Catalog = [
       "gas",
       "electric"
     ],
-    "induction_compatible": true
+    "induction_compatible": true,
+    "works_with_kansa": true
   },
   {
     "handle": "forge-terre-tagine-32",
@@ -1074,7 +1097,7 @@ export const seedCatalog: Catalog = [
     "concept_thesis": "Scales the decoupled metal-and-clay tagine architecture to shared feast portions without forcing staff to carry a fragile all-ceramic cooking base from stove to table.",
     "primary_material": "Clad 18/10 stainless steel base with high-fired earthenware cone",
     "lining_material": "18/10 stainless cooking face + vitrified interior cone glaze",
-    "dimensions_summary": "32 cm diameter (32 cm)",
+    "dimensions_summary": "32 cm inner rim-to-rim (32 cm)",
     "dishwasher_suitability": "insert_only_pending_validation",
     "microwave_suitability": "not_microwave_safe",
     "food_contact_suitability": "[CONCEPT_SPEC] 18/10 stainless steel contacts food; interior cone glaze requires post-firing migration verification.",
@@ -1131,316 +1154,447 @@ export const seedCatalog: Catalog = [
       "gas",
       "electric"
     ],
-    "induction_compatible": true
+    "induction_compatible": true,
+    "works_with_kansa": true
   },
   {
     "handle": "forge-relay-tava-26",
-    "title": "Forge Relay Compact Tava",
+    "title": "Forge Tawa 26",
     "sku": "MT-FOR-TAV-26",
     "vendor": "Maison Tavo",
     "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Griddles & Grill Pans",
-    "product_type": "Tava",
+    "product_type": "Tawa",
     "tags": [
       "Forge Hybrid",
-      "Tava",
+      "Cookware",
       "Carbon Steel",
-      "Bronze",
       "Induction",
-      "Concept Spec"
+      "Concept Spec",
+      "Tawa"
     ],
     "lineup": "Forge Hybrid",
     "status": "draft",
     "claim_status": "CONCEPT_SPEC",
-    "reference_class": "tava",
-    "concept_thesis": "Gives cooks fast, seasoning-capable carbon-steel heat response with a thermally isolated bronze handle bridge designed to stay manageable during rapid roti turnarounds.",
-    "primary_material": "Nitrided carbon steel with bronze-isolated handle",
-    "lining_material": "Unlined seasoned carbon steel",
-    "dimensions_summary": "26 cm diameter (26 cm)",
+    "reference_class": "tava / flat griddle",
+    "concept_thesis": "Flatbread-first induction griddle at family diameter.",
+    "quick_summary": "26 cm flat tawa for roti, dosa batter starts and smash work.",
+    "lineup_copy": "Low-wall flat carbon-steel griddle with short riveted handle for rapid turns.",
+    "suggested_use_case": "Roti, chapati, uttapam, smash burger.",
+    "primary_material": "Nitrided carbon steel with bronze-isolated handle hardware",
+    "lining_material": "Unlined seasoned carbon steel (CONCEPT_SPEC)",
+    "dimensions_summary": "26 cm inner rim-to-rim; base ≈ 19 cm; height ≈ 2.2 cm; induction coil zone target ≈ 18 cm (26 cm)",
     "dishwasher_suitability": "hand_wash_only",
     "microwave_suitability": "not_microwave_safe",
-    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze bridge stays external to the cooking face.",
-    "care_instructions": "[CONCEPT_SPEC] Hand wash warm without soaking; dry over low heat and wipe with seasoning oil.",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
     "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
-    "material_architecture": "Nitrided carbon-steel cooking plate + bronze-isolated stainless handle.",
-    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze bridge stays external to the cooking face.",
-    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
-    "interaction_performance_intent": "Roti, chapati, paratha, uttapam and dry spice toasting on standard domestic hobs.",
-    "care_hypothesis": "Hand wash warm without soaking; dry over low heat and wipe with seasoning oil.",
+    "material_architecture": "Spun/deep-drawn nitrided carbon-steel vessel + bronze-isolated stainless handle fittings.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Roti, dosa, smash burger.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
     "engineering_risks": [
-      "High-heat warping on undersized induction coils",
-      "seasoning wear",
-      "handle heat creep."
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
     ],
     "required_prototype_tests": [
       "Induction flatness cycling",
-      "surface thermal map",
-      "handle temperature rise",
-      "corrosion."
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
     ],
     "agent_intents": [
       "tava",
-      "roti griddle",
-      "flatbread pan",
-      "induction griddle",
-      "high-heat searing"
+      "roti",
+      "dosa",
+      "flatbread",
+      "smash burger"
     ],
     "negative_constraints": [
       "dishwasher safe",
       "synthetic nonstick coating",
-      "prolonged acidic soaking"
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
     ],
-    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
     "sources": [
       "R01",
       "R02",
       "R03"
     ],
-    "description_html": "<p>A low-wall carbon-steel tava engineered for daily flatbreads, parathas and quick dry-roasting on single induction or gas burners.</p><h3>Why it exists</h3><p>Gives cooks fast, seasoning-capable carbon-steel heat response with a thermally isolated bronze handle bridge designed to stay manageable during rapid roti turnarounds.</p><h3>Service &amp; kitchen role</h3><p>Roti, chapati, paratha, uttapam and dry spice toasting on standard domestic hobs.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
-    "seo_title": "Forge Relay Compact Tava | Maison Tavo",
-    "seo_description": "A low-wall carbon-steel tava engineered for daily flatbreads, parathas and quick dry-roasting on single induction or gas burners.",
-    "price_usd": 190,
+    "description_html": "<p>A 26 cm low-wall carbon-steel tawa for flatbreads and quick dry-roasting.</p><h3>Why it exists</h3><p>Gives cooks fast, seasoning-capable heat response with a short riveted handle for rapid roti turnarounds.</p><h3>Service &amp; kitchen role</h3><p>Roti, dosa, smash burger.</p><h3>Handles &amp; lids</h3><p>Short riveted handle (CONCEPT_SPEC). Open griddle format; not a primary universal-lid seat.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 18 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Tawa 26 | Maison Tavo",
+    "seo_description": "26 cm Forge carbon-steel tawa concept for flatbreads and smash searing.",
+    "price_usd": 130,
     "variant_option": {
       "name": "Diameter",
       "value": "26 cm"
     },
     "dimensions": {
-      "diameter_cm": 26
+      "diameter_cm": 26,
+      "base_diameter_cm": 19,
+      "height_cm": 2.2,
+      "induction_coil_zone_cm": 18
     },
     "heat_sources": [
       "induction",
       "gas"
     ],
-    "induction_compatible": true
+    "induction_compatible": true,
+    "handle_configuration": "short_riveted",
+    "lid_compatibility": "Open griddle; optional specialty Relay lid 26 if held",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "tawa",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Tawa 26 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Tawa 26 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Tawa 26 — SVG CAD stratigraphy / section with mm wall callouts and tawa geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Tawa 26 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Tawa 26 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Tawa 26 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
   },
   {
     "handle": "forge-relay-tava-30",
-    "title": "Forge Relay Wide Tava",
+    "title": "Forge Tawa 30",
     "sku": "MT-FOR-TAV-30",
     "vendor": "Maison Tavo",
     "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Griddles & Grill Pans",
-    "product_type": "Tava",
+    "product_type": "Tawa",
     "tags": [
       "Forge Hybrid",
-      "Tava",
+      "Cookware",
       "Carbon Steel",
-      "Bronze",
       "Induction",
-      "Concept Spec"
+      "Concept Spec",
+      "Tawa"
     ],
     "lineup": "Forge Hybrid",
     "status": "draft",
     "claim_status": "CONCEPT_SPEC",
-    "reference_class": "tava",
-    "concept_thesis": "Extends the Relay griddle geometry for wider batter spreads while preserving flat hob contact and an isolated handle junction.",
-    "primary_material": "Heavy-gauge nitrided carbon steel with bronze-isolated handle",
-    "lining_material": "Unlined seasoned carbon steel",
-    "dimensions_summary": "30 cm diameter (30 cm)",
+    "reference_class": "tava / flat griddle",
+    "concept_thesis": "Wide flatbread and smash diameter with dual-loop control.",
+    "quick_summary": "30 cm dual-loop tawa for wide dosas and entertainer smash work.",
+    "lineup_copy": "Wide flat plate with dual loops for two-hand control on large batter spreads.",
+    "suggested_use_case": "Crisp dosa, rumali-style breads, smash burger for guests.",
+    "primary_material": "Nitrided carbon steel with bronze-isolated handle hardware",
+    "lining_material": "Unlined seasoned carbon steel (CONCEPT_SPEC)",
+    "dimensions_summary": "30 cm inner rim-to-rim; base ≈ 22 cm; height ≈ 2.4 cm; induction coil zone target ≈ 21 cm (30 cm)",
     "dishwasher_suitability": "hand_wash_only",
     "microwave_suitability": "not_microwave_safe",
-    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collar remains non-food-contact.",
-    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry immediately on heat and condition lightly with seasoning oil.",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
     "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
-    "material_architecture": "Heavy-gauge nitrided carbon-steel plate + bronze-isolated handle + helper tab.",
-    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collar remains non-food-contact.",
-    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
-    "interaction_performance_intent": "Crisp dosas, chillas, smash searing and wide flatbread service.",
-    "care_hypothesis": "Hand wash warm; dry immediately on heat and condition lightly with seasoning oil.",
+    "material_architecture": "Spun/deep-drawn nitrided carbon-steel vessel + bronze-isolated stainless handle fittings.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Wide dosa, smash searing, flatbread service.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
     "engineering_risks": [
-      "Edge-to-centre temperature delta on small coils",
-      "warping",
-      "helper-tab burn risk."
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
     ],
     "required_prototype_tests": [
-      "Edge-to-centre thermal gradient",
-      "flatness cycling",
-      "dosa release trials",
-      "handle temperature."
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
     ],
     "agent_intents": [
       "wide tava",
-      "dosa pan",
-      "roti griddle",
+      "dosa",
       "smash searing",
-      "carbon steel griddle"
+      "30 cm griddle"
     ],
     "negative_constraints": [
       "dishwasher safe",
       "synthetic nonstick coating",
-      "cold-water quench while hot"
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
     ],
-    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
     "sources": [
       "R01",
       "R02",
       "R03"
     ],
-    "description_html": "<p>An expanded carbon-steel tava with sweeping perimeter access for crisp dosas, rumali-style breads and two-item pass searing.</p><h3>Why it exists</h3><p>Extends the Relay griddle geometry for wider batter spreads while preserving flat hob contact and an isolated handle junction.</p><h3>Service &amp; kitchen role</h3><p>Crisp dosas, chillas, smash searing and wide flatbread service.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
-    "seo_title": "Forge Relay Wide Tava | Maison Tavo",
-    "seo_description": "An expanded carbon-steel tava with sweeping perimeter access for crisp dosas, rumali-style breads and two-item pass searing.",
-    "price_usd": 225,
+    "description_html": "<p>A 30 cm carbon-steel tawa with dual loops for wide dosas and smash work.</p><h3>Why it exists</h3><p>Wider batter spreads need two-hand control without a long stick cantilever.</p><h3>Service &amp; kitchen role</h3><p>Roti, dosa, smash burger.</p><h3>Handles &amp; lids</h3><p>Dual loops (CONCEPT_SPEC). Open griddle format.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 21 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Tawa 30 | Maison Tavo",
+    "seo_description": "30 cm Forge carbon-steel tawa concept with dual loop handles.",
+    "price_usd": 145,
     "variant_option": {
       "name": "Diameter",
       "value": "30 cm"
     },
     "dimensions": {
-      "diameter_cm": 30
+      "diameter_cm": 30,
+      "base_diameter_cm": 22,
+      "height_cm": 2.4,
+      "induction_coil_zone_cm": 21
     },
     "heat_sources": [
       "induction",
       "gas"
     ],
-    "induction_compatible": true
+    "induction_compatible": true,
+    "handle_configuration": "dual_loops",
+    "lid_compatibility": "Open griddle; optional specialty Relay lid 30 if held",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "tawa",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Tawa 30 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Tawa 30 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Tawa 30 — SVG CAD stratigraphy / section with mm wall callouts and tawa geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Tawa 30 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Tawa 30 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Tawa 30 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
   },
   {
     "handle": "forge-relay-kadai-24",
-    "title": "Forge Relay Kadai",
+    "title": "Forge Kadhai 24",
     "sku": "MT-FOR-KAD-24",
     "vendor": "Maison Tavo",
     "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Woks",
     "product_type": "Kadai",
     "tags": [
       "Forge Hybrid",
-      "Kadai",
+      "Cookware",
       "Carbon Steel",
-      "Bronze",
       "Induction",
-      "Concept Spec"
+      "Concept Spec",
+      "Kadai"
     ],
     "lineup": "Forge Hybrid",
     "status": "draft",
     "claim_status": "CONCEPT_SPEC",
-    "reference_class": "kadai",
-    "concept_thesis": "Bridges traditional curved kadai tossing geometry with a calibrated flat induction foot and twin loop handles for balanced oven-to-table movement.",
-    "primary_material": "Spun nitrided carbon steel with bronze-isolated loop handles",
-    "lining_material": "Unlined seasoned carbon steel",
-    "dimensions_summary": "24 cm diameter (24 cm)",
+    "reference_class": "kadai / flat-base wok",
+    "concept_thesis": "Compact flat-base kadhai for induction tadka and stir work.",
+    "quick_summary": "24 cm flat-base kadhai with stick + helper for tadka and stir-fry.",
+    "lineup_copy": "Flat induction foot with deep belly; stick + helper for toss control.",
+    "suggested_use_case": "Mustard-seed tadka, bhuna reduction, small-batch fry.",
+    "primary_material": "Nitrided carbon steel with bronze-isolated handle hardware",
+    "lining_material": "Unlined seasoned carbon steel (CONCEPT_SPEC)",
+    "dimensions_summary": "24 cm inner rim-to-rim; base ≈ 17 cm; height ≈ 9 cm; induction coil zone target ≈ 18 cm; capacity target ≈ 3500 ml (24 cm)",
     "dishwasher_suitability": "hand_wash_only",
     "microwave_suitability": "not_microwave_safe",
-    "food_contact_suitability": "[CONCEPT_SPEC] Nitrided carbon steel forms the entire interior cooking surface; external bronze collars do not contact food.",
-    "care_instructions": "[CONCEPT_SPEC] Hand wash; dry thoroughly over heat and oil lightly; avoid long acidic simmers before patina matures.",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
     "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
-    "material_architecture": "Spun nitrided carbon-steel vessel + twin bronze-isolated stainless loop handles.",
-    "food_contact_strategy": "Nitrided carbon steel forms the entire interior cooking surface; external bronze collars do not contact food.",
-    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
-    "interaction_performance_intent": "Tadka tempering, dry bhuna reductions, shallow-to-deep frying and wok-adjacent tossing.",
-    "care_hypothesis": "Hand wash; dry thoroughly over heat and oil lightly; avoid long acidic simmers before patina matures.",
+    "material_architecture": "Spun/deep-drawn nitrided carbon-steel vessel + bronze-isolated stainless handle fittings.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Fry, stir, tadka.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
     "engineering_risks": [
-      "Hot-oil tip stability",
-      "loop handle heat transfer",
-      "early patina stripping under acidic sauces."
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
     ],
     "required_prototype_tests": [
-      "Tip-angle stability",
-      "hot-oil thermal mapping",
-      "loop handle temperature",
-      "acid-cycle seasoning test."
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
     ],
     "agent_intents": [
       "kadai",
-      "curry vessel",
-      "tadka pan",
-      "deep frying",
+      "kadhai",
+      "tadka",
+      "stir fry",
       "induction wok"
     ],
     "negative_constraints": [
       "dishwasher safe",
-      "unattended deep frying",
-      "long acidic storage"
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
     ],
-    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
     "sources": [
       "R01",
       "R02",
       "R03"
     ],
-    "description_html": "<p>A flat-seated, deep-bellied carbon-steel kadai shaped for mustard-seed tempering, brisk reductions and small-batch frying across gas and induction.</p><h3>Why it exists</h3><p>Bridges traditional curved kadai tossing geometry with a calibrated flat induction foot and twin loop handles for balanced oven-to-table movement.</p><h3>Service &amp; kitchen role</h3><p>Tadka tempering, dry bhuna reductions, shallow-to-deep frying and wok-adjacent tossing.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
-    "seo_title": "Forge Relay Kadai | Maison Tavo",
-    "seo_description": "A flat-seated, deep-bellied carbon-steel kadai shaped for mustard-seed tempering, brisk reductions and small-batch frying across gas and induction.",
-    "price_usd": 275,
+    "description_html": "<p>A 24 cm flat-seated carbon-steel kadhai with stick + helper handles.</p><h3>Why it exists</h3><p>Bridges curved tossing geometry with a calibrated flat induction foot.</p><h3>Service &amp; kitchen role</h3><p>Fry, stir, tadka.</p><h3>Handles &amp; lids</h3><p>Stick + helper (CONCEPT_SPEC). Seats the Forge Universal Lid 24.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 18 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Kadhai 24 | Maison Tavo",
+    "seo_description": "24 cm Forge flat-base kadhai concept with stick and helper.",
+    "price_usd": 145,
     "variant_option": {
       "name": "Diameter",
       "value": "24 cm"
     },
     "dimensions": {
-      "diameter_cm": 24
+      "diameter_cm": 24,
+      "base_diameter_cm": 17,
+      "height_cm": 9,
+      "capacity_ml": 3500,
+      "induction_coil_zone_cm": 18
     },
     "heat_sources": [
       "induction",
       "gas"
     ],
-    "induction_compatible": true
+    "induction_compatible": true,
+    "handle_configuration": "stick_helper",
+    "lid_compatibility": "MT-FOR-LID-24",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "kadhai",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Kadhai 24 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Kadhai 24 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Kadhai 24 — SVG CAD stratigraphy / section with mm wall callouts and kadhai geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Kadhai 24 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Kadhai 24 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Kadhai 24 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
   },
   {
     "handle": "forge-relay-saucepot-20",
-    "title": "Forge Relay Saucepot",
+    "title": "Forge Saucepan 20",
     "sku": "MT-FOR-SAU-20",
     "vendor": "Maison Tavo",
     "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Saucepans",
-    "product_type": "Saucepot",
+    "product_type": "Saucepan",
     "tags": [
       "Forge Hybrid",
-      "Saucepot",
-      "Stainless Steel",
-      "Bronze",
+      "Cookware",
+      "Carbon Steel",
       "Induction",
-      "Concept Spec"
+      "Concept Spec",
+      "Saucepan"
     ],
     "lineup": "Forge Hybrid",
     "status": "draft",
     "claim_status": "CONCEPT_SPEC",
-    "reference_class": "saucepot",
-    "concept_thesis": "Acidic dals and tomato reductions punish bare carbon steel; switching the wet-cooking vessel to non-reactive stainless while keeping a removable bronze heat collar preserves the Relay system logic.",
-    "primary_material": "Fully-clad 18/10 stainless steel with removable bronze collar",
+    "reference_class": "clad stainless saucepan",
+    "concept_thesis": "Primary non-reactive saucepan for Solo/Family wet cooks.",
+    "quick_summary": "20 cm clad stainless saucepan for dals, stocks and grains.",
+    "lineup_copy": "Everyday wet-cook diameter sharing the 16/20 lid with the compact fry and saucier.",
+    "suggested_use_case": "Family dal, tomato sauce, grains for four.",
+    "primary_material": "Fully-clad 18/10 stainless steel with bronze-isolated stick handle",
     "lining_material": "Non-reactive 18/10 stainless steel interior",
-    "dimensions_summary": "20 cm diameter (20 cm)",
+    "dimensions_summary": "20 cm inner rim-to-rim; base ≈ 14 cm; height ≈ 10 cm; induction coil zone target ≈ 14.5 cm; capacity target ≈ 2800 ml (20 cm)",
     "dishwasher_suitability": "insert_only_pending_validation",
     "microwave_suitability": "not_microwave_safe",
-    "food_contact_suitability": "[CONCEPT_SPEC] Non-reactive 18/10 stainless steel contacts all liquids and acidic ingredients; bronze collar stays external.",
-    "care_instructions": "[CONCEPT_SPEC] Remove bronze collar before washing; stainless pot targets dishwasher validation; hand wipe collar.",
+    "food_contact_suitability": "[CONCEPT_SPEC] Non-reactive 18/10 stainless contacts all liquids and acidic ingredients.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
     "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric, oven (induction target yes; requires prototype thermal validation).",
-    "material_architecture": "Fully-clad 18/10 stainless vessel + removable external cast-bronze thermal collar.",
-    "food_contact_strategy": "Non-reactive 18/10 stainless steel contacts all liquids and acidic ingredients; bronze collar stays external.",
-    "fabrication_route": "Prototype each component separately; validate tolerances, thermal behaviour and food-contact surfaces before pilot assembly.",
-    "interaction_performance_intent": "Simmering dals, acidic sauces, grains, chai reductions and tableside hot-holding.",
-    "care_hypothesis": "Remove bronze collar before washing; stainless pot targets dishwasher validation; hand wipe collar.",
+    "material_architecture": "Fully-clad 18/10 stainless vessel + bronze-isolated handle (Relay collar logic optional on specialty builds).",
+    "food_contact_strategy": "Non-reactive 18/10 stainless contacts all liquids and acidic ingredients.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Dals, acidic sauces, grains.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
     "engineering_risks": [
-      "Collar retention lock",
-      "moisture trapped under collar",
-      "pour-lip dribble."
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
     ],
     "required_prototype_tests": [
-      "Boil-rate mapping",
-      "collar lock endurance",
-      "pour cleanliness",
-      "500 wash cycles on stainless vessel."
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
     ],
     "agent_intents": [
-      "saucepot",
+      "saucepan",
       "dal pot",
-      "acidic sauce pan",
-      "grain pot",
-      "induction saucepan"
+      "acidic sauce",
+      "20 cm pot"
     ],
     "negative_constraints": [
-      "washing with collar attached",
-      "removing collar while hot"
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
     ],
-    "benchmark_logic": "Fills a documented assortment gap while keeping brand range in collections and object identity in Shopify standard taxonomy. No benchmark performance is attributed.",
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
     "sources": [
       "R01",
       "R02",
       "R03"
     ],
-    "description_html": "<p>An everyday clad stainless saucepot for dals, stocks, tamarind reductions and grains, paired with a removable external bronze thermal collar.</p><h3>Why it exists</h3><p>Acidic dals and tomato reductions punish bare carbon steel; switching the wet-cooking vessel to non-reactive stainless while keeping a removable bronze heat collar preserves the Relay system logic.</p><h3>Service &amp; kitchen role</h3><p>Simmering dals, acidic sauces, grains, chai reductions and tableside hot-holding.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
-    "seo_title": "Forge Relay Saucepot | Maison Tavo",
-    "seo_description": "An everyday clad stainless saucepot for dals, stocks, tamarind reductions and grains, paired with a removable external bronze thermal collar.",
-    "price_usd": 285,
+    "description_html": "<p>A 20 cm clad stainless saucepan for dals, stocks, reductions and grains.</p><h3>Why it exists</h3><p>Acidic cooks need a non-reactive interior while staying inside the Forge lid ecosystem.</p><h3>Service &amp; kitchen role</h3><p>Grains, liquids, dals.</p><h3>Handles &amp; lids</h3><p>Stick handle (CONCEPT_SPEC). Seats the Forge Universal Lid 16/20.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 14.5 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Saucepan 20 | Maison Tavo",
+    "seo_description": "20 cm Forge clad stainless saucepan concept for dals and grains.",
+    "price_usd": 145,
     "variant_option": {
       "name": "Diameter",
       "value": "20 cm"
     },
     "dimensions": {
-      "diameter_cm": 20
+      "diameter_cm": 20,
+      "base_diameter_cm": 14,
+      "height_cm": 10,
+      "capacity_ml": 2800,
+      "induction_coil_zone_cm": 14.5
     },
     "heat_sources": [
       "induction",
@@ -1448,7 +1602,38 @@ export const seedCatalog: Catalog = [
       "electric",
       "oven"
     ],
-    "induction_compatible": true
+    "induction_compatible": true,
+    "handle_configuration": "stick",
+    "lid_compatibility": "MT-FOR-LID-20",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "saucepan",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Saucepan 20 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Saucepan 20 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Saucepan 20 — SVG CAD stratigraphy / section with mm wall callouts and saucepan geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Saucepan 20 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Saucepan 20 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Saucepan 20 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
   },
   {
     "handle": "rekha-dinner-plate-28",
@@ -1472,7 +1657,7 @@ export const seedCatalog: Catalog = [
     "concept_thesis": "Gives dining rooms durable, stack-considered stoneware with permanent batch and edition notation instead of printed backstamps or decals that wear away.",
     "primary_material": "High-fired stoneware",
     "lining_material": "Vitrified food-contact ceramic glaze",
-    "dimensions_summary": "28 cm diameter (28 cm)",
+    "dimensions_summary": "28 cm inner rim-to-rim (28 cm)",
     "dishwasher_suitability": "pending_validation",
     "microwave_suitability": "pending_validation",
     "food_contact_suitability": "[CONCEPT_SPEC] Unmarked vitrified centre glaze contacts plated food; laser register stays on the outer rim/underside until abrasion-tested.",
@@ -1522,7 +1707,8 @@ export const seedCatalog: Catalog = [
       "diameter_cm": 28
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "rekha-condiment-bowl-set",
@@ -1597,7 +1783,8 @@ export const seedCatalog: Catalog = [
       "capacity_ml": 90
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "rekha-serving-bowl-26",
@@ -1621,7 +1808,7 @@ export const seedCatalog: Catalog = [
     "concept_thesis": "Pairs with the Rekhā Serving Platter to complete deep and flat shared-service silhouettes on the table without competing visually with the dish.",
     "primary_material": "High-fired stoneware",
     "lining_material": "Vitrified interior ceramic glaze",
-    "dimensions_summary": "26 cm diameter (26 cm)",
+    "dimensions_summary": "26 cm inner rim-to-rim (26 cm)",
     "dishwasher_suitability": "pending_validation",
     "microwave_suitability": "pending_validation",
     "food_contact_suitability": "[CONCEPT_SPEC] Fully glazed interior bowl contacts hot and dressed dishes; exterior band remains outside food contact.",
@@ -1671,7 +1858,8 @@ export const seedCatalog: Catalog = [
       "diameter_cm": 26
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "forge-seasoning-oil",
@@ -1745,7 +1933,8 @@ export const seedCatalog: Catalog = [
       "capacity_ml": 250
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "forge-care-ritual-kit",
@@ -1816,7 +2005,8 @@ export const seedCatalog: Catalog = [
     },
     "dimensions": {},
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
   },
   {
     "handle": "forge-relay-lid-26",
@@ -1836,9 +2026,10 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "replacement lid",
     "concept_thesis": "Sold separately so kitchens buy only the covers their stations need, and can replace a damaged lid without discarding the underlying pan.",
+    "quick_summary": "Specialty Relay 26 cm lid retained for Dual-Mass Skillet / Compact Tawa era fit.",
     "primary_material": "Tempered glass with 18/8 stainless rim and bronze-isolated handle",
     "lining_material": "Uncoated tempered glass and 18/8 stainless steam interface",
-    "dimensions_summary": "26 cm diameter (26 cm vessels)",
+    "dimensions_summary": "26 cm inner rim-to-rim (26 cm vessels)",
     "dishwasher_suitability": "pending_validation",
     "microwave_suitability": "not_microwave_safe",
     "food_contact_suitability": "[CONCEPT_SPEC] Glass underside and 18/8 stainless rim contact rising steam and condensate; bronze accent stays external.",
@@ -1879,7 +2070,7 @@ export const seedCatalog: Catalog = [
     "description_html": "<p>A stepped stainless-and-glass service lid sized for the Forge Relay Dual-Mass Skillet and Compact Tava to trap steam for finishing, melting and covered simmering.</p><h3>Why it exists</h3><p>Sold separately so kitchens buy only the covers their stations need, and can replace a damaged lid without discarding the underlying pan.</p><h3>Service &amp; kitchen role</h3><p>Covered basting, steam-finishing greens or flatbreads, and splatter containment on 26 cm Forge vessels.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
     "seo_title": "Forge Relay Skillet Lid | Maison Tavo",
     "seo_description": "A stepped stainless-and-glass service lid sized for the Forge Relay Dual-Mass Skillet and Compact Tava to trap steam for finishing, melting and covered simmering.",
-    "price_usd": 64,
+    "price_usd": 35,
     "variant_option": {
       "name": "Compatibility",
       "value": "26 cm vessels"
@@ -1888,7 +2079,12 @@ export const seedCatalog: Catalog = [
       "diameter_cm": 26
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "handle_configuration": "lid_bridge",
+    "lid_compatibility": "26 cm Relay specialty vessels",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "lid"
   },
   {
     "handle": "forge-relay-lid-30",
@@ -1908,9 +2104,10 @@ export const seedCatalog: Catalog = [
     "claim_status": "CONCEPT_SPEC",
     "reference_class": "replacement lid",
     "concept_thesis": "Provides optional vapour capture on open 30 cm griddle surfaces while remaining an independently replaceable component.",
+    "quick_summary": "Specialty Relay 30 cm wide lid retained for Wide Tawa era fit.",
     "primary_material": "Domed tempered glass with 18/8 stainless rim and bronze-isolated handle",
     "lining_material": "Uncoated tempered glass and 18/8 stainless steam interface",
-    "dimensions_summary": "30 cm diameter (30 cm vessels)",
+    "dimensions_summary": "30 cm inner rim-to-rim (30 cm vessels)",
     "dishwasher_suitability": "pending_validation",
     "microwave_suitability": "not_microwave_safe",
     "food_contact_suitability": "[CONCEPT_SPEC] Glass dome and stainless rim contact steam; external bronze detail stays outside condensate path.",
@@ -1951,7 +2148,7 @@ export const seedCatalog: Catalog = [
     "description_html": "<p>A wide domed cover engineered to clear tall ingredients on the Forge Relay Wide Tava during covered steaming, melting and pass holding.</p><h3>Why it exists</h3><p>Provides optional vapour capture on open 30 cm griddle surfaces while remaining an independently replaceable component.</p><h3>Service &amp; kitchen role</h3><p>Steam-setting uttapam and eggs, covered finishing on the Wide Tava, and pass warm-holding.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication.</p>",
     "seo_title": "Forge Relay Wide Tava Lid | Maison Tavo",
     "seo_description": "A wide domed cover engineered to clear tall ingredients on the Forge Relay Wide Tava during covered steaming, melting and pass holding.",
-    "price_usd": 72,
+    "price_usd": 40,
     "variant_option": {
       "name": "Compatibility",
       "value": "30 cm vessels"
@@ -1960,7 +2157,12 @@ export const seedCatalog: Catalog = [
       "diameter_cm": 30
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "handle_configuration": "lid_bridge",
+    "lid_compatibility": "30 cm Relay specialty vessels",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "lid"
   },
   {
     "handle": "terre-bamboo-steamer-24",
@@ -1983,7 +2185,7 @@ export const seedCatalog: Catalog = [
     "concept_thesis": "Raw bamboo rims char and warp when perched directly inside hot metal walls; a dedicated ceramic docking collar protects the basket and turns the Kadai into a multi-tier steamer.",
     "primary_material": "Untreated woven bamboo baskets with glazed stoneware docking ring",
     "lining_material": "Unlacquered natural bamboo slats + vitrified ceramic docking collar",
-    "dimensions_summary": "24 cm diameter (24 cm (2 tiers))",
+    "dimensions_summary": "24 cm inner rim-to-rim (24 cm (2 tiers))",
     "dishwasher_suitability": "hand_wash_only",
     "microwave_suitability": "not_applicable",
     "food_contact_suitability": "[CONCEPT_SPEC] Untreated food-contact bamboo slats and lead-free glazed ceramic ring; zero synthetic lacquers or glues in the steam path.",
@@ -2035,6 +2237,2434 @@ export const seedCatalog: Catalog = [
       "diameter_cm": 24
     },
     "heat_sources": [],
-    "induction_compatible": false
+    "induction_compatible": false,
+    "works_with_kansa": true
+  },
+  {
+    "handle": "forge-frying-pan-20",
+    "title": "Forge Frying Pan 20",
+    "sku": "MT-FOR-FRY-20",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Skillets & Frying Pans > Frying Pans",
+    "product_type": "Frying pan",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware",
+      "Carbon Steel",
+      "Induction",
+      "Concept Spec",
+      "Frying pan"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "carbon-steel frying pan",
+    "concept_thesis": "Fast-response searing in the smallest shared lid ecosystem size.",
+    "quick_summary": "20 cm stick-handle carbon-steel fry pan for eggs and solo sears.",
+    "lineup_copy": "The compact Forge fryer: responsive nitrided carbon steel with a single stick handle sized for everyday breakfast and two-portion sears.",
+    "suggested_use_case": "Soft scrambled eggs, single steak sear, weeknight omelette.",
+    "primary_material": "Nitrided carbon steel with bronze-isolated handle hardware",
+    "lining_material": "Unlined seasoned carbon steel (CONCEPT_SPEC)",
+    "dimensions_summary": "20 cm inner rim-to-rim; base ≈ 14 cm; height ≈ 4.5 cm; induction coil zone target ≈ 14.5 cm (20 cm)",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Spun/deep-drawn nitrided carbon-steel vessel + bronze-isolated stainless handle fittings.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Eggs, pan-frying, quick sears for one–two portions.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "engineering_risks": [
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
+    ],
+    "required_prototype_tests": [
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
+    ],
+    "agent_intents": [
+      "frying pan",
+      "eggs",
+      "solo sear",
+      "induction fry pan",
+      "20 cm pan"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
+    ],
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A compact 20 cm carbon-steel frying pan for eggs, quick sears and solo weeknights.</p><h3>Why it exists</h3><p>Opens the Forge diameter ladder at the shared 16/20 lid seat without forcing a larger pan for small jobs.</p><h3>Service &amp; kitchen role</h3><p>Searing, eggs, pan-frying for one–two portions.</p><h3>Handles &amp; lids</h3><p>Stick handle with bronze-isolated junction (CONCEPT_SPEC). Seats the Forge Universal Lid 16/20.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 14.5 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Frying Pan 20 | Maison Tavo",
+    "seo_description": "20 cm Forge Hybrid carbon-steel frying pan concept with stick handle and 16/20 universal lid seat.",
+    "price_usd": 130,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "20 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 20,
+      "base_diameter_cm": 14,
+      "height_cm": 4.5,
+      "induction_coil_zone_cm": 14.5
+    },
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "stick",
+    "lid_compatibility": "MT-FOR-LID-20 (16/20 universal seat)",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "frying_pan",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Frying Pan 20 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Frying Pan 20 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Frying Pan 20 — SVG CAD stratigraphy / section with mm wall callouts and frying_pan geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Frying Pan 20 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Frying Pan 20 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Frying Pan 20 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-frying-pan-24",
+    "title": "Forge Frying Pan 24",
+    "sku": "MT-FOR-FRY-24",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Skillets & Frying Pans > Frying Pans",
+    "product_type": "Frying pan",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware",
+      "Carbon Steel",
+      "Induction",
+      "Concept Spec",
+      "Frying pan"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "carbon-steel frying pan",
+    "concept_thesis": "Primary searing diameter for the Family and Everyday sets.",
+    "quick_summary": "24 cm everyday stick-handle fry pan — the Forge workhorse sear.",
+    "lineup_copy": "Core Forge fry diameter: enough floor for a family sear without the helper-loop mass of the 28.",
+    "suggested_use_case": "Two chicken thighs, smash burgers for two, blistered vegetables.",
+    "primary_material": "Nitrided carbon steel with bronze-isolated handle hardware",
+    "lining_material": "Unlined seasoned carbon steel (CONCEPT_SPEC)",
+    "dimensions_summary": "24 cm inner rim-to-rim; base ≈ 17 cm; height ≈ 4.8 cm; induction coil zone target ≈ 18 cm (24 cm)",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Spun/deep-drawn nitrided carbon-steel vessel + bronze-isolated stainless handle fittings.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Everyday searing and pan-frying.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "engineering_risks": [
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
+    ],
+    "required_prototype_tests": [
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
+    ],
+    "agent_intents": [
+      "frying pan",
+      "searing",
+      "24 cm pan",
+      "induction fry pan"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
+    ],
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>The 24 cm Forge frying pan — stick handle, flat induction foot, seasoning-capable floor.</p><h3>Why it exists</h3><p>Balances reach and control for the most common home sear jobs.</p><h3>Service &amp; kitchen role</h3><p>Searing, eggs, pan-frying.</p><h3>Handles &amp; lids</h3><p>Stick handle (CONCEPT_SPEC). Seats the Forge Universal Lid 24.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 18 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Frying Pan 24 | Maison Tavo",
+    "seo_description": "24 cm Forge Hybrid carbon-steel frying pan concept with stick handle.",
+    "price_usd": 145,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "24 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 24,
+      "base_diameter_cm": 17,
+      "height_cm": 4.8,
+      "induction_coil_zone_cm": 18
+    },
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "stick",
+    "lid_compatibility": "MT-FOR-LID-24",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "frying_pan",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Frying Pan 24 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Frying Pan 24 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Frying Pan 24 — SVG CAD stratigraphy / section with mm wall callouts and frying_pan geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Frying Pan 24 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Frying Pan 24 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Frying Pan 24 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-frying-pan-28",
+    "title": "Forge Frying Pan 28",
+    "sku": "MT-FOR-FRY-28",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Skillets & Frying Pans > Frying Pans",
+    "product_type": "Frying pan",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware",
+      "Carbon Steel",
+      "Induction",
+      "Concept Spec",
+      "Frying pan"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "carbon-steel frying pan",
+    "concept_thesis": "Large sear diameter with helper loop for safe loaded moves.",
+    "quick_summary": "28 cm fry pan with stick + helper loop for larger sears.",
+    "lineup_copy": "Entertainer-scale fry floor with a helper loop for two-hand moves from hob to pass.",
+    "suggested_use_case": "Family steak night, large vegetable sear, shallow fry finish.",
+    "primary_material": "Nitrided carbon steel with bronze-isolated handle hardware",
+    "lining_material": "Unlined seasoned carbon steel (CONCEPT_SPEC)",
+    "dimensions_summary": "28 cm inner rim-to-rim; base ≈ 20 cm; height ≈ 5 cm; induction coil zone target ≈ 21 cm (28 cm)",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Spun/deep-drawn nitrided carbon-steel vessel + bronze-isolated stainless handle fittings.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Large-format searing and pan-frying.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "engineering_risks": [
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
+    ],
+    "required_prototype_tests": [
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
+    ],
+    "agent_intents": [
+      "frying pan",
+      "large sear",
+      "28 cm pan",
+      "helper handle"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
+    ],
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A 28 cm carbon-steel frying pan with stick handle and opposite helper loop.</p><h3>Why it exists</h3><p>Large sear jobs need a second grip without converting the pan into a dual-loop skillet.</p><h3>Service &amp; kitchen role</h3><p>Searing, eggs, pan-frying for family portions.</p><h3>Handles &amp; lids</h3><p>Stick + helper loop (CONCEPT_SPEC). Seats the Forge Universal Lid 28/32.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 21 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Frying Pan 28 | Maison Tavo",
+    "seo_description": "28 cm Forge frying pan concept with stick handle and helper loop.",
+    "price_usd": 160,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "28 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 28,
+      "base_diameter_cm": 20,
+      "height_cm": 5,
+      "induction_coil_zone_cm": 21
+    },
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "stick_helper",
+    "lid_compatibility": "MT-FOR-LID-28",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "frying_pan",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Frying Pan 28 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Frying Pan 28 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Frying Pan 28 — SVG CAD stratigraphy / section with mm wall callouts and frying_pan geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Frying Pan 28 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Frying Pan 28 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Frying Pan 28 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-saucier-20",
+    "title": "Forge Saucier 20",
+    "sku": "MT-FOR-SCR-20",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Saucepans",
+    "product_type": "Saucier",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware",
+      "Carbon Steel",
+      "Induction",
+      "Concept Spec",
+      "Saucier"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "saucier / high-wall skillet",
+    "concept_thesis": "High-wall cookware for continuous stirring and emulsion work.",
+    "quick_summary": "20 cm high-wall saucier for sauces and risotto.",
+    "lineup_copy": "Rounded high wall invites whisking and reduction without sharp corners trapping fond.",
+    "suggested_use_case": "Beurre blanc, risotto for two, chocolate ganache.",
+    "primary_material": "Nitrided carbon steel with bronze-isolated handle hardware",
+    "lining_material": "Unlined seasoned carbon steel (CONCEPT_SPEC)",
+    "dimensions_summary": "20 cm inner rim-to-rim; base ≈ 14 cm; height ≈ 8 cm; induction coil zone target ≈ 14.5 cm; capacity target ≈ 1800 ml (20 cm)",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Spun/deep-drawn nitrided carbon-steel vessel + bronze-isolated stainless handle fittings.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Sauces, risotto, reductions.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "engineering_risks": [
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
+    ],
+    "required_prototype_tests": [
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
+    ],
+    "agent_intents": [
+      "saucier",
+      "risotto",
+      "sauce pan",
+      "high wall skillet"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
+    ],
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A 20 cm high-wall carbon-steel saucier shaped for sauces and risotto.</p><h3>Why it exists</h3><p>Corners kill emulsions; a continuous curve keeps whisks and spatulas honest.</p><h3>Service &amp; kitchen role</h3><p>Sauces, risotto, small reductions.</p><h3>Handles &amp; lids</h3><p>Stick handle (CONCEPT_SPEC). Seats the Forge Universal Lid 16/20.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 14.5 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Saucier 20 | Maison Tavo",
+    "seo_description": "20 cm Forge high-wall saucier concept for sauces and risotto.",
+    "price_usd": 140,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "20 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 20,
+      "base_diameter_cm": 14,
+      "height_cm": 8,
+      "capacity_ml": 1800,
+      "induction_coil_zone_cm": 14.5
+    },
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "stick",
+    "lid_compatibility": "MT-FOR-LID-20",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "saucier",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Saucier 20 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Saucier 20 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Saucier 20 — SVG CAD stratigraphy / section with mm wall callouts and saucier geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Saucier 20 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Saucier 20 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Saucier 20 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-saucier-24",
+    "title": "Forge Saucier 24",
+    "sku": "MT-FOR-SCR-24",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Saucepans",
+    "product_type": "Saucier",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware",
+      "Carbon Steel",
+      "Induction",
+      "Concept Spec",
+      "Saucier"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "saucier / high-wall skillet",
+    "concept_thesis": "Family saucier diameter aligned to the 24 cm lid seat.",
+    "quick_summary": "24 cm saucier for family sauces and grain finishes.",
+    "lineup_copy": "Scaled high-wall geometry for four-person risotto and larger reductions.",
+    "suggested_use_case": "Family risotto, curry base reductions, custard-scale sauces.",
+    "primary_material": "Nitrided carbon steel with bronze-isolated handle hardware",
+    "lining_material": "Unlined seasoned carbon steel (CONCEPT_SPEC)",
+    "dimensions_summary": "24 cm inner rim-to-rim; base ≈ 17 cm; height ≈ 8.5 cm; induction coil zone target ≈ 18 cm; capacity target ≈ 2800 ml (24 cm)",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Spun/deep-drawn nitrided carbon-steel vessel + bronze-isolated stainless handle fittings.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Sauces, risotto, reductions for four.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "engineering_risks": [
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
+    ],
+    "required_prototype_tests": [
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
+    ],
+    "agent_intents": [
+      "saucier",
+      "risotto",
+      "24 cm saucier"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
+    ],
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A 24 cm high-wall carbon-steel saucier for sauces and risotto at family scale.</p><h3>Why it exists</h3><p>Keeps the curved wall thesis while matching the 24 cm lid ecosystem.</p><h3>Service &amp; kitchen role</h3><p>Sauces, risotto, reductions.</p><h3>Handles &amp; lids</h3><p>Stick handle (CONCEPT_SPEC). Seats the Forge Universal Lid 24.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 18 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Saucier 24 | Maison Tavo",
+    "seo_description": "24 cm Forge high-wall saucier concept.",
+    "price_usd": 155,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "24 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 24,
+      "base_diameter_cm": 17,
+      "height_cm": 8.5,
+      "capacity_ml": 2800,
+      "induction_coil_zone_cm": 18
+    },
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "stick",
+    "lid_compatibility": "MT-FOR-LID-24",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "saucier",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Saucier 24 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Saucier 24 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Saucier 24 — SVG CAD stratigraphy / section with mm wall callouts and saucier geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Saucier 24 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Saucier 24 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Saucier 24 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-saute-24",
+    "title": "Forge Sauté Pan 24",
+    "sku": "MT-FOR-STE-24",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Saute Pans",
+    "product_type": "Saute pan",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware",
+      "Carbon Steel",
+      "Induction",
+      "Concept Spec",
+      "Saute pan"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "saute pan",
+    "concept_thesis": "One-pan braising diameter with covered-lid readiness.",
+    "quick_summary": "24 cm sauté with stick + helper for one-pan braises.",
+    "lineup_copy": "Straight walls and helper grip for covered braising and oven finishes.",
+    "suggested_use_case": "Chicken thighs braise, one-pan pasta finish, shallow stew.",
+    "primary_material": "Nitrided carbon steel with bronze-isolated handle hardware",
+    "lining_material": "Unlined seasoned carbon steel (CONCEPT_SPEC)",
+    "dimensions_summary": "24 cm inner rim-to-rim; base ≈ 17 cm; height ≈ 7 cm; induction coil zone target ≈ 18 cm; capacity target ≈ 3200 ml (24 cm)",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Spun/deep-drawn nitrided carbon-steel vessel + bronze-isolated stainless handle fittings.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Braising, one-pan meals.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "engineering_risks": [
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
+    ],
+    "required_prototype_tests": [
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
+    ],
+    "agent_intents": [
+      "saute pan",
+      "braising",
+      "one-pan",
+      "24 cm saute"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
+    ],
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A 24 cm carbon-steel sauté pan with stick handle and helper loop.</p><h3>Why it exists</h3><p>Straight walls hold liquids for covered braises without the curve of a saucier.</p><h3>Service &amp; kitchen role</h3><p>Braising, one-pan meals.</p><h3>Handles &amp; lids</h3><p>Stick + helper (CONCEPT_SPEC). Seats the Forge Universal Lid 24.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 18 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Sauté Pan 24 | Maison Tavo",
+    "seo_description": "24 cm Forge sauté pan concept with stick and helper handles.",
+    "price_usd": 155,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "24 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 24,
+      "base_diameter_cm": 17,
+      "height_cm": 7,
+      "capacity_ml": 3200,
+      "induction_coil_zone_cm": 18
+    },
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "stick_helper",
+    "lid_compatibility": "MT-FOR-LID-24",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "saute",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Sauté Pan 24 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Sauté Pan 24 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Sauté Pan 24 — SVG CAD stratigraphy / section with mm wall callouts and saute geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Sauté Pan 24 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Sauté Pan 24 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Sauté Pan 24 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-saute-28",
+    "title": "Forge Sauté Pan 28",
+    "sku": "MT-FOR-STE-28",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Saute Pans",
+    "product_type": "Saute pan",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware",
+      "Carbon Steel",
+      "Induction",
+      "Concept Spec",
+      "Saute pan"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "saute pan",
+    "concept_thesis": "Entertainer sauté diameter paired with the 28/32 lid.",
+    "quick_summary": "28 cm sauté for entertainer braises and one-pan feasts.",
+    "lineup_copy": "Wide straight-wall pan for guests; helper loop for oven-to-table moves.",
+    "suggested_use_case": "Whole chicken pieces, large one-pan pasta, guest braise.",
+    "primary_material": "Nitrided carbon steel with bronze-isolated handle hardware",
+    "lining_material": "Unlined seasoned carbon steel (CONCEPT_SPEC)",
+    "dimensions_summary": "28 cm inner rim-to-rim; base ≈ 20 cm; height ≈ 7.5 cm; induction coil zone target ≈ 21 cm; capacity target ≈ 4500 ml (28 cm)",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Spun/deep-drawn nitrided carbon-steel vessel + bronze-isolated stainless handle fittings.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Large braises and one-pan entertaining.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "engineering_risks": [
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
+    ],
+    "required_prototype_tests": [
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
+    ],
+    "agent_intents": [
+      "saute pan",
+      "braising",
+      "entertaining",
+      "28 cm saute"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
+    ],
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A 28 cm carbon-steel sauté pan with stick + helper for entertainer braises.</p><h3>Why it exists</h3><p>Guest portions need width and a second grip when the pan is covered and heavy.</p><h3>Service &amp; kitchen role</h3><p>Braising, one-pan entertaining.</p><h3>Handles &amp; lids</h3><p>Stick + helper (CONCEPT_SPEC). Seats the Forge Universal Lid 28/32.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 21 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Sauté Pan 28 | Maison Tavo",
+    "seo_description": "28 cm Forge sauté pan concept with stick and helper handles.",
+    "price_usd": 170,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "28 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 28,
+      "base_diameter_cm": 20,
+      "height_cm": 7.5,
+      "capacity_ml": 4500,
+      "induction_coil_zone_cm": 21
+    },
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "stick_helper",
+    "lid_compatibility": "MT-FOR-LID-28",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "saute",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Sauté Pan 28 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Sauté Pan 28 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Sauté Pan 28 — SVG CAD stratigraphy / section with mm wall callouts and saute geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Sauté Pan 28 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Sauté Pan 28 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Sauté Pan 28 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-saucepan-16",
+    "title": "Forge Saucepan 16",
+    "sku": "MT-FOR-SPN-16",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Saucepans",
+    "product_type": "Saucepan",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware",
+      "Carbon Steel",
+      "Induction",
+      "Concept Spec",
+      "Saucepan"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "clad stainless saucepan",
+    "concept_thesis": "Acid-safe saucepan at the smallest Forge wet-cook diameter.",
+    "quick_summary": "16 cm clad stainless saucepan for grains and small liquids.",
+    "lineup_copy": "Non-reactive wet-cooking vessel at the shared 16/20 lid seat.",
+    "suggested_use_case": "Rice for two, chai reduction, small dal.",
+    "primary_material": "Fully-clad 18/10 stainless steel with bronze-isolated stick handle",
+    "lining_material": "Non-reactive 18/10 stainless steel interior",
+    "dimensions_summary": "16 cm inner rim-to-rim; base ≈ 12 cm; height ≈ 9 cm; induction coil zone target ≈ 14.5 cm; capacity target ≈ 1400 ml (16 cm)",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Non-reactive 18/10 stainless contacts liquids and acidic ingredients.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric, oven (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Fully-clad 18/10 stainless saucepan + bronze-isolated stick handle.",
+    "food_contact_strategy": "Non-reactive 18/10 stainless contacts liquids and acidic ingredients.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Grains, liquids, small acidic sauces.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "engineering_risks": [
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
+    ],
+    "required_prototype_tests": [
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
+    ],
+    "agent_intents": [
+      "saucepan",
+      "grains",
+      "dal",
+      "16 cm pot"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
+    ],
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A 16 cm clad stainless saucepan for grains and small liquid cooks.</p><h3>Why it exists</h3><p>Acidic dals punish bare carbon steel; stainless keeps wet cooks non-reactive.</p><h3>Service &amp; kitchen role</h3><p>Grains, liquids, small sauces.</p><h3>Handles &amp; lids</h3><p>Stick handle (CONCEPT_SPEC). Seats the Forge Universal Lid 16/20.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 14.5 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Saucepan 16 | Maison Tavo",
+    "seo_description": "16 cm Forge clad stainless saucepan concept.",
+    "price_usd": 130,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "16 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 16,
+      "base_diameter_cm": 12,
+      "height_cm": 9,
+      "capacity_ml": 1400,
+      "induction_coil_zone_cm": 14.5
+    },
+    "heat_sources": [
+      "induction",
+      "gas",
+      "electric",
+      "oven"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "stick",
+    "lid_compatibility": "MT-FOR-LID-20 (16/20 universal seat)",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "saucepan",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Saucepan 16 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Saucepan 16 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Saucepan 16 — SVG CAD stratigraphy / section with mm wall callouts and saucepan geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Saucepan 16 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Saucepan 16 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Saucepan 16 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-stockpot-24",
+    "title": "Forge Stockpot 24",
+    "sku": "MT-FOR-STK-24",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Stock Pots",
+    "product_type": "Stockpot",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware",
+      "Carbon Steel",
+      "Induction",
+      "Concept Spec",
+      "Stockpot"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "stockpot",
+    "concept_thesis": "Deep dual-loop pot for family wet cooks and pasta.",
+    "quick_summary": "24 cm dual-loop stockpot for stocks, pasta and curry.",
+    "lineup_copy": "Family deep pot aligned to the 24 cm lid and Family Standard set.",
+    "suggested_use_case": "Chicken stock, pasta boil, large curry.",
+    "primary_material": "Fully-clad 18/10 stainless steel with dual bronze-isolated loop handles",
+    "lining_material": "Non-reactive 18/10 stainless steel interior",
+    "dimensions_summary": "24 cm inner rim-to-rim; base ≈ 17 cm; height ≈ 14 cm; induction coil zone target ≈ 18 cm; capacity target ≈ 6000 ml (24 cm)",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] 18/10 stainless contacts stocks, pasta water and curries.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric, oven (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Deep clad stainless stockpot + dual loop handles.",
+    "food_contact_strategy": "18/10 stainless contacts stocks, pasta water and curries.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Stocks, pasta, curry.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "engineering_risks": [
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
+    ],
+    "required_prototype_tests": [
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
+    ],
+    "agent_intents": [
+      "stockpot",
+      "pasta pot",
+      "curry pot",
+      "24 cm stock"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
+    ],
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A 24 cm deep clad stainless stockpot with dual loop handles.</p><h3>Why it exists</h3><p>Deep wet cooks and pasta water need balanced two-hand lifts.</p><h3>Service &amp; kitchen role</h3><p>Stocks, pasta, curry.</p><h3>Handles &amp; lids</h3><p>Dual loops (CONCEPT_SPEC). Seats the Forge Universal Lid 24.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 18 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Stockpot 24 | Maison Tavo",
+    "seo_description": "24 cm Forge clad stainless stockpot concept with dual loops.",
+    "price_usd": 160,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "24 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 24,
+      "base_diameter_cm": 17,
+      "height_cm": 14,
+      "capacity_ml": 6000,
+      "induction_coil_zone_cm": 18
+    },
+    "heat_sources": [
+      "induction",
+      "gas",
+      "electric",
+      "oven"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "dual_loops",
+    "lid_compatibility": "MT-FOR-LID-24",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "stockpot",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Stockpot 24 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Stockpot 24 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Stockpot 24 — SVG CAD stratigraphy / section with mm wall callouts and stockpot geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Stockpot 24 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Stockpot 24 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Stockpot 24 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-stockpot-28",
+    "title": "Forge Stockpot 28",
+    "sku": "MT-FOR-STK-28",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Stock Pots",
+    "product_type": "Stockpot",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware",
+      "Carbon Steel",
+      "Induction",
+      "Concept Spec",
+      "Stockpot"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "stockpot",
+    "concept_thesis": "Entertainer deep pot with 28/32 lid seat.",
+    "quick_summary": "28 cm entertainer stockpot for large stocks and pasta.",
+    "lineup_copy": "Top of the Forge wet-cook ladder for guest batches.",
+    "suggested_use_case": "Party pasta water, large bone stock, feast curry.",
+    "primary_material": "Fully-clad 18/10 stainless steel with dual bronze-isolated loop handles",
+    "lining_material": "Non-reactive 18/10 stainless steel interior",
+    "dimensions_summary": "28 cm inner rim-to-rim; base ≈ 20 cm; height ≈ 16 cm; induction coil zone target ≈ 21 cm; capacity target ≈ 9000 ml (28 cm)",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] 18/10 stainless contacts stocks, pasta water and curries.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric, oven (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Deep clad stainless stockpot + dual loop handles.",
+    "food_contact_strategy": "18/10 stainless contacts stocks, pasta water and curries.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Large stocks, pasta, curry.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "engineering_risks": [
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
+    ],
+    "required_prototype_tests": [
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
+    ],
+    "agent_intents": [
+      "stockpot",
+      "large pasta pot",
+      "28 cm stock"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
+    ],
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A 28 cm deep clad stainless stockpot with dual loops for entertainer batches.</p><h3>Why it exists</h3><p>Guest cooking needs depth and a secure two-hand carry.</p><h3>Service &amp; kitchen role</h3><p>Stocks, pasta, curry.</p><h3>Handles &amp; lids</h3><p>Dual loops (CONCEPT_SPEC). Seats the Forge Universal Lid 28/32.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 21 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Stockpot 28 | Maison Tavo",
+    "seo_description": "28 cm Forge clad stainless stockpot concept.",
+    "price_usd": 175,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "28 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 28,
+      "base_diameter_cm": 20,
+      "height_cm": 16,
+      "capacity_ml": 9000,
+      "induction_coil_zone_cm": 21
+    },
+    "heat_sources": [
+      "induction",
+      "gas",
+      "electric",
+      "oven"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "dual_loops",
+    "lid_compatibility": "MT-FOR-LID-28",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "stockpot",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Stockpot 28 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Stockpot 28 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Stockpot 28 — SVG CAD stratigraphy / section with mm wall callouts and stockpot geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Stockpot 28 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Stockpot 28 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Stockpot 28 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-kadhai-28",
+    "title": "Forge Kadhai 28",
+    "sku": "MT-FOR-KAD-28",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware > Woks",
+    "product_type": "Kadai",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware",
+      "Carbon Steel",
+      "Induction",
+      "Concept Spec",
+      "Kadai"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "kadai / flat-base wok",
+    "concept_thesis": "Family kadhai diameter with dual-loop carry.",
+    "quick_summary": "28 cm dual-loop kadhai for family fry and stir work.",
+    "lineup_copy": "Wider belly with dual loops for oven-to-table curry finishes.",
+    "suggested_use_case": "Family tadka curry, larger stir-fry, shallow fry.",
+    "primary_material": "Nitrided carbon steel with bronze-isolated handle hardware",
+    "lining_material": "Unlined seasoned carbon steel (CONCEPT_SPEC)",
+    "dimensions_summary": "28 cm inner rim-to-rim; base ≈ 20 cm; height ≈ 10 cm; induction coil zone target ≈ 21 cm; capacity target ≈ 5000 ml (28 cm)",
+    "dishwasher_suitability": "hand_wash_only",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Spun/deep-drawn nitrided carbon-steel vessel + bronze-isolated stainless handle fittings.",
+    "food_contact_strategy": "Seasoned nitrided carbon steel contacts food; bronze collars remain non-food-contact.",
+    "fabrication_route": "Prototype spun or deep-drawn body; nitride or season; rivet/isolate handles; validate flatness on induction.",
+    "interaction_performance_intent": "Fry, stir, tadka at family scale.",
+    "care_hypothesis": "Hand wash warm; dry over low heat; thin film of Forge Seasoning Oil. Never dishwasher until validated.",
+    "engineering_risks": [
+      "High-heat warping on undersized coils",
+      "Seasoning wear under acid",
+      "Handle heat creep",
+      "Lid rim-step mismatch"
+    ],
+    "required_prototype_tests": [
+      "Induction flatness cycling",
+      "Surface thermal map",
+      "Handle temperature rise",
+      "Lid go/no-go gauge",
+      "Acid-cycle seasoning"
+    ],
+    "agent_intents": [
+      "kadai",
+      "kadhai",
+      "28 cm wok",
+      "tadka"
+    ],
+    "negative_constraints": [
+      "dishwasher safe",
+      "synthetic nonstick coating",
+      "guaranteed heat retention numbers",
+      "invented stock quantity"
+    ],
+    "benchmark_logic": "Fills the Forge diameter matrix with honest CONCEPT_SPEC targets; no benchmark performance attributed.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A 28 cm flat-base carbon-steel kadhai with dual loop handles.</p><h3>Why it exists</h3><p>Larger fry and curry batches need balanced two-hand movement.</p><h3>Service &amp; kitchen role</h3><p>Fry, stir, tadka.</p><h3>Handles &amp; lids</h3><p>Dual loops (CONCEPT_SPEC). Seats the Forge Universal Lid 28/32.</p><h3>Induction base</h3><p>Concept induction coil zone target ≈ 21 cm (unverified). Inner rim-to-rim diameter is the size callout.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Kadhai 28 | Maison Tavo",
+    "seo_description": "28 cm Forge flat-base kadhai concept with dual loops.",
+    "price_usd": 160,
+    "variant_option": {
+      "name": "Diameter",
+      "value": "28 cm"
+    },
+    "dimensions": {
+      "diameter_cm": 28,
+      "base_diameter_cm": 20,
+      "height_cm": 10,
+      "capacity_ml": 5000,
+      "induction_coil_zone_cm": 21
+    },
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "dual_loops",
+    "lid_compatibility": "MT-FOR-LID-28",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "kadhai",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Kadhai 28 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Kadhai 28 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Kadhai 28 — SVG CAD stratigraphy / section with mm wall callouts and kadhai geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Kadhai 28 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Kadhai 28 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Kadhai 28 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-universal-lid-20",
+    "title": "Forge Universal Lid 16/20",
+    "sku": "MT-FOR-LID-20",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories > Pot & Pan Lids",
+    "product_type": "Replacement lid",
+    "tags": [
+      "Forge Hybrid",
+      "Replacement Lid",
+      "Cookware Accessory",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "replacement lid",
+    "concept_thesis": "Shared 16/20 lid seat across fry, saucier and saucepan.",
+    "quick_summary": "Universal tempered lid seating 16 and 20 cm Forge vessels (~£30 add-on).",
+    "lineup_copy": "One lid covers the compact Forge wet- and dry-cook diameters.",
+    "suggested_use_case": "Covered simmer on saucepan 16/20 or fry 20.",
+    "primary_material": "Tempered glass with 18/8 stainless step rim and bronze-isolated bridge",
+    "lining_material": "Uncoated tempered glass and 18/8 stainless steam interface",
+    "dimensions_summary": "20 cm inner rim-to-rim (16/20 cm vessels)",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "not_applicable",
+    "food_contact_suitability": "[CONCEPT_SPEC] Glass underside and stainless rim contact steam/condensate.",
+    "care_instructions": "[CONCEPT_SPEC] Cool before washing; hand wash until dishwasher validation.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+    "material_architecture": "Stepped stainless rim + tempered viewing glass + isolated bridge handle.",
+    "food_contact_strategy": "Glass underside and stainless rim contact steam/condensate.",
+    "fabrication_route": "Prototype rim gauge against 16/20 vessel set; thermal-shock glass trials.",
+    "interaction_performance_intent": "Covered finishing on 16/20 Forge vessels.",
+    "care_hypothesis": "Cool before washing; hand wash until dishwasher validation.",
+    "engineering_risks": [
+      "Glass thermal shock",
+      "Rim-step mismatch",
+      "Hot bridge handle"
+    ],
+    "required_prototype_tests": [
+      "Thermal-shock quench",
+      "Go/no-go rim gauge",
+      "Handle temperature"
+    ],
+    "agent_intents": [
+      "lid",
+      "16 cm lid",
+      "20 cm lid",
+      "universal lid"
+    ],
+    "negative_constraints": [
+      "universal fit on non-Maison Tavo pans",
+      "broiler use before rating"
+    ],
+    "benchmark_logic": "Lid ecosystem concept — fit unverified until prototype gauges pass.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A stepped stainless-and-glass service lid sized to seat 16 cm and 20 cm Forge vessels.</p><h3>Why it exists</h3><p>Shared lid ecosystem reduces SKU sprawl: one cover for compact fry, saucier and saucepan.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Universal Lid 16/20 | Maison Tavo",
+    "seo_description": "Stepped stainless-and-glass lid concept for 16 and 20 cm Forge vessels.",
+    "price_usd": 30,
+    "variant_option": {
+      "name": "Compatibility",
+      "value": "16/20 cm vessels"
+    },
+    "dimensions": {
+      "diameter_cm": 20
+    },
+    "heat_sources": [],
+    "induction_compatible": false,
+    "handle_configuration": "lid_bridge",
+    "lid_compatibility": "Seats 16 cm and 20 cm Forge vessels",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "lid",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Universal Lid 16/20 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Universal Lid 16/20 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Universal Lid 16/20 — SVG CAD stratigraphy / section with mm wall callouts and lid geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Universal Lid 16/20 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Universal Lid 16/20 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Universal Lid 16/20 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-universal-lid-24",
+    "title": "Forge Universal Lid 24",
+    "sku": "MT-FOR-LID-24",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories > Pot & Pan Lids",
+    "product_type": "Replacement lid",
+    "tags": [
+      "Forge Hybrid",
+      "Replacement Lid",
+      "Cookware Accessory",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "replacement lid",
+    "concept_thesis": "Primary family lid seat for 24 cm Forge vessels.",
+    "quick_summary": "Universal tempered lid for 24 cm Forge vessels (~£35 add-on).",
+    "lineup_copy": "Covers fry, sauté, stockpot and kadhai at the Family Standard diameter.",
+    "suggested_use_case": "Covered braise on sauté 24 or stockpot 24.",
+    "primary_material": "Tempered glass with 18/8 stainless step rim and bronze-isolated bridge",
+    "lining_material": "Uncoated tempered glass and 18/8 stainless steam interface",
+    "dimensions_summary": "24 cm inner rim-to-rim (24 cm vessels)",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "not_applicable",
+    "food_contact_suitability": "[CONCEPT_SPEC] Glass underside and stainless rim contact steam/condensate.",
+    "care_instructions": "[CONCEPT_SPEC] Cool before washing; hand wash until dishwasher validation.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+    "material_architecture": "Stepped stainless rim + tempered viewing glass + isolated bridge handle.",
+    "food_contact_strategy": "Glass underside and stainless rim contact steam/condensate.",
+    "fabrication_route": "Prototype rim gauge against 24 cm vessel set.",
+    "interaction_performance_intent": "Covered finishing on 24 cm Forge vessels.",
+    "care_hypothesis": "Cool before washing; hand wash until dishwasher validation.",
+    "engineering_risks": [
+      "Glass thermal shock",
+      "Rim-step mismatch"
+    ],
+    "required_prototype_tests": [
+      "Thermal-shock quench",
+      "Go/no-go rim gauge"
+    ],
+    "agent_intents": [
+      "lid",
+      "24 cm lid",
+      "universal lid"
+    ],
+    "negative_constraints": [
+      "universal fit on non-Maison Tavo pans"
+    ],
+    "benchmark_logic": "Lid ecosystem concept — fit unverified until prototype gauges pass.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A stepped stainless-and-glass lid sized for 24 cm Forge vessels.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Universal Lid 24 | Maison Tavo",
+    "seo_description": "Stepped stainless-and-glass lid concept for 24 cm Forge vessels.",
+    "price_usd": 35,
+    "variant_option": {
+      "name": "Compatibility",
+      "value": "24 cm vessels"
+    },
+    "dimensions": {
+      "diameter_cm": 24
+    },
+    "heat_sources": [],
+    "induction_compatible": false,
+    "handle_configuration": "lid_bridge",
+    "lid_compatibility": "Seats 24 cm Forge vessels",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "lid",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Universal Lid 24 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Universal Lid 24 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Universal Lid 24 — SVG CAD stratigraphy / section with mm wall callouts and lid geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Universal Lid 24 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Universal Lid 24 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Universal Lid 24 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-universal-lid-28",
+    "title": "Forge Universal Lid 28/32",
+    "sku": "MT-FOR-LID-28",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories > Pot & Pan Lids",
+    "product_type": "Replacement lid",
+    "tags": [
+      "Forge Hybrid",
+      "Replacement Lid",
+      "Cookware Accessory",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "replacement lid",
+    "concept_thesis": "Entertainer lid seat with deferred XXL compatibility reserved.",
+    "quick_summary": "Universal lid for 28 cm vessels; 32 XXL seat reserved (~£40).",
+    "lineup_copy": "Entertainer cover for fry, sauté, stockpot and kadhai at 28 cm.",
+    "suggested_use_case": "Covered entertainer braise on sauté 28 or stockpot 28.",
+    "primary_material": "Domed tempered glass with 18/8 stainless step rim",
+    "lining_material": "Uncoated tempered glass and 18/8 stainless steam interface",
+    "dimensions_summary": "28 cm inner rim-to-rim (28/32 cm vessels)",
+    "dishwasher_suitability": "pending_validation",
+    "microwave_suitability": "not_applicable",
+    "food_contact_suitability": "[CONCEPT_SPEC] Glass dome and stainless rim contact steam.",
+    "care_instructions": "[CONCEPT_SPEC] Cool before washing; hand wash until validated.",
+    "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+    "material_architecture": "Domed glass + stepped rim sized for 28 now, 32 later (CONCEPT_SPEC).",
+    "food_contact_strategy": "Glass dome and stainless rim contact steam.",
+    "fabrication_route": "Prototype 28 rim gauge; reserve step geometry for deferred 32.",
+    "interaction_performance_intent": "Covered finishing on 28 cm vessels; future 32 XXL.",
+    "care_hypothesis": "Cool before washing; hand wash until validated.",
+    "engineering_risks": [
+      "Span impact breakage",
+      "32 step tolerance drift"
+    ],
+    "required_prototype_tests": [
+      "Span impact",
+      "Thermal shock",
+      "28/32 rim gauges"
+    ],
+    "agent_intents": [
+      "lid",
+      "28 cm lid",
+      "32 cm lid",
+      "universal lid"
+    ],
+    "negative_constraints": [
+      "guaranteed 32 fit before XXL vessels ship"
+    ],
+    "benchmark_logic": "28 confirmed launch seat; 32 is a reserved geometry hypothesis.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>A domed stainless-and-glass lid for 28 cm Forge vessels, with step geometry reserved for a deferred 32 cm XXL seat.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Universal Lid 28/32 | Maison Tavo",
+    "seo_description": "Domed lid concept for 28 cm Forge vessels with reserved 32 cm seat.",
+    "price_usd": 40,
+    "variant_option": {
+      "name": "Compatibility",
+      "value": "28/32 cm vessels"
+    },
+    "dimensions": {
+      "diameter_cm": 28
+    },
+    "heat_sources": [],
+    "induction_compatible": false,
+    "handle_configuration": "lid_bridge",
+    "lid_compatibility": "Seats 28 cm Forge vessels; designed to accept future 32 cm XXL",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "vessel_shape": "lid",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Universal Lid 28/32 — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Universal Lid 28/32 — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Universal Lid 28/32 — SVG CAD stratigraphy / section with mm wall callouts and lid geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Universal Lid 28/32 — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Universal Lid 28/32 — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Universal Lid 28/32 — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-set-solo-couple",
+    "title": "Forge Set — Solo / Couple",
+    "sku": "MT-FOR-SET-SOLO",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories",
+    "product_type": "Cookware set",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware Set",
+      "Bundle",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "cookware set",
+    "concept_thesis": "Compact starter: 20 fry, 16 sauce, 20 saucier, shared 16/20 lid.",
+    "quick_summary": "Compact starter: 20 fry, 16 sauce, 20 saucier, shared 16/20 lid.",
+    "lineup_copy": "Size-based Solo/Couple kit covering sear, wet cook and sauce work with one shared lid.",
+    "suggested_use_case": "Two-person weeknights: eggs, grains, small sauces.",
+    "primary_material": "Curated Forge Hybrid vessel + lid set (mixed carbon steel / clad stainless)",
+    "lining_material": "See component SKUs",
+    "dimensions_summary": "Set: 4-piece curated set",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+    "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Set composition (SKU): MT-FOR-FRY-20, MT-FOR-SPN-16, MT-FOR-SCR-20, MT-FOR-LID-20. Lids included free: MT-FOR-LID-20.",
+    "food_contact_strategy": "Follow each component vessel food-contact strategy.",
+    "fabrication_route": "Assembled from independently prototyped component SKUs; no bonded set fabrication.",
+    "interaction_performance_intent": "Two-person weeknights: eggs, grains, small sauces.",
+    "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "engineering_risks": [
+      "Component fit drift",
+      "Lid seat mismatch",
+      "Set weight for shipping"
+    ],
+    "required_prototype_tests": [
+      "Component rim gauges",
+      "Set pack-out drop",
+      "Lid seating on each vessel"
+    ],
+    "agent_intents": [
+      "starter set",
+      "solo cookware",
+      "couple set",
+      "forge bundle"
+    ],
+    "negative_constraints": [
+      "invented component performance",
+      "guaranteed inventory of every component",
+      "compare-at strikethrough without verified reference"
+    ],
+    "benchmark_logic": "Bundle price = component GBP guidance minus free included lids.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>Size-based Solo/Couple kit covering sear, wet cook and sauce work with one shared lid.</p><h3>Included components</h3><p>MT-FOR-FRY-20, MT-FOR-SPN-16, MT-FOR-SCR-20, MT-FOR-LID-20</p><h3>Lids</h3><p>Curated sets include lids at no add-on charge: MT-FOR-LID-20.</p><p>List price £400 reflects component guidance with lids free inside the set.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Set — Solo / Couple | Maison Tavo",
+    "seo_description": "Compact starter: 20 fry, 16 sauce, 20 saucier, shared 16/20 lid.",
+    "price_usd": 400,
+    "variant_option": {
+      "name": "Set",
+      "value": "4-piece curated set"
+    },
+    "dimensions": {},
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "set",
+    "lid_compatibility": "MT-FOR-LID-20",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "bundle_components": [
+      "MT-FOR-FRY-20",
+      "MT-FOR-SPN-16",
+      "MT-FOR-SCR-20",
+      "MT-FOR-LID-20"
+    ],
+    "vessel_shape": "set",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Set — Solo / Couple — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Set — Solo / Couple — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Set — Solo / Couple — SVG CAD stratigraphy / section with mm wall callouts and set geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Set — Solo / Couple — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Set — Solo / Couple — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Set — Solo / Couple — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-set-family-standard",
+    "title": "Forge Set — Family Standard",
+    "sku": "MT-FOR-SET-FAM",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories",
+    "product_type": "Cookware set",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware Set",
+      "Bundle",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "cookware set",
+    "concept_thesis": "Family kit: 24 fry, 20 sauce, 24 stock, 24 kadhai, lids 20+24.",
+    "quick_summary": "Family kit: 24 fry, 20 sauce, 24 stock, 24 kadhai, lids 20+24.",
+    "lineup_copy": "Core family diameters spanning sear, wet cook, stock and tadka.",
+    "suggested_use_case": "Four-person household: weeknight sear through Sunday stock.",
+    "primary_material": "Curated Forge Hybrid vessel + lid set (mixed carbon steel / clad stainless)",
+    "lining_material": "See component SKUs",
+    "dimensions_summary": "Set: 6-piece curated set",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+    "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Set composition (SKU): MT-FOR-FRY-24, MT-FOR-SAU-20, MT-FOR-STK-24, MT-FOR-KAD-24, MT-FOR-LID-20, MT-FOR-LID-24. Lids included free: MT-FOR-LID-20, MT-FOR-LID-24.",
+    "food_contact_strategy": "Follow each component vessel food-contact strategy.",
+    "fabrication_route": "Assembled from independently prototyped component SKUs; no bonded set fabrication.",
+    "interaction_performance_intent": "Four-person household: weeknight sear through Sunday stock.",
+    "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "engineering_risks": [
+      "Component fit drift",
+      "Lid seat mismatch",
+      "Set weight for shipping"
+    ],
+    "required_prototype_tests": [
+      "Component rim gauges",
+      "Set pack-out drop",
+      "Lid seating on each vessel"
+    ],
+    "agent_intents": [
+      "family set",
+      "forge bundle",
+      "24 cm set"
+    ],
+    "negative_constraints": [
+      "invented component performance",
+      "guaranteed inventory of every component",
+      "compare-at strikethrough without verified reference"
+    ],
+    "benchmark_logic": "Bundle price = component GBP guidance minus free included lids.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>Core family diameters spanning sear, wet cook, stock and tadka.</p><h3>Included components</h3><p>MT-FOR-FRY-24, MT-FOR-SAU-20, MT-FOR-STK-24, MT-FOR-KAD-24, MT-FOR-LID-20, MT-FOR-LID-24</p><h3>Lids</h3><p>Curated sets include lids at no add-on charge: MT-FOR-LID-20, MT-FOR-LID-24.</p><p>List price £595 reflects component guidance with lids free inside the set.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Set — Family Standard | Maison Tavo",
+    "seo_description": "Family kit: 24 fry, 20 sauce, 24 stock, 24 kadhai, lids 20+24.",
+    "price_usd": 595,
+    "variant_option": {
+      "name": "Set",
+      "value": "6-piece curated set"
+    },
+    "dimensions": {},
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "set",
+    "lid_compatibility": "MT-FOR-LID-20, MT-FOR-LID-24",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "bundle_components": [
+      "MT-FOR-FRY-24",
+      "MT-FOR-SAU-20",
+      "MT-FOR-STK-24",
+      "MT-FOR-KAD-24",
+      "MT-FOR-LID-20",
+      "MT-FOR-LID-24"
+    ],
+    "vessel_shape": "set",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Set — Family Standard — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Set — Family Standard — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Set — Family Standard — SVG CAD stratigraphy / section with mm wall callouts and set geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Set — Family Standard — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Set — Family Standard — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Set — Family Standard — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-set-entertainer",
+    "title": "Forge Set — Entertainer",
+    "sku": "MT-FOR-SET-ENT",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories",
+    "product_type": "Cookware set",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware Set",
+      "Bundle",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "cookware set",
+    "concept_thesis": "Guest kit: 28 fry, 28 sauté, 28 stock, 30 tawa, 28 lid.",
+    "quick_summary": "Guest kit: 28 fry, 28 sauté, 28 stock, 30 tawa, 28 lid.",
+    "lineup_copy": "Entertainer diameters for large sears, braises, stocks and wide flatbreads.",
+    "suggested_use_case": "Dinner parties and feast cooking.",
+    "primary_material": "Curated Forge Hybrid vessel + lid set (mixed carbon steel / clad stainless)",
+    "lining_material": "See component SKUs",
+    "dimensions_summary": "Set: 5-piece curated set",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+    "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Set composition (SKU): MT-FOR-FRY-28, MT-FOR-STE-28, MT-FOR-STK-28, MT-FOR-TAV-30, MT-FOR-LID-28. Lids included free: MT-FOR-LID-28.",
+    "food_contact_strategy": "Follow each component vessel food-contact strategy.",
+    "fabrication_route": "Assembled from independently prototyped component SKUs; no bonded set fabrication.",
+    "interaction_performance_intent": "Dinner parties and feast cooking.",
+    "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "engineering_risks": [
+      "Component fit drift",
+      "Lid seat mismatch",
+      "Set weight for shipping"
+    ],
+    "required_prototype_tests": [
+      "Component rim gauges",
+      "Set pack-out drop",
+      "Lid seating on each vessel"
+    ],
+    "agent_intents": [
+      "entertainer set",
+      "guest cookware",
+      "forge bundle"
+    ],
+    "negative_constraints": [
+      "invented component performance",
+      "guaranteed inventory of every component",
+      "compare-at strikethrough without verified reference"
+    ],
+    "benchmark_logic": "Bundle price = component GBP guidance minus free included lids.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>Entertainer diameters for large sears, braises, stocks and wide flatbreads.</p><h3>Included components</h3><p>MT-FOR-FRY-28, MT-FOR-STE-28, MT-FOR-STK-28, MT-FOR-TAV-30, MT-FOR-LID-28</p><h3>Lids</h3><p>Curated sets include lids at no add-on charge: MT-FOR-LID-28.</p><p>List price £650 reflects component guidance with lids free inside the set.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Set — Entertainer | Maison Tavo",
+    "seo_description": "Guest kit: 28 fry, 28 sauté, 28 stock, 30 tawa, 28 lid.",
+    "price_usd": 650,
+    "variant_option": {
+      "name": "Set",
+      "value": "5-piece curated set"
+    },
+    "dimensions": {},
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "set",
+    "lid_compatibility": "MT-FOR-LID-28",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "bundle_components": [
+      "MT-FOR-FRY-28",
+      "MT-FOR-STE-28",
+      "MT-FOR-STK-28",
+      "MT-FOR-TAV-30",
+      "MT-FOR-LID-28"
+    ],
+    "vessel_shape": "set",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Set — Entertainer — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Set — Entertainer — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Set — Entertainer — SVG CAD stratigraphy / section with mm wall callouts and set geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Set — Entertainer — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Set — Entertainer — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Set — Entertainer — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-set-european",
+    "title": "Forge Cuisine Kit — European",
+    "sku": "MT-FOR-SET-EUR",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories",
+    "product_type": "Cookware set",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware Set",
+      "Bundle",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "cookware set",
+    "concept_thesis": "European kit: fry, sauté, saucepan, saucier + lids.",
+    "quick_summary": "European kit: fry, sauté, saucepan, saucier + lids.",
+    "lineup_copy": "Sauce-forward European weeknight kit emphasising sear, braise and emulsion.",
+    "suggested_use_case": "Risotto, pan sauces, braised chicken, sautéed vegetables.",
+    "primary_material": "Curated Forge Hybrid vessel + lid set (mixed carbon steel / clad stainless)",
+    "lining_material": "See component SKUs",
+    "dimensions_summary": "Set: 6-piece curated set",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+    "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Set composition (SKU): MT-FOR-FRY-24, MT-FOR-STE-24, MT-FOR-SAU-20, MT-FOR-SCR-20, MT-FOR-LID-20, MT-FOR-LID-24. Lids included free: MT-FOR-LID-20, MT-FOR-LID-24.",
+    "food_contact_strategy": "Follow each component vessel food-contact strategy.",
+    "fabrication_route": "Assembled from independently prototyped component SKUs; no bonded set fabrication.",
+    "interaction_performance_intent": "Risotto, pan sauces, braised chicken, sautéed vegetables.",
+    "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "engineering_risks": [
+      "Component fit drift",
+      "Lid seat mismatch",
+      "Set weight for shipping"
+    ],
+    "required_prototype_tests": [
+      "Component rim gauges",
+      "Set pack-out drop",
+      "Lid seating on each vessel"
+    ],
+    "agent_intents": [
+      "european cookware set",
+      "sauce kit",
+      "forge bundle"
+    ],
+    "negative_constraints": [
+      "invented component performance",
+      "guaranteed inventory of every component",
+      "compare-at strikethrough without verified reference"
+    ],
+    "benchmark_logic": "Bundle price = component GBP guidance minus free included lids.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>Sauce-forward European weeknight kit emphasising sear, braise and emulsion.</p><h3>Included components</h3><p>MT-FOR-FRY-24, MT-FOR-STE-24, MT-FOR-SAU-20, MT-FOR-SCR-20, MT-FOR-LID-20, MT-FOR-LID-24</p><h3>Lids</h3><p>Curated sets include lids at no add-on charge: MT-FOR-LID-20, MT-FOR-LID-24.</p><p>List price £585 reflects component guidance with lids free inside the set.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Cuisine Kit — European | Maison Tavo",
+    "seo_description": "European kit: fry, sauté, saucepan, saucier + lids.",
+    "price_usd": 585,
+    "variant_option": {
+      "name": "Set",
+      "value": "6-piece curated set"
+    },
+    "dimensions": {},
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "set",
+    "lid_compatibility": "MT-FOR-LID-20, MT-FOR-LID-24",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "bundle_components": [
+      "MT-FOR-FRY-24",
+      "MT-FOR-STE-24",
+      "MT-FOR-SAU-20",
+      "MT-FOR-SCR-20",
+      "MT-FOR-LID-20",
+      "MT-FOR-LID-24"
+    ],
+    "vessel_shape": "set",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Cuisine Kit — European — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Cuisine Kit — European — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Cuisine Kit — European — SVG CAD stratigraphy / section with mm wall callouts and set geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Cuisine Kit — European — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Cuisine Kit — European — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Cuisine Kit — European — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-set-asian",
+    "title": "Forge Cuisine Kit — Asian",
+    "sku": "MT-FOR-SET-ASN",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories",
+    "product_type": "Cookware set",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware Set",
+      "Bundle",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "cookware set",
+    "concept_thesis": "Asian kit: tawa, kadhai, saucepan + lids.",
+    "quick_summary": "Asian kit: tawa, kadhai, saucepan + lids.",
+    "lineup_copy": "Flatbread, tadka and wet-cook trio for South and East Asian home kitchens.",
+    "suggested_use_case": "Roti, dosa, tadka dal, stir-fry.",
+    "primary_material": "Curated Forge Hybrid vessel + lid set (mixed carbon steel / clad stainless)",
+    "lining_material": "See component SKUs",
+    "dimensions_summary": "Set: 5-piece curated set",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+    "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Set composition (SKU): MT-FOR-TAV-26, MT-FOR-KAD-24, MT-FOR-SAU-20, MT-FOR-LID-20, MT-FOR-LID-24. Lids included free: MT-FOR-LID-20, MT-FOR-LID-24.",
+    "food_contact_strategy": "Follow each component vessel food-contact strategy.",
+    "fabrication_route": "Assembled from independently prototyped component SKUs; no bonded set fabrication.",
+    "interaction_performance_intent": "Roti, dosa, tadka dal, stir-fry.",
+    "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "engineering_risks": [
+      "Component fit drift",
+      "Lid seat mismatch",
+      "Set weight for shipping"
+    ],
+    "required_prototype_tests": [
+      "Component rim gauges",
+      "Set pack-out drop",
+      "Lid seating on each vessel"
+    ],
+    "agent_intents": [
+      "asian cookware set",
+      "tava kadai set",
+      "forge bundle"
+    ],
+    "negative_constraints": [
+      "invented component performance",
+      "guaranteed inventory of every component",
+      "compare-at strikethrough without verified reference"
+    ],
+    "benchmark_logic": "Bundle price = component GBP guidance minus free included lids.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>Flatbread, tadka and wet-cook trio for South and East Asian home kitchens.</p><h3>Included components</h3><p>MT-FOR-TAV-26, MT-FOR-KAD-24, MT-FOR-SAU-20, MT-FOR-LID-20, MT-FOR-LID-24</p><h3>Lids</h3><p>Curated sets include lids at no add-on charge: MT-FOR-LID-20, MT-FOR-LID-24.</p><p>List price £420 reflects component guidance with lids free inside the set.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Cuisine Kit — Asian | Maison Tavo",
+    "seo_description": "Asian kit: tawa, kadhai, saucepan + lids.",
+    "price_usd": 420,
+    "variant_option": {
+      "name": "Set",
+      "value": "5-piece curated set"
+    },
+    "dimensions": {},
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "set",
+    "lid_compatibility": "MT-FOR-LID-20, MT-FOR-LID-24",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "bundle_components": [
+      "MT-FOR-TAV-26",
+      "MT-FOR-KAD-24",
+      "MT-FOR-SAU-20",
+      "MT-FOR-LID-20",
+      "MT-FOR-LID-24"
+    ],
+    "vessel_shape": "set",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Cuisine Kit — Asian — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Cuisine Kit — Asian — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Cuisine Kit — Asian — SVG CAD stratigraphy / section with mm wall callouts and set geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Cuisine Kit — Asian — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Cuisine Kit — Asian — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Cuisine Kit — Asian — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-set-everyday",
+    "title": "Forge Cuisine Kit — All-in-One Everyday",
+    "sku": "MT-FOR-SET-DAY",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories",
+    "product_type": "Cookware set",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware Set",
+      "Bundle",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "cookware set",
+    "concept_thesis": "Everyday kit: 24 fry, 20 sauce, 20 saucier + lids.",
+    "quick_summary": "Everyday kit: 24 fry, 20 sauce, 20 saucier + lids.",
+    "lineup_copy": "Minimal daily rotation covering sear, wet cook and sauce without specialty shapes.",
+    "suggested_use_case": "Most weeknight meals without a dedicated stockpot or kadhai.",
+    "primary_material": "Curated Forge Hybrid vessel + lid set (mixed carbon steel / clad stainless)",
+    "lining_material": "See component SKUs",
+    "dimensions_summary": "Set: 5-piece curated set",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+    "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Set composition (SKU): MT-FOR-FRY-24, MT-FOR-SAU-20, MT-FOR-SCR-20, MT-FOR-LID-20, MT-FOR-LID-24. Lids included free: MT-FOR-LID-20, MT-FOR-LID-24.",
+    "food_contact_strategy": "Follow each component vessel food-contact strategy.",
+    "fabrication_route": "Assembled from independently prototyped component SKUs; no bonded set fabrication.",
+    "interaction_performance_intent": "Most weeknight meals without a dedicated stockpot or kadhai.",
+    "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "engineering_risks": [
+      "Component fit drift",
+      "Lid seat mismatch",
+      "Set weight for shipping"
+    ],
+    "required_prototype_tests": [
+      "Component rim gauges",
+      "Set pack-out drop",
+      "Lid seating on each vessel"
+    ],
+    "agent_intents": [
+      "everyday set",
+      "minimal cookware",
+      "forge bundle"
+    ],
+    "negative_constraints": [
+      "invented component performance",
+      "guaranteed inventory of every component",
+      "compare-at strikethrough without verified reference"
+    ],
+    "benchmark_logic": "Bundle price = component GBP guidance minus free included lids.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>Minimal daily rotation covering sear, wet cook and sauce without specialty shapes.</p><h3>Included components</h3><p>MT-FOR-FRY-24, MT-FOR-SAU-20, MT-FOR-SCR-20, MT-FOR-LID-20, MT-FOR-LID-24</p><h3>Lids</h3><p>Curated sets include lids at no add-on charge: MT-FOR-LID-20, MT-FOR-LID-24.</p><p>List price £430 reflects component guidance with lids free inside the set.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Cuisine Kit — All-in-One Everyday | Maison Tavo",
+    "seo_description": "Everyday kit: 24 fry, 20 sauce, 20 saucier + lids.",
+    "price_usd": 430,
+    "variant_option": {
+      "name": "Set",
+      "value": "5-piece curated set"
+    },
+    "dimensions": {},
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "set",
+    "lid_compatibility": "MT-FOR-LID-20, MT-FOR-LID-24",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "bundle_components": [
+      "MT-FOR-FRY-24",
+      "MT-FOR-SAU-20",
+      "MT-FOR-SCR-20",
+      "MT-FOR-LID-20",
+      "MT-FOR-LID-24"
+    ],
+    "vessel_shape": "set",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Cuisine Kit — All-in-One Everyday — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Cuisine Kit — All-in-One Everyday — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Cuisine Kit — All-in-One Everyday — SVG CAD stratigraphy / section with mm wall callouts and set geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Cuisine Kit — All-in-One Everyday — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Cuisine Kit — All-in-One Everyday — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Cuisine Kit — All-in-One Everyday — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
+  },
+  {
+    "handle": "forge-set-full-house",
+    "title": "Forge Set — Full House Master Collection",
+    "sku": "MT-FOR-SET-FUL",
+    "vendor": "Maison Tavo",
+    "product_category": "Home & Garden > Kitchen & Dining > Cookware & Bakeware > Cookware Accessories",
+    "product_type": "Cookware set",
+    "tags": [
+      "Forge Hybrid",
+      "Cookware Set",
+      "Bundle",
+      "Concept Spec"
+    ],
+    "lineup": "Forge Hybrid",
+    "status": "draft",
+    "claim_status": "CONCEPT_SPEC",
+    "reference_class": "cookware set",
+    "concept_thesis": "Full Forge launch vessel matrix with universal lids included.",
+    "quick_summary": "Full Forge launch vessel matrix with universal lids included.",
+    "lineup_copy": "Master collection of the launch Forge diameter matrix — all core shapes and universal lids.",
+    "suggested_use_case": "Complete house cookware programme for exhibition and hospitality pilots.",
+    "primary_material": "Curated Forge Hybrid vessel + lid set (mixed carbon steel / clad stainless)",
+    "lining_material": "See component SKUs",
+    "dimensions_summary": "Set: 18-piece curated set",
+    "dishwasher_suitability": "insert_only_pending_validation",
+    "microwave_suitability": "not_microwave_safe",
+    "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+    "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+    "material_architecture": "Set composition (SKU): MT-FOR-FRY-20, MT-FOR-FRY-24, MT-FOR-FRY-28, MT-FOR-SCR-20, MT-FOR-SCR-24, MT-FOR-STE-24, MT-FOR-STE-28, MT-FOR-TAV-26, MT-FOR-TAV-30, MT-FOR-SPN-16, MT-FOR-SAU-20, MT-FOR-STK-24, MT-FOR-STK-28, MT-FOR-KAD-24, MT-FOR-KAD-28, MT-FOR-LID-20, MT-FOR-LID-24, MT-FOR-LID-28. Lids included free: MT-FOR-LID-20, MT-FOR-LID-24, MT-FOR-LID-28.",
+    "food_contact_strategy": "Follow each component vessel food-contact strategy.",
+    "fabrication_route": "Assembled from independently prototyped component SKUs; no bonded set fabrication.",
+    "interaction_performance_intent": "Complete house cookware programme for exhibition and hospitality pilots.",
+    "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+    "engineering_risks": [
+      "Component fit drift",
+      "Lid seat mismatch",
+      "Set weight for shipping"
+    ],
+    "required_prototype_tests": [
+      "Component rim gauges",
+      "Set pack-out drop",
+      "Lid seating on each vessel"
+    ],
+    "agent_intents": [
+      "full set",
+      "master collection",
+      "forge bundle",
+      "complete cookware"
+    ],
+    "negative_constraints": [
+      "invented component performance",
+      "guaranteed inventory of every component",
+      "compare-at strikethrough without verified reference"
+    ],
+    "benchmark_logic": "Bundle price = component GBP guidance minus free included lids.",
+    "sources": [
+      "R01",
+      "R02",
+      "R03"
+    ],
+    "description_html": "<p>Master collection of the launch Forge diameter matrix — all core shapes and universal lids.</p><h3>Included components</h3><p>MT-FOR-FRY-20, MT-FOR-FRY-24, MT-FOR-FRY-28, MT-FOR-SCR-20, MT-FOR-SCR-24, MT-FOR-STE-24, MT-FOR-STE-28, MT-FOR-TAV-26, MT-FOR-TAV-30, MT-FOR-SPN-16, MT-FOR-SAU-20, MT-FOR-STK-24, MT-FOR-STK-28, MT-FOR-KAD-24, MT-FOR-KAD-28, MT-FOR-LID-20, MT-FOR-LID-24, MT-FOR-LID-28</p><h3>Lids</h3><p>Curated sets include lids at no add-on charge: MT-FOR-LID-20, MT-FOR-LID-24, MT-FOR-LID-28.</p><p>List price £2245 reflects component guidance with lids free inside the set.</p><p><strong>Concept-spec notice:</strong> Materials, dimensions, compatibility, food-contact migration and wash performance are unverified prototype targets. Physical unit weight and live stock remain unset until pilot fabrication. Diameters are inner rim-to-rim concept targets.</p>",
+    "seo_title": "Forge Set — Full House Master Collection | Maison Tavo",
+    "seo_description": "Full Forge launch vessel matrix with universal lids included.",
+    "price_usd": 2245,
+    "variant_option": {
+      "name": "Set",
+      "value": "18-piece curated set"
+    },
+    "dimensions": {},
+    "heat_sources": [
+      "induction",
+      "gas"
+    ],
+    "induction_compatible": true,
+    "handle_configuration": "set",
+    "lid_compatibility": "MT-FOR-LID-20, MT-FOR-LID-24, MT-FOR-LID-28",
+    "works_with_kansa": true,
+    "pairs_with_care_kit": "MT-FOR-KIT-C01",
+    "bundle_components": [
+      "MT-FOR-FRY-20",
+      "MT-FOR-FRY-24",
+      "MT-FOR-FRY-28",
+      "MT-FOR-SCR-20",
+      "MT-FOR-SCR-24",
+      "MT-FOR-STE-24",
+      "MT-FOR-STE-28",
+      "MT-FOR-TAV-26",
+      "MT-FOR-TAV-30",
+      "MT-FOR-SPN-16",
+      "MT-FOR-SAU-20",
+      "MT-FOR-STK-24",
+      "MT-FOR-STK-28",
+      "MT-FOR-KAD-24",
+      "MT-FOR-KAD-28",
+      "MT-FOR-LID-20",
+      "MT-FOR-LID-24",
+      "MT-FOR-LID-28"
+    ],
+    "vessel_shape": "set",
+    "media_plan": [
+      {
+        "mode": "Human",
+        "shot": "Forge Set — Full House Master Collection — editorial three-quarter hero, living patina, soft north light"
+      },
+      {
+        "mode": "Human",
+        "shot": "Forge Set — Full House Master Collection — in-use kitchen still (hands optional), atmosphere not prop clutter"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Set — Full House Master Collection — SVG CAD stratigraphy / section with mm wall callouts and set geometry"
+      },
+      {
+        "mode": "Engineer",
+        "shot": "Forge Set — Full House Master Collection — induction coil zone plate (rim / base / coil overlay)"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Set — Full House Master Collection — clean ASCII silhouette plate"
+      },
+      {
+        "mode": "Machine",
+        "shot": "Forge Set — Full House Master Collection — Schema.org JSON-LD / specs.* token block plate"
+      }
+    ]
   }
 ];

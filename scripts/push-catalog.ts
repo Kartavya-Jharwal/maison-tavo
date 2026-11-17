@@ -72,7 +72,7 @@ const LINEUP_COLLECTIONS: Array<{
     handle: 'forge-hybrid',
     title: 'Forge Hybrid',
     descriptionHtml:
-      '<p>Mixed-metal cookware concepts — modular searing, plancha, and thermal-mass systems.</p>',
+      '<p>Forge Hybrid cookware — diameter-standardised frying pans, sauciers, sauté, tawa, saucepans, stockpots, kadhai, universal lids and curated sets. Diameters are inner rim-to-rim concept targets.</p>',
   },
   {
     lineup: 'Forge × Terre',
@@ -95,8 +95,18 @@ type Category = 'Cookware' | 'Tableware & Pottery' | 'Care & Sets';
 const CARE_SKUS = new Set([
   'MT-FOR-OIL-250',
   'MT-FOR-KIT-C01',
+  'MT-FOR-LID-20',
+  'MT-FOR-LID-24',
   'MT-FOR-LID-26',
+  'MT-FOR-LID-28',
   'MT-FOR-LID-30',
+  'MT-FOR-SET-SOLO',
+  'MT-FOR-SET-FAM',
+  'MT-FOR-SET-ENT',
+  'MT-FOR-SET-EUR',
+  'MT-FOR-SET-ASN',
+  'MT-FOR-SET-DAY',
+  'MT-FOR-SET-FUL',
   'MT-TER-STM-24',
 ]);
 const TABLEWARE_SKUS = new Set([
@@ -141,6 +151,16 @@ const CATEGORY_COLLECTIONS: Array<{
   },
 ];
 
+const FORGE_SET_SKUS = new Set([
+  'MT-FOR-SET-SOLO',
+  'MT-FOR-SET-FAM',
+  'MT-FOR-SET-ENT',
+  'MT-FOR-SET-EUR',
+  'MT-FOR-SET-ASN',
+  'MT-FOR-SET-DAY',
+  'MT-FOR-SET-FUL',
+]);
+
 const ALL_COLLECTIONS = [
   ...LINEUP_COLLECTIONS.map((collection) => ({
     ...collection,
@@ -150,6 +170,13 @@ const ALL_COLLECTIONS = [
     ...collection,
     products: () => seedCatalog.filter((product) => categoryFor(product) === collection.category),
   })),
+  {
+    handle: 'forge-sets',
+    title: 'Forge Sets',
+    descriptionHtml:
+      '<p>Curated Forge Hybrid size-based and cuisine kits. Lids are included free inside set list prices.</p>',
+    products: () => seedCatalog.filter((product) => FORGE_SET_SKUS.has(product.sku)),
+  },
 ];
 
 type GraphqlResult = {
@@ -297,6 +324,90 @@ export const SPECS_DEFINITIONS: MetafieldDefSpec[] = [
     name: 'Concept thesis',
     type: 'multi_line_text_field',
     description: 'One-line design thesis for the concept listing.',
+  },
+  {
+    key: 'quick_summary',
+    name: 'Quick summary',
+    type: 'single_line_text_field',
+    description: 'One-liner card summary for storefront and agents.',
+  },
+  {
+    key: 'lineup_copy',
+    name: 'Lineup copy',
+    type: 'multi_line_text_field',
+    description: 'Deeper lineup narrative beyond the concept thesis.',
+  },
+  {
+    key: 'suggested_use_case',
+    name: 'Suggested use-case',
+    type: 'multi_line_text_field',
+    description: 'Suggested use-case or recipe prompt (separate from thesis).',
+  },
+  {
+    key: 'rim_diameter_cm',
+    name: 'Rim diameter (cm)',
+    type: 'number_decimal',
+    description: 'Inner rim-to-rim diameter target in centimetres.',
+  },
+  {
+    key: 'base_diameter_cm',
+    name: 'Base diameter (cm)',
+    type: 'number_decimal',
+    description: 'Outer induction foot / base diameter target in centimetres.',
+  },
+  {
+    key: 'height_cm',
+    name: 'Height (cm)',
+    type: 'number_decimal',
+    description: 'Vessel or wall height target in centimetres (CONCEPT_SPEC).',
+  },
+  {
+    key: 'induction_coil_zone_cm',
+    name: 'Induction coil zone (cm)',
+    type: 'number_decimal',
+    description: 'Concept induction coil zone target (14.5 / 18 / 21 cm).',
+  },
+  {
+    key: 'handle_configuration',
+    name: 'Handle configuration',
+    type: 'single_line_text_field',
+    description: 'Handle layout: stick | stick_helper | short_riveted | dual_loops | lid_bridge | set.',
+  },
+  {
+    key: 'lid_compatibility',
+    name: 'Lid compatibility',
+    type: 'single_line_text_field',
+    description: 'Compatible lid SKU(s) or seating note for the universal lid ecosystem.',
+  },
+  {
+    key: 'works_with_kansa',
+    name: 'Works with Kansa',
+    type: 'boolean',
+    description: 'Whether the Kansa agent layer should treat this SKU as voice-addressable.',
+  },
+  {
+    key: 'pairs_with_care_kit',
+    name: 'Pairs with care kit',
+    type: 'single_line_text_field',
+    description: 'Maintenance kit SKU this piece is intended to pair with.',
+  },
+  {
+    key: 'bundle_components',
+    name: 'Bundle components',
+    type: 'list.single_line_text_field',
+    description: 'Component SKUs when this listing is a curated set/bundle.',
+  },
+  {
+    key: 'vessel_shape',
+    name: 'Vessel shape',
+    type: 'single_line_text_field',
+    description: 'Forge matrix shape key (frying_pan, saucier, saute, tawa, saucepan, stockpot, kadhai, lid, set, specialty).',
+  },
+  {
+    key: 'media_plan',
+    name: 'Media plan',
+    type: 'multi_line_text_field',
+    description: 'Human / Engineer / Machine shot plan (5–6 plates per SKU).',
   },
 ];
 
@@ -583,6 +694,118 @@ export function productMetafields(spec: ProductSpec): Array<{
       key: 'capacity_ml',
       type: 'number_integer',
       value: String(Math.round(spec.dimensions.capacity_ml)),
+    });
+  }
+  if (spec.quick_summary) {
+    fields.push({
+      namespace: 'specs',
+      key: 'quick_summary',
+      type: 'single_line_text_field',
+      value: spec.quick_summary,
+    });
+  }
+  if (spec.lineup_copy) {
+    fields.push({
+      namespace: 'specs',
+      key: 'lineup_copy',
+      type: 'multi_line_text_field',
+      value: spec.lineup_copy,
+    });
+  }
+  if (spec.suggested_use_case) {
+    fields.push({
+      namespace: 'specs',
+      key: 'suggested_use_case',
+      type: 'multi_line_text_field',
+      value: spec.suggested_use_case,
+    });
+  }
+  if (spec.dimensions.diameter_cm !== undefined) {
+    fields.push({
+      namespace: 'specs',
+      key: 'rim_diameter_cm',
+      type: 'number_decimal',
+      value: String(spec.dimensions.diameter_cm),
+    });
+  }
+  if (spec.dimensions.base_diameter_cm !== undefined) {
+    fields.push({
+      namespace: 'specs',
+      key: 'base_diameter_cm',
+      type: 'number_decimal',
+      value: String(spec.dimensions.base_diameter_cm),
+    });
+  }
+  if (spec.dimensions.height_cm !== undefined) {
+    fields.push({
+      namespace: 'specs',
+      key: 'height_cm',
+      type: 'number_decimal',
+      value: String(spec.dimensions.height_cm),
+    });
+  }
+  if (spec.dimensions.induction_coil_zone_cm !== undefined) {
+    fields.push({
+      namespace: 'specs',
+      key: 'induction_coil_zone_cm',
+      type: 'number_decimal',
+      value: String(spec.dimensions.induction_coil_zone_cm),
+    });
+  }
+  if (spec.handle_configuration) {
+    fields.push({
+      namespace: 'specs',
+      key: 'handle_configuration',
+      type: 'single_line_text_field',
+      value: spec.handle_configuration,
+    });
+  }
+  if (spec.lid_compatibility) {
+    fields.push({
+      namespace: 'specs',
+      key: 'lid_compatibility',
+      type: 'single_line_text_field',
+      value: spec.lid_compatibility,
+    });
+  }
+  if (spec.works_with_kansa !== undefined) {
+    fields.push({
+      namespace: 'specs',
+      key: 'works_with_kansa',
+      type: 'boolean',
+      value: spec.works_with_kansa ? 'true' : 'false',
+    });
+  }
+  if (spec.pairs_with_care_kit) {
+    fields.push({
+      namespace: 'specs',
+      key: 'pairs_with_care_kit',
+      type: 'single_line_text_field',
+      value: spec.pairs_with_care_kit,
+    });
+  }
+  if (spec.bundle_components?.length) {
+    fields.push({
+      namespace: 'specs',
+      key: 'bundle_components',
+      type: 'list.single_line_text_field',
+      value: listValue(spec.bundle_components),
+    });
+  }
+  if (spec.vessel_shape) {
+    fields.push({
+      namespace: 'specs',
+      key: 'vessel_shape',
+      type: 'single_line_text_field',
+      value: spec.vessel_shape,
+    });
+  }
+  if (spec.media_plan?.length) {
+    fields.push({
+      namespace: 'specs',
+      key: 'media_plan',
+      type: 'multi_line_text_field',
+      value: spec.media_plan.map((shot) => `[${shot.mode}] ${shot.shot}`).join('\n'),
     });
   }
   return fields;

@@ -70,7 +70,14 @@ Advertises UCP `2026-08-25` capabilities:
 Matched SKUs receive structured `additionalProperty` entries (`sku`, `lineup`, `claim_status`,
 `primary_material`, `lining_material`, `capacity_ml`, `dimensions`, `dishwasher_suitability`,
 `microwave_suitability`, `food_contact_suitability`, `care_instructions`, `heat_compatibility`,
-`induction_compatible`, `heat_sources`, `material_architecture`, `concept_thesis`).
+`induction_compatible`, `heat_sources`, `material_architecture`, `concept_thesis`, plus Forge
+enrichment when present: `quick_summary`, `suggested_use_case`, `handle_configuration`,
+`lid_compatibility`, `works_with_kansa`, `pairs_with_care_kit`, `vessel_shape`,
+`bundle_components`, `rim_diameter_cm`, `induction_coil_zone_cm`).
+
+Forge Hybrid launch vessels, universal lids and curated sets are discoverable via Storefront
+`search_catalog` once published (try queries like `forge frying pan`, `kadhai`, `forge set`).
+See [`forge-series.md`](./forge-series.md).
 
 ## Shopify Catalog API Usage & Caching Compliance
 

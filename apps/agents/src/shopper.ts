@@ -101,6 +101,32 @@ function specProperties(match: ProductSpec) {
   if (match.dimensions.capacity_ml !== undefined) {
     props.push({name: 'capacity_ml', value: match.dimensions.capacity_ml});
   }
+  if (match.quick_summary) props.push({name: 'quick_summary', value: match.quick_summary});
+  if (match.suggested_use_case) {
+    props.push({name: 'suggested_use_case', value: match.suggested_use_case});
+  }
+  if (match.handle_configuration) {
+    props.push({name: 'handle_configuration', value: match.handle_configuration});
+  }
+  if (match.lid_compatibility) {
+    props.push({name: 'lid_compatibility', value: match.lid_compatibility});
+  }
+  if (match.works_with_kansa !== undefined) {
+    props.push({name: 'works_with_kansa', value: match.works_with_kansa});
+  }
+  if (match.pairs_with_care_kit) {
+    props.push({name: 'pairs_with_care_kit', value: match.pairs_with_care_kit});
+  }
+  if (match.vessel_shape) props.push({name: 'vessel_shape', value: match.vessel_shape});
+  if (match.bundle_components?.length) {
+    props.push({name: 'bundle_components', value: match.bundle_components.join(', ')});
+  }
+  if (match.dimensions.diameter_cm !== undefined) {
+    props.push({name: 'rim_diameter_cm', value: match.dimensions.diameter_cm});
+  }
+  if (match.dimensions.induction_coil_zone_cm !== undefined) {
+    props.push({name: 'induction_coil_zone_cm', value: match.dimensions.induction_coil_zone_cm});
+  }
   return props;
 }
 
