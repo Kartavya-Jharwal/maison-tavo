@@ -445,13 +445,8 @@
     position: absolute;
     inset: 0;
     z-index: 2;
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--splash-background, #f5f2ec) 18%, transparent) 0%,
-        color-mix(in srgb, var(--splash-background, #f5f2ec) 42%, transparent) 45%,
-        color-mix(in srgb, var(--splash-background, #f5f2ec) 72%, transparent) 100%
-      );
+    /* Keep the fire artwork at full colour; the previous pale canvas wash read as a white shadow. */
+    background: transparent;
   }
 
   .splash-intro__panel {
