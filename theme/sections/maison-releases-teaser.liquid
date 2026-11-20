@@ -1,26 +1,20 @@
 {% comment %}
   Homepage / room teaser for release cycles.
-  Primary CTA links to /pages/releases. Optional first-visit dialog
-  (native <dialog>, localStorage dismiss, reduced-motion safe).
+  The preview opens from its button.
 {% endcomment %}
 
 {% liquid
   assign cycle_name = section.settings.cycle_name | default: 'Current heat'
   assign cycle_window = section.settings.cycle_window
-  assign cycle_key = section.settings.cycle_key | default: 'current' | handleize
   assign teaser_collection = section.settings.collection
   assign teaser_products = section.settings.products
   assign releases_url = section.settings.releases_url | default: '/pages/releases'
-  assign storage_key = 'mt_release_popup_' | append: cycle_key
 %}
 
 <div
   class="section section--page-width spacing-style maison-releases-teaser"
   style="{% render 'spacing-style', settings: section.settings %}"
   data-mt-release-teaser
-  data-storage-key="{{ storage_key | escape }}"
-  data-popup-enabled="{% if section.settings.enable_popup %}true{% else %}false{% endif %}"
-  data-popup-delay="{{ section.settings.popup_delay | default: 4 }}"
 >
   <div class="maison-releases-teaser__inner">
     <div class="maison-releases-teaser__copy">
@@ -138,27 +132,6 @@
     root.dataset.bound = 'true';
 
     const dialog = root.querySelector('[data-mt-release-dialog]');
-    const storageKey = root.getAttribute('data-storage-key') || 'mt_release_popup_current';
-    const popupEnabled = root.getAttribute('data-popup-enabled') === 'true';
-    const delaySec = Math.max(0, Number(root.getAttribute('data-popup-delay') || 4));
-    const reduced =
-      document.documentElement.getAttribute('data-reduced-motion') === 'true' ||
-      (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-
-    const readDismissed = () => {
-      try {
-        return window.localStorage.getItem(storageKey) === '1';
-      } catch (_) {
-        return false;
-      }
-    };
-
-    const writeDismissed = () => {
-      try {
-        window.localStorage.setItem(storageKey, '1');
-      } catch (_) {}
-    };
-
     const openDialog = () => {
       if (!dialog || dialog.open) return;
       if (typeof dialog.showModal === 'function') {
@@ -168,9 +141,8 @@
       }
     };
 
-    const closeDialog = (persist) => {
+    const closeDialog = () => {
       if (!dialog) return;
-      if (persist) writeDismissed();
       if (typeof dialog.close === 'function') {
         dialog.close();
       } else {
@@ -183,26 +155,19 @@
     });
 
     root.querySelectorAll('[data-mt-release-dismiss]').forEach((el) => {
-      el.addEventListener('click', () => closeDialog(true));
+      el.addEventListener('click', () => closeDialog());
     });
 
     if (dialog) {
       dialog.addEventListener('cancel', (event) => {
         event.preventDefault();
-        closeDialog(true);
+        closeDialog();
       });
       dialog.addEventListener('click', (event) => {
-        if (event.target === dialog) closeDialog(true);
+        if (event.target === dialog) closeDialog();
       });
     }
 
-    if (!popupEnabled || readDismissed() || !dialog) return;
-
-    const wait = reduced ? 0 : delaySec * 1000;
-    window.setTimeout(() => {
-      if (readDismissed()) return;
-      openDialog();
-    }, wait);
   })();
 {% endjavascript %}
 
@@ -365,13 +330,6 @@
     },
     {
       "type": "text",
-      "id": "cycle_key",
-      "label": "Cycle storage key",
-      "default": "current",
-      "info": "Used in localStorage as mt_release_popup_<key>. Change when a new cycle starts so the popup can show again."
-    },
-    {
-      "type": "text",
       "id": "releases_url",
       "label": "Releases page URL",
       "default": "/pages/releases"
@@ -410,26 +368,6 @@
       "id": "drawer_label",
       "label": "Preview button label",
       "default": "Preview this heat"
-    },
-    {
-      "type": "header",
-      "content": "First-visit popup"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_popup",
-      "label": "Auto-open popup once per cycle",
-      "default": false,
-      "info": "Dismissible. Honours reduced motion (opens immediately, no delay animation). Uses native dialog focus management."
-    },
-    {
-      "type": "range",
-      "id": "popup_delay",
-      "label": "Popup delay (seconds)",
-      "min": 0,
-      "max": 20,
-      "step": 1,
-      "default": 4
     },
     {
       "type": "textarea",

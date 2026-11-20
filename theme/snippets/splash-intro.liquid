@@ -37,8 +37,8 @@
     endif
 
     assign splash_bg_image_url = 'maison-hero.webp' | asset_url
-    assign splash_logic_url = 'splash-bg.html' | asset_url
   %}
+  {% capture splash_background %}{% render 'maison-splash-background' %}{% endcapture %}
 
   <dialog
     id="SplashIntro"
@@ -48,7 +48,7 @@
     data-storage="{{ splash_storage }}"
     data-once="{% if settings.splash_show_once == false %}false{% else %}true{% endif %}"
     data-design-mode="{% if request.design_mode %}true{% else %}false{% endif %}"
-    data-storage-key="maison-tavo-splash-seen"
+    data-storage-key="maison-tavo-fire-splash-seen"
     style="--splash-duration: {{ splash_duration_s }};"
   >
     <div
@@ -76,13 +76,13 @@
         <iframe
           id="SplashLogicFrame"
           class="splash-intro__logic-frame"
-          data-src="{{ splash_logic_url }}"
+          data-srcdoc="{{ splash_background | escape }}"
+          sandbox="allow-scripts"
           title="{{ splash_heading | escape }}"
           tabindex="-1"
           aria-hidden="true"
           loading="eager"
           style="display: none;"
-          onload="this.style.display='block';"
         ></iframe>
       </div>
 
@@ -143,8 +143,7 @@
       var once = dialog.getAttribute('data-once') === 'true';
       var designMode = dialog.getAttribute('data-design-mode') === 'true';
       var storageType = dialog.getAttribute('data-storage') || 'session';
-      var key = dialog.getAttribute('data-storage-key') || 'maison-tavo-splash-seen';
-      var duration = parseFloat(dialog.getAttribute('data-duration') || '0');
+      var key = dialog.getAttribute('data-storage-key') || 'maison-tavo-fire-splash-seen';
       var reduceMotion =
         window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
         document.documentElement.getAttribute('data-reduced-motion') === 'true';
@@ -332,17 +331,12 @@
          any tap on the container fires on dialog itself, not just the backdrop.
          Only the Enter button is the deliberate gate. */
 
-      /* Send poster CDN URL to the fire iframe so it can set the placeholder src */
       var logicFrame = document.getElementById('SplashLogicFrame');
       if (logicFrame && !reduceMotion) {
-        var posterUrl = '{{ splash_bg_image_url }}';
-        var sendPoster = function () {
-          try {
-            logicFrame.contentWindow.postMessage({ type: 'mt-splash-poster', src: posterUrl }, '*');
-          } catch (err) {}
-        };
-        logicFrame.addEventListener('load', sendPoster, { once: true });
-        logicFrame.src = logicFrame.dataset.src;
+        logicFrame.addEventListener('load', function () {
+          logicFrame.style.display = 'block';
+        }, { once: true });
+        logicFrame.srcdoc = logicFrame.dataset.srcdoc;
       }
     })();
   </script>

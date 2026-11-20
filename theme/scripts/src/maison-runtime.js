@@ -132,7 +132,7 @@ function triggerStrike(e) {
 const PROFILE_KEY = 'mt_user_profile';
 const SOUND_KEY = 'maison:sound-enabled';
 const PROFILER_LATER_KEY = 'mt_profiler_later';
-const VIEWS_KEY = 'mt_product_views';
+const VIEWS_KEY = 'mt_engaged_page_views';
 
 // Horizon scrolls `.page-wrapper` instead of the window from 990px up.
 function getScroller() {
@@ -185,102 +185,146 @@ function tagProfileFits(root = document) {
   });
 }
 
-function initProfiler() {
-  const drawer = document.querySelector('[data-mt-profiler]');
-  if (!drawer) return;
-  const form = drawer.querySelector('[data-mt-profiler-form]');
-  let returnFocus = null;
-  let trapHandler = null;
 
-  if (document.getElementById('MainContent')?.dataset.template?.startsWith('product')) {
-    sessionStorage.setItem(VIEWS_KEY, String(Number(sessionStorage.getItem(VIEWS_KEY) || 0) + 1));
+function initProfiler() {
+  const profiler = document.querySelector('[data-mt-profiler]');
+  const mail = document.querySelector('[data-mt-exit-mail]');
+  if (!profiler?.showModal || !mail?.showModal) return;
+  try {
+    sessionStorage.getItem(VIEWS_KEY);
+    localStorage.getItem(PROFILE_KEY);
+  } catch {
+    return;
   }
 
-  const eligible = () =>
-    !readProfile() && !sessionStorage.getItem(PROFILER_LATER_KEY) && drawer.hidden;
+  const form = profiler.querySelector('[data-mt-profiler-form]');
+  const MAIL_SEEN = 'mt_exit_mail_seen';
+  const MAIL_PENDING = 'mt_exit_mail_pending';
+  const NEWSLETTER = 'mt-mail-subscribed';
+  let pageViews = Number(sessionStorage.getItem(VIEWS_KEY) || 0);
+  let pageStarted = null;
+  let deepest = 0;
+  let timer;
+  let profilerShown = false;
+  let mailShown = Boolean(sessionStorage.getItem(MAIL_SEEN));
 
-  const focusables = () =>
-    Array.from(
-      drawer.querySelectorAll(
-        'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex^="-"])',
-      ),
-    ).filter((el) => el instanceof HTMLElement && !el.closest('[hidden]'));
+  function showStep(dialog, index, focus = true) {
+    const steps = [...dialog.querySelectorAll('[data-mt-step]')];
+    if (!steps[index]) return;
+    steps.forEach((step, i) => {
+      step.hidden = i !== index;
+      step.removeAttribute('data-mt-step-enter');
+    });
+    steps[index].setAttribute('data-mt-step-enter', '');
+    if (focus) steps[index].querySelector('h3')?.focus({ preventScroll: true });
+  }
 
-  const releaseTrap = () => {
-    if (!trapHandler) return;
-    drawer.removeEventListener('keydown', trapHandler);
-    trapHandler = null;
-  };
-
-  const close = () => {
-    drawer.hidden = true;
-    drawer.setAttribute('aria-modal', 'false');
-    releaseTrap();
-    sessionStorage.setItem(PROFILER_LATER_KEY, '1');
-    if (returnFocus instanceof HTMLElement) returnFocus.focus({ preventScroll: true });
-  };
-
-  const open = () => {
-    if (!eligible()) return;
-    returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    drawer.hidden = false;
-    drawer.setAttribute('aria-modal', 'true');
-    releaseTrap();
-    trapHandler = (event) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        close();
+  [profiler, mail].forEach((dialog) => {
+    dialog.addEventListener('click', (event) => {
+      if (event.target.closest('[data-mt-dialog-close]')) {
+        dialog.close();
         return;
       }
-      if (event.key !== 'Tab') return;
-      const items = focusables();
-      if (!items.length) return;
-      const first = items[0];
-      const last = items[items.length - 1];
-      const active = document.activeElement;
-      if (event.shiftKey && (active === first || !drawer.contains(active))) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && (active === last || !drawer.contains(active))) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    drawer.addEventListener('keydown', trapHandler);
-    (focusables()[0] || drawer).focus({ preventScroll: true });
-    window.removeEventListener('scroll', onScroll, { capture: true });
-  };
+      const step = event.target.closest('[data-mt-step]');
+      const index = [...dialog.querySelectorAll('[data-mt-step]')].indexOf(step);
+      if (event.target.closest('[data-mt-next]')) showStep(dialog, index + 1);
+      else if (event.target.closest('[data-mt-back]')) showStep(dialog, index - 1);
+    });
+  });
 
-  const onScroll = () => {
-    const scroller = getScroller();
-    const max = scroller.scrollHeight - scroller.clientHeight;
-    if (max > 0 && scroller.scrollTop / max >= 0.45) open();
-  };
-
-  if (!eligible()) return;
-  window.addEventListener('scroll', onScroll, { passive: true, capture: true });
-  setTimeout(() => {
-    if (Number(sessionStorage.getItem(VIEWS_KEY) || 0) >= 2) open();
-  }, 45000);
-
-  drawer.querySelector('[data-mt-profiler-later]')?.addEventListener('click', close);
+  form.addEventListener('change', (event) => {
+    if (event.target.matches('input[type="radio"]')) {
+      event.target.closest('[data-mt-step]').querySelector('[data-mt-next]').disabled = false;
+    }
+  });
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    const data = new FormData(form);
-    localStorage.setItem(
-      PROFILE_KEY,
-      JSON.stringify({
-        heat: data.get('heat'),
-        style: data.get('style'),
-        email: data.get('email') || null,
+    const values = new FormData(form);
+    if (!values.has('heat') || !values.has('style')) return;
+    try {
+      localStorage.setItem(PROFILE_KEY, JSON.stringify({
+        heat: values.get('heat'),
+        style: values.get('style'),
+        email: values.get('email')?.trim() || null,
         savedAt: new Date().toISOString(),
-      }),
-    );
-    drawer.hidden = true;
-    drawer.setAttribute('aria-modal', 'false');
-    releaseTrap();
+      }));
+    } catch {
+      form.querySelector('[data-mt-profile-error]').hidden = false;
+      return;
+    }
+    profiler.close();
     tagProfileFits();
-    if (returnFocus instanceof HTMLElement) returnFocus.focus({ preventScroll: true });
+  });
+
+  function canOffer() {
+    return !document.hidden &&
+      !document.querySelector('dialog[open], [data-mt-consent-bar]:not([hidden])') &&
+      !/\/(?:cart|checkout|account|password|challenge)(?:\/|$)|\/pages\/(?:mail|privacy-policy|cookie-policy|terms-of-service)(?:\/|$)/.test(location.pathname);
+  }
+
+  function checkProfiler() {
+    if (pageStarted === null || performance.now() - pageStarted < 10000 ||
+      (deepest < 0.45 && pageViews < 2) || profilerShown ||
+      readProfile() || sessionStorage.getItem(PROFILER_LATER_KEY) || !canOffer()) return;
+    profilerShown = true;
+    sessionStorage.setItem(PROFILER_LATER_KEY, '1');
+    profiler.showModal();
+    showStep(profiler, 0);
+  }
+
+  function onScroll() {
+    const scroller = getScroller();
+    const range = scroller.scrollHeight - scroller.clientHeight;
+    if (range > 0) deepest = Math.max(deepest, scroller.scrollTop / range);
+    checkProfiler();
+  }
+
+  function startPage() {
+    pageStarted = performance.now();
+    deepest = 0;
+    pageViews += 1;
+    sessionStorage.setItem(VIEWS_KEY, String(pageViews));
+    clearTimeout(timer);
+    timer = setTimeout(checkProfiler, 10000);
+  }
+
+  const splash = document.querySelector('#SplashIntro[open]');
+  if (splash) splash.addEventListener('close', startPage, { once: true });
+  else startPage();
+
+  window.addEventListener('scroll', onScroll, { passive: true, capture: true });
+  document.addEventListener('visibilitychange', checkProfiler);
+  document.querySelector('[data-mt-consent-bar]')?.addEventListener('click', () => queueMicrotask(checkProfiler));
+  document.addEventListener('maison:page-enter', startPage);
+  document.addEventListener('maison:page-leave', () => {
+    pageStarted = null;
+    clearTimeout(timer);
+    [profiler, mail].forEach((dialog) => { if (dialog.open) dialog.close(); });
+  });
+
+  mail.querySelector('form').addEventListener('submit', () => sessionStorage.setItem(MAIL_PENDING, '1'));
+  if (sessionStorage.getItem(MAIL_PENDING)) {
+    sessionStorage.removeItem(MAIL_PENDING);
+    if (mail.querySelector('[data-mt-newsletter-success], [data-mt-newsletter-error]')) {
+      const showMailResult = () => {
+        if (!mail.open) {
+          mail.showModal();
+          showStep(mail, 1);
+        }
+      };
+      if (splash) splash.addEventListener('close', showMailResult, { once: true });
+      else showMailResult();
+    }
+  }
+
+  document.addEventListener('mouseout', (event) => {
+    if (event.relatedTarget || event.clientY > 0 || !matchMedia('(hover: hover) and (pointer: fine)').matches ||
+      pageStarted === null || performance.now() - pageStarted < 10000 || (deepest < 0.3 && pageViews < 2) ||
+      mailShown || readProfile()?.email || localStorage.getItem(NEWSLETTER) === '1' || !canOffer()) return;
+    mailShown = true;
+    sessionStorage.setItem(MAIL_SEEN, '1');
+    mail.showModal();
+    showStep(mail, 0);
   });
 }
 
@@ -295,6 +339,53 @@ function initStorageReset() {
       if (name.startsWith('mt_')) document.cookie = `${name}=; Max-Age=0; path=/`;
     });
     window.location.reload();
+  });
+}
+
+function initAboutScreens() {
+  const routes = {
+    curator: '/collections',
+    agent: '/pages/ucp',
+    voice: '/pages/kansa',
+    pass: '/pages/releases',
+  };
+
+  function activate(tab) {
+    const root = tab.closest('[data-component="maison-screens"]');
+    if (!root) return;
+    root.querySelectorAll('[data-screen-target]').forEach((item) => {
+      const selected = item === tab;
+      item.classList.toggle('is-active', selected);
+      item.setAttribute('aria-selected', String(selected));
+      item.tabIndex = selected ? 0 : -1;
+    });
+    root.querySelectorAll('[data-screen]').forEach((panel) => {
+      const selected = panel.dataset.screen === tab.dataset.screenTarget;
+      panel.classList.toggle('is-active', selected);
+      panel.hidden = !selected;
+    });
+    const address = root.querySelector('[data-screen-address]');
+    if (address) address.textContent = routes[tab.dataset.screenTarget];
+    const label = root.querySelector('[data-screen-meta] .meta-tag');
+    if (label) label.textContent = tab.querySelector('.tab-title').textContent;
+  }
+
+  document.addEventListener('click', (event) => {
+    const tab = event.target.closest('.maison-screens__tab[data-screen-target]');
+    if (tab) activate(tab);
+  });
+  document.addEventListener('keydown', (event) => {
+    const tab = event.target.closest('.maison-screens__tab[data-screen-target]');
+    if (!tab || !['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
+    const tabs = [...tab.closest('[role="tablist"]').querySelectorAll('[role="tab"]')];
+    const index = tabs.indexOf(tab);
+    let next = 0;
+    if (event.key === 'End') next = tabs.length - 1;
+    else if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+    else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+    activate(tabs[next]);
+    tabs[next].focus();
   });
 }
 
@@ -590,6 +681,7 @@ if (typeof document !== 'undefined') {
     initDrawerGesture();
     initMicroInteractions();
     initProfiler();
+    initAboutScreens();
     initStorageReset();
     initStreak();
     tagProfileFits();
@@ -611,10 +703,6 @@ if (typeof document !== 'undefined') {
     initLens();
     ensureVessel();
     ensureCarousel();
-    const template = document.getElementById('MainContent')?.dataset.template || '';
-    if (!template.startsWith('product')) return;
-    const seen = Number(sessionStorage.getItem(VIEWS_KEY) || 0) + 1;
-    sessionStorage.setItem(VIEWS_KEY, String(seen));
   });
 
   if (document.readyState === 'loading') {

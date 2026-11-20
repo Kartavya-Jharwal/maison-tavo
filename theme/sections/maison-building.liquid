@@ -46,9 +46,50 @@
       {% endfor %}
     </div>
   {% endif %}
+  {% if page.handle == 'building' %}
+    <aside class="maison-building__care">
+      <h2 class="maison-editorial__card-title">Keep the pan in use</h2>
+      <p>Learn how to season, clean and store your pieces in the <a href="/pages/care">cookware care guide</a>.</p>
+      {% form 'customer', id: 'MaisonBuildingSignup', class: 'maison-building__signup' %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label for="MaisonBuildingEmail">Email for future care notes and release updates</label>
+        <input type="email" name="contact[email]" id="MaisonBuildingEmail" autocomplete="email" required>
+        <button type="submit" class="button">Subscribe</button>
+        {% if form.posted_successfully? %}
+          <p data-mt-newsletter-success role="status">You’re on the list.</p>
+        {% elsif form.errors %}
+          <p role="alert">{{ form.errors | default_errors }}</p>
+        {% endif %}
+      {% endform %}
+    </aside>
+  {% endif %}
 </div>
 
 {% stylesheet %}
+  .maison-building__care {
+    max-inline-size: var(--maison-reading-measure);
+    margin-block-start: var(--maison-reading-gap);
+  }
+
+  .maison-building__signup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--mt-space-xs);
+  }
+
+  .maison-building__signup label { flex-basis: 100%; }
+  .maison-building__signup input[type='email'] {
+    flex: 1 1 15rem;
+    min-inline-size: 0;
+    min-block-size: var(--minimum-touch-target);
+    padding: var(--mt-space-xs);
+    border: 1px solid var(--color-foreground);
+    border-radius: var(--style-border-radius-inputs);
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font: inherit;
+  }
+
   .maison-building__log {
     border-block-start: 1px solid var(--color-border);
   }

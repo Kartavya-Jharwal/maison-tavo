@@ -6,45 +6,85 @@
   Behaviour lives in scripts/src/maison-runtime.js.
 {%- enddoc -%}
 
-<!-- 45% Exploration Profiler Modal -->
-<section
-  class="mt-profiler"
-  data-mt-profiler
-  role="dialog"
-  aria-modal="false"
-  aria-labelledby="mt-profiler-title"
-  tabindex="-1"
-  hidden
->
+<dialog class="mt-profiler" data-mt-profiler aria-labelledby="mt-profiler-title">
+  <button type="button" class="mt-profiler__close" data-mt-dialog-close aria-label="Close kitchen finder">&times;</button>
+  <header class="mt-profiler__head">
+    <p class="mt-profiler__kicker">Your kitchen · Stays on this device</p>
+    <h2 class="mt-profiler__title" id="mt-profiler-title">Find cookware that fits</h2>
+  </header>
   <form class="mt-profiler__form" data-mt-profiler-form>
-    <div class="mt-profiler__head">
-      <p class="mt-profiler__kicker">Your kitchen · stays on this device</p>
-      <h2 class="mt-profiler__title" id="mt-profiler-title">Two questions, then we'll mark what suits you.</h2>
-    </div>
-
-    <fieldset class="mt-profiler__q">
-      <legend>What do you cook on?</legend>
-      <label><input type="radio" name="heat" value="induction" required> Induction</label>
-      <label><input type="radio" name="heat" value="flame"> Open flame</label>
-    </fieldset>
-
-    <fieldset class="mt-profiler__q">
-      <legend>How do you cook?</legend>
-      <label><input type="radio" name="style" value="sear" required> High-heat searing</label>
-      <label><input type="radio" name="style" value="simmer"> Slow simmer</label>
-    </fieldset>
-
-    <label class="mt-profiler__email">
-      <span>Email <small>(optional, never sent)</small></span>
-      <input type="email" name="email" autocomplete="email">
-    </label>
-
-    <div class="mt-profiler__actions">
-      <button type="submit" class="button">Save to this device</button>
-      <button type="button" class="button button-secondary" data-mt-profiler-later>Later</button>
-    </div>
+    <section data-mt-step>
+      <h3 tabindex="-1">Want help finding a piece for your kitchen?</h3>
+      <p>Choose your hob and cooking style to highlight suitable pieces.</p>
+      <div class="mt-profiler__actions">
+        <button type="button" class="button" data-mt-next>Find my fit</button>
+        <button type="button" class="button-secondary" data-mt-dialog-close>Maybe later</button>
+      </div>
+    </section>
+    <section data-mt-step hidden>
+      <h3 tabindex="-1">What do you cook on?</h3>
+      <fieldset class="mt-profiler__q">
+        <legend class="visually-hidden">Heat source</legend>
+        <label><input type="radio" name="heat" value="induction"> Induction</label>
+        <label><input type="radio" name="heat" value="flame"> Open flame</label>
+      </fieldset>
+      <button type="button" class="button" data-mt-next disabled>Continue</button>
+    </section>
+    <section data-mt-step hidden>
+      <h3 tabindex="-1">How do you cook most often?</h3>
+      <fieldset class="mt-profiler__q">
+        <legend class="visually-hidden">Cooking style</legend>
+        <label><input type="radio" name="style" value="sear"> High-heat searing</label>
+        <label><input type="radio" name="style" value="simmer"> Slow simmer</label>
+      </fieldset>
+      <div class="mt-profiler__actions">
+        <button type="button" class="button" data-mt-next disabled>Continue</button>
+        <button type="button" class="button-secondary" data-mt-back>Back</button>
+      </div>
+    </section>
+    <section data-mt-step hidden>
+      <h3 tabindex="-1">Save your kitchen profile</h3>
+      <label class="mt-profiler__email" for="MtProfilerEmail">Email (optional, stays on this device)</label>
+      <input id="MtProfilerEmail" type="email" name="email" autocomplete="email">
+      <p>Leave it blank to save just your cooking preferences.</p>
+      <div class="mt-profiler__actions">
+        <button type="submit" class="button">Save my preferences</button>
+        <button type="button" class="button-secondary" data-mt-back>Back</button>
+      </div>
+    </section>
+    <p data-mt-profile-error role="alert" hidden>Your browser couldn’t save these preferences.</p>
   </form>
-</section>
+</dialog>
+
+<dialog class="mt-profiler" data-mt-exit-mail aria-labelledby="MtExitMailTitle">
+  <button type="button" class="mt-profiler__close" data-mt-dialog-close aria-label="Close email invitation">&times;</button>
+  <header class="mt-profiler__head">
+    <h2 class="mt-profiler__title" id="MtExitMailTitle">Before you go</h2>
+  </header>
+  <section data-mt-step>
+    <h3 tabindex="-1">Want cookware care notes and release updates?</h3>
+    <p><a href="/pages/care">Read the cookware care guide</a> anytime.</p>
+    <div class="mt-profiler__actions">
+      <button type="button" class="button" data-mt-next>Yes, keep me posted</button>
+      <button type="button" class="button-secondary" data-mt-dialog-close>No thanks</button>
+    </div>
+  </section>
+  <section data-mt-step hidden>
+    <h3 tabindex="-1">Where should we send updates?</h3>
+    {% form 'customer', id: 'MaisonExitSignup', class: 'mt-profiler__form', return_to: request.path %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label class="mt-profiler__email" for="MtExitEmail">Email</label>
+      <input id="MtExitEmail" type="email" name="contact[email]" autocomplete="email" required>
+      <p>Subscribe to Maison Tavo care notes and release emails. Unsubscribe anytime.</p>
+      <button type="submit" class="button">Subscribe</button>
+      {% if form.posted_successfully? %}
+        <p data-mt-newsletter-success role="status">You’re on the list.</p>
+      {% elsif form.errors %}
+        <p data-mt-newsletter-error role="alert">{{ form.errors | default_errors }}</p>
+      {% endif %}
+    {% endform %}
+  </section>
+</dialog>
 
 <!-- Consent & Accessibility Preferences Bar -->
 <aside class="mt-consent-bar" data-mt-consent-bar role="region" aria-label="Privacy and accessibility preferences" hidden>
@@ -66,110 +106,136 @@
 </aside>
 
 {% stylesheet %}
-  /* --- 45% Profiler Modal --- */
   .mt-profiler {
-    position: fixed;
-    inset-inline: clamp(0.75rem, 3vw, 2rem);
-    inset-block-end: clamp(0.75rem, 3vw, 2rem);
-    z-index: var(--layer-flat, 10);
-    max-width: 44rem;
+    inset: auto 0 var(--mt-space-md);
+    inline-size: min(calc(100% - 2 * var(--mt-space-md)), 32rem);
+    max-block-size: calc(100dvh - 2 * var(--mt-space-md));
     margin-inline: auto;
-    padding: clamp(1.25rem, 3vw, 2rem);
-    border: 1px solid rgb(var(--color-foreground-rgb) / 0.15);
-    background: var(--color-background);
-    color: var(--color-foreground);
-    box-shadow: 0 24px 60px rgb(0 0 0 / 0.18);
+    padding: var(--mt-space-gutter);
+    border: 1px solid var(--mt-surface-border);
+    border-radius: var(--style-border-radius-lg);
+    background: var(--mt-surface-raised);
+    color: var(--mt-surface-ink);
+    box-shadow: 0 16px 45px rgb(var(--mt-color-soot-rgb) / 0.22);
   }
 
-  .mt-profiler[hidden] {
-    display: none;
+  .mt-profiler [hidden] { display: none; }
+  .mt-profiler::backdrop { background: rgb(var(--mt-color-soot-rgb) / 0.42); }
+
+  .mt-profiler__close {
+    position: absolute;
+    inset-block-start: var(--mt-space-sm);
+    inset-inline-end: var(--mt-space-sm);
+    min-inline-size: var(--minimum-touch-target);
+    min-block-size: var(--minimum-touch-target);
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    background: var(--mt-surface-raised);
+    color: color-mix(in srgb, var(--color-error) 62%, var(--mt-surface-ink));
+    font: 500 var(--mt-type-title) / 1 var(--mt-type-family-accent);
+    cursor: pointer;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .mt-profiler:not([hidden]) {
-      animation: mt-rise 420ms cubic-bezier(0.22, 1, 0.36, 1);
-    }
-  }
-
-  @keyframes mt-rise {
-    from { transform: translateY(24px); opacity: 0; }
-  }
-
-  .mt-profiler__form {
-    display: grid;
-    gap: 1.25rem;
+  .mt-profiler__head {
+    padding-inline-end: calc(var(--minimum-touch-target) + var(--mt-space-xs));
+    margin-block-end: var(--mt-space-md);
   }
 
   .mt-profiler__kicker,
-  .mt-profiler__q legend,
-  .mt-profiler__email span,
   .mt-consent-bar__eyebrow {
-    margin: 0 0 0.5rem;
-    font-family: var(--mt-type-family-mono);
-    font-size: var(--mt-type-accent);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgb(var(--color-foreground-rgb) / 0.7);
+    margin: 0 0 var(--mt-space-xs);
+    font: var(--mt-type-nav) / 1.4 var(--mt-type-family-accent);
   }
 
-  .mt-profiler__title {
-    margin: 0;
-    font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-title);
-    font-weight: 400;
+  .mt-profiler__title,
+  .mt-profiler h3 {
+    color: inherit;
+    margin: 0 0 var(--mt-space-xs);
+    text-wrap: balance;
   }
+
+  .mt-profiler__title { font-size: var(--mt-type-heading); }
+  .mt-profiler h3 { font-size: var(--mt-type-title); }
+  .mt-profiler p { margin-block: 0 var(--mt-space-sm); }
 
   .mt-profiler__q {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0;
+    display: grid;
+    gap: var(--mt-space-xs);
+    margin: 0 0 var(--mt-space-md);
     padding: 0;
     border: 0;
   }
 
-  .mt-profiler__q legend {
-    width: 100%;
+  .mt-profiler__q label,
+  .mt-profiler input[type='email'] {
+    min-block-size: var(--minimum-touch-target);
+    padding: var(--mt-space-xs) var(--mt-space-sm);
+    border: 1px solid color-mix(in srgb, var(--mt-surface-ink) 48%, transparent);
+    border-radius: var(--style-border-radius-inputs);
+    background: var(--mt-surface-raised);
+    color: var(--mt-surface-ink);
   }
 
   .mt-profiler__q label {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
-    min-height: 44px;
-    padding: 0 1rem;
-    border: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
-    border-radius: 999px;
+    gap: var(--mt-space-xs);
     cursor: pointer;
   }
 
   .mt-profiler__q label:has(:checked) {
-    border-color: var(--color-foreground);
-    background: var(--color-foreground);
-    color: var(--color-background);
+    background: var(--mt-surface-ink);
+    color: var(--mt-surface-raised);
   }
 
+  .mt-profiler :is(button, a, input):focus-visible,
   .mt-profiler__q label:has(:focus-visible) {
-    outline: 2px solid var(--bell, #b8893a);
-    outline-offset: 2px;
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
   }
 
   .mt-profiler__email {
-    display: grid;
+    display: block;
+    margin-block-end: var(--mt-space-xs);
+    font-weight: 600;
   }
 
-  .mt-profiler__email input {
-    min-height: 44px;
-    padding: 0 0.75rem;
-    border: 1px solid rgb(var(--color-foreground-rgb) / 0.25);
-    background: transparent;
-    color: inherit;
+  .mt-profiler input[type='email'] {
+    inline-size: 100%;
+    margin-block-end: var(--mt-space-sm);
+    font: inherit;
   }
 
   .mt-profiler__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: var(--mt-space-xs);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html:not([data-reduced-motion='true']) .mt-profiler[open] {
+      animation: mt-dialog-in 340ms cubic-bezier(0.2, 0.75, 0.3, 1) both;
+    }
+
+    html:not([data-reduced-motion='true']) .mt-profiler[open]::backdrop {
+      animation: mt-dialog-dim 250ms linear both;
+    }
+
+    html:not([data-reduced-motion='true']) .mt-profiler [data-mt-step-enter] {
+      animation: mt-step-in 220ms cubic-bezier(0.2, 0.75, 0.3, 1) both;
+    }
+  }
+
+  @keyframes mt-dialog-in {
+    from { transform: translateY(1.25rem) scale(0.985); opacity: 0; }
+  }
+
+  @keyframes mt-dialog-dim {
+    from { opacity: 0; }
+  }
+
+  @keyframes mt-step-in {
+    from { transform: translateY(0.4rem); opacity: 0; }
   }
 
   .mt-reset {

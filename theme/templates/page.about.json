@@ -104,6 +104,14 @@
       },
       "block_order": ["mover", "gifter", "operator"]
     },
+    "wireframe_screens": {
+      "type": "maison-wireframe-screens",
+      "settings": {
+        "eyebrow": "Explore the prototype",
+        "heading": "Four ways into Maison Tavo",
+        "lede": "Browse the cookware, inspect the commerce demo, ask Kansa or explore the release notes."
+      }
+    },
     "diagnostic_audit": {
       "type": "maison-about",
       "settings": {
@@ -144,5 +152,5 @@
       "block_order": ["claim_observed", "voice", "social"]
     }
   },
-  "order": ["story_hero", "promises", "customers", "diagnostic_audit"]
+  "order": ["story_hero", "promises", "customers", "wireframe_screens", "diagnostic_audit"]
 }

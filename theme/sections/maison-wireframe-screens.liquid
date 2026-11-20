@@ -33,10 +33,10 @@
         class="maison-screens__tab is-active"
         role="tab"
         aria-selected="true"
-        aria-controls="screen-panel-curator"
-        id="tab-curator"
+        aria-controls="screen-panel-curator-{{ section.id }}"
+        id="tab-curator-{{ section.id }}"
+        type="button"
         data-screen-target="curator"
-        data-strike
       >
         <span class="tab-index">01</span>
         <span class="tab-title">Curator Canvas</span>
@@ -47,42 +47,45 @@
         class="maison-screens__tab"
         role="tab"
         aria-selected="false"
-        aria-controls="screen-panel-agent"
-        id="tab-agent"
+        aria-controls="screen-panel-agent-{{ section.id }}"
+        id="tab-agent-{{ section.id }}"
+        type="button"
+        tabindex="-1"
         data-screen-target="agent"
-        data-strike
       >
         <span class="tab-index">02</span>
         <span class="tab-title">Spec Protocol</span>
-        <span class="tab-sub">UCP 2026 · Machine-Readable JSON</span>
+        <span class="tab-sub">Commerce protocol · Interactive demo</span>
       </button>
 
       <button
         class="maison-screens__tab"
         role="tab"
         aria-selected="false"
-        aria-controls="screen-panel-voice"
-        id="tab-voice"
+        aria-controls="screen-panel-voice-{{ section.id }}"
+        id="tab-voice-{{ section.id }}"
+        type="button"
+        tabindex="-1"
         data-screen-target="voice"
-        data-strike
       >
         <span class="tab-index">03</span>
         <span class="tab-title">Kansa Companion</span>
-        <span class="tab-sub">Acoustic Resonance · Care Rites</span>
+        <span class="tab-sub">Cookware care · Heat and seasoning</span>
       </button>
 
       <button
         class="maison-screens__tab"
         role="tab"
         aria-selected="false"
-        aria-controls="screen-panel-pass"
-        id="tab-pass"
+        aria-controls="screen-panel-pass-{{ section.id }}"
+        id="tab-pass-{{ section.id }}"
+        type="button"
+        tabindex="-1"
         data-screen-target="pass"
-        data-strike
       >
         <span class="tab-index">04</span>
         <span class="tab-title">Foundry Allocation</span>
-        <span class="tab-sub">Last Call · Single-Batch Ledger</span>
+        <span class="tab-sub">Release notes · Exhibition</span>
       </button>
     </div>
 
@@ -93,10 +96,10 @@
         <div class="viewport-dots">
           <span></span><span></span><span></span>
         </div>
-        <div class="viewport-address" id="screen-address">
-          https://maison-tavo.com/pdp/forge-relay-280#curator-view
+        <div class="viewport-address" data-screen-address>
+          {{ routes.collections_url }}
         </div>
-        <div class="viewport-meta" id="screen-meta">
+        <div class="viewport-meta" data-screen-meta>
           <span class="meta-tag">DEPTH: HUMAN CURATOR</span>
         </div>
       </div>
@@ -104,7 +107,8 @@
       <!-- Screen Panels -->
       <div class="viewport-content">
         <!-- 01: Curator Canvas -->
-        <div class="screen-panel is-active" id="screen-panel-curator" data-screen="curator">
+        <div class="screen-panel is-active" id="screen-panel-curator-{{ section.id }}" role="tabpanel" aria-labelledby="tab-curator-{{ section.id }}" data-screen="curator">
+          <p class="maison-screens__link"><a href="{{ routes.collections_url }}">Browse the cookware</a></p>
           <div class="screen-layout-curator">
             <div class="curator-media">
               {% liquid
@@ -155,7 +159,7 @@
               </div>
 
               <div class="curator-actions">
-                <a href="#lineups" class="pill pill-light">Inspect Artifact →</a>
+                <a href="{{ routes.collections_url }}" class="pill pill-light">Browse the catalogue →</a>
                 <span class="curator-provenance-note"><i class="fa-solid fa-check" aria-hidden="true"></i> In-stock for Heat Edition #04</span>
               </div>
             </div>
@@ -163,7 +167,8 @@
         </div>
 
         <!-- 02: Agent Spec Protocol -->
-        <div class="screen-panel" id="screen-panel-agent" data-screen="agent">
+        <div class="screen-panel" id="screen-panel-agent-{{ section.id }}" role="tabpanel" aria-labelledby="tab-agent-{{ section.id }}" data-screen="agent" hidden>
+          <p class="maison-screens__link"><a href="/pages/ucp">Explore the protocol demo</a></p>
           <div class="screen-layout-agent">
             <div class="agent-terminal">
               <div class="terminal-bar">
@@ -206,7 +211,8 @@
         </div>
 
         <!-- 03: Kansa Companion -->
-        <div class="screen-panel" id="screen-panel-voice" data-screen="voice">
+        <div class="screen-panel" id="screen-panel-voice-{{ section.id }}" role="tabpanel" aria-labelledby="tab-voice-{{ section.id }}" data-screen="voice" hidden>
+          <p class="maison-screens__link"><a href="/pages/kansa">Open Kansa</a></p>
           <div class="screen-layout-voice">
             <div class="voice-card glass-bronze">
               <div class="voice-header">
@@ -255,7 +261,8 @@
         </div>
 
         <!-- 04: Allocation Pass -->
-        <div class="screen-panel" id="screen-panel-pass" data-screen="pass">
+        <div class="screen-panel" id="screen-panel-pass-{{ section.id }}" role="tabpanel" aria-labelledby="tab-pass-{{ section.id }}" data-screen="pass" hidden>
+          <p class="maison-screens__link"><a href="/pages/releases">See release notes</a></p>
           <div class="screen-layout-pass">
             <div class="pass-ledger glass">
               <div class="ledger-header">
@@ -288,7 +295,7 @@
               <p class="curator-desc">
                 Maison Tavo produces in small, deliberate heats. We do not maintain endless warehouse inventory. Each piece is registered to its buyer with a metallurgy certificate and foundry stamp before it enters the kitchen.
               </p>
-              <a href="#care-ritual" class="pill pill-glass">Explore Ritual Protocols →</a>
+              <a href="/pages/care" class="pill pill-glass">Explore Ritual Protocols →</a>
             </div>
           </div>
         </div>
@@ -861,62 +868,11 @@
     font-family: var(--mt-type-family-mono);
     font-size: var(--mt-type-accent);
   }
+  .maison-screens__link { margin: 0 0 var(--mt-space-md); }
+  .maison-screens__link a { color: inherit; text-decoration: underline; }
+  .maison-screens__tab:focus-visible { outline: 2px solid currentColor; outline-offset: -4px; }
 {% endstylesheet %}
 
-{% javascript %}
-  (function () {
-    const root = document.querySelector('[data-component="maison-screens"]');
-    if (!root || root.dataset.screensBound === 'true') return;
-    root.dataset.screensBound = 'true';
-
-    const tabs = root.querySelectorAll('.maison-screens__tab');
-    const panels = root.querySelectorAll('.screen-panel');
-    const address = root.querySelector('#screen-address');
-    const metaTag = root.querySelector('#screen-meta .meta-tag');
-
-    const addressMap = {
-      curator: 'https://maison-tavo.com/pdp/forge-relay-280#curator-canvas',
-      agent: 'https://maison-tavo.com/api/v1/ucp/catalogue/forge-relay-280.jsonld',
-      voice: 'https://maison-tavo.com/companion/kansa#acoustic-analyzer',
-      pass: 'https://maison-tavo.com/allocation/heat-04#foundry-ledger'
-    };
-
-    const metaMap = {
-      curator: 'DEPTH: HUMAN CURATOR · LIVING KITCHEN',
-      agent: 'DEPTH: UCP 2026 MACHINE SCHEMA · DETERMINISTIC',
-      voice: 'DEPTH: ACOUSTIC RESONANCE · 880HZ CHIME',
-      pass: 'DEPTH: SINGLE-BATCH FOUNDRY PASS · CERTIFIED'
-    };
-
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const target = tab.dataset.screenTarget;
-
-        tabs.forEach((t) => {
-          t.classList.remove('is-active');
-          t.setAttribute('aria-selected', 'false');
-        });
-        panels.forEach((p) => p.classList.remove('is-active'));
-
-        tab.classList.add('is-active');
-        tab.setAttribute('aria-selected', 'true');
-
-        const activePanel = root.querySelector(`.screen-panel[data-screen="${target}"]`);
-        if (activePanel) {
-          activePanel.classList.add('is-active');
-        }
-
-        if (address && addressMap[target]) {
-          address.textContent = addressMap[target];
-        }
-
-        if (metaTag && metaMap[target]) {
-          metaTag.textContent = metaMap[target];
-        }
-      });
-    });
-  })();
-{% endjavascript %}
 
 {% schema %}
 {

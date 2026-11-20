@@ -23,7 +23,7 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  /* First-paint background colour while JPEG decodes */
+  /* First-paint background colour while the poster decodes */
   background: #C62828;
 }
 
@@ -88,12 +88,7 @@ canvas.on {
 </head>
 <body>
 <div id="imgContainer">
-  <!--
-    Placeholder: Shopify CDN URL is injected by parent via postMessage after the frame loads,
-    or falls back to the relative path if served from the same origin during local dev.
-    The src is set by JS below before the img is appended, so there's no double-load.
-  -->
-  <img id="placeholder" src="" alt="" draggable="false">
+  <img id="placeholder" src="{{ 'maison-hero.webp' | asset_url | escape }}" width="823" height="823" alt="" draggable="false">
   <canvas id="gl"></canvas>
   <div id="content"></div>
 </div>
@@ -115,19 +110,12 @@ canvas.on {
    Everything runs on one loop phase, u_theta. Each time term is a whole
    number of turns of it, so the loop is seamless.
 
-   PLACEHOLDER SEQUENCE:
-     1. #placeholder src is resolved from postMessage or fallback, assigned
-        immediately so it loads in parallel with the WebGL init.
-     2. WebGL initialises and starts rendering to fieldFbo.
-     3. On the first completed GPU frame, canvas.classList.add('on') fades
-        the canvas in over the still-visible placeholder (45s CSS transition).
-     4. If WebGL is unavailable, the placeholder stays permanently — no blank.
+   The poster remains visible until the first WebGL frame.
 ========================================================================= */
 "use strict";
 
 const imgContainer = document.getElementById("imgContainer");
 const canvas       = document.getElementById("gl");
-const placeholder  = document.getElementById("placeholder");
 
 /* ---- dials --------------------------------------------------------------- */
 const CFG = {
@@ -725,29 +713,6 @@ canvas.addEventListener("webglcontextrestored", () => {
     console.warn("splash-bg: restore failed:", err && err.message);
   }
 });
-
-/* ---- Placeholder src resolution ------------------------------------------
-   The parent frame sends the CDN URL via postMessage once it knows it.
-   Until then, attempt a relative path that works in local dev.
-   The <link rel="preload"> in the parent already has the CDN URL so the
-   image is typically in-cache when this src assignment fires. */
-function setPlaceholderSrc(src) {
-  if (!src || placeholder.src === src) return;
-  placeholder.src = src;
-}
-
-window.addEventListener("message", e => {
-  if (e.data && e.data.type === "mt-splash-poster" && e.data.src) {
-    setPlaceholderSrc(e.data.src);
-  }
-});
-
-/* Fallback: if no message arrives within 200ms, try same-origin relative path */
-setTimeout(() => {
-  if (!placeholder.src || placeholder.naturalWidth === 0) {
-    setPlaceholderSrc("maison-hero.webp");
-  }
-}, 200);
 
 /* ---- Boot ---------------------------------------------------------------- */
 (function start() {

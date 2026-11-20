@@ -98,6 +98,7 @@
   <div class="maison-footer__cta maison-footer__wrap">
     <h2 class="maison-footer__headline">{{ section.settings.headline | escape }}</h2>
     <div class="maison-footer__signup">
+      <p class="maison-footer__signup-copy">Get cookware care notes and hear when the next release opens.</p>
       {%- form 'customer', id: 'MaisonFooterSignup', class: 'maison-footer__form' -%}
         <input type="hidden" name="contact[tags]" value="newsletter">
         <label class="visually-hidden" for="MaisonFooterEmail">Email</label>
@@ -111,7 +112,7 @@
         >
         <button type="submit" class="button button--primary">{{ section.settings.button_label | escape }}</button>
         {%- if form.posted_successfully? -%}
-          <p class="maison-footer__note" role="status">You're on the list.</p>
+          <p class="maison-footer__note" data-mt-newsletter-success role="status">You're on the list.</p>
         {%- elsif form.errors -%}
           <p class="maison-footer__note" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
         {%- endif -%}
@@ -289,14 +290,32 @@
     flex: 1 1 14rem;
     min-height: 48px;
     padding: 0 var(--mt-space-4);
-    border: 1px solid rgb(247 242 233 / 0.28);
-    background: transparent;
-    color: inherit;
+    border: 1px solid var(--mt-surface-raised);
+    background: var(--mt-surface-raised);
+    color: var(--mt-surface-ink);
+    border-radius: var(--style-border-radius-inputs);
     font: inherit;
   }
 
   .maison-footer__form input[type='email']::placeholder {
-    color: rgb(247 242 233 / 0.45);
+    color: color-mix(in srgb, var(--mt-surface-ink) 75%, var(--mt-surface-raised));
+    opacity: 1;
+  }
+
+  .maison-footer__form .button {
+    background: var(--mt-surface-raised);
+    color: var(--mt-surface-ink);
+    border: 1px solid var(--mt-surface-raised);
+  }
+
+  .maison-footer__form :is(input, button):focus-visible {
+    outline: 2px solid var(--mt-surface-raised);
+    outline-offset: 3px;
+  }
+
+  .maison-footer__signup-copy {
+    margin: 0 0 var(--mt-space-xs);
+    color: var(--mt-surface-raised);
   }
 
   .maison-footer__note {

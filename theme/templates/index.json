@@ -67,13 +67,10 @@
         "lede": "Maison does not keep a perpetual new-arrivals rail. Pieces enter through timed release cycles — then the window closes.",
         "cycle_name": "Current heat",
         "cycle_window": "Allocation open while stock lasts",
-        "cycle_key": "current",
         "releases_url": "/pages/releases",
         "cta_label": "View releases",
         "show_mail_link": true,
         "enable_drawer": true,
-        "enable_popup": false,
-        "popup_delay": 4,
         "padding-block-start": 24,
         "padding-block-end": 16
       }
