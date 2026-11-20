@@ -355,7 +355,7 @@
     border: 0;
     overflow: hidden;
     background: var(--splash-background, var(--brand-color-canvas, var(--color-background)));
-    color: var(--splash-foreground, var(--brand-color-ink, var(--color-foreground)));
+    color: #fff;
     font-family: var(--brand-font-wordmark, var(--font-wordmark--family, var(--font-heading--family)));
     z-index: var(--brand-z-splash, var(--layer-temporary));
   }
@@ -597,6 +597,7 @@
 
   .splash-intro__enter-icon {
     position: relative;
+    color: var(--brand-color-ink, #14110f);
     z-index: 1;
     margin-inline-start: 0.12rem;
     opacity: 0.92;
