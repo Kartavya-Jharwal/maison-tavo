@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main_ask_ai": {
+      "type": "maison-ask-ai",
+      "settings": {
+        "heading": "What can an assistant find?",
+        "lede": "Try a prompt and check which facts the assistant can source. Since this store is gated, it may only see public references."
+      }
+    }
+  },
+  "order": ["main_ask_ai"]
+}

@@ -1,65 +1,25 @@
-# Terms of Service
+# Exhibition terms
 
-**Template copy requiring lawyer review.** This document is professional placeholder text for **Maison Tavo / Kartavya** and is **not legal advice**. Do not publish as binding terms without qualified counsel. Last reviewed: 26 September 2026 (draft).
+## 1. Purpose and status
 
-This markdown is the source of truth for the Liquid section `maison-legal` when **Document** is set to Terms of Service (`templates/page.terms.json`). Keep the two in sync.
+Maison Tavo is a password-gated cookware and commerce exhibition. The catalogue, prices, materials, demonstrations and sample shopping journey are presented for evaluation. This statement creates no contract, payment obligation or transfer of rights. Your statutory rights apply in full.
 
-Operator placeholder: Maison Tavo, operated by Kartavya. Website: [https://kartavya.tech](https://kartavya.tech).
+## 2. Orders and representations
 
-Shopify native **Terms of service**, **Refund policy**, and **Shipping policy** (Admin → Settings → Policies) remain linked from the footer policy list. Keep those **and** this house page.
+Please use only operator-provided test details if invited to try checkout. For the exhibition, treat prices, stock and delivery as examples. The three customer stories are fictional. “Cookware that outlasts you” expresses the house’s design ambition. A lifespan guarantee would require its own published terms and evidence.
 
-## 1. Agreement
+## 3. Heat, materials and Kansa
 
-These Terms of Service govern access to the Maison Tavo store and purchases of products. The store is operated by Kartavya as a placeholder operator for this template. By using the site or placing an order you agree to these terms and to our Privacy Policy. If you do not agree, do not use the store.
+The heat study, layered drawings and Kansa answers explain design concepts. For a real vessel, use the maker’s verified instructions for that exact model, especially for food contact, heat sources and pressure use. A simulated result carries no safety certification.
 
-## 2. Eligibility
+## 4. Consideration of the soul
 
-You must be able to form a binding contract in your jurisdiction and must provide accurate checkout information. You are responsible for activity under your customer account.
+The following clause is optional theatre. The disclosure records no acceptance and has no effect on access, cookies or privacy choices.
 
-## 3. Products and descriptions
+**Accept the house joke**
 
-We describe materials, colour, and fit with care, but photography, screens, and handmade variation mean that pieces may differ slightly from images. Editions may be limited. We may correct errors in pricing or description and refuse or cancel orders where we reasonably believe there is a mistake, fraud, or stock issue.
+Upon clicking “Accept the house joke”, the undersigned shall be deemed, solely in the imagined jurisdiction of the House, to have sold their immortal soul to Maison Tavo for one imaginary spoonful of dal. The House waives all rights of collection. All seasoning rights are reserved to the cook. In the event of dispute, the casting vote shall vest in Grandma. This clause is fictional and non-binding.
 
-## 4. Orders, pricing, and payment
+## 5. Questions
 
-An order is an offer to buy. Acceptance occurs when we confirm the order or dispatch the goods, as specified at checkout. Prices are shown in the store currency and may exclude or include taxes and duties according to Shopify Markets configuration. Payment is processed by Shopify and the payment methods enabled on the store. You represent that you are authorised to use the selected method.
-
-## 5. Shipping and risk
-
-Delivery estimates are not guarantees. Risk and title pass according to the shipping terms stated at checkout and any Shipping Policy published in Shopify Admin. You are responsible for providing a deliverable address and for customs charges where applicable.
-
-## 6. Returns, refunds, and cancellations
-
-Returns follow the Refund Policy hosted by Shopify, if published, and any additional house rules stated on the product or cart. Unworn, unaltered pieces in original condition may be returnable within the stated window; made-to-order, final-sale, and intimate items may be excluded as disclosed before purchase. This paragraph must be aligned with consumer mandatory rights in each market of sale.
-
-## 7. Intellectual property
-
-The Maison Tavo name, marks, product designs, photography, copy, and storefront look are protected. See the Intellectual Property page (template `page.ipr`). You may not copy, scrape, or commercially reuse house content without written permission, except for brief fair quotation permitted by law.
-
-## 8. Acceptable use
-
-You may not misuse the store, attempt unauthorised access, interfere with checkout, submit unlawful content, or use the site to infringe others’ rights. We may suspend access where we reasonably suspect abuse.
-
-## 9. Third-party services
-
-Checkout, payments, reviews, and apps may be provided by third parties under their own terms. Shopify’s terms apply to platform features we do not control.
-
-## 10. Disclaimer and limitation of liability
-
-To the fullest extent permitted by law, the store and products are provided as described, and we exclude implied warranties that can legally be excluded. We are not liable for indirect, incidental, special, or consequential loss, or loss of profit, data, or goodwill, arising from use of the store or delay in delivery, except where liability cannot be limited (including death or personal injury caused by negligence, fraud, or mandatory consumer guarantees). Where liability can be limited, our aggregate liability relating to an order is limited to the amount you paid for that order.
-
-## 11. Indemnity
-
-You will indemnify Maison Tavo and Kartavya against claims arising from your misuse of the store or breach of these terms, to the extent permitted by law.
-
-## 12. Governing law
-
-These terms are governed by the laws of the jurisdiction in which the operator is established, without prejudice to mandatory consumer protections of your country of residence. Counsel must insert the actual governing law, venue, and any alternative dispute process before this store trades.
-
-## 13. Changes
-
-We may revise these terms by posting an updated version. Continued use after the effective date constitutes acceptance where permitted. For material changes affecting existing orders, the terms in force at purchase typically apply.
-
-## 14. Contact
-
-Maison Tavo / Kartavya — via the store email. Native Shopify terms, if published: Admin → Settings → Policies (`shop.terms_of_service`).
+Write to the project team through [Contact](/pages/contact). For browser settings and personal information, read the [exhibition privacy notice](/pages/privacy-policy).

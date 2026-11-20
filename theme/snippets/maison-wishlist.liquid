@@ -1,0 +1,35 @@
+{% doc %}
+  Renders the local wishlist drawer and header action.
+{% enddoc %}
+<button type="button" class="header-actions__action button-unstyled" data-wishlist-open
+  aria-label="Wishlist" aria-haspopup="dialog" hidden>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 20s-9-5.6-9-11a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.4-9 11-9 11Z" stroke="currentColor" stroke-width="1.5"/>
+  </svg>
+</button>
+<dialog class="maison-wishlist" aria-label="Wishlist" data-wishlist>
+  <form method="dialog"><button class="button button-secondary" autofocus>Close wishlist</button></form>
+  <h2>Wishlist</h2>
+  <p data-wishlist-status role="status"></p>
+  <p data-wishlist-empty>Your wishlist is empty.</p>
+  <ul data-wishlist-items role="list"></ul>
+</dialog>
+<script type="module" src="{{ 'maison-wishlist.js' | asset_url }}"></script>
+
+{% stylesheet %}
+  .maison-wishlist {
+    position: fixed;
+    inset: 0 0 0 auto;
+    margin: 0;
+    width: min(100%, 28rem);
+    height: 100%;
+    max-height: 100%;
+    padding: 1.5rem;
+    color: var(--color-foreground);
+    background: var(--color-background);
+    overflow: auto;
+  }
+  .maison-wishlist::backdrop { background: rgb(0 0 0 / 55%); }
+  .maison-wishlist ul { list-style: none; padding: 0; }
+  .maison-wishlist li { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-block: 1rem; }
+{% endstylesheet %}

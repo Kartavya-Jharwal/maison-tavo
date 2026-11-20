@@ -2,6 +2,8 @@
 
 {% render 'maison-product-jsonld', product: closest.product %}
 
+{% render 'maison-breadcrumbs' %}
+
 {% capture media_gallery %}
   {%- content_for 'block',
     type: '_product-media-gallery',
@@ -19,6 +21,7 @@
 {% endcapture %}
 
 {% capture additional_blocks %}
+  {% render 'maison-product-explainer', product: closest.product %}
   {% content_for 'blocks' %}
 {% endcapture %}
 

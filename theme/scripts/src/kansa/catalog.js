@@ -23,7 +23,7 @@
  *  concept_thesis?: string,
  *  agent_intents?: string[],
  *  negative_constraints?: string[],
- *  price_usd?: number,
+ *  list_price_gbp?: number,
  *  materialCategory: 'metal'|'clay'|'blade'|'accessory',
  *  ritualTrack: 'metal'|'clay',
  *  productUrl: string,

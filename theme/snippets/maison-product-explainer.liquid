@@ -1,0 +1,51 @@
+{% doc %}
+  Displays catalogue notes for a product with structured Shopify specifications.
+  @param {product} product - The current product.
+{% enddoc %}
+{% assign specs = product.metafields.specs %}
+{% if specs.lineup_copy != blank or specs.suggested_use_case != blank or specs.dimensions_summary != blank or specs.human_artwork != blank or specs.engineer_artwork != blank or specs.machine_artwork != blank %}
+  <section class="maison-product-details" aria-label="Product details">
+    <h2>Product details</h2>
+    {% if specs.lineup_copy != blank %}
+      <p>{{ specs.lineup_copy.value | escape | newline_to_br }}</p>
+    {% endif %}
+    <dl>
+      {% if specs.dimensions_summary != blank %}
+        <dt>Dimensions</dt>
+        <dd>{{ specs.dimensions_summary.value | escape }}</dd>
+      {% endif %}
+      {% if specs.primary_material != blank %}
+        <dt>Material</dt>
+        <dd>{{ specs.primary_material.value | escape }}</dd>
+      {% endif %}
+      {% if specs.lid_compatibility != blank %}
+        <dt>Lid compatibility</dt>
+        <dd>{{ specs.lid_compatibility.value | escape }}</dd>
+      {% endif %}
+    </dl>
+    {% if specs.suggested_use_case != blank %}
+      <h3>What to cook</h3>
+      <p>{{ specs.suggested_use_case.value | escape | newline_to_br }}</p>
+    {% endif %}
+    {% assign views = 'human,engineer,machine' | split: ',' %}
+    {% for view in views %}
+      {% assign key = view | append: '_artwork' %}
+      {% assign artwork = specs[key].value %}
+      {% if artwork != blank %}
+        <details>
+          <summary>{{ view | capitalize }} view</summary>
+          {% render 'maison-artwork', images: artwork %}
+        </details>
+      {% endif %}
+    {% endfor %}
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  .maison-product-details {
+    padding-block: 2rem;
+    padding-inline: var(--page-margin, 1rem);
+  }
+  .maison-product-details details { margin-block: 1rem; }
+  .maison-product-details dd { margin-inline-start: 0; margin-block-end: .75rem; }
+{% endstylesheet %}

@@ -1,64 +1,263 @@
-
-
 {% liquid
   if section.settings.background_color != blank
     render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = 'Page not found'
+  endif
+
+  assign body = section.settings.body
+  if body == blank
+    capture body
+      echo 'The link may be incorrect, or the page has moved. Search the atelier below, or start again from a known room.'
+    endcapture
   endif
 %}
 
 <div
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
+
+{% render 'maison-breadcrumbs' %}
+
 <div
-  class="
-    section section--{{ section.settings.section_width }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}
-    {% if section.settings.section_height != "" %} {{ section.settings.section_height | prepend: "section--height-" }}{% endif %}
-  "
+  class="section section--page-width maison-404{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  style="{% render 'spacing-style', settings: section.settings %}"
 >
-  <div>
-    <div
-      class="
-        spacing-style
-        layout-panel-flex
-        layout-panel-flex--column
-        section-content-wrapper
-        mobile-column
-      "
-      style="
-        {% render 'layout-panel-style', settings: section.settings %}
-        {% render 'spacing-style', settings: section.settings %}
-      "
+  <div class="maison-404__inner">
+    <p class="maison-404__code" aria-hidden="true">404</p>
+
+    <header class="maison-404__header">
+      <p class="maison-404__eyebrow">Maison Tavo · Foundry Dispatch</p>
+      <h1 class="maison-404__title">{{ heading | escape }}</h1>
+      <p class="maison-404__body" id="Maison404Body">{{ body | escape }}</p>
+    </header>
+
+    <form
+      class="maison-404__search"
+      action="{{ routes.search_url }}"
+      method="get"
+      role="search"
+      aria-describedby="Maison404Body"
     >
-      <div class="maison-404-box" style="text-align: center; max-width: 620px; margin: 3rem auto; padding: 2.5rem; background: var(--bone, #F7F2E9); border: 1px solid rgba(184, 137, 58, 0.4); border-radius: 4px;">
-        <p style="font-family: var(--font-mono--family, monospace); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bell, #B8893A); margin-bottom: 0.75rem;">Maison Tavo · Foundry Dispatch</p>
-        <h2 style="font-family: var(--font-heading--family, 'Fraunces', serif); font-size: 2rem; margin: 0 0 1rem 0; color: var(--soot, #14110F);">Artifact or Spec Relocated</h2>
-        <p style="font-size: 0.95rem; line-height: 1.6; color: var(--soot, #14110F); margin-bottom: 1.75rem;">
-          The route you requested is live as an interactive companion on the storefront canvas. Launch the Kansa Voice Care companion or Universal Commerce Protocol console below.
-        </p>
-        <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
-          <a href="{{ routes.root_url }}#kansa" class="button button-primary">Launch Kansa Companion</a>
-          <a href="{{ routes.root_url }}#ucp" class="button button-secondary">Explore UCP Protocol</a>
-          <a href="{{ routes.root_url }}" class="button button-secondary">Return to Forge</a>
-        </div>
+      <label class="visually-hidden" for="Maison404Search">
+        Search products, pages, and journal entries
+      </label>
+      <input
+        class="maison-404__input"
+        id="Maison404Search"
+        type="search"
+        name="q"
+        placeholder="Search the atelier"
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <input type="hidden" name="options[prefix]" value="last">
+      <button class="button maison-404__submit" type="submit">
+        Search
+      </button>
+    </form>
+
+    <nav class="maison-404__routes" aria-label="Suggested destinations">
+      <ul class="maison-404__route-list">
+        <li><a href="{{ routes.root_url }}">Home</a></li>
+        <li><a href="{{ routes.all_products_collection_url }}">Shop all</a></li>
+        <li><a href="{{ routes.collections_url }}">Collections</a></li>
+        <li><a href="{{ blogs.journal.url | default: '/blogs/journal' }}">Journal</a></li>
+        <li><a href="{{ pages.contact.url | default: '/pages/contact' }}">Contact</a></li>
+        <li><a href="{{ pages['ask-ai'].url | default: '/pages/ask-ai' }}">Ask the atelier</a></li>
+      </ul>
+    </nav>
+
+    {%- if collections.size > 0 -%}
+      <section class="maison-404__rooms" aria-labelledby="Maison404Rooms">
+        <h2 class="maison-404__rooms-title" id="Maison404Rooms">Browse a room</h2>
+        <ul class="maison-404__room-list">
+          {%- for room in collections limit: 4 -%}
+            <li>
+              <a class="maison-404__room" href="{{ room.url }}">
+                <span class="maison-404__room-name">{{ room.title }}</span>
+                {%- if room.description != blank -%}
+                  <span class="maison-404__room-meta">
+                    {{- room.description | strip_html | truncate: 80 -}}
+                  </span>
+                {%- endif -%}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </section>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="maison-404__blocks">
+        {%- content_for 'blocks' -%}
       </div>
-
-      <script>
-        (function() {
-          var p = window.location.pathname.toLowerCase();
-          if (p.includes('/kansa')) {
-            window.location.replace('/#kansa');
-          } else if (p.includes('/ucp')) {
-            window.location.replace('/#ucp');
-          } else if (p.includes('/about') || p.includes('/story')) {
-            window.location.replace('/#lineups');
-          }
-        })();
-      </script>
-
-      {% content_for 'blocks' %}
-    </div>
+    {%- endif -%}
   </div>
 </div>
+
+{% stylesheet %}
+  .maison-404 {
+    display: block;
+  }
+
+  .maison-404__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap-2xl, 2rem);
+    max-width: 44rem;
+    margin-inline: auto;
+    padding-block: 0;
+    text-align: center;
+  }
+
+  .maison-404__code {
+    margin: 0;
+    font-family: var(--font-mono--family, monospace);
+    font-size: clamp(4rem, 12vw, 8rem);
+    line-height: 0.85;
+    letter-spacing: 0.04em;
+    color: rgb(var(--color-foreground-rgb) / 0.12);
+  }
+
+  .maison-404__eyebrow {
+    margin: 0 0 var(--margin-sm, 0.75rem);
+    font-family: var(--font-mono--family, monospace);
+    font-size: var(--font-size--body-xs, 0.75rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+  }
+
+  .maison-404__title {
+    margin: 0 0 var(--margin-md, 1rem);
+    font-family: var(--font-heading--family, serif);
+    font-size: var(--font-size--h2, 2rem);
+    line-height: 1.1;
+    text-wrap: pretty;
+  }
+
+  .maison-404__body {
+    margin: 0;
+    font-size: var(--font-size--body-md, 1rem);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  .maison-404__search {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    width: 100%;
+    max-width: 34rem;
+  }
+
+  .maison-404__input {
+    flex: 1 1 14rem;
+    min-width: 0;
+    padding: 0.75rem 1rem;
+    font: inherit;
+    color: var(--color-foreground);
+    background-color: var(--color-background);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.35);
+    border-radius: var(--border-radius-sm, 0.25rem);
+  }
+
+  .maison-404__input:focus-visible {
+    outline: var(--focus-outline-width, 2px) solid var(--color-foreground);
+    outline-offset: var(--focus-outline-offset, 2px);
+  }
+
+  .maison-404__routes {
+    width: 100%;
+  }
+
+  .maison-404__route-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono--family, monospace);
+    font-size: var(--font-size--body-xs, 0.75rem);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .maison-404__route-list a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .maison-404__route-list a:hover,
+  .maison-404__route-list a:focus-visible {
+    border-bottom-color: currentColor;
+  }
+
+  .maison-404__rooms {
+    width: 100%;
+    padding-top: var(--padding-2xl, 2rem);
+    border-top: 1px solid rgb(var(--color-foreground-rgb) / 0.15);
+  }
+
+  .maison-404__rooms-title {
+    margin: 0 0 var(--margin-md, 1rem);
+    font-family: var(--font-mono--family, monospace);
+    font-size: var(--font-size--body-xs, 0.75rem);
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+  }
+
+  .maison-404__room-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .maison-404__room {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    color: inherit;
+    text-decoration: none;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
+    border-radius: var(--border-radius-sm, 0.25rem);
+  }
+
+  .maison-404__room:hover,
+  .maison-404__room:focus-visible {
+    border-color: currentColor;
+  }
+
+  .maison-404__room-name {
+    font-family: var(--font-heading--family, serif);
+    font-size: var(--font-size--body-md, 1rem);
+  }
+
+  .maison-404__room-meta {
+    font-size: var(--font-size--body-xs, 0.75rem);
+    line-height: 1.4;
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+  }
+
+  .maison-404__blocks {
+    width: 100%;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
@@ -70,122 +269,20 @@
     },
     {
       "type": "@app"
-    },
-    {
-      "type": "_divider"
     }
   ],
   "settings": [
     {
-      "type": "select",
-      "id": "content_direction",
-      "label": "t:settings.direction",
-      "options": [
-        {
-          "value": "column",
-          "label": "t:options.vertical"
-        }
-      ],
-      "default": "column",
-      "visible_if": "{{ section.settings.horizontal_alignment_flex_direction_column == 'fake-value' }}"
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Page not found"
     },
     {
-      "type": "header",
-      "content": "t:content.layout"
-    },
-    {
-      "type": "select",
-      "id": "section_width",
-      "label": "t:settings.width",
-      "options": [
-        {
-          "value": "page-width",
-          "label": "t:options.page"
-        },
-        {
-          "value": "full-width",
-          "label": "t:options.full"
-        }
-      ],
-      "default": "page-width"
-    },
-    {
-      "type": "select",
-      "id": "section_height",
-      "label": "t:settings.height",
-      "options": [
-        {
-          "value": "",
-          "label": "t:options.auto"
-        },
-        {
-          "value": "small",
-          "label": "t:options.small"
-        },
-        {
-          "value": "medium",
-          "label": "t:options.medium"
-        },
-        {
-          "value": "large",
-          "label": "t:options.large"
-        },
-        {
-          "value": "full-screen",
-          "label": "t:options.full_screen"
-        }
-      ],
-      "default": ""
-    },
-    {
-      "type": "select",
-      "id": "horizontal_alignment_flex_direction_column",
-      "label": "t:settings.alignment",
-      "options": [
-        {
-          "value": "flex-start",
-          "label": "t:options.direction_start"
-        },
-        {
-          "value": "center",
-          "label": "t:options.direction_center"
-        },
-        {
-          "value": "flex-end",
-          "label": "t:options.direction_end"
-        }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "select",
-      "id": "vertical_alignment_flex_direction_column",
-      "label": "t:settings.position",
-      "options": [
-        {
-          "value": "flex-start",
-          "label": "t:options.top"
-        },
-        {
-          "value": "center",
-          "label": "t:options.center"
-        },
-        {
-          "value": "flex-end",
-          "label": "t:options.bottom"
-        }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "range",
-      "id": "gap",
-      "label": "t:settings.gap",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 12
+      "type": "textarea",
+      "id": "body",
+      "label": "Body",
+      "default": "The link may be incorrect, or the page has moved. Search the atelier below, or start again from a known room."
     },
     {
       "type": "color",
@@ -202,20 +299,20 @@
       "id": "padding-block-start",
       "label": "t:settings.top",
       "min": 0,
-      "max": 100,
-      "step": 1,
+      "max": 160,
+      "step": 4,
       "unit": "px",
-      "default": 0
+      "default": 64
     },
     {
       "type": "range",
       "id": "padding-block-end",
       "label": "t:settings.bottom",
       "min": 0,
-      "max": 100,
-      "step": 1,
+      "max": 160,
+      "step": 4,
       "unit": "px",
-      "default": 0
+      "default": 96
     }
   ]
 }

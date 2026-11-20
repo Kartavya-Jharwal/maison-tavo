@@ -116,6 +116,13 @@
   {%- if full and specs.care_instructions.value != blank %},
   <span class="maison-machine__key">"careInstructions"</span>: <span class="maison-machine__str">{{ specs.care_instructions.value | json }}</span>{% endif %}
 }</code></pre>
+
+  <footer class="maison-machine__footer">
+    <a href="/pages/ucp" class="maison-machine__endpoint-link">
+      <span class="maison-machine__endpoint-dot" aria-hidden="true">●</span>
+      <span>UCP Endpoint · Full Agent TUI ↗</span>
+    </a>
+  </footer>
 </div>
 
 {% stylesheet %}
@@ -197,6 +204,43 @@
 
   .maison-machine__str {
     color: #e2c48a;
+  }
+
+  .maison-machine__footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-block-start: 0.35rem;
+    padding-block-start: 0.35rem;
+    border-block-start: 1px solid rgba(216, 199, 156, 0.12);
+  }
+
+  .maison-machine__endpoint-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--bell, #b8893a);
+    text-decoration: none;
+    font-size: var(--mt-type-mono, 0.65rem);
+    letter-spacing: 0.08em;
+    padding: 0.15rem 0.4rem;
+    border: 1px solid rgba(184, 137, 58, 0.3);
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+
+  .maison-machine__endpoint-link:hover,
+  .maison-machine__endpoint-link:focus-visible {
+    background: var(--bell, #b8893a);
+    color: #14110f;
+  }
+
+  .maison-machine__endpoint-dot {
+    color: #6fbc7a;
+    font-size: 0.5rem;
+  }
+
+  .maison-machine__endpoint-link:hover .maison-machine__endpoint-dot {
+    color: #14110f;
   }
 
   .maison-machine--full {

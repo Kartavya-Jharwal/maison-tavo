@@ -4,25 +4,21 @@
 {% endcomment %}
 
 <div
-  class="section section--page-width spacing-style maison-story-brief"
+  class="section section--page-width spacing-style maison-reading maison-story-brief"
   style="{% render 'spacing-style', settings: section.settings %}"
   data-mt-chapter
 >
-  <header class="maison-story-brief__header" data-mt-scroll="chapter">
+  <header class="maison-editorial__header" data-mt-scroll="chapter">
     {% if section.settings.eyebrow != blank %}
-      <p class="maison-story-brief__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      <p class="maison-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
     {% endif %}
     {% if section.settings.heading != blank %}
-      <h2
-        class="maison-story-brief__heading"
-        data-mt-scroll="kinetic"
-        aria-label="{{ section.settings.heading | escape }}"
-      >
+      <h2 class="maison-editorial__title">
         {{ section.settings.heading | escape }}
       </h2>
     {% endif %}
     {% if section.settings.lede != blank %}
-      <p class="maison-story-brief__lede">{{ section.settings.lede | escape }}</p>
+      <p class="maison-editorial__lede">{{ section.settings.lede | escape }}</p>
     {% endif %}
   </header>
 
@@ -31,10 +27,10 @@
       {% for block in section.blocks %}
         <li class="maison-story-brief__cell" data-mt-scroll-item {{ block.shopify_attributes }}>
           {% if block.settings.kicker != blank %}
-            <p class="maison-story-brief__kicker">{{ block.settings.kicker | escape }}</p>
+            <p class="maison-editorial__eyebrow">{{ block.settings.kicker | escape }}</p>
           {% endif %}
           {% if block.settings.heading != blank %}
-            <h3 class="maison-story-brief__cell-title">{{ block.settings.heading | escape }}</h3>
+            <h3 class="maison-editorial__card-title">{{ block.settings.heading | escape }}</h3>
           {% endif %}
           {% if block.settings.text != blank %}
             <p class="maison-story-brief__cell-text">{{ block.settings.text | escape }}</p>
@@ -52,78 +48,36 @@
 </div>
 
 {% stylesheet %}
-  .maison-story-brief {
-    color: var(--color-foreground);
-  }
-
-  .maison-story-brief__header {
-    max-width: 40rem;
-    margin-block-end: clamp(1.75rem, 3vw, 2.5rem);
-  }
-
-  .maison-story-brief__eyebrow {
-    margin: 0;
-    font-family: var(--mt-type-family-mono, var(--font-mono--family));
-    font-size: var(--mt-type-accent, var(--font-size--xs));
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-foreground-muted);
-  }
-
-  .maison-story-brief__heading {
-    margin-block: 0.75rem 1rem;
-    font-family: var(--mt-type-family-heading, var(--font-heading--family));
-    font-weight: var(--font-heading--weight);
-    letter-spacing: 0.02em;
-  }
-
-  .maison-story-brief__lede {
-    margin: 0;
-    max-width: 36rem;
-    color: var(--color-foreground-muted);
-    font-size: var(--mt-type-lede, var(--font-size--md));
-    line-height: 1.6;
-  }
-
   .maison-story-brief__highlights {
-    list-style: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.25rem, 2.4vw, 2.5rem);
     margin: 0;
     padding: 0;
-    display: grid;
-    gap: 1.25rem 1.5rem;
-    grid-template-columns: 1fr;
+    list-style: none;
   }
 
-  @media screen and (min-width: 750px) {
+  @media (min-width: 60rem) {
     .maison-story-brief__highlights {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 
   .maison-story-brief__cell {
-    border-block-start: 1px solid var(--color-border, rgba(0, 0, 0, 0.12));
     padding-block-start: 1rem;
+    border-block-start: 1px solid var(--color-border);
   }
 
-  .maison-story-brief__kicker {
-    margin: 0 0 0.5rem;
-    font-family: var(--mt-type-family-mono, var(--font-mono--family));
-    font-size: var(--mt-type-accent, var(--font-size--xs));
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-foreground-muted);
-  }
-
-  .maison-story-brief__cell-title {
-    margin: 0 0 0.5rem;
-    font-family: var(--mt-type-family-heading, var(--font-heading--family));
-    font-size: var(--font-size--md);
+  .maison-story-brief .maison-story-brief__cell .maison-editorial__eyebrow {
+    margin-block-end: 0.5rem;
   }
 
   .maison-story-brief__cell-text {
     margin: 0;
-    color: var(--color-foreground-muted);
-    line-height: 1.55;
+    max-inline-size: 52ch;
+    font-size: inherit;
+    line-height: inherit;
+    overflow-wrap: anywhere;
   }
 
   .maison-story-brief__cta {

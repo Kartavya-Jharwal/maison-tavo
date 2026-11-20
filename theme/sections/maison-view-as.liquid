@@ -31,6 +31,15 @@
       <div class="maison-panopticon__human">
         {%- if product.featured_media -%}
           {{ product.featured_media | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 50vw, 100vw', class: 'maison-panopticon__image' }}
+        {%- else -%}
+          <img
+            class="maison-panopticon__image"
+            src="{{ 'maison-flagship-kadai.webp' | asset_url }}"
+            alt="{{ product.title | default: 'Maison Tavo Cookware' | escape }}"
+            width="1200"
+            height="900"
+            loading="lazy"
+          >
         {%- endif -%}
         <div class="maison-panopticon__copy">
           <p class="maison-evidence maison-evidence--{{ evidence | downcase }}">[{{ evidence }}]</p>

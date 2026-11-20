@@ -4,7 +4,7 @@
  * is not on the critical path. CSS underlay still paints first inside the
  * heavy module once it mounts.
  */
-export const IDLE_BLAZE_MS = 90_000;
+export const IDLE_BLAZE_MS = 18_000;
 export const IDLE_BLAZE_STORAGE_KEY = 'mt-idle-blaze';
 
 const ACTIVITY_EVENTS = [
@@ -46,7 +46,6 @@ function isBlockedHost() {
   if (!enabled || storageDisabled()) return true;
   if (document.documentElement.dataset.mtIdleBlaze === 'off') return true;
   if (motionReduced()) return true;
-  if (!(typeof navigator !== 'undefined' && navigator.gpu)) return true;
   if (BLOCKED_PATH.test(location.pathname)) return true;
   const template = document.getElementById('MainContent')?.dataset.template || '';
   if (/password/i.test(template)) return true;

@@ -1,10 +1,11 @@
 
 
-<script
-  src="{{ 'maison-search-assist.js' | asset_url }}"
-  defer
-  fetchpriority="low"
-></script>
+{%- comment -%}
+  `maison-search-assist.js` is loaded once per page by
+  snippets/search-modal.liquid (rendered from layout/theme.liquid). Loading it
+  again here executed the bundle twice on /search, so this block only adds the
+  page-input module.
+{%- endcomment -%}
 <script
   src="{{ 'search-page-input.js' | asset_url }}"
   defer

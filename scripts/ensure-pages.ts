@@ -42,6 +42,7 @@ const PAGES = [
   {title: 'Journal', handle: 'journal', templateSuffix: 'journal'},
   {title: 'Delivery and returns', handle: 'delivery-returns', templateSuffix: 'shipping'},
   {title: 'Frequently asked questions', handle: 'faq', templateSuffix: 'faq'},
+  {title: 'Good questions', handle: 'good-questions', templateSuffix: 'good-questions'},
   {title: 'Reviews', handle: 'reviews', templateSuffix: 'reviews'},
   {title: 'Cookie Policy', handle: 'cookie-policy', templateSuffix: 'cookies'},
   {title: 'Care', handle: 'care', templateSuffix: 'care'},
@@ -207,9 +208,14 @@ async function updateTemplate(
 }
 
 async function main() {
+  const handle = flagValue('--page');
+  const pages = handle ? PAGES.filter((page) => page.handle === handle) : PAGES;
+  if (!pages.length || (process.argv.includes('--page') && !handle)) {
+    throw new Error('Use --page with a known page handle.');
+  }
   console.log(`Store: ${STORE}`);
   console.log(`Mode:  ${APPLY ? 'APPLY' : 'DRY-RUN'}`);
-  for (const page of PAGES) {
+  for (const page of pages) {
     const existing = await findPageByHandle(page.handle);
     if (existing) {
       const needsTemplate =

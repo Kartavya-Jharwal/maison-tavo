@@ -63,6 +63,16 @@
   {% endif %}
   {{- block.shopify_attributes -}}
 >
+  <a
+    href="/pages/ucp"
+    class="header-actions__agent-pill"
+    title="Switch to Agent TUI mode (UCP 2026 machine endpoint)"
+    aria-label="Switch to Agent Mode (UCP 2026 TUI)"
+  >
+    <span class="header-actions__agent-dot" aria-hidden="true">●</span>
+    <span class="header-actions__agent-text">AGENT</span>
+  </a>
+
   {% if shop.customer_accounts_enabled %}
     {% liquid
       assign account_actions_style = ''
@@ -143,6 +153,7 @@
     role="status"
     data-testid="cart-count-live-region"
   ></span>
+  {% render 'maison-wishlist' %}
 </header-actions>
 
 <script
@@ -152,6 +163,46 @@
 ></script>
 
 {% stylesheet %}
+  .header-actions__agent-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid rgba(184, 137, 58, 0.4);
+    border-radius: 2px;
+    font-family: var(--mt-type-family-mono, ui-monospace, monospace);
+    font-size: clamp(0.6rem, 0.55rem + 0.15vw, 0.6875rem);
+    letter-spacing: 0.12em;
+    color: var(--bell, #b8893a);
+    text-decoration: none;
+    background: rgba(184, 137, 58, 0.06);
+    transition: all 0.18s ease;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  .header-actions__agent-pill:hover,
+  .header-actions__agent-pill:focus-visible {
+    background: var(--bell, #b8893a);
+    color: #14110f;
+    border-color: var(--bell, #b8893a);
+  }
+
+  .header-actions__agent-pill:focus-visible {
+    outline: 2px solid var(--bell, #b8893a);
+    outline-offset: 2px;
+  }
+
+  .header-actions__agent-dot {
+    font-size: 0.5rem;
+    color: #6fbc7a;
+    line-height: 1;
+  }
+
+  .header-actions__agent-pill:hover .header-actions__agent-dot {
+    color: #14110f;
+  }
+
   .account-button {
     /* Inherit header ground — do not paint a separate scheme plate */
     background: transparent;

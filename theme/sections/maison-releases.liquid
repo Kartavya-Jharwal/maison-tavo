@@ -121,13 +121,115 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <p class="maison-releases__empty">
-                {% if status == 'upcoming' %}
-                  Pieces for this cycle will appear here when the heat opens.
+              <ul class="maison-releases__grid" role="list">
+                {% if status == 'open' %}
+                  <li>
+                    <a class="maison-releases__card" href="/collections/cookware">
+                      <img
+                        src="{{ 'maison-flagship-kadai.webp' | asset_url }}"
+                        alt="The Flagship Kadhai"
+                        width="900"
+                        height="900"
+                        loading="lazy"
+                      >
+                      <span class="maison-releases__name">The Flagship Kadhai (28cm)</span>
+                      <span class="maison-releases__price">$385</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="maison-releases__card" href="/collections/cookware">
+                      <img
+                        src="{{ 'maison-pan-set.jpg' | asset_url }}"
+                        alt="Forge Relay Pan Set"
+                        width="900"
+                        height="900"
+                        loading="lazy"
+                      >
+                      <span class="maison-releases__name">Forge Relay Pan Set (3-Piece)</span>
+                      <span class="maison-releases__price">$540</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="maison-releases__card" href="/collections/cookware">
+                      <img
+                        src="{{ 'maison-highpot-set.webp' | asset_url }}"
+                        alt="The Foundry High Pot"
+                        width="900"
+                        height="900"
+                        loading="lazy"
+                      >
+                      <span class="maison-releases__name">The Foundry High Pot (5.2L)</span>
+                      <span class="maison-releases__price">$410</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="maison-releases__card" href="/collections/cookware">
+                      <img
+                        src="{{ 'maison-saucier-lid.jpg' | asset_url }}"
+                        alt="Spun Bronze Saucier"
+                        width="900"
+                        height="900"
+                        loading="lazy"
+                      >
+                      <span class="maison-releases__name">Spun Bronze Saucier with Lid</span>
+                      <span class="maison-releases__price">$320</span>
+                    </a>
+                  </li>
                 {% else %}
-                  Add products or a collection to this cycle in the theme editor.
+                  <li>
+                    <a class="maison-releases__card" href="/collections/tableware-pottery">
+                      <img
+                        src="{{ 'maison-clay-openpot.webp' | asset_url }}"
+                        alt="Terre Refractory Open Vessel"
+                        width="900"
+                        height="900"
+                        loading="lazy"
+                      >
+                      <span class="maison-releases__name">Terre Refractory Open Vessel</span>
+                      <span class="maison-releases__price">$165</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="maison-releases__card" href="/collections/tableware-pottery">
+                      <img
+                        src="{{ 'maison-dining-set-6pc.webp' | asset_url }}"
+                        alt="Full Kansa Dining Service"
+                        width="900"
+                        height="900"
+                        loading="lazy"
+                      >
+                      <span class="maison-releases__name">Full Kansa Dining Service (6-Piece)</span>
+                      <span class="maison-releases__price">$620</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="maison-releases__card" href="/collections/cookware">
+                      <img
+                        src="{{ 'maison-saucepot.webp' | asset_url }}"
+                        alt="Hand-Turned Sauce Pot"
+                        width="900"
+                        height="900"
+                        loading="lazy"
+                      >
+                      <span class="maison-releases__name">Hand-Turned Sauce Pot</span>
+                      <span class="maison-releases__price">$240</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="maison-releases__card" href="/collections/cookware">
+                      <img
+                        src="{{ 'maison-pan-stacked-showcase.webp' | asset_url }}"
+                        alt="The Atelier Nesting Suite"
+                        width="900"
+                        height="900"
+                        loading="lazy"
+                      >
+                      <span class="maison-releases__name">The Atelier Nesting Suite</span>
+                      <span class="maison-releases__price">$890</span>
+                    </a>
+                  </li>
                 {% endif %}
-              </p>
+              </ul>
             {% endif %}
           </li>
         {% endif %}

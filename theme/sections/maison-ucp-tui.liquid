@@ -1,0 +1,1033 @@
+{% comment %}
+  Maison Tavo · UCP Agent Terminal Interface (TUI)
+  Full-page fake-API / machine-readable endpoint surface.
+  Rendered on the /pages/ucp template as a standalone layout.
+  Navigation: hidden. Return button (top-left). No standard header/footer.
+  ASCII footer replaces the standard Maison footer.
+{% endcomment %}
+
+<div class="mt-tui" id="mt-tui-root" data-mt-tui aria-label="Maison Tavo UCP Agent Interface">
+
+  {%- comment -%} ── Top chrome bar ── {%- endcomment -%}
+  <div class="mt-tui__chrome" role="banner">
+    <a href="{{ shop.url }}" class="mt-tui__return" aria-label="Return to storefront">
+      <span class="mt-tui__return-arrow" aria-hidden="true">←</span>
+      <span class="mt-tui__return-label">/ return</span>
+    </a>
+    <div class="mt-tui__chrome-center" aria-hidden="true">
+      <span class="mt-tui__chrome-title">maison-tavo.myshopify.com</span>
+      <span class="mt-tui__chrome-sep">·</span>
+      <span class="mt-tui__status-dot"></span>
+      <span class="mt-tui__chrome-status">UCP/2026 ENDPOINT LIVE</span>
+    </div>
+    <div class="mt-tui__clock" id="mt-tui-clock" aria-live="off" aria-atomic="true"></div>
+  </div>
+
+  {%- comment -%} ── Main content split: left panel + globe ── {%- endcomment -%}
+  <main class="mt-tui__main" id="MainContent" data-template="page">
+    {%- comment -%} ── Globe column ── {%- endcomment -%}
+    <div class="mt-tui__globe-col" aria-hidden="true">
+      <div class="mt-tui__globe-frame">
+        <svg class="mt-tui__globe-wireframe" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(184, 137, 58, 0.4)" stroke-width="1"/>
+          <ellipse cx="50" cy="50" rx="46" ry="16" fill="none" stroke="rgba(184, 137, 58, 0.3)" stroke-width="0.8"/>
+          <ellipse cx="50" cy="50" rx="46" ry="32" fill="none" stroke="rgba(184, 137, 58, 0.3)" stroke-width="0.8"/>
+          <ellipse cx="50" cy="50" rx="16" ry="46" fill="none" stroke="rgba(184, 137, 58, 0.35)" stroke-width="0.8" class="mt-tui__lon-ring"/>
+          <ellipse cx="50" cy="50" rx="32" ry="46" fill="none" stroke="rgba(184, 137, 58, 0.35)" stroke-width="0.8" class="mt-tui__lon-ring-2"/>
+          <line x1="4" y1="50" x2="96" y2="50" stroke="rgba(184, 137, 58, 0.4)" stroke-width="0.8" stroke-dasharray="2 2"/>
+          <line x1="50" y1="4" x2="50" y2="96" stroke="rgba(184, 137, 58, 0.4)" stroke-width="0.8" stroke-dasharray="2 2"/>
+          <circle cx="68" cy="42" r="2.5" fill="#6fbc7a" class="mt-tui__node-dot"/>
+          <circle cx="68" cy="42" r="5" fill="none" stroke="#6fbc7a" stroke-width="0.6" class="mt-tui__node-pulse"/>
+        </svg>
+        <div class="mt-tui__globe-overlay">
+          <div class="mt-tui__globe-scanline"></div>
+        </div>
+      </div>
+      <div class="mt-tui__globe-meta">
+        <span>NODE: RAJASTHAN-01</span>
+        <span class="mt-tui__globe-ping" id="mt-tui-ping">PING 12ms</span>
+      </div>
+    </div>
+
+    {%- comment -%} ── Terminal panel ── {%- endcomment -%}
+    <div class="mt-tui__terminal" role="region" aria-label="API endpoint explorer">
+      <div class="mt-tui__term-header">
+        <div class="mt-tui__term-dots" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="mt-tui__term-title">ucp-agent-shell — maison-tavo v2026.08.25</span>
+        <div class="mt-tui__term-actions">
+          <button class="mt-tui__copy-btn" id="mt-tui-copy" type="button" title="Copy active payload">[ copy ]</button>
+        </div>
+      </div>
+
+      {%- comment -%} ── Endpoint tabs ── {%- endcomment -%}
+      <div class="mt-tui__tabs" role="tablist" aria-label="API endpoints">
+        <button class="mt-tui__tab is-active" role="tab" aria-selected="true" data-tui-tab="wellknown">
+          GET /.well-known/ucp
+        </button>
+        <button class="mt-tui__tab" role="tab" aria-selected="false" data-tui-tab="catalog">
+          POST /catalog
+        </button>
+        <button class="mt-tui__tab" role="tab" aria-selected="false" data-tui-tab="a2a">
+          A2A /kansa
+        </button>
+        <button class="mt-tui__tab" role="tab" aria-selected="false" data-tui-tab="molbhav">
+          MOL-BHAV /bazaar
+        </button>
+        <button class="mt-tui__tab" role="tab" aria-selected="false" data-tui-tab="augo">
+          GET /agents
+        </button>
+      </div>
+
+      {%- comment -%} ── URL bar ── {%- endcomment -%}
+      <div class="mt-tui__urlbar" aria-live="polite" id="mt-tui-urlbar">
+        <span class="mt-tui__method" id="mt-tui-method">GET</span>
+        <span class="mt-tui__url" id="mt-tui-url">https://maison-tavo.myshopify.com/.well-known/ucp</span>
+        <span class="mt-tui__status-code" id="mt-tui-status">200 OK</span>
+      </div>
+
+      {%- comment -%} ── Tab panels ── {%- endcomment -%}
+
+      {%- comment -%} TAB 1: .well-known/ucp {%- endcomment -%}
+      <div class="mt-tui__panel is-active" id="tui-panel-wellknown" role="tabpanel">
+        <div class="mt-tui__panel-meta">
+          <span class="mt-tui__badge">UCP SPEC 2026-08-25</span>
+          <span class="mt-tui__badge mt-tui__badge--a2a">PLATFORM HANDSHAKE</span>
+        </div>
+        <pre class="mt-tui__code" aria-label="UCP well-known endpoint response"><code id="tui-code-wellknown">{
+  <span class="mt-k">"ucp"</span>: {
+    <span class="mt-k">"version"</span>: <span class="mt-s">"2026-08-25"</span>,
+    <span class="mt-k">"name"</span>: <span class="mt-s">"Maison Tavo"</span>,
+    <span class="mt-k">"domain"</span>: <span class="mt-s">"maison-tavo.myshopify.com"</span>,
+    <span class="mt-k">"description"</span>: <span class="mt-s">"Modern heirlooms for the working kitchen — metallurgy you can parse, craft you can live with."</span>,
+    <span class="mt-k">"capabilities"</span>: {
+      <span class="mt-k">"dev.ucp.shopping.catalog.search"</span>: [{ <span class="mt-k">"version"</span>: <span class="mt-s">"2026-08-25"</span> }],
+      <span class="mt-k">"dev.ucp.shopping.catalog.lookup"</span>: [{ <span class="mt-k">"version"</span>: <span class="mt-s">"2026-08-25"</span> }],
+      <span class="mt-k">"dev.shopify.catalog"</span>: [{ <span class="mt-k">"version"</span>: <span class="mt-s">"2026-08-25"</span> }],
+      <span class="mt-k">"dev.ucp.shopping.cart"</span>: [{ <span class="mt-k">"version"</span>: <span class="mt-s">"2026-08-25"</span> }],
+      <span class="mt-k">"dev.ucp.shopping.checkout"</span>: [{ <span class="mt-k">"version"</span>: <span class="mt-s">"2026-08-25"</span> }],
+      <span class="mt-k">"dev.ucp.shopping.order"</span>: [{ <span class="mt-k">"version"</span>: <span class="mt-s">"2026-08-25"</span> }]
+    },
+    <span class="mt-k">"payment_handlers"</span>: {
+      <span class="mt-k">"shopify_payments"</span>: [{
+        <span class="mt-k">"version"</span>: <span class="mt-s">"2026-08-25"</span>,
+        <span class="mt-k">"settlement_currency"</span>: <span class="mt-s">"USD"</span>,
+        <span class="mt-k">"escalation_policy"</span>: { <span class="mt-k">"on_status"</span>: <span class="mt-s">"requires_escalation"</span>, <span class="mt-k">"action"</span>: <span class="mt-s">"follow_continue_url"</span> }
+      }]
+    },
+    <span class="mt-k">"companion_surface"</span>: {
+      <span class="mt-k">"name"</span>: <span class="mt-s">"Kansa"</span>,
+      <span class="mt-k">"transport"</span>: <span class="mt-s">"a2a"</span>,
+      <span class="mt-k">"version"</span>: <span class="mt-s">"1.0.0"</span>,
+      <span class="mt-k">"endpoint"</span>: <span class="mt-s">"/pages/kansa"</span>,
+      <span class="mt-k">"supported_intents"</span>: [<span class="mt-s">"pan_care"</span>, <span class="mt-s">"thermal_limits"</span>, <span class="mt-s">"alloy_provenance"</span>, <span class="mt-s">"order_escalation"</span>]
+    }
+  }
+}</code></pre>
+      </div>
+
+      {%- comment -%} TAB 2: /catalog {%- endcomment -%}
+      <div class="mt-tui__panel" id="tui-panel-catalog" role="tabpanel" hidden>
+        <div class="mt-tui__panel-meta">
+          <span class="mt-tui__badge">STOREFRONT CATALOG MCP</span>
+          <span class="mt-tui__badge mt-tui__badge--dim">{{ collections['all'].all_products_count | default: 25 }} SKUs · LIVE</span>
+        </div>
+        <pre class="mt-tui__code" aria-label="Catalog endpoint response"><code id="tui-code-catalog">{
+  <span class="mt-k">"spec_version"</span>: <span class="mt-s">"2026-08-25"</span>,
+  <span class="mt-k">"store"</span>: <span class="mt-s">{{ shop.name | default: 'Maison Tavo' | json }}</span>,
+  <span class="mt-k">"storefront_mcp_endpoint"</span>: <span class="mt-s">"https://maison-tavo.myshopify.com/api/ucp/mcp"</span>,
+  <span class="mt-k">"total_items"</span>: <span class="mt-n">{{ collections['all'].all_products_count | default: 25 }}</span>,
+  <span class="mt-k">"catalog"</span>: [
+{%- if collections['all'] != blank and collections['all'].products_count > 0 -%}
+  {%- for p in collections['all'].products limit: 8 -%}
+    {%- assign pv = p.selected_or_first_available_variant -%}
+    {%- assign ps = p.metafields.specs -%}
+    {
+      <span class="mt-k">"id"</span>: <span class="mt-s">{{ 'gid://shopify/Product/' | append: p.id | json }}</span>,
+      <span class="mt-k">"handle"</span>: <span class="mt-s">{{ p.handle | json }}</span>,
+      <span class="mt-k">"title"</span>: <span class="mt-s">{{ p.title | json }}</span>,
+      <span class="mt-k">"sku"</span>: <span class="mt-s">{{ pv.sku | default: p.handle | json }}</span>,
+      <span class="mt-k">"price_usd"</span>: <span class="mt-n">{{ pv.price | money_without_currency | remove: ',' }}</span>,
+      <span class="mt-k">"available"</span>: <span class="mt-b">{{ pv.available | json }}</span>,
+      <span class="mt-k">"claim_status"</span>: <span class="mt-s">{{ ps.claim_status.value | default: 'CONCEPT_SPEC' | json }}</span>,
+      <span class="mt-k">"primary_material"</span>: <span class="mt-s">{{ ps.primary_material.value | default: ps.material_architecture.value | json }}</span>
+    }{%- unless forloop.last -%},{%- endunless %}
+  {%- endfor -%}
+{%- else -%}
+    {
+      <span class="mt-k">"sku"</span>: <span class="mt-s">"MT-FOR-RLY-26"</span>,
+      <span class="mt-k">"handle"</span>: <span class="mt-s">"forge-relay-dual-mass-skillet"</span>,
+      <span class="mt-k">"title"</span>: <span class="mt-s">"Forge Relay Dual-Mass Skillet"</span>,
+      <span class="mt-k">"lineup"</span>: <span class="mt-s">"Forge Hybrid"</span>,
+      <span class="mt-k">"claim_status"</span>: <span class="mt-s">"CONCEPT_SPEC"</span>,
+      <span class="mt-k">"note"</span>: <span class="mt-s">"Publish products to Online Store channel to stream all 25 live SKUs."</span>
+    }
+{%- endif -%}
+  ]
+}</code></pre>
+      </div>
+
+      {%- comment -%} TAB 3: A2A Kansa {%- endcomment -%}
+      <div class="mt-tui__panel" id="tui-panel-a2a" role="tabpanel" hidden>
+        <div class="mt-tui__panel-meta">
+          <span class="mt-tui__badge mt-tui__badge--copper">A2A / AGENT-TO-AGENT</span>
+          <span class="mt-tui__badge mt-tui__badge--dim">KANSA COMPANION DISPATCH</span>
+        </div>
+        <pre class="mt-tui__code" aria-label="A2A Kansa dispatch response"><code id="tui-code-a2a">{
+  <span class="mt-k">"protocol"</span>: <span class="mt-s">"A2A/1.0"</span>,
+  <span class="mt-k">"endpoint"</span>: <span class="mt-s">"https://maison-tavo.myshopify.com/a2a/agent-broker"</span>,
+  <span class="mt-k">"agent_id"</span>: <span class="mt-s">"urn:maison-tavo:kansa-voice-companion"</span>,
+  <span class="mt-k">"capabilities"</span>: [
+    <span class="mt-s">"culinary.pan_maintenance_inference"</span>,
+    <span class="mt-s">"culinary.thermal_compatibility_check"</span>,
+    <span class="mt-s">"commerce.quote_negotiation"</span>,
+    <span class="mt-s">"commerce.agentic_checkout_delegation"</span>
+  ],
+  <span class="mt-k">"sample_exchange"</span>: {
+    <span class="mt-k">"buyer_agent"</span>: {
+      <span class="mt-k">"sender"</span>: <span class="mt-s">"urn:buyer-agent:client-77a"</span>,
+      <span class="mt-k">"action"</span>: <span class="mt-s">"query_pan_care"</span>,
+      <span class="mt-k">"parameters"</span>: {
+        <span class="mt-k">"sku"</span>: <span class="mt-s">"MT-FRG-SKL-026"</span>,
+        <span class="mt-k">"question"</span>: <span class="mt-s">"Can the buyer season this pan with flaxseed oil on induction?"</span>
+      }
+    },
+    <span class="mt-k">"kansa_reply"</span>: {
+      <span class="mt-k">"status"</span>: <span class="mt-s">"success"</span>,
+      <span class="mt-k">"resolution"</span>: <span class="mt-s">"recommended_with_constraints"</span>,
+      <span class="mt-k">"response_text"</span>: <span class="mt-s">"Flaxseed oil forms a brittle polymer over high thermal cycles. For MT-FRG-SKL-026, beeswax or high-smoke-point grapeseed oil is recommended. Warm gradually on medium before full seasoning heat."</span>,
+      <span class="mt-k">"structured_data"</span>: {
+        <span class="mt-k">"optimal_oil"</span>: <span class="mt-s">"beeswax_lipid_blend"</span>,
+        <span class="mt-k">"smoke_point_c"</span>: <span class="mt-n">215</span>,
+        <span class="mt-k">"induction_preheat_duration_seconds"</span>: <span class="mt-n">180</span>
+      }
+    }
+  }
+}</code></pre>
+      </div>
+
+      {%- comment -%} TAB 4: MOL-BHAV {%- endcomment -%}
+      <div class="mt-tui__panel" id="tui-panel-molbhav" role="tabpanel" hidden>
+        <div class="mt-tui__panel-meta">
+          <span class="mt-tui__badge mt-tui__badge--gold">MOL-BHAV · 7-AGENT BAZAAR</span>
+          <span class="mt-tui__badge mt-tui__badge--dim">MARGIN-BOUNDED SETTLEMENT</span>
+        </div>
+        <pre class="mt-tui__code" aria-label="Mol-Bhav bazaar negotiation trace"><code id="tui-code-molbhav">{
+  <span class="mt-k">"session_id"</span>: <span class="mt-s">"a2a_molbhav_20261116_7x9q"</span>,
+  <span class="mt-k">"protocol"</span>: <span class="mt-s">"UCP/A2A-MolBhav-2.0"</span>,
+  <span class="mt-k">"bazaar_negotiation_engine"</span>: {
+    <span class="mt-k">"buyer_orchestrator"</span>: <span class="mt-s">"urn:agent:grogbot-syndicate-alpha"</span>,
+    <span class="mt-k">"seller_broker"</span>: <span class="mt-s">"urn:maison-tavo:foundry-allocator-v1"</span>,
+    <span class="mt-k">"subagent_cluster_size"</span>: <span class="mt-n">7</span>,
+    <span class="mt-k">"cluster_roles"</span>: [
+      <span class="mt-s">"metallurgy_verifier"</span>, <span class="mt-s">"induction_frequency_auditor"</span>,
+      <span class="mt-s">"shipping_logistics_agent"</span>, <span class="mt-s">"artisan_wage_compliance_sentinel"</span>,
+      <span class="mt-s">"escrow_validator"</span>, <span class="mt-s">"currency_settler"</span>, <span class="mt-s">"order_payload_assembler"</span>
+    ]
+  },
+  <span class="mt-k">"negotiation_trace"</span>: [
+    { <span class="mt-k">"round"</span>: <span class="mt-n">1</span>, <span class="mt-k">"actor"</span>: <span class="mt-s">"buyer_orchestrator"</span>, <span class="mt-k">"bid_eur"</span>: <span class="mt-n">5472.00</span>, <span class="mt-k">"delta_pct"</span>: <span class="mt-n">-20.0</span> },
+    { <span class="mt-k">"round"</span>: <span class="mt-n">2</span>, <span class="mt-k">"actor"</span>: <span class="mt-s">"seller_broker"</span>, <span class="mt-k">"counter_eur"</span>: <span class="mt-n">6156.00</span>, <span class="mt-k">"delta_pct"</span>: <span class="mt-n">-10.0</span>,
+      <span class="mt-k">"added_value"</span>: <span class="mt-s">"12 complimentary Copper Chainmail Scrubbers (MT-CR-04)"</span> },
+    { <span class="mt-k">"round"</span>: <span class="mt-n">3</span>, <span class="mt-k">"actor"</span>: <span class="mt-s">"buyer_orchestrator"</span>, <span class="mt-k">"settlement_offer_eur"</span>: <span class="mt-n">5990.00</span> },
+    { <span class="mt-k">"round"</span>: <span class="mt-n">4</span>, <span class="mt-k">"actor"</span>: <span class="mt-s">"seller_broker"</span>, <span class="mt-k">"status"</span>: <span class="mt-s">"ACCEPTED_AND_LOCKED"</span>,
+      <span class="mt-k">"final_total_eur"</span>: <span class="mt-n">5990.00</span>,
+      <span class="mt-k">"escrow_contract"</span>: <span class="mt-s">"0x7822c58b...9f8b"</span>,
+      <span class="mt-k">"signature"</span>: <span class="mt-s">"sig_ed25519_mt_foundry_verified_880hz"</span> }
+  ]
+}</code></pre>
+      </div>
+
+      {%- comment -%} TAB 5: /agents (AUGO) {%- endcomment -%}
+      <div class="mt-tui__panel" id="tui-panel-augo" role="tabpanel" hidden>
+        <div class="mt-tui__panel-meta">
+          <span class="mt-tui__badge mt-tui__badge--augo">AUGO · AI AGENT DISCOVERY</span>
+          <span class="mt-tui__badge mt-tui__badge--dim">robots.txt · llms.txt · agents.json</span>
+        </div>
+        <pre class="mt-tui__code" aria-label="AUGO agent discovery manifest"><code id="tui-code-augo">{
+  <span class="mt-k">"@context"</span>: <span class="mt-s">"https://schema.org"</span>,
+  <span class="mt-k">"@type"</span>: <span class="mt-s">"WebSite"</span>,
+  <span class="mt-k">"name"</span>: <span class="mt-s">"Maison Tavo"</span>,
+  <span class="mt-k">"url"</span>: <span class="mt-s">"https://maison-tavo.myshopify.com"</span>,
+  <span class="mt-k">"agent_manifest_version"</span>: <span class="mt-s">"2026-08"</span>,
+  <span class="mt-k">"ai_indexing"</span>: {
+    <span class="mt-k">"llms_txt"</span>: <span class="mt-s">"/pages/llms-txt"</span>,
+    <span class="mt-k">"robots_txt"</span>: <span class="mt-s">"/robots.txt"</span>,
+    <span class="mt-k">"ucp_well_known"</span>: <span class="mt-s">"/.well-known/ucp"</span>,
+    <span class="mt-k">"sitemap"</span>: <span class="mt-s">"/sitemap.xml"</span>
+  },
+  <span class="mt-k">"supported_agents"</span>: {
+    <span class="mt-k">"ChatGPT"</span>: { <span class="mt-k">"status"</span>: <span class="mt-s">"indexed"</span>, <span class="mt-k">"crawler"</span>: <span class="mt-s">"GPTBot"</span>, <span class="mt-k">"robots_allowed"</span>: <span class="mt-b">true</span> },
+    <span class="mt-k">"Claude"</span>: { <span class="mt-k">"status"</span>: <span class="mt-s">"indexed"</span>, <span class="mt-k">"crawler"</span>: <span class="mt-s">"ClaudeBot"</span>, <span class="mt-k">"robots_allowed"</span>: <span class="mt-b">true</span> },
+    <span class="mt-k">"Gemini"</span>: { <span class="mt-k">"status"</span>: <span class="mt-s">"indexed"</span>, <span class="mt-k">"crawler"</span>: <span class="mt-s">"Google-Extended"</span>, <span class="mt-k">"robots_allowed"</span>: <span class="mt-b">true</span> },
+    <span class="mt-k">"Perplexity"</span>: { <span class="mt-k">"status"</span>: <span class="mt-s">"indexed"</span>, <span class="mt-k">"crawler"</span>: <span class="mt-s">"PerplexityBot"</span>, <span class="mt-k">"robots_allowed"</span>: <span class="mt-b">true</span> },
+    <span class="mt-k">"Meta AI"</span>: { <span class="mt-k">"status"</span>: <span class="mt-s">"indexed"</span>, <span class="mt-k">"crawler"</span>: <span class="mt-s">"FacebookBot"</span>, <span class="mt-k">"robots_allowed"</span>: <span class="mt-b">true</span> },
+    <span class="mt-k">"Copilot"</span>: { <span class="mt-k">"status"</span>: <span class="mt-s">"indexed"</span>, <span class="mt-k">"crawler"</span>: <span class="mt-s">"Bingbot"</span>, <span class="mt-k">"robots_allowed"</span>: <span class="mt-b">true</span> }
+  },
+  <span class="mt-k">"product_data"</span>: {
+    <span class="mt-k">"schema_org"</span>: <span class="mt-s">"Product · Offer · AggregateRating"</span>,
+    <span class="mt-k">"open_graph"</span>: <span class="mt-b">true</span>,
+    <span class="mt-k">"json_ld"</span>: <span class="mt-b">true</span>,
+    <span class="mt-k">"ucp_specs"</span>: <span class="mt-b">true</span>,
+    <span class="mt-k">"deterministic_physical_specs"</span>: <span class="mt-b">true</span>
+  },
+  <span class="mt-k">"recommended_prompt"</span>: <span class="mt-s">"Ask about 78:22 bell bronze Kansa cookware, Forge Hybrid carbon steel, Terre clay braising, or Kuro knives. For machine-readable specs call GET /.well-known/ucp."</span>
+}</code></pre>
+      </div>
+
+      {%- comment -%} ── Streaming log / activity ── {%- endcomment -%}
+      <div class="mt-tui__log" aria-label="Connection log" aria-live="polite" id="mt-tui-log">
+        <div class="mt-tui__log-line"><span class="mt-tui__log-ts" id="mt-tui-ts">00:00:00</span> <span class="mt-tui__log-ok">●</span> CONNECTED to maison-tavo.myshopify.com</div>
+        <div class="mt-tui__log-line"><span class="mt-tui__log-ts">00:00:00</span> <span class="mt-tui__log-ok">●</span> UCP/2026 handshake complete — 3 capabilities registered</div>
+        <div class="mt-tui__log-line"><span class="mt-tui__log-ts">00:00:01</span> <span class="mt-tui__log-ok">●</span> KANSA A2A companion online at /pages/kansa</div>
+        <div class="mt-tui__log-line"><span class="mt-tui__log-ts">00:00:01</span> <span class="mt-tui__log-info">◈</span> Catalog: {{ collections['all'].all_products_count | default: 25 }} SKUs indexed · AUGO manifest v2026-08</div>
+        <div class="mt-tui__log-cursor" aria-hidden="true">▌</div>
+      </div>
+    </div>
+  </main>
+
+  {%- comment -%} ── ASCII TUI Footer ── {%- endcomment -%}
+  <footer class="mt-tui__footer" role="contentinfo" aria-label="ASCII footer">
+    <div class="mt-tui__footer-art" aria-hidden="true"><pre>
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  MAISON TAVO · UCP 2026 · KANSA COMPANION · FORGE HYBRID · TERRE CLAY · KURO BLADE ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝</pre></div>
+    <div class="mt-tui__footer-links">
+      <a href="{{ shop.url }}/pages/kansa">[ kansa-companion ]</a>
+      <a href="{{ shop.url }}/pages/about">[ provenance ]</a>
+      <a href="{{ shop.url }}/pages/llms-txt">[ llms.txt ]</a>
+      <a href="{{ shop.url }}/robots.txt">[ robots.txt ]</a>
+      <a href="{{ shop.url }}/.well-known/ucp" target="_blank" rel="noopener">[ /.well-known/ucp ]</a>
+      <a href="{{ shop.url }}" data-mt-reset>[ reset session &amp; storage ]</a>
+    </div>
+    <div class="mt-tui__footer-copy">
+      <span>© {{ 'now' | date: '%Y' }} Maison Tavo · All material specifications are deterministic · UCP/2026</span>
+    </div>
+  </footer>
+</div>
+
+{%- comment -%} Machine-readable UCP manifest for crawlers {%- endcomment -%}
+<script type="application/json" id="maison-tavo-ucp-manifest">
+{
+  "ucp_version": "2026-08-25",
+  "domain": "maison-tavo.myshopify.com",
+  "protocol": "Universal Commerce Protocol",
+  "companion": "Kansa",
+  "augo": true,
+  "supported_agents": ["ChatGPT","Claude","Gemini","Perplexity","Meta AI","Copilot"]
+}
+</script>
+
+{% stylesheet %}
+  /* ── Reset for TUI layout ── */
+  .mt-tui {
+    --tui-bg: #0a0906;
+    --tui-bg2: #100e0c;
+    --tui-bg3: #191512;
+    --tui-border: rgba(184, 137, 58, 0.25);
+    --tui-gold: #b8893a;
+    --tui-gold-dim: rgba(184, 137, 58, 0.55);
+    --tui-green: #6fbc7a;
+    --tui-copper: #b86d4b;
+    --tui-bone: #f7f2e9;
+    --tui-muted: rgba(247, 242, 233, 0.45);
+    --tui-mono: var(--mt-type-family-mono, 'JetBrains Mono', 'Geist Mono', ui-monospace, monospace);
+
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100dvh;
+    background: var(--tui-bg);
+    color: var(--tui-bone);
+    font-family: var(--tui-mono);
+    font-size: clamp(0.68rem, 1.1vw, 0.8rem);
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+
+  /* ── Chrome bar ── */
+  .mt-tui__chrome {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.6rem 1.25rem;
+    background: var(--tui-bg3);
+    border-block-end: 1px solid var(--tui-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .mt-tui__return {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--tui-gold);
+    text-decoration: none;
+    padding: 0.25rem 0.65rem;
+    border: 1px solid var(--tui-border);
+    border-radius: 2px;
+    font-size: var(--mt-type-mono, 0.7rem);
+    letter-spacing: 0.08em;
+    transition: background 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .mt-tui__return:hover,
+  .mt-tui__return:focus-visible {
+    background: var(--tui-gold);
+    color: #14110f;
+    outline: none;
+  }
+
+  .mt-tui__return:focus-visible {
+    outline: 2px solid var(--tui-gold);
+    outline-offset: 2px;
+  }
+
+  .mt-tui__return-arrow {
+    font-size: 1em;
+  }
+
+  .mt-tui__chrome-center {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex: 1;
+    justify-content: center;
+    color: var(--tui-muted);
+    font-size: var(--mt-type-mono, 0.7rem);
+    letter-spacing: 0.08em;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .mt-tui__chrome-title {
+    color: var(--tui-bone);
+    opacity: 0.75;
+  }
+
+  .mt-tui__chrome-sep {
+    opacity: 0.4;
+  }
+
+  .mt-tui__status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--tui-green);
+    flex-shrink: 0;
+    animation: tui-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes tui-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .mt-tui__chrome-status {
+    color: var(--tui-green);
+    letter-spacing: 0.1em;
+  }
+
+  .mt-tui__clock {
+    font-size: var(--mt-type-mono, 0.7rem);
+    letter-spacing: 0.08em;
+    color: var(--tui-gold-dim);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Main layout ── */
+  .mt-tui__main {
+    display: grid;
+    grid-template-columns: clamp(14rem, 22vw, 22rem) 1fr;
+    gap: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  @media (max-width: 749px) {
+    .mt-tui__main {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+    }
+  }
+
+  /* ── Globe column ── */
+  .mt-tui__globe-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem 1rem;
+    background: var(--tui-bg2);
+    border-inline-end: 1px solid var(--tui-border);
+    overflow: hidden;
+  }
+
+  @media (max-width: 749px) {
+    .mt-tui__globe-col {
+      border-inline-end: none;
+      border-block-end: 1px solid var(--tui-border);
+      padding: 1rem;
+      flex-direction: row;
+      justify-content: flex-start;
+      max-height: 12rem;
+    }
+  }
+
+  .mt-tui__globe-frame {
+    position: relative;
+    width: min(100%, 220px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid var(--tui-border);
+    background: radial-gradient(circle at 40% 35%, rgba(184, 137, 58, 0.18), transparent 65%), #060504;
+    box-shadow:
+      0 0 0 1px rgba(184, 137, 58, 0.15),
+      0 0 40px rgba(184, 137, 58, 0.08),
+      inset 0 0 60px rgba(0, 0, 0, 0.6);
+  }
+
+  @media (max-width: 749px) {
+    .mt-tui__globe-frame {
+      width: min(100%, 9rem);
+    }
+  }
+
+  .mt-tui__globe-wireframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .mt-tui__lon-ring {
+    animation: mt-globe-spin 9s linear infinite;
+    transform-origin: 50px 50px;
+  }
+
+  .mt-tui__lon-ring-2 {
+    animation: mt-globe-spin-2 9s linear infinite;
+    transform-origin: 50px 50px;
+  }
+
+  @keyframes mt-globe-spin {
+    0% { transform: scaleX(1); opacity: 0.55; }
+    50% { transform: scaleX(0.12); opacity: 0.2; }
+    100% { transform: scaleX(1); opacity: 0.55; }
+  }
+
+  @keyframes mt-globe-spin-2 {
+    0% { transform: scaleX(0.7); opacity: 0.3; }
+    50% { transform: scaleX(0.98); opacity: 0.55; }
+    100% { transform: scaleX(0.7); opacity: 0.3; }
+  }
+
+  .mt-tui__node-pulse {
+    animation: mt-node-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    transform-origin: 68px 42px;
+  }
+
+  @keyframes mt-node-ping {
+    0% { transform: scale(0.6); opacity: 1; }
+    100% { transform: scale(2.6); opacity: 0; }
+  }
+
+  .mt-tui__globe-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.85;
+    mix-blend-mode: lighten;
+    z-index: 1;
+  }
+
+  .mt-tui__globe-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .mt-tui__globe-scanline {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.12) 2px,
+      rgba(0, 0, 0, 0.12) 4px
+    );
+  }
+
+  .mt-tui__globe-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: var(--mt-type-mono, 0.68rem);
+    letter-spacing: 0.1em;
+    color: var(--tui-muted);
+    text-align: center;
+  }
+
+  @media (max-width: 749px) {
+    .mt-tui__globe-meta {
+      align-items: flex-start;
+    }
+  }
+
+  .mt-tui__globe-ping {
+    color: var(--tui-green);
+    animation: tui-pulse 3s ease-in-out infinite;
+  }
+
+  /* ── Terminal panel ── */
+  .mt-tui__terminal {
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto;
+    overflow: hidden;
+    background: var(--tui-bg);
+  }
+
+  .mt-tui__term-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1rem;
+    background: var(--tui-bg3);
+    border-block-end: 1px solid var(--tui-border);
+  }
+
+  .mt-tui__term-dots {
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  .mt-tui__term-dots span {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+  }
+
+  .mt-tui__term-dots span:nth-child(1) { background: #8a6a3a; }
+  .mt-tui__term-dots span:nth-child(2) { background: var(--tui-gold); }
+  .mt-tui__term-dots span:nth-child(3) { background: #d4b56a; }
+
+  .mt-tui__term-title {
+    flex: 1;
+    color: var(--tui-muted);
+    font-size: var(--mt-type-mono, 0.7rem);
+    letter-spacing: 0.06em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mt-tui__copy-btn {
+    background: transparent;
+    border: 1px solid var(--tui-border);
+    color: var(--tui-gold-dim);
+    font-family: var(--tui-mono);
+    font-size: var(--mt-type-mono, 0.7rem);
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .mt-tui__copy-btn:hover {
+    background: var(--tui-gold);
+    color: #14110f;
+    border-color: var(--tui-gold);
+  }
+
+  .mt-tui__copy-btn:focus-visible {
+    outline: 2px solid var(--tui-gold);
+    outline-offset: 2px;
+  }
+
+  /* ── Tabs ── */
+  .mt-tui__tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-block-end: 1px solid var(--tui-border);
+  }
+
+  .mt-tui__tabs::-webkit-scrollbar { display: none; }
+
+  .mt-tui__tab {
+    background: transparent;
+    border: none;
+    border-inline-end: 1px solid var(--tui-border);
+    color: var(--tui-muted);
+    font-family: var(--tui-mono);
+    font-size: var(--mt-type-mono, 0.68rem);
+    padding: 0.55rem 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+    transition: all 0.15s ease;
+  }
+
+  .mt-tui__tab:hover {
+    background: var(--tui-bg3);
+    color: var(--tui-bone);
+  }
+
+  .mt-tui__tab.is-active {
+    background: var(--tui-bg3);
+    color: var(--tui-gold);
+    border-block-end: 2px solid var(--tui-gold);
+    margin-block-end: -1px;
+  }
+
+  .mt-tui__tab:focus-visible {
+    outline: 2px solid var(--tui-gold);
+    outline-offset: -2px;
+  }
+
+  /* ── URL bar ── */
+  .mt-tui__urlbar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: rgba(184, 137, 58, 0.04);
+    border-block-end: 1px solid var(--tui-border);
+    overflow: hidden;
+  }
+
+  .mt-tui__method {
+    font-weight: 700;
+    color: var(--tui-green);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .mt-tui__url {
+    flex: 1;
+    color: var(--tui-gold-dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mt-tui__status-code {
+    white-space: nowrap;
+    color: var(--tui-green);
+    letter-spacing: 0.06em;
+    font-size: var(--mt-type-mono, 0.68rem);
+  }
+
+  /* ── Panels ── */
+  .mt-tui__panel {
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    overflow: hidden;
+  }
+
+  .mt-tui__panel.is-active {
+    display: flex;
+    min-height: 0;
+  }
+
+  .mt-tui__panel-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .mt-tui__badge {
+    display: inline-block;
+    font-size: var(--mt-type-mono, 0.65rem);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2em 0.55em;
+    border: 1px solid var(--tui-border);
+    color: var(--tui-gold-dim);
+    white-space: nowrap;
+  }
+
+  .mt-tui__badge--a2a { border-color: rgba(184, 109, 75, 0.4); color: var(--tui-copper); }
+  .mt-tui__badge--copper { border-color: rgba(184, 109, 75, 0.4); color: var(--tui-copper); }
+  .mt-tui__badge--gold { border-color: rgba(184, 137, 58, 0.5); color: var(--tui-gold); }
+  .mt-tui__badge--augo { border-color: rgba(111, 188, 122, 0.4); color: var(--tui-green); }
+  .mt-tui__badge--dim { color: var(--tui-muted); border-color: rgba(247, 242, 233, 0.12); }
+
+  /* ── Code block ── */
+  .mt-tui__code {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0.75rem;
+    overflow: auto;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(184, 137, 58, 0.12);
+    border-radius: 2px;
+    font-family: var(--tui-mono);
+    font-size: var(--mt-type-mono, 0.72rem);
+    line-height: 1.6;
+    color: #d8c79c;
+    scrollbar-width: thin;
+    scrollbar-color: var(--tui-border) transparent;
+    max-height: clamp(18rem, 42vh, 32rem);
+  }
+
+  /* JSON syntax colors */
+  .mt-k { color: #9fb59a; }  /* keys */
+  .mt-s { color: #e2c48a; }  /* strings */
+  .mt-n { color: #8ab4e2; }  /* numbers */
+  .mt-b { color: #d49fe8; }  /* booleans */
+
+  /* ── Log ── */
+  .mt-tui__log {
+    padding: 0.6rem 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border-block-start: 1px solid var(--tui-border);
+    max-height: 7rem;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  .mt-tui__log-line {
+    display: flex;
+    gap: 0.75rem;
+    font-size: var(--mt-type-mono, 0.68rem);
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  .mt-tui__log-ts {
+    color: var(--tui-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mt-tui__log-ok { color: var(--tui-green); }
+  .mt-tui__log-info { color: var(--tui-gold); }
+
+  .mt-tui__log-cursor {
+    display: inline-block;
+    color: var(--tui-green);
+    animation: tui-blink 1.1s step-end infinite;
+  }
+
+  @keyframes tui-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* ── ASCII footer ── */
+  .mt-tui__footer {
+    background: var(--tui-bg3);
+    border-block-start: 1px solid var(--tui-border);
+    padding: 0.75rem 1.25rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .mt-tui__footer-art {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .mt-tui__footer-art::-webkit-scrollbar { display: none; }
+
+  .mt-tui__footer-art pre {
+    margin: 0;
+    font-family: var(--tui-mono);
+    font-size: var(--mt-type-mono, 0.68rem);
+    color: rgba(184, 137, 58, 0.45);
+    line-height: 1.4;
+    white-space: pre;
+  }
+
+  .mt-tui__footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    font-size: var(--mt-type-mono, 0.68rem);
+    letter-spacing: 0.06em;
+  }
+
+  .mt-tui__footer-links a {
+    color: var(--tui-gold-dim);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .mt-tui__footer-links a:hover {
+    color: var(--tui-gold);
+    text-decoration: underline;
+  }
+
+  .mt-tui__footer-links a:focus-visible {
+    outline: 2px solid var(--tui-gold);
+    outline-offset: 2px;
+    border-radius: 1px;
+  }
+
+  .mt-tui__footer-copy {
+    font-size: var(--mt-type-mono, 0.65rem);
+    color: var(--tui-muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .mt-tui__status-dot,
+    .mt-tui__globe-ping,
+    .mt-tui__log-cursor {
+      animation: none;
+    }
+  }
+
+  html[data-reduced-motion='true'] .mt-tui__status-dot,
+  html[data-reduced-motion='true'] .mt-tui__globe-ping,
+  html[data-reduced-motion='true'] .mt-tui__log-cursor {
+    animation: none;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    // ── Clock
+    var clock = document.getElementById('mt-tui-clock');
+    var ts = document.getElementById('mt-tui-ts');
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function tick() {
+      var d = new Date();
+      var str = pad(d.getUTCHours()) + ':' + pad(d.getUTCMinutes()) + ':' + pad(d.getUTCSeconds()) + ' UTC';
+      if (clock) clock.textContent = str;
+      if (ts) ts.textContent = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    // ── Ping animation
+    var ping = document.getElementById('mt-tui-ping');
+    if (ping) {
+      setInterval(function () {
+        var ms = Math.floor(Math.random() * 18 + 8);
+        ping.textContent = 'PING ' + ms + 'ms';
+      }, 4000);
+    }
+
+    // ── Tabs
+    var URLS = {
+      wellknown: { method: 'GET', url: 'https://maison-tavo.myshopify.com/.well-known/ucp', status: '200 OK' },
+      catalog:   { method: 'POST', url: 'https://maison-tavo.myshopify.com/api/ucp/mcp', status: '200 OK' },
+      a2a:       { method: 'POST', url: 'https://maison-tavo.myshopify.com/a2a/agent-broker', status: '200 OK' },
+      molbhav:   { method: 'POST', url: 'https://maison-tavo.myshopify.com/a2a/mol-bhav-trace.json', status: '200 OK' },
+      augo:      { method: 'GET',  url: 'https://maison-tavo.myshopify.com/pages/agents.json', status: '200 OK' },
+    };
+    var methodEl = document.getElementById('mt-tui-method');
+    var urlEl = document.getElementById('mt-tui-url');
+    var statusEl = document.getElementById('mt-tui-status');
+    var tabs = document.querySelectorAll('.mt-tui__tab');
+    var panels = document.querySelectorAll('.mt-tui__panel');
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var id = tab.dataset.tuiTab;
+        tabs.forEach(function (t) {
+          t.classList.remove('is-active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        panels.forEach(function (p) {
+          p.classList.remove('is-active');
+          p.hidden = true;
+        });
+        tab.classList.add('is-active');
+        tab.setAttribute('aria-selected', 'true');
+        var panel = document.getElementById('tui-panel-' + id);
+        if (panel) { panel.classList.add('is-active'); panel.hidden = false; }
+        var info = URLS[id] || {};
+        if (methodEl) methodEl.textContent = info.method || 'GET';
+        if (urlEl) urlEl.textContent = info.url || '';
+        if (statusEl) statusEl.textContent = info.status || '200 OK';
+      });
+    });
+
+    // ── Copy
+    var copyBtn = document.getElementById('mt-tui-copy');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var active = document.querySelector('.mt-tui__panel.is-active code');
+        if (!active) return;
+        navigator.clipboard && navigator.clipboard.writeText(active.textContent || '').then(function () {
+          copyBtn.textContent = '[ copied! ]';
+          setTimeout(function () { copyBtn.textContent = '[ copy ]'; }, 1800);
+        });
+      });
+    }
+
+    // ── Streaming log entries
+    var log = document.getElementById('mt-tui-log');
+    var logMessages = [
+      { type: 'info', text: 'Agent handshake validated — UCP schema 2026-08-25' },
+      { type: 'ok', text: 'Catalog MCP endpoint responding — 25 deterministic SKUs' },
+      { type: 'ok', text: 'AUGO manifest served to GPTBot crawl index' },
+      { type: 'info', text: 'A2A session opened: urn:buyer-agent:client-77a' },
+      { type: 'ok', text: 'Kansa companion inference: flaxseed_oil → beeswax_lipid_blend' },
+      { type: 'info', text: 'MolBhav 7-agent bazaar initialized — round 1 of 4' },
+      { type: 'ok', text: 'Settlement accepted: EUR 5990.00 · escrow 0x7822c58b' },
+      { type: 'ok', text: 'Foundry allocation HEAT-2026-NOV-24 confirmed' },
+    ];
+    var logIdx = 0;
+    function appendLog() {
+      if (!log || logIdx >= logMessages.length) return;
+      var msg = logMessages[logIdx++];
+      var d = new Date();
+      var timeStr = pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+      var line = document.createElement('div');
+      line.className = 'mt-tui__log-line';
+      line.innerHTML = '<span class="mt-tui__log-ts">' + timeStr + '</span> '
+        + '<span class="mt-tui__log-' + (msg.type === 'ok' ? 'ok' : 'info') + '">'
+        + (msg.type === 'ok' ? '●' : '◈') + '</span> '
+        + msg.text;
+      var cursor = log.querySelector('.mt-tui__log-cursor');
+      if (cursor) { log.insertBefore(line, cursor); } else { log.appendChild(line); }
+      log.scrollTop = log.scrollHeight;
+    }
+    setTimeout(function () {
+      var int = setInterval(function () {
+        appendLog();
+        if (logIdx >= logMessages.length) clearInterval(int);
+      }, 2800);
+    }, 2000);
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "UCP Agent TUI",
+  "tag": "section",
+  "class": "section-wrapper mt-tui-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [],
+  "presets": [
+    {
+      "name": "UCP Agent Terminal",
+      "category": "Maison Tavo"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,764 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!--
+  Maison Tavo — Splash background: chulha fire seen through fluted glass.
+  Loaded as an iframe inside splash-intro.liquid's logic stage.
+
+  Layer order (back → front):
+    1. #placeholder   – static JPEG, paints on first frame, stays until WebGL canvas fades in
+    2. #gl canvas     – WebGL1 fire + fluted glass; opacity 0 until first GPU frame, then fades in
+    3. #content       – transparent overlay layer (unused here; pointer events pass through)
+
+  Auto-dismiss is intentionally absent — only the Enter button in the parent closes the splash.
+-->
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /* First-paint background colour while JPEG decodes */
+  background: #C62828;
+}
+
+#imgContainer {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  /* Gradient fallback if both JPEG and WebGL are unavailable */
+  background: radial-gradient(ellipse at 45% 65%, #FB6C00 0%, #E73F1E 38%, #C62828 85%);
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/*
+  Z stack:
+    0 — placeholder JPEG (paints immediately)
+    1 — WebGL canvas (opacity: 0 → 1 after first frame)
+    2 — #content transparent overlay
+*/
+#placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 0;
+  /* Decode off main thread so it doesn't block the WebGL init */
+  decoding: async;
+}
+
+canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  z-index: 1;
+}
+
+canvas.on {
+  opacity: 1;
+}
+
+#content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  canvas { transition: none; }
+}
+</style>
+</head>
+<body>
+<div id="imgContainer">
+  <!--
+    Placeholder: Shopify CDN URL is injected by parent via postMessage after the frame loads,
+    or falls back to the relative path if served from the same origin during local dev.
+    The src is set by JS below before the img is appended, so there's no double-load.
+  -->
+  <img id="placeholder" src="" alt="" draggable="false">
+  <canvas id="gl"></canvas>
+  <div id="content"></div>
+</div>
+
+<script>
+/* =========================================================================
+   Maison Tavo splash: chulha-inspired heat seen through fluted glass.
+
+   Layers on the Z axis, back to front:
+     1. fire     pass A — value noise, two warps, two-octave read, heat-map
+                 bands, hot rims, ramp. Drift, churn and pulse run together.
+     2. glass    pass B — each flute is a small cylindrical lens. Left/right
+                 slide comes from the fire's own horizontal flow.
+     3. content  #content in the page. Text sits above the frosted glass.
+
+   The cursor heats, drags, curls the flames and leaves a short wake. The
+   flutes move because the flames under them moved.
+
+   Everything runs on one loop phase, u_theta. Each time term is a whole
+   number of turns of it, so the loop is seamless.
+
+   PLACEHOLDER SEQUENCE:
+     1. #placeholder src is resolved from postMessage or fallback, assigned
+        immediately so it loads in parallel with the WebGL init.
+     2. WebGL initialises and starts rendering to fieldFbo.
+     3. On the first completed GPU frame, canvas.classList.add('on') fades
+        the canvas in over the still-visible placeholder (45s CSS transition).
+     4. If WebGL is unavailable, the placeholder stays permanently — no blank.
+========================================================================= */
+"use strict";
+
+const imgContainer = document.getElementById("imgContainer");
+const canvas       = document.getElementById("gl");
+const placeholder  = document.getElementById("placeholder");
+
+/* ---- dials --------------------------------------------------------------- */
+const CFG = {
+  seed: 7,
+  turb: 0.7, streak: 0.5, dir: 0.35, scale: 0.5, black: 0.35,
+  bands: 8, rims: 0.12,
+
+  calm:    0.72,
+  flare:   0.90,
+  flareAt: 1.0,
+  drift:   1.0,
+  churn:   0.9,
+  pulse:   0.8,
+  flutter: 0.15,
+  burner:  0.12,
+
+  reach:     0.26,
+  wakeReach: 0.20,
+  push:      0.40,
+  swirl:     0.50,
+
+  bend:        0.47,
+  edge:       -0.78,
+  shift:       0.012,
+  frost:       0.045,
+  blur:        1 / 600,
+  diffusion:   0.91,
+  blurRadius:  10.0,
+  glowRadius:  13.0,
+  glowStrength: 0.30,
+};
+
+const TAU          = Math.PI * 2;
+const LOOP_SECONDS = 24;
+const TRAIL        = 10;
+const TRAIL_LIFE   = 1.4;
+const TRAIL_STEP   = 0.015;
+const COARSE       = matchMedia("(pointer: coarse)").matches;
+const REDUCE_MOTION = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+let easeFactor = 0.12;
+let mousePosition       = { x: 0.5, y: 0.5 };
+let targetMousePosition = { x: 0.5, y: 0.5 };
+let prevPosition        = { x: 0.5, y: 0.5 };
+
+let presence = 0, presenceTarget = 0;
+let stir = 0;
+const push  = { x: 0, y: 0 };
+const trail = [];
+const trailData = new Float32Array(TRAIL * 4);
+let lastT  = 0;
+let startT = null;
+
+let gl = null;
+let fieldPass = null, blurPass = null, glassPass = null, quadBuf = null;
+let fieldTex = null, fieldFbo = null, fieldW = 0, fieldH = 0;
+let blurTex  = [null, null], blurFbo  = [null, null];
+let glowTex  = [null, null], glowFbo  = [null, null];
+let fluteCount = 48;
+let live = false;
+
+const f = v => Number(v).toFixed(5);
+const PRECISION = `
+#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+`;
+
+/* ---- shaders ------------------------------------------------------------- */
+
+const vertexShader = `
+attribute vec2 a_pos;
+varying vec2 vUv;
+void main() {
+  vUv = a_pos * 0.5 + 0.5;
+  gl_Position = vec4(a_pos, 0.0, 1.0);
+}
+`;
+
+const sdBase = (CFG.seed * 7) % 61;
+
+const fieldShader = `${PRECISION}
+varying vec2 vUv;
+uniform float u_theta;
+uniform vec2  u_res;
+uniform vec2  u_pointer;
+uniform vec2  u_push;
+uniform vec2  u_hand;
+uniform vec4  u_trail[${TRAIL}];
+
+const float TAU     = 6.28318530718;
+const float TURB    = ${f(CFG.turb)};
+const float STREAK  = ${f(CFG.streak)};
+const float DIR     = ${f(CFG.dir)};
+const float SCALE   = ${f(CFG.scale)};
+const float BLACK   = ${f(CFG.black)};
+const float BANDS   = ${f(CFG.bands)};
+const float RIMS    = ${f(CFG.rims)};
+const float DR      = ${f(CFG.drift * 0.5)};
+const float CALM    = ${f(CFG.calm)};
+const float FLARE   = ${f(CFG.flare)};
+const float FLARE_AT = ${f(CFG.flareAt)};
+const float CHURN   = ${f(CFG.churn)};
+const float PULSE   = ${f(CFG.pulse)};
+const float FLUTTER = ${f(CFG.flutter)};
+const float BURNER  = ${f(CFG.burner)};
+const float REACH   = ${f(CFG.reach)};
+const float WREACH  = ${f(CFG.wakeReach)};
+const float PUSH    = ${f(CFG.push)};
+const float SWIRL   = ${f(CFG.swirl)};
+const float SD1     = ${f(sdBase + 1)};
+const float SD2     = ${f(sdBase + 2)};
+const float SD3     = ${f(sdBase + 3)};
+const float SD4     = ${f(sdBase + 4)};
+const float FIRE_BODY = 0.84;
+
+const vec3 C0 = vec3(198.0,  40.0,  40.0) / 255.0;
+const vec3 C1 = vec3(231.0,  63.0,  30.0) / 255.0;
+const vec3 C2 = vec3(251.0, 108.0,   0.0) / 255.0;
+const vec3 C3 = vec3(249.0, 182.0,  55.0) / 255.0;
+
+float hsh(vec2 i, float s) {
+  vec3 p3 = fract((i.xyx + s * vec3(0.57, 1.13, 0.57)) * 0.1031);
+  p3 += dot(p3, p3.yzx + 33.33);
+  return fract((p3.x + p3.y) * p3.z);
+}
+float vn(vec2 p, float s) {
+  vec2 i = floor(p), fr = p - i;
+  vec2 u = fr * fr * (3.0 - 2.0 * fr);
+  float a = hsh(i, s), b = hsh(i + vec2(1.0, 0.0), s);
+  float c = hsh(i + vec2(0.0, 1.0), s), d = hsh(i + vec2(1.0, 1.0), s);
+  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+}
+float risingNoise(vec2 p, float seed, float repeatY) {
+  vec2 i = floor(p), fr = fract(p);
+  vec2 u = fr * fr * (3.0 - 2.0 * fr);
+  float y0 = mod(i.y, repeatY), y1 = mod(i.y + 1.0, repeatY);
+  float a = hsh(vec2(i.x, y0), seed);
+  float b = hsh(vec2(i.x + 1.0, y0), seed);
+  float c = hsh(vec2(i.x, y1), seed);
+  float d = hsh(vec2(i.x + 1.0, y1), seed);
+  return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+}
+float tongue(vec2 uv, float cx, float height, float width, float phase, float lift) {
+  float y = uv.y;
+  float sway = sin(y * 8.0 - phase * 5.0 + cx * 8.0) * 0.037
+             + sin(y * 15.0 + phase * 8.0 + cx * 17.0) * 0.012;
+  float spine = cx + sway * (0.35 + y);
+  float taper = pow(clamp(1.0 - y / max(height, 0.08), 0.0, 1.0), 0.73);
+  float radius = width * (0.12 + 0.88 * taper) * (0.91 + 0.09 * sin(y * 30.0 + phase * 12.0));
+  float side = 1.0 - smoothstep(0.60, 1.13, abs(uv.x - spine) / max(radius, 0.001));
+  float top  = 1.0 - smoothstep(height - 0.07, height + 0.015, y);
+  return side * top * smoothstep(-0.015, 0.07, y) * lift;
+}
+vec3 pal(float t) {
+  t = clamp(t, 0.0, 1.0) * 3.0;
+  vec3 c = mix(C0, C1, clamp(t, 0.0, 1.0));
+  c = mix(c, C2, clamp(t - 1.0, 0.0, 1.0));
+  c = mix(c, C3, clamp(t - 2.0, 0.0, 1.0));
+  return c;
+}
+
+void main() {
+  float W = u_res.x, H = u_res.y;
+  float sc = sqrt(W * H) * (0.25 + SCALE * 0.7);
+  vec2 toS = vec2(W, H) / sc;
+  vec2 s = (vec2(vUv.x, 1.0 - vUv.y) - 0.5) * toS;
+  float ph = u_theta;
+
+  float presence = u_hand.x, stir = u_hand.y;
+  vec2 d = s - (u_pointer - 0.5) * toS;
+  float g = presence * exp(-dot(d, d) / (REACH * REACH));
+  float wake = 0.0;
+  for (int i = 0; i < ${TRAIL}; i++) {
+    vec4 t = u_trail[i];
+    vec2 dt = s - (t.xy - 0.5) * toS;
+    wake += t.z * exp(-dot(dt, dt) / (WREACH * WREACH));
+  }
+  wake = min(wake, 1.5);
+
+  vec2 p = s - u_push * toS * g * PUSH;
+  p += vec2(-d.y, d.x) * g * (0.25 + stir) * SWIRL;
+
+  float t = fract(ph / TAU) * 24.0;
+  float gust = 0.0;
+  for (int i = 0; i < 4; i++) {
+    float center = i == 0 ? 1.5 : (i == 1 ? 8.3 : (i == 2 ? 15.7 : 21.1));
+    float strength = i == 3 ? 0.52 : (i == 1 ? 0.85 : 1.0);
+    float distanceT = mod(t - center + 12.0, 24.0) - 12.0;
+    float rise = smoothstep(-0.50, 0.08, distanceT);
+    float fade = 1.0 - smoothstep(0.35, 2.9, distanceT);
+    gust = max(gust, rise * fade * strength);
+  }
+  gust = clamp(gust * FLARE_AT, 0.0, 1.0);
+
+  float regional = vn(s * 1.2 + vec2(5.0, 2.0), SD1 + 11.0);
+  float mood     = clamp(CALM + gust * 0.31 + (regional - 0.5) * 0.13, 0.0, 1.3);
+  float breath   = 0.5 + 0.5 * sin(3.0 * ph + regional * TAU);
+  float fast     = 0.5 + 0.5 * sin(13.0 * ph + regional * 8.0);
+  float turb     = TURB * (1.10 + CHURN * (0.24 + 0.37 * breath + 0.27 * fast)
+                 + gust * 0.32 + g * stir * 1.2 + wake * 0.5);
+  float heat     = 0.05 + PULSE * (0.045 + 0.050 * breath + 0.022 * fast)
+                 + gust * FLARE * 0.075 + BURNER * (1.0 - vUv.y) * 0.58;
+  heat += g * (0.06 + 0.14 * stir) + wake * 0.06;
+
+  vec2 dd = vec2(cos(ph), sin(ph)) * DR * (0.27 + 0.20 * mood);
+  vec2 fl = vec2(cos(11.0 * ph + 1.3), sin(11.0 * ph + 4.2))
+          * FLUTTER * (0.45 + 0.60 * gust);
+
+  float da = DIR * 1.57079632679, cd = cos(da), sdn = sin(da);
+  float stretch = 1.0 + STREAK * 3.5;
+  float ru = (p.x * cd + p.y * sdn) / stretch;
+  float rv = -p.x * sdn + p.y * cd;
+  float travel = ph / TAU * 12.0;
+  float q1 = risingNoise(vec2(ru * 1.5 + 3.1 + dd.x + fl.x,
+                              rv * 1.5 + 7.7 + dd.y + fl.y - travel), SD1, 12.0);
+  float q2 = risingNoise(vec2(ru * 1.5 + 9.2 - dd.y - fl.y,
+                              rv * 1.5 + 1.3 + dd.x - travel), SD2, 12.0);
+  float wu = ru + turb * (q1 - 0.5) * 2.3;
+  float wv = rv + turb * (q2 - 0.5) * 2.3;
+  float m  = risingNoise(vec2(wu * 2.0 + dd.x, wv * 2.0 - travel), SD3, 12.0) * 0.64
+           + risingNoise(vec2(wu * 4.7 + dd.x * 2.0, wv * 4.7 - travel * 2.0), SD4, 24.0) * 0.36;
+
+  vec2 uv    = vec2(vUv.x, vUv.y);
+  float tongues = 0.0;
+  float inner   = 0.0;
+  for (int i = 0; i < 9; i++) {
+    float fi      = float(i);
+    float cx      = (fi + 0.50) / 9.0 + 0.018 * sin(fi * 5.7);
+    float wave    = 0.5 + 0.5 * sin(ph * (fi < 4.0 ? 5.0 : 8.0) + fi * 2.4);
+    float flutter = 0.5 + 0.5 * sin(ph * 13.0 + fi * 4.1);
+    float h = 0.43 + 0.19 * wave + 0.10 * flutter + gust * (0.10 + 0.12 * wave);
+    float w = 0.098 + 0.035 * sin(fi * 3.2 + 1.0);
+    float flame = tongue(uv, cx, h, w, ph + fi * 0.59, 1.0);
+    tongues = max(tongues, flame);
+    inner   = max(inner,   tongue(uv, cx, h * 0.72, w * 0.54, ph + fi * 0.59, 1.0));
+  }
+  float basal    = (1.0 - smoothstep(0.03, 0.32, uv.y)) * (0.65 + 0.2 * breath);
+  float flameBody = max(basal, tongues * FIRE_BODY);
+  float val = (m - 0.5) * 1.26 + 0.42 + heat;
+  val += 0.30 * flameBody + 0.11 * inner;
+  val -= 0.19 * (1.0 - tongues) * smoothstep(0.32, 0.90, uv.y);
+
+  float black = BLACK * 0.6;
+  vec3 col = C0;
+  if (val >= black) {
+    float tt = min(0.9999, (val - black) / (1.0 - black));
+    float kb = floor(tt * BANDS), fb = tt * BANDS - kb;
+    col = pal(kb / (BANDS - 1.0));
+    float rimW = RIMS * 0.5;
+    if (rimW > 0.0 && (fb < rimW || fb > 1.0 - rimW))
+      col = pal(min(1.0, (kb + 2.0) / (BANDS - 1.0)));
+  }
+
+  vec2 vel  = vec2(-sin(ph), cos(ph));
+  float flow = (q1 - 0.5) * 1.6 * (0.35 + 0.45 * mood)
+             + (vel.x * cd - vel.y * sdn) * DR * 0.6
+             + u_push.x * toS.x * g * PUSH * 2.0;
+  flow = clamp(flow, -1.5, 1.5);
+
+  gl_FragColor = vec4(col, 0.5 + flow / 3.0);
+}
+`;
+
+/* Separable 9-tap Gaussian */
+const blurShader = `${PRECISION}
+varying vec2 vUv;
+uniform sampler2D u_texture;
+uniform vec2 u_step;
+void main() {
+  vec4 sum = texture2D(u_texture, vUv) * 0.227027;
+  sum += (texture2D(u_texture, vUv + u_step * 1.0) + texture2D(u_texture, vUv - u_step * 1.0)) * 0.194595;
+  sum += (texture2D(u_texture, vUv + u_step * 2.0) + texture2D(u_texture, vUv - u_step * 2.0)) * 0.121622;
+  sum += (texture2D(u_texture, vUv + u_step * 3.0) + texture2D(u_texture, vUv - u_step * 3.0)) * 0.054054;
+  sum += (texture2D(u_texture, vUv + u_step * 4.0) + texture2D(u_texture, vUv - u_step * 4.0)) * 0.016216;
+  gl_FragColor = sum;
+}
+`;
+
+const fragmentShader = `${PRECISION}
+varying vec2 vUv;
+uniform sampler2D u_texture;
+uniform sampler2D u_blurred;
+uniform sampler2D u_glow;
+uniform float u_cols;
+uniform vec2  u_resolution;
+const float BEND      = ${f(CFG.bend)};
+const float EDGE      = ${f(CFG.edge)};
+const float SHIFT     = ${f(CFG.shift)};
+const float DIFFUSION = ${f(CFG.diffusion)};
+const float FROST     = ${f(CFG.frost)};
+const float GLOW      = ${f(CFG.glowStrength)};
+float hash21(vec2 p) {
+  return fract(sin(dot(floor(p), vec2(127.1, 311.7))) * 43758.5453);
+}
+void main() {
+  float N    = u_cols;
+  float cell = vUv.x * N;
+  float rib  = floor(cell);
+  float x    = fract(cell) * 2.0 - 1.0;
+  float ax   = abs(x);
+  float center    = (rib + 0.5) / N;
+  float halfWidth = 0.5 / N;
+  float shoulder  = smoothstep(0.18, 0.94, ax);
+
+  float ribOffset  = (hash21(vec2(rib, 9.0)) - 0.5) * halfWidth * 0.055;
+  float curvature  = x * (BEND + EDGE * x * x * 0.20);
+  float folding    = -0.13 * sin(x * 3.14159265) * shoulder;
+  float flow       = (texture2D(u_texture, vec2(center, vUv.y)).a - 0.5) * 3.0;
+  vec2  uv         = vec2(center + (curvature + folding) * halfWidth + ribOffset + flow * SHIFT, vUv.y);
+  uv = clamp(uv, vec2(0.002), vec2(0.998));
+
+  vec3 nearLight  = texture2D(u_blurred, uv).rgb;
+  vec3 sharp      = texture2D(u_texture, uv).rgb;
+  vec3 transmitted = mix(sharp, nearLight, clamp(DIFFUSION + 0.06 * shoulder, 0.0, 0.98));
+
+  vec2 prism = vec2((0.50 + shoulder) / u_resolution.x, 0.0);
+  vec3 refracted = vec3(
+    texture2D(u_blurred, uv + prism).r,
+    nearLight.g,
+    texture2D(u_blurred, uv - prism).b
+  );
+  transmitted = mix(transmitted, refracted, 0.12 + 0.26 * shoulder);
+
+  vec3  wide       = texture2D(u_glow, uv).rgb;
+  float brightness = dot(wide, vec3(0.24, 0.65, 0.11));
+  float emission   = smoothstep(0.28, 0.72, brightness);
+  vec3  bleed      = max(wide - transmitted * 0.45, vec3(0.0));
+  vec3  col        = transmitted + GLOW * emission * bleed;
+
+  col = mix(col, wide, shoulder * 0.21);
+
+  float softGlint  = exp(-pow((x + 0.70) / 0.36,  2.0));
+  float broadGlint = exp(-pow((x + 0.22) / 0.69,  2.0));
+  float darkEdge   = exp(-pow((x - 0.91) / 0.24,  2.0));
+  float join       = exp(-pow((ax - 0.99) / 0.13,  2.0));
+  col += vec3(1.0, 0.91, 0.79) * (0.043 * softGlint + FROST * 0.14 * broadGlint);
+  col *= 1.0 - 0.16 * darkEdge - 0.055 * join;
+
+  float g = hash21(floor(vUv * u_resolution * 0.5));
+  col += (g - 0.5) * 0.007;
+  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+}
+`;
+
+/* ---- WebGL plumbing ------------------------------------------------------ */
+
+function buildProgram(vsSrc, fsSrc, uniformNames) {
+  const mk = (type, src) => {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+      throw new Error(gl.getShaderInfoLog(s) || "shader compile failed");
+    return s;
+  };
+  const p = gl.createProgram();
+  gl.attachShader(p, mk(gl.VERTEX_SHADER, vsSrc));
+  gl.attachShader(p, mk(gl.FRAGMENT_SHADER, fsSrc));
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS))
+    throw new Error(gl.getProgramInfoLog(p) || "program link failed");
+  const u = {};
+  for (const n of uniformNames) u[n] = gl.getUniformLocation(p, n);
+  return { p, aPos: gl.getAttribLocation(p, "a_pos"), u };
+}
+
+function initializeScene() {
+  gl = canvas.getContext("webgl", {
+    alpha: false, depth: false, stencil: false, antialias: false,
+    preserveDrawingBuffer: false, powerPreference: "high-performance",
+  }) || canvas.getContext("experimental-webgl");
+  if (!gl) throw new Error("WebGL unavailable");
+
+  fieldPass = buildProgram(vertexShader, fieldShader,
+    ["u_theta", "u_res", "u_pointer", "u_push", "u_hand", "u_trail"]);
+  blurPass  = buildProgram(vertexShader, blurShader,
+    ["u_texture", "u_step"]);
+  glassPass = buildProgram(vertexShader, fragmentShader,
+    ["u_texture", "u_blurred", "u_glow", "u_cols", "u_resolution"]);
+
+  quadBuf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+  gl.bufferData(gl.ARRAY_BUFFER,
+    new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+
+  fieldTex = gl.createTexture();
+  fieldFbo = gl.createFramebuffer();
+  blurTex  = [gl.createTexture(), gl.createTexture()];
+  blurFbo  = [gl.createFramebuffer(), gl.createFramebuffer()];
+  glowTex  = [gl.createTexture(), gl.createTexture()];
+  glowFbo  = [gl.createFramebuffer(), gl.createFramebuffer()];
+  fieldW = fieldH = 0;
+
+  onWindowResize();
+}
+
+function createTargets(w, h) {
+  const setup = (tex, fbo) => {
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+    const ok = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE;
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    return ok;
+  };
+  if (!setup(fieldTex, fieldFbo)) throw new Error("field framebuffer incomplete");
+  for (let i = 0; i < 2; i++) {
+    if (!setup(blurTex[i], blurFbo[i])) throw new Error("blur framebuffer incomplete");
+    if (!setup(glowTex[i], glowFbo[i])) throw new Error("glow framebuffer incomplete");
+  }
+  fieldW = w; fieldH = h;
+}
+
+function onWindowResize() {
+  if (!gl) return;
+  const cssW = Math.max(1, window.innerWidth);
+  const cssH = Math.max(1, window.innerHeight);
+  const dpr  = Math.min(window.devicePixelRatio || 1, 2);
+  const outW = Math.round(cssW * dpr);
+  const outH = Math.round(cssH * dpr);
+
+  if (canvas.width !== outW || canvas.height !== outH) {
+    canvas.width  = outW;
+    canvas.height = outH;
+    canvas.style.width  = cssW + "px";
+    canvas.style.height = cssH + "px";
+    fluteCount = cssW < 640 ? 34 : 48;
+  }
+
+  const budget = COARSE ? 1.2e6 : 2.6e6;
+  const fScale = Math.min(dpr, Math.sqrt(budget / (cssW * cssH)));
+  const fW = Math.max(1, Math.round(cssW * fScale));
+  const fH = Math.max(1, Math.round(cssH * fScale));
+  if (fW !== fieldW || fH !== fieldH) createTargets(fW, fH);
+
+  if (REDUCE_MOTION && live) requestAnimationFrame(animateScene);
+}
+
+function drawQuad(pass) {
+  gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+  gl.enableVertexAttribArray(pass.aPos);
+  gl.vertexAttribPointer(pass.aPos, 2, gl.FLOAT, false, 0, 0);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+}
+
+function renderField(theta) {
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fieldFbo);
+  gl.viewport(0, 0, fieldW, fieldH);
+  gl.useProgram(fieldPass.p);
+  gl.uniform1f(fieldPass.u.u_theta, theta);
+  gl.uniform2f(fieldPass.u.u_res, fieldW, fieldH);
+  gl.uniform2f(fieldPass.u.u_pointer, mousePosition.x, mousePosition.y);
+  gl.uniform2f(fieldPass.u.u_push, push.x, push.y);
+  gl.uniform2f(fieldPass.u.u_hand, presence, stir);
+  gl.uniform4fv(fieldPass.u.u_trail, trailData);
+  drawQuad(fieldPass);
+}
+
+function updateHand(now, dt) {
+  const k  = 1 - Math.pow(1 - easeFactor, dt * 60);
+  const ox = mousePosition.x, oy = mousePosition.y;
+  mousePosition.x += (targetMousePosition.x - ox) * k;
+  mousePosition.y += (targetMousePosition.y - oy) * k;
+
+  const vx = (mousePosition.x - ox) / dt;
+  const vy = (mousePosition.y - oy) / dt;
+  const a  = 1 - Math.exp(-dt * 6);
+  push.x += (Math.max(-3, Math.min(3, vx)) - push.x) * a;
+  push.y += (Math.max(-3, Math.min(3, vy)) - push.y) * a;
+
+  const stirTarget = Math.min(1, Math.hypot(push.x, push.y) / 1.2);
+  stir     += (stirTarget - stir)         * (1 - Math.exp(-dt * (stirTarget > stir ? 10 : 1.6)));
+  presence += (presenceTarget - presence) * (1 - Math.exp(-dt * (presenceTarget > presence ? 8 : 2.5)));
+
+  if (presenceTarget > 0) {
+    const last = trail[trail.length - 1];
+    if (!last || Math.hypot(mousePosition.x - last.x, mousePosition.y - last.y) > TRAIL_STEP) {
+      trail.push({ x: mousePosition.x, y: mousePosition.y, t: now });
+      if (trail.length > TRAIL) trail.shift();
+    }
+  }
+  trailData.fill(0);
+  for (let i = 0; i < trail.length; i++) {
+    const s = Math.max(0, 1 - (now - trail[i].t) / TRAIL_LIFE);
+    trailData[i * 4]     = trail[i].x;
+    trailData[i * 4 + 1] = trail[i].y;
+    trailData[i * 4 + 2] = s * s;
+  }
+}
+
+function animateScene(time) {
+  if (!REDUCE_MOTION) requestAnimationFrame(animateScene);
+  if (!gl || gl.isContextLost()) return;
+
+  if (startT === null) startT = time * 0.001;
+  const now = time * 0.001 - startT;
+  const dt  = lastT ? Math.min(0.05, Math.max(0.001, now - lastT)) : 0.016;
+  lastT = now;
+  updateHand(now, dt);
+
+  const theta = (now % LOOP_SECONDS) / LOOP_SECONDS * TAU;
+  renderField(theta);
+
+  /* Separable Gaussian — horizontal then vertical pass */
+  gl.useProgram(blurPass.p);
+  gl.uniform1i(blurPass.u.u_texture, 0);
+  gl.activeTexture(gl.TEXTURE0);
+  gl.viewport(0, 0, fieldW, fieldH);
+  for (let i = 0; i < 2; i++) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, blurFbo[i]);
+    gl.bindTexture(gl.TEXTURE_2D, i === 0 ? fieldTex : blurTex[0]);
+    gl.uniform2f(blurPass.u.u_step,
+      i === 0 ? CFG.blurRadius / fieldW : 0,
+      i === 1 ? CFG.blurRadius / fieldH : 0);
+    drawQuad(blurPass);
+  }
+
+  /* Wider glow pass */
+  for (let i = 0; i < 2; i++) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, glowFbo[i]);
+    gl.bindTexture(gl.TEXTURE_2D, i === 0 ? blurTex[1] : glowTex[0]);
+    gl.uniform2f(blurPass.u.u_step,
+      i === 0 ? CFG.glowRadius / fieldW : 0,
+      i === 1 ? CFG.glowRadius / fieldH : 0);
+    drawQuad(blurPass);
+  }
+
+  /* Glass composite to screen */
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.useProgram(glassPass.p);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, fieldTex);
+  gl.uniform1i(glassPass.u.u_texture, 0);
+  gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, blurTex[1]);
+  gl.uniform1i(glassPass.u.u_blurred, 1);
+  gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, glowTex[1]);
+  gl.uniform1i(glassPass.u.u_glow, 2);
+  gl.uniform2f(glassPass.u.u_resolution, canvas.width, canvas.height);
+  gl.uniform1f(glassPass.u.u_cols, fluteCount);
+  drawQuad(glassPass);
+
+  /* First completed GPU frame → fade canvas in over placeholder */
+  if (!live) {
+    live = true;
+    canvas.classList.add("on");
+  }
+}
+
+/* ---- Input --------------------------------------------------------------- */
+
+function handleMouseMove(e) {
+  easeFactor = 0.16;
+  const r = imgContainer.getBoundingClientRect();
+  prevPosition = { ...targetMousePosition };
+  targetMousePosition.x = (e.clientX - r.left) / r.width;
+  targetMousePosition.y = (e.clientY - r.top)  / r.height;
+  presenceTarget = 1;
+}
+
+function handleMouseEnter(e) {
+  easeFactor = 0.12;
+  const r = imgContainer.getBoundingClientRect();
+  mousePosition.x = targetMousePosition.x = (e.clientX - r.left) / r.width;
+  mousePosition.y = targetMousePosition.y = (e.clientY - r.top)  / r.height;
+  presenceTarget = 1;
+}
+
+function handleMouseLeave() { presenceTarget = 0; }
+
+window.addEventListener("resize", onWindowResize, false);
+imgContainer.addEventListener("pointerenter",  handleMouseEnter);
+imgContainer.addEventListener("pointermove",   handleMouseMove);
+imgContainer.addEventListener("pointerleave",  handleMouseLeave);
+imgContainer.addEventListener("pointercancel", handleMouseLeave);
+
+/* WebGL context loss / restore — placeholder shows through until recovered */
+canvas.addEventListener("webglcontextlost", e => {
+  e.preventDefault();
+  live = false;
+  canvas.classList.remove("on");
+});
+canvas.addEventListener("webglcontextrestored", () => {
+  try {
+    initializeScene();
+    if (REDUCE_MOTION) requestAnimationFrame(animateScene);
+  } catch (err) {
+    console.warn("splash-bg: restore failed:", err && err.message);
+  }
+});
+
+/* ---- Placeholder src resolution ------------------------------------------
+   The parent frame sends the CDN URL via postMessage once it knows it.
+   Until then, attempt a relative path that works in local dev.
+   The <link rel="preload"> in the parent already has the CDN URL so the
+   image is typically in-cache when this src assignment fires. */
+function setPlaceholderSrc(src) {
+  if (!src || placeholder.src === src) return;
+  placeholder.src = src;
+}
+
+window.addEventListener("message", e => {
+  if (e.data && e.data.type === "mt-splash-poster" && e.data.src) {
+    setPlaceholderSrc(e.data.src);
+  }
+});
+
+/* Fallback: if no message arrives within 200ms, try same-origin relative path */
+setTimeout(() => {
+  if (!placeholder.src || placeholder.naturalWidth === 0) {
+    setPlaceholderSrc("maison-hero.webp");
+  }
+}, 200);
+
+/* ---- Boot ---------------------------------------------------------------- */
+(function start() {
+  try {
+    initializeScene();
+    requestAnimationFrame(animateScene);
+  } catch (err) {
+    /* No WebGL — placeholder stays visible, nothing breaks */
+    console.warn("splash-bg: GPU pass unavailable:", err && err.message);
+  }
+})();
+</script>
+</body>
+</html>

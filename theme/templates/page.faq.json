@@ -5,8 +5,8 @@
       "settings": {
         "eyebrow": "Support",
         "heading": "Frequently asked questions",
-        "lede": "<p>Shipping, size, heat, and payment. Care of a piece you already hold lives with <a href=\"/pages/kansa\">Kansa</a>.</p>",
-        "notice": "House answers for the catalogue. A published Shopify policy overrides this page where the two differ.",
+        "lede": "<p>Shipping, size, heat, and payment. Care of a piece you already hold lives with <a href=\"/pages/kansa\">Kansa</a>.</p><p>Try a question in the <a href=\"/pages/good-questions\">interactive FAQ</a>.</p>",
+        "notice": "The catalogue and checkout are part of a gated exhibition.",
         "padding-block-start": 48,
         "padding-block-end": 64
       },
@@ -15,21 +15,21 @@
           "type": "clause",
           "settings": {
             "heading": "How long does delivery take?",
-            "text": "<p>Pieces leave when the current foundry heat is ready. Maison Tavo does not keep a standing warehouse of every specification. The order confirmation states the window for that allocation.</p>"
+            "text": "<p>Delivery dates in the exhibition are examples. A future release would show when its pieces are ready to dispatch and the expected delivery window before payment.</p>"
           }
         },
         "rates": {
           "type": "clause",
           "settings": {
             "heading": "How are shipping rates calculated?",
-            "text": "<p>At checkout, from the delivery address and the piece. A kadai and a kulhad do not travel the same way, so this page does not print a flat rate.</p>"
+            "text": "<p>In the test journey, Shopify uses the test address and your selected pieces to show example delivery options and charges.</p>"
           }
         },
         "returns": {
           "type": "clause",
           "settings": {
             "heading": "How do I return a piece?",
-            "text": "<p>Write through the contact form with the order number and photographs before you post anything. Wait for the return address. Pack the piece dry, with its care card. Accepted refunds go back to the original payment method after inspection. The step-by-step page is <a href=\"/pages/delivery-returns\">Delivery and returns</a>.</p>"
+            "text": "<p>Test orders need no parcel sent back. If you are evaluating the returns journey, share your test reference through Contact. See <a href=\"/pages/delivery-returns\">Delivery and returns</a> for the exhibition flow.</p>"
           }
         },
         "size": {
@@ -56,8 +56,8 @@
         "payment": {
           "type": "clause",
           "settings": {
-            "heading": "How do I pay?",
-            "text": "<p>Payment is taken on Shopify checkout after the bag: shipping address, shipping method, payment, then review. Promo codes are entered in the bag before checkout.</p>"
+            "heading": "How do I try checkout?",
+            "text": "<p>If the project team has invited you to test checkout, use the test details they supplied. Shopify takes you through delivery, test payment and review.</p>"
           }
         },
         "orders": {

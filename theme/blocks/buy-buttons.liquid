@@ -242,6 +242,18 @@
           </span>
         {%- endif -%}
       {%- endform -%}
+      {% unless product.has_only_default_variant %}
+        <template data-wishlist-variants>
+          {% for option_variant in product.variants %}
+            <span data-wishlist-variant="{{ option_variant.id }}">{{ option_variant.title | escape }}</span>
+          {% endfor %}
+        </template>
+      {% endunless %}
+      <button type="button" class="button button-secondary" data-wishlist-save
+        data-product-url="{{ product.url | escape }}" data-title="{{ product.title | escape }}"
+        aria-pressed="false" hidden>
+        <span data-wishlist-label>Save to wishlist</span>
+      </button>
     </product-form-component>
     <p class="maison-ask-kansa">
       <a href="/pages/kansa?piece={{ product.handle | url_encode }}">Ask Kansa about this piece →</a>

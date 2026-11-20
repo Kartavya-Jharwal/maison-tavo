@@ -21,9 +21,8 @@
 
   <div class="kansa-shell__inner section--page-width">
     <header class="kansa-shell__header" data-mt-scroll="chapter">
-      <p class="kansa-eyebrow">Kansa</p>
       {%- if section.settings.heading != blank -%}
-        <h1 class="kansa-shell__heading" data-mt-scroll="kinetic">{{ section.settings.heading | escape }}</h1>
+        <h1 class="kansa-shell__heading">{{ section.settings.heading | escape }}</h1>
       {%- endif -%}
       {%- if section.settings.subheading != blank -%}
         <p class="kansa-shell__subheading" data-mt-scroll>{{ section.settings.subheading | escape }}</p>
@@ -120,7 +119,7 @@
   }
 
   .kansa-shell__header {
-    margin-block-end: clamp(2.5rem, 6vw, 4rem);
+    margin-block-end: clamp(1.5rem, 3vw, 3rem);
     max-width: 36rem;
   }
 
@@ -134,22 +133,26 @@
   }
 
   .kansa-shell__heading {
-    margin: 0 0 1rem;
+    margin: 0 0 0.8rem;
     font-family: var(--font-heading--family);
-    font-size: clamp(3rem, 8vw, 5.25rem);
-    font-weight: var(--font-heading--weight, 400);
-    letter-spacing: -0.035em;
-    line-height: 0.98;
+    font-size: var(--mt-type-display);
+    font-weight: 400;
+    letter-spacing: var(--mt-type-tracking-heading);
+    line-height: 1.05;
+    font-kerning: normal;
+    font-variant-ligatures: common-ligatures contextual no-discretionary-ligatures;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
     color: var(--kansa-ink);
   }
 
   .kansa-shell__subheading {
     margin: 0;
     font-family: var(--font-body--family);
-    font-size: var(--font-size--lg);
-    line-height: 1.55;
-    max-width: 32ch;
-    color: rgb(var(--mt-color-soot-rgb) / 0.72);
+    font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+    line-height: var(--mt-type-leading-body);
+    max-inline-size: 54ch;
+    color: var(--kansa-ink);
   }
 
   .kansa-shell__room {

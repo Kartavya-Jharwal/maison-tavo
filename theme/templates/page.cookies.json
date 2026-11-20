@@ -4,9 +4,8 @@
       "type": "maison-room",
       "settings": {
         "eyebrow": "Legal",
-        "heading": "Cookie policy",
-        "lede": "<p>What this storefront stores in the browser, and how to clear it. This is house draft copy for lawyer review, in the same spirit as the privacy and terms pages.</p>",
-        "notice": "Template copy requiring lawyer review. Shopify privacy choices and a published privacy policy take precedence.",
+        "heading": "Cookies and browser storage",
+        "lede": "<p>See what the exhibition remembers on this browser and how to clear it.</p>",
         "padding-block-start": 48,
         "padding-block-end": 64
       },
@@ -15,37 +14,37 @@
           "type": "clause",
           "settings": {
             "heading": "Cart, account, and checkout",
-            "text": "<p>Shopify sets cookies required to keep the bag, sign you in, and run checkout. Those are part of placing an order. Payment details are handled on Shopify checkout, not typed into a theme page.</p>"
+            "text": "<p>Shopify can use cookies to maintain the entry, cart, account and checkout sessions. Your browser settings and any Shopify privacy controls shown manage those choices separately.</p>"
           }
         },
         "local": {
           "type": "clause",
           "settings": {
             "heading": "Preferences stored on this device",
-            "text": "<p>The exploration drawer can save a cooking preference and an optional email in localStorage on this browser. It is not sent to a Maison Tavo server. The theme may also use sessionStorage for the visit. The footer control Reset Session and Storage clears both.</p>"
+            "text": "<p>The theme can remember cooking preferences and an optional email, the Kansa conversation, saved cookware and sound or motion preferences in this browser. Those settings can persist between visits. Short-lived storage remembers parts of the current visit, such as whether you dismissed the cooking questionnaire.</p>"
           }
         },
         "choice": {
           "type": "clause",
           "settings": {
-            "heading": "Choice",
-            "text": "<p>Use the browser controls to block or delete cookies. If the shop enables Shopify analytics or a privacy banner, those choices are presented by Shopify. Refusing non-essential cookies should still leave the catalogue readable.</p>"
+            "heading": "Clear your visit",
+            "text": "<p>Choose <strong>[ Reset Session &amp; Storage ]</strong> in the footer to clear this storefront’s local and session storage in the current browser. To clear remaining site cookies, use your browser’s site-data settings. Information you send through Shopify forms, accounts or checkout is stored separately.</p>"
           }
         },
         "privacy": {
           "type": "pathway",
           "settings": {
-            "label": "Privacy policy",
+            "label": "Exhibition privacy notice",
             "url": "/pages/privacy-policy",
-            "text": "The longer account of personal information."
+            "text": "What stays in the browser and what is submitted."
           }
         },
         "terms": {
           "type": "pathway",
           "settings": {
-            "label": "Terms of service",
+            "label": "Exhibition terms",
             "url": "/pages/terms-of-service",
-            "text": "The terms that sit with an order."
+            "text": "What to expect from the gated prototype."
           }
         }
       },

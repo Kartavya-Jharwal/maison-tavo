@@ -1,8 +1,12 @@
 # Maison Tavo theme (Horizon)
 
-This directory is the **live Shopify Liquid storefront**. It is a customized [Horizon](https://themes.shopify.com/) theme pulled from `maison-tavo.myshopify.com` (theme id `198667665777`, role live).
+This directory is the **live Shopify Liquid storefront**. It is a customized [Horizon](https://themes.shopify.com/) theme pulled from `maison-tavo-9pyrkr0c.myshopify.com` (theme id `210460377457`, role live).
 
 There is **no separate Liquid vs Horizon fork**. Do not restyle the Hydrogen app for production look-and-feel; `hydrogen/` is a secondary Oxygen preview only.
+
+> **Hydrogen freeze:** do not edit `hydrogen/` until mid-December 2026. Until then treat it as a read-only semantic and route reference for Liquid parity work (route behaviour, data contracts, expected states), never as a runtime dependency or a component source to port.
+
+Route and semantic parity ledger: [`../docs/theme-parity.md`](../docs/theme-parity.md).
 
 `config/settings_schema.json` keeps Shopify theme identity (`theme_name`: Horizon, `theme_version`: 4.2.0, `theme_author`: Shopify) so the admin still recognizes Horizon. Branding for this repo is `@maison-tavo/theme` and `shopify.theme.toml`.
 
@@ -13,8 +17,9 @@ From the repo root:
 ```bash
 bun run theme:check
 bun run theme:lint             # design semantics audit (px type, selectors, contrast, fonts, footers)
-bun run theme:lint:all         # design lint + shopify theme check
-bun run theme:build            # bundle scripts/src → assets (motion, zustand)
+bun run theme:verify           # JS chain: package → bundle → Liquid → init → packaged
+bun run theme:lint:all         # design lint + JS chain + shopify theme check
+bun run theme:build            # bundle scripts/src → assets (GSAP, Embla, motion, zustand)
 bun run dev:theme              # http://127.0.0.1:9292 — unpublished development theme
 bun run dev:theme:https        # https://localhost:9443 → 9292 (second terminal; run `bun run certs` first)
 ```
@@ -38,8 +43,8 @@ shopify theme push -e development --development --nodelete   # unpublished only
 
 `development` never targets the live theme. Live updates are an explicit production push.
 
-Store: `maison-tavo.myshopify.com`  
-Live editor: `https://maison-tavo.myshopify.com/admin/themes/198667665777/editor`  
+Store: `maison-tavo-9pyrkr0c.myshopify.com`
+Live editor: `https://maison-tavo-9pyrkr0c.myshopify.com/admin/themes/210460377457/editor`
 `shopify theme dev` prints the preview URL and a development-theme editor URL.
 
 ## Where to edit (CSS / custom theme)
@@ -93,21 +98,42 @@ Example usage already wired: splash Enter arrow (`splash-intro.liquid`), header 
 
 Liquid cannot import npm. Source lives in `scripts/src/`; `bun run build` (from `theme/`, or `bun run theme:build` from the repo root) emits Shopify-uploadable files in `assets/`. Edit the source, then rebuild — do not hand-edit the generated assets.
 
+Verify the whole chain — imported by usecase → in the generated bundle → loaded by Liquid → initialized on the page → shipped with the theme — with `bun run verify` (or `bun run theme:verify` from the root). It runs before `bun run lint` and before `bun run ship`, and fails the build when a package, bundle, loader, initializer, microapp registry entry, or `.shopifyignore` rule breaks the chain. How each link is checked, and how to add a package: [`../docs/js-chain.md`](../docs/js-chain.md).
+
 | Package | Role |
 | --- | --- |
+| `gsap` | Primary animation engine. `window.gsap` is published by the runtime; ScrollTrigger, SplitText, and Lenis wiring live in `scripts/src/horizon-scroll.js`. |
+| `embla-carousel` | Carousel engine for `[data-mt-carousel]` rails (`scripts/src/carousel.js`). |
 | `motion` | Vanilla animation (`animate`, `stagger`, `inView`, `scroll`). No React. |
 | `zustand` | Vanilla stores (`createStore` from `zustand/vanilla`) for JS islands / microapps. |
+| `lenis` | Smooth wheel scrolling inside `.page-wrapper`. |
+| `@barba/core` | Room-to-room page transitions. |
+| `@use-gesture/vanilla` | Drawer, lookbook, and vessel gestures. |
+| `three`, `@react-three/fiber`, `react`, `react-dom` | Material study (`scripts/src/vessel.js`). |
+| `vgpu`, `@vgpu/wgsl` | WebGPU heat and blaze effects. |
 
 ```bash
 bun run --cwd theme build
+bun run --cwd theme verify
 # or from repo root:
 bun run theme:build
+bun run theme:verify
 ```
 
-| Output | Loader |
-| --- | --- |
-| `assets/maison-runtime.js` | IIFE, sets `window.MaisonRuntime`. Loaded from `snippets/splash-intro.liquid` (`defer`). |
-| `assets/microapp-lookbook.js` | Lookbook island (Zustand + Motion). Loaded by `sections/maison-microapp.liquid` inside the sandboxed iframe. |
+| Output | Loader | Initialized by |
+| --- | --- | --- |
+| `assets/maison-runtime.js` | `layout/theme.liquid` (defer, every page). Sets `window.MaisonRuntime` and `window.gsap`. | self (`boot()` on DOMContentLoaded) |
+| `assets/maison-carousel.js` | `snippets/maison-flagship.liquid` → `MaisonAssets.carousel` | `maison-runtime.js` → `ensureCarousel()` on intersection |
+| `assets/maison-vessel.js` | `snippets/maison-flagship.liquid` → `MaisonAssets.vessel` | `maison-runtime.js` → `ensureVessel()` on intersection |
+| `assets/maison-idle-blaze.js` | `snippets/maison-flagship.liquid` → `MaisonAssets.idleBlaze` | `effects/idle-blaze-loader.js` after idle |
+| `assets/maison-search-assist.js` | `snippets/search-modal.liquid` (once per page) | self (`boot()` on DOMContentLoaded) |
+| `assets/maison-heat.js` | `sections/maison-thermal.liquid` (defer) | self, re-boots on `maison:page-enter` |
+| `assets/microapp-lookbook.js` | `sections/maison-microapp.liquid` (`embed: iframe` in `microapps/apps.json`) | inside the sandboxed iframe |
+| `assets/microapp-kansa.js` | `sections/kansa-app.liquid` (`embed: section`) | self |
+
+Hand-written assets (not built): `assets/maison-motion.js` and `assets/maison-sound.js`, both loaded from `snippets/scripts.liquid`. `maison-motion.js` runs on `window.gsap`; the former `anime.esm.js` and `motion.esm.js` vendored copies are gone, so the storefront ships one animation engine.
+
+The Panopticon lens (`Human` / `Engineer` / `Machine`) is behaviour in `scripts/src/lens.js`, bundled into the runtime — not a `{% javascript %}` tag on `blocks/_product-card-lens.liquid`, which repeated per card and left `sections/maison-view-as.liquid` dead on pages without a card lens.
 
 Keep `assets/package.json` as `{ "type": "module" }` (Horizon ESM). `scripts/` is in `.shopifyignore`; the bundled files in `assets/` are what Shopify uploads. Do not replace Horizon with a SPA; preserve server-rendered Liquid HTML and native Shopify commerce forms.
 

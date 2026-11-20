@@ -15,7 +15,7 @@
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
 <div
-  class="section section--page-width spacing-style maison-editorial maison-legal{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  class="section section--page-width spacing-style maison-reading maison-legal{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
   style="{% render 'spacing-style', settings: section.settings %}"
 >
   <header class="maison-editorial__header">
@@ -40,7 +40,7 @@
     </p>
   {% endif %}
 
-  <div class="maison-legal__body rte">
+  <div class="maison-legal__body maison-editorial__rte rte">
     {% if section.settings.body != blank %}
       {{ section.settings.body }}
     {% else %}
@@ -76,60 +76,28 @@
 </div>
 
 {% stylesheet %}
-  .maison-editorial {
-    color: var(--color-foreground);
-  }
-
-  .maison-editorial__header {
-    max-width: 42rem;
-    margin-block-end: 3rem;
-  }
-
-  .maison-editorial__eyebrow {
-    margin: 0;
-    font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-accent);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-foreground-muted);
-  }
-
-  .maison-editorial__title {
-    margin-block: 0.75rem 1rem;
-    font-family: var(--mt-type-family-heading);
-    font-weight: var(--font-heading--weight);
-    letter-spacing: 0.04em;
-  }
-
   .maison-legal__notice,
   .maison-legal__native {
-    max-width: 44rem;
-    margin: 0 0 1.5rem;
-    padding: 1rem 1.15rem;
-    border: 1px solid var(--color-border);
-    color: var(--color-foreground-muted);
-    font-size: var(--mt-type-body);
-    line-height: 1.5;
+    max-inline-size: var(--maison-reading-measure);
+    margin: 0 0 var(--maison-reading-gap);
+    padding-inline-start: 1rem;
+    border-inline-start: 1px solid var(--color-border);
+    overflow-wrap: anywhere;
   }
 
-  .maison-legal__native {
-    border-style: dashed;
+  .maison-legal__body details {
+    margin-block: 1rem;
+    border-block: 1px solid var(--color-border);
   }
 
-  .maison-legal__body {
-    max-width: 44rem;
+  .maison-legal__body summary {
+    display: list-item;
+    padding-block: 0.7rem;
+    cursor: pointer;
   }
 
-  .maison-legal__body h2 {
-    margin-block: 2rem 0.75rem;
-    font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-lede);
-    letter-spacing: 0.03em;
-  }
-
-  .maison-legal__body p,
-  .maison-legal__body li {
-    color: var(--color-foreground-muted);
+  .maison-legal__body details p {
+    margin-block: 0.5rem 1rem;
   }
 
   .maison-legal__policies {

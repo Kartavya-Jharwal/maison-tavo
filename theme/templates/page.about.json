@@ -6,165 +6,143 @@
         "chapter_origin": {
           "type": "chapter",
           "settings": {
-            "kicker": "I",
-            "heading": "The Hearth and The Moving Day Diagnostic",
-            "text": "<p>Your grandmother never measured thermal conductivity in Watts per meter-Kelvin. She tapped the rim of the bronze alloy with a wooden ladle, listening for the sustained acoustic decay that proved the casting was free of microscopic voids. She knew the surface was seasoned when the aroma of black mustard seeds bloomed without smoking. In her home, a tava or bell-metal degchi was an Ayurvedic heirloom—seasoned over thirty years, gifted at weddings, and passed down as a sacred instrument. Maison Tavo was born when that heirloom met a modern kitchen move. Unpacking an unlabelled pan, the founder could not determine whether its base would couple with the induction coil or whether its rivets were food-safe tin-bronze. Across seven leading cookware competitors, alloy composition, base mass, and induction compatibility were buried in marketing prose or completely absent. The problem was not a lack of cookware; it was the failure of tools to explain their own construction.</p>"
+            "kicker": "",
+            "heading": "From her kitchen to the next",
+            "text": "<p>In a grandmother’s kitchen, a tava is always within reach. She knows when to turn the flatbread by the way its edge lifts. Someone learns by watching. In time, the pan goes with them, and the knowledge is harder to pack.</p><p>After a move, our founder Kartavya Jharwal unpacked a pan and couldn’t tell if it would work on the new hob. Maison Tavo began with that question. A good tool should carry enough knowledge to be useful in the next kitchen.</p>"
           }
         },
         "chapter_name": {
           "type": "chapter",
           "settings": {
-            "kicker": "II",
-            "heading": "Maison × Tavo",
-            "text": "<p>“Maison” references the discipline of the French kitchen brigade, Parisian copperware, and Auguste Escoffier’s uncompromising standard of the restaurant pass—where heat is calculated, time is sacred, and every gesture is stripped of ornamentation. “Tavo” preserves an audible, physical link to the tava (तवा) — the ancient round griddle that has anchored Indian hearths and flatbread traditions for three millennia. The synthesis is deliberate: Parisian architectural restraint paired with regional metallurgical heritage. A house where cold-forged precision meets Rajasthan sand-cast bronze.</p>"
-          }
-        },
-        "chapter_craft": {
-          "type": "chapter",
-          "settings": {
-            "kicker": "III",
-            "heading": "The Object Before Software",
-            "text": "<p>We build the physical heirloom first: dual-mass carbon steel that retains thermal energy like cast iron but handles with the agility of cold-rolled sheet; refractory cast clay that breathes with thermal shock resistance; and hand-beaten bell bronze (78% copper, 22% tin) that rings true at 880 Hz. In ancestral Ayurveda, bell metal (kansa) was revered because high-tin bronze is naturally non-reactive to food acids and imparts gentle alkaline balance to slow-simmered dishes. Software, 2D heat simulations, and machine-readable protocols exist solely to serve the physical object, never to replace it.</p>"
-          }
-        },
-        "chapter_pass": {
-          "type": "chapter",
-          "settings": {
-            "kicker": "IV",
-            "heading": "The Living Pass",
-            "text": "<p>Between our foundry partners in Rajasthan and our kitchen workshop in London, Maison Tavo operates with the discipline of a restaurant pass. We do not manufacture infinite warehouse inventory on an arbitrary calendar of drops. We open allocations only when a foundry heat is struck, measured, and verified. Each piece carries its serial ledger and metallurgical profile—built not for a season, but to outlast the hand that cooks with it.</p>"
+            "kicker": "",
+            "heading": "A house named for a griddle",
+            "text": "<p>Maison is the house. Tavo takes its name from the tava, a flat griddle familiar to Indian kitchens.</p><p>We design for people who cook often. We show how a vessel is built, which hob it suits and what keeping it will ask of you.</p><p><a href=\"/pages/our-story\">Read our story</a></p>"
           }
         }
       },
-      "block_order": [
-        "chapter_origin",
-        "chapter_name",
-        "chapter_craft",
-        "chapter_pass"
-      ],
+      "block_order": ["chapter_origin", "chapter_name"],
       "settings": {
-        "eyebrow": "L’Atelier & Fonderie · जयपुर से लन्दन",
-        "heading": "The tool that outlasts the hand",
-        "lede": "Maison Tavo was born from a concrete moment in a working kitchen: the failure of conventional cookware to explain its own metallurgy. We build modern heirlooms for people who cook, and structured specs for machines that assist them.",
-        "provenance_eyebrow": "Three Places of Lineage",
-        "place_1_label": "Rajasthan Foundries",
-        "place_1_text": "Hand-beaten 78:22 bell bronze, sand casting, and the acoustic bell resonance test.",
-        "place_2_label": "Japanese Forging",
-        "place_2_text": "Echizen & Sanjo blade geometry, laminated clad steel, and edge retention.",
-        "place_3_label": "European Brigade Rooms",
-        "place_3_text": "Escoffier's pass discipline, restaurant heat cycling, and quiet editorial restraint.",
+        "eyebrow": "About Maison Tavo",
+        "heading": "Live with cookware that outlasts you.",
+        "lede": "Cookware shaped by Indian kitchens, with the knowledge to use it, look after it and pass it on.",
+        "place_1_label": "",
+        "place_2_label": "",
+        "place_3_label": "",
         "padding-block-start": 56,
-        "padding-block-end": 64
+        "padding-block-end": 24
       }
     },
-    "wireframe_screens": {
-      "type": "maison-wireframe-screens",
+    "promises": {
+      "type": "maison-about",
       "settings": {
-        "eyebrow": "Dual Depth Architecture",
-        "heading": "The Wireframe System",
-        "lede": "Every surface in Maison Tavo is engineered for both the aesthetic curator and the culinary technologist. Switch between the architectural wireframe screens to inspect how human craft and machine protocols live together."
-      }
+        "secondary_heading": true,
+        "eyebrow": "",
+        "heading": "What comes with the piece",
+        "lede": "",
+        "closing": "",
+        "padding-block-start": 32,
+        "padding-block-end": 24
+      },
+      "blocks": {
+        "fit": {
+          "type": "pillar",
+          "settings": {
+            "heading": "Know it fits",
+            "text": "<p>Compare the hob, dimensions and care routine before you choose. Where compatibility is still a design target, it belongs on the page as such.</p>"
+          }
+        },
+        "craft": {
+          "type": "pillar",
+          "settings": {
+            "heading": "See the work in it",
+            "text": "<p>See which technique shaped the vessel and what it contributes. Chulha begins with forms made for flatbread, chai and layered rice, with a proposed role for local potters in their development.</p>"
+          }
+        },
+        "care": {
+          "type": "pillar",
+          "settings": {
+            "heading": "Keep it in use",
+            "text": "<p>Find care guidance for the surface you own. We’re designing a way for each piece to carry those instructions into its next kitchen.</p>"
+          }
+        }
+      },
+      "block_order": ["fit", "craft", "care"]
+    },
+    "customers": {
+      "type": "maison-about",
+      "settings": {
+        "secondary_heading": true,
+        "eyebrow": "",
+        "heading": "Three kitchens we’re designing for",
+        "lede": "Fictional testimonials written for this proof of concept.",
+        "closing": "",
+        "padding-block-start": 32,
+        "padding-block-end": 24
+      },
+      "blocks": {
+        "mover": {
+          "type": "testimonial",
+          "settings": {
+            "attribution": "Jane Doe · The home cook switching to induction",
+            "quote": "I moved into a flat with an induction hob and half my kit stayed in the box. Tell me what fits the small ring and what I can sear in it. I’ll buy the pan I can use on Tuesday."
+          }
+        },
+        "gifter": {
+          "type": "testimonial",
+          "settings": {
+            "attribution": "John Doe · The heirloom gift buyer",
+            "quote": "I want to give my sister a handi for her wedding. Show me how it was made and what she’ll need to do before her first biryani. I want her to cook with it the week she opens it."
+          }
+        },
+        "operator": {
+          "type": "testimonial",
+          "settings": {
+            "attribution": "Alex Doe · The small-kitchen operator",
+            "quote": "I run a six-table kitchen. Before I put three pans on the pass, I need the weight, the usable diameter and a way to replace a lid halfway through the season."
+          }
+        }
+      },
+      "block_order": ["mover", "gifter", "operator"]
     },
     "diagnostic_audit": {
       "type": "maison-about",
+      "settings": {
+        "secondary_heading": true,
+        "eyebrow": "",
+        "heading": "The pan has to explain itself",
+        "lede": "A pan can look right in a video, sound right in a voice answer and still fail to work on the hob. An AI shopping agent comparing pans needs enough information to rule out the wrong ones. When someone discovers us away from the store, the facts that determine fit need to travel with the piece.",
+        "closing": "",
+        "padding-block-start": 32,
+        "padding-block-end": 56
+      },
       "blocks": {
-        "claim_verified": {
-          "type": "pillar",
-          "settings": {
-            "evidence_tier": "verified",
-            "heading": "Specs stay in prose everywhere else",
-            "text": "<p>Across seven cookware competitors audited on 26 Sep 2026 (Mauviel, Demeyere, HexClad, Our Place, Smithey, Made In, Borough Furnace), material architecture, dimensions, and heat-source compatibility do not appear as structured, agent-parseable fields — only in names, FAQ prose, or description HTML.</p>"
-          }
-        },
         "claim_observed": {
           "type": "pillar",
           "settings": {
             "evidence_tier": "observed",
-            "heading": "Agentic checkout is table stakes",
-            "text": "<p>HexClad, Our Place, and Smithey already expose full UCP agentic transactions (cart, checkout, payment handlers) via Shopify’s platform default — not as brand-led catalog depth. Buying through an agent is not differentiation; understanding the pan still is.</p>"
+            "heading": "Where the answer gets lost",
+            "text": "<p>In our September 2026 review of seven cookware brands, three exposed agent checkout capabilities. Across the surfaces we could inspect, the material, dimensions and hob-compatibility details were often in prose or missing from the structured fields. Checkout could move faster while the cook’s first question still went unanswered.</p>"
           }
         },
-        "claim_hypothesis": {
+        "voice": {
           "type": "pillar",
           "settings": {
             "evidence_tier": "hypothesis",
-            "heading": "The open gap is the spec layer",
-            "text": "<p>Because UCP catalog responses carry no metafields, enrichment must land as JSON-LD additionalProperty on PDPs plus an agent layer that reads the versioned catalog schema directly. That is the surface we are building first.</p>"
+            "heading": "Give an assistant the facts",
+            "text": "<p>Someone asking aloud for a 24 cm induction pan should hear the size, fit and any relevant caveat in one answer. The product page and its machine-readable fields are designed to carry the same information. <a href=\"/pages/kansa\">Try Kansa</a> to see how a companion can draw on piece-specific care guidance.</p>"
+          }
+        },
+        "social": {
+          "type": "pillar",
+          "settings": {
+            "evidence_tier": "hypothesis",
+            "heading": "Give a shared clip somewhere to land",
+            "text": "<p>A clip can show a potter finishing the rim or a cook lifting a lid. The link should take you straight to the piece, with the technique, care and evidence in reach. We’re testing whether that gives people enough confidence to choose a piece that fits.</p><p><a href=\"/pages/building\">See how the store works</a></p>"
           }
         }
       },
-      "block_order": [
-        "claim_verified",
-        "claim_observed",
-        "claim_hypothesis"
-      ],
-      "settings": {
-        "eyebrow": "Verified Diagnostic",
-        "heading": "Why the catalog is machine-readable",
-        "lede": "Maison Tavo is cookware you can live with and a catalog an agent can reason about. We do not claim to be first in agentic commerce — that bar is already Shopify platform default. The defensible claim: first in cookware to make the product spec layer machine-readable.",
-        "closing": "Evidence tiers on this page map to the competitor audit in the engagement docs. Dual depth: the curator reads craft and provenance; the technologist reads alloy, heat sources, and structured fields.",
-        "padding-block-start": 48,
-        "padding-block-end": 48
-      }
-    },
-    "foundry_stats": {
-      "type": "maison-stats",
-      "blocks": {
-        "stat_alloy": {
-          "type": "stat",
-          "settings": {
-            "figure": "78:22",
-            "label": "Bell Bronze Formulation",
-            "caption": "Traditional Rajasthan alloy: 78% copper, 22% tin for pure bell resonance and non-reactive food safety."
-          }
-        },
-        "stat_heat": {
-          "type": "stat",
-          "settings": {
-            "figure": "1400°C",
-            "label": "Furnace Melt Point",
-            "caption": "Refractory crucible casting temperature ensuring zero air voids and dense crystalline molecular packing."
-          }
-        },
-        "stat_skus": {
-          "type": "stat",
-          "settings": {
-            "figure": "25",
-            "label": "Curated Heirloom SKUs",
-            "caption": "Three disciplined families: Forge Hybrid carbon steel, Terre refractory clay, and Kuro cutlery."
-          }
-        },
-        "stat_schema": {
-          "type": "stat",
-          "settings": {
-            "figure": "100%",
-            "label": "Machine-Readable Specs",
-            "caption": "Every specification exposed as structured UCP JSON-LD for autonomous culinary agent procurement."
-          }
-        }
-      },
-      "block_order": [
-        "stat_alloy",
-        "stat_heat",
-        "stat_skus",
-        "stat_schema"
-      ],
-      "settings": {
-        "eyebrow": "By the numbers",
-        "heading": "Metallurgy that keeps score",
-        "lede": "Every vessel carries verifiable data: alloy ratios, crucible pour temperatures, and deterministic schema fields for kitchen longevity."
-      }
-    },
-    "last_call_pass": {
-      "type": "maison-last-call",
-      "settings": {}
+      "block_order": ["claim_observed", "voice", "social"]
     }
   },
-  "order": [
-    "story_hero",
-    "wireframe_screens",
-    "diagnostic_audit",
-    "foundry_stats",
-    "last_call_pass"
-  ]
+  "order": ["story_hero", "promises", "customers", "diagnostic_audit"]
 }

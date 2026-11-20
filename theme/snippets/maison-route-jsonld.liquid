@@ -1,0 +1,170 @@
+{%- doc -%}
+  Emits one route-specific schema.org entity per page type, linked back to the
+  WebSite/Organization graph emitted by `maison-seo-graph.liquid`.
+
+  Product and Article pages are intentionally skipped: Shopify's
+  `structured_data` filter already emits complete Product/ProductGroup and
+  Article payloads, and duplicating them would invalidate the page. Everything
+  else (collection, blog, page, policy, search, cart, collection list) has no
+  native equivalent, so it is covered here.
+
+  @example
+  {% render 'maison-route-jsonld' %}
+{%- enddoc -%}
+
+{%- liquid
+  assign page_type = request.page_type
+  assign home_url = request.origin | append: routes.root_url
+  assign website_id = home_url | append: '#website'
+  assign page_url = request.origin | append: request.path
+-%}
+
+{%- case page_type -%}
+  {%- when 'collection' -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "@id": {{ page_url | append: '#collection' | json }},
+        "url": {{ page_url | json }},
+        "name": {{ collection.title | json }},
+        "description": {{ collection.description | strip_html | truncate: 320 | default: collection.title | json }},
+        "isPartOf": { "@id": {{ website_id | json }} },
+        "inLanguage": {{ request.locale.iso_code | json }},
+        {%- if collection.image -%}
+          "primaryImageOfPage": {
+            "@type": "ImageObject",
+            "url": {{ collection.image | image_url: width: 1200 | prepend: 'https:' | json }}
+          },
+        {%- endif -%}
+        "mainEntity": {
+          "@type": "ItemList",
+          "numberOfItems": {{ collection.products_count }},
+          "itemListElement": [
+            {%- for product in collection.products limit: 24 -%}
+              {
+                "@type": "ListItem",
+                "position": {{ forloop.index }},
+                "url": {{ request.origin | append: product.url | json }},
+                "name": {{ product.title | json }}
+              }{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          ]
+        }
+      }
+    </script>
+
+  {%- when 'list-collections' -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "@id": {{ page_url | append: '#collection-list' | json }},
+        "url": {{ page_url | json }},
+        "name": {{ page_title | default: 'Collections' | json }},
+        "isPartOf": { "@id": {{ website_id | json }} },
+        "inLanguage": {{ request.locale.iso_code | json }},
+        "mainEntity": {
+          "@type": "ItemList",
+          "itemListElement": [
+            {%- for list_collection in collections limit: 20 -%}
+              {
+                "@type": "ListItem",
+                "position": {{ forloop.index }},
+                "url": {{ request.origin | append: list_collection.url | json }},
+                "name": {{ list_collection.title | json }}
+              }{% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+          ]
+        }
+      }
+    </script>
+
+  {%- when 'blog' -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "@id": {{ page_url | append: '#blog' | json }},
+        "url": {{ page_url | json }},
+        "name": {{ blog.title | json }},
+        "description": {{ blog.description | strip_html | truncate: 320 | default: blog.title | json }},
+        "isPartOf": { "@id": {{ website_id | json }} },
+        "inLanguage": {{ request.locale.iso_code | json }},
+        "blogPost": [
+          {%- for blog_article in blog.articles limit: 10 -%}
+            {
+              "@type": "BlogPosting",
+              "url": {{ request.origin | append: blog_article.url | json }},
+              "headline": {{ blog_article.title | json }},
+              "datePublished": {{ blog_article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }}{% if blog_article.image %},
+              "image": {{ blog_article.image | image_url: width: 1200 | prepend: 'https:' | json }}{% endif %}
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+
+  {%- when 'page' -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "@id": {{ page_url | append: '#webpage' | json }},
+        "url": {{ page_url | json }},
+        "name": {{ page.title | json }},
+        "description": {{ page.content | strip_html | truncate: 320 | default: page.title | json }},
+        "isPartOf": { "@id": {{ website_id | json }} },
+        "inLanguage": {{ request.locale.iso_code | json }}
+        {%- if page.published_at -%},
+        "datePublished": {{ page.published_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }}
+        {%- endif -%}
+      }
+    </script>
+
+  {%- when 'search' -%}
+    {%- if search.performed -%}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "SearchResultsPage",
+          "@id": {{ page_url | append: '#search' | json }},
+          "url": {{ page_url | json }},
+          "name": {{ page_title | default: 'Search' | json }},
+          "isPartOf": { "@id": {{ website_id | json }} },
+          "inLanguage": {{ request.locale.iso_code | json }},
+          "about": {
+            "@type": "Thing",
+            "name": {{ search.terms | json }}
+          }
+        }
+      </script>
+    {%- endif -%}
+
+  {%- when 'cart' -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "@id": {{ page_url | append: '#cart' | json }},
+        "url": {{ page_url | json }},
+        "name": {{ page_title | default: 'Cart' | json }},
+        "isPartOf": { "@id": {{ website_id | json }} },
+        "inLanguage": {{ request.locale.iso_code | json }}
+      }
+    </script>
+
+  {%- when 'index' -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "@id": {{ home_url | append: '#webpage' | json }},
+        "url": {{ home_url | json }},
+        "name": {{ shop.name | json }},
+        "description": {{ shop.description | default: shop.name | json }},
+        "isPartOf": { "@id": {{ website_id | json }} },
+        "inLanguage": {{ request.locale.iso_code | json }}
+      }
+    </script>
+{%- endcase -%}

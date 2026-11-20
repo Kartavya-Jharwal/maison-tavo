@@ -8,8 +8,47 @@
 -%}
 
 {% unless product_resource == blank %}
-  {% render 'variant-main-picker', product_resource: product_resource, section: section, product: product %}
+  {% assign other_sizes = 0 %}
+  {% capture sizes %}
+    {% for size_option in product_resource.metafields.specs.size_options.value %}
+      {% if size_option.handle == product_resource.handle %}
+        <li><strong aria-current="page">{{ size_option.diameter_cm | escape }} cm</strong></li>
+      {% else %}
+        {% assign sibling = all_products[size_option.handle] %}
+        {% if sibling != blank %}
+          {% assign other_sizes = other_sizes | plus: 1 %}
+          <li><a href="{{ sibling.url }}">{{ size_option.diameter_cm | escape }} cm</a></li>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endcapture %}
+  {% if other_sizes > 0 %}
+    <nav aria-label="Diameter" {{ block.shopify_attributes }}>
+      <span>Diameter</span>
+      <ul class="maison-size-options" role="list">{{ sizes }}</ul>
+    </nav>
+  {% endif %}
+  {% if other_sizes == 0 or product_resource.variants.size > 1 %}
+    {% render 'variant-main-picker', product_resource: product_resource, section: section, product: product %}
+  {% endif %}
 {% endunless %}
+
+{% stylesheet %}
+  .maison-size-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    list-style: none;
+    padding-inline-start: 0;
+  }
+
+  .maison-size-options a,
+  .maison-size-options strong {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: 2.75rem;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {

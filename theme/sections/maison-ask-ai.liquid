@@ -1,0 +1,418 @@
+{% comment %}
+  Maison Tavo · Ask AI / AUGO (AI Universal Groundwork Optimization)
+  Surfaces the brand to AI assistants: ChatGPT, Claude, Gemini, Perplexity, Copilot, Meta AI.
+  Displays AI logos with status indicators + recommended prompts + AUGO signals.
+  Zero-backend: fully static Liquid — no external API calls.
+{% endcomment %}
+
+<div class="mt-augo section section--page-width" id="mt-augo" data-section-id="{{ section.id }}">
+  <header class="mt-augo__header">
+    <div class="mt-augo__eyebrow-row">
+      <span class="mt-augo__badge">AUGO · AI UNIVERSAL GROUNDWORK</span>
+    </div>
+    <h2 class="mt-augo__heading" aria-label="{{ section.settings.heading | escape }}">
+      {{ section.settings.heading | default: 'What can an assistant find?' | escape }}
+    </h2>
+    <p class="mt-augo__lede">{{ section.settings.lede | default: 'Try a prompt and check which facts the assistant can source. Since this store is gated, it may only see public references.' | escape }}</p>
+  </header>
+
+  {%- comment -%} ── AI System Cards ── {%- endcomment -%}
+  <div class="mt-augo__grid" role="list" aria-label="AI assistants to try">
+
+    {%- assign ai_systems = "ChatGPT,Claude,Gemini,Perplexity,Copilot,Meta AI" | split: "," -%}
+    {%- assign ai_crawlers = "GPTBot,ClaudeBot,Google-Extended,PerplexityBot,Bingbot,FacebookBot" | split: "," -%}
+    {%- assign ai_colors = "#10a37f,#d4a853,#4285f4,#20b2aa,#0078d4,#1877f2" | split: "," -%}
+    {%- assign ai_urls = "https://chat.openai.com,https://claude.ai,https://gemini.google.com,https://www.perplexity.ai,https://copilot.microsoft.com,https://ai.meta.com" | split: "," -%}
+    {%- assign ai_queries = "What is the Maison Tavo project?,What is Chulha by Maison Tavo?,What is Maison Tavo's Kansa companion?,What cookware does Maison Tavo preview?,What does Maison Tavo say about hob compatibility?,What care guidance can you find for Maison Tavo?" | split: "," -%}
+
+    {%- for system in ai_systems -%}
+      {%- assign idx = forloop.index0 -%}
+      {%- assign crawler = ai_crawlers[idx] -%}
+      {%- assign color = ai_colors[idx] -%}
+      {%- assign ai_url = ai_urls[idx] -%}
+      {%- assign query = ai_queries[idx] -%}
+
+      <article class="mt-augo__card" role="listitem" data-ai="{{ system | downcase | replace: ' ', '-' }}">
+        <div class="mt-augo__card-header">
+          <div class="mt-augo__logo-wrap" style="--ai-color: {{ color }};" aria-hidden="true">
+            {%- case system -%}
+              {%- when 'ChatGPT' -%}
+                <svg class="mt-augo__logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.886zm16.597 3.855l-5.843-3.369 2.02-1.168a.076.076 0 0 1 .071 0l4.83 2.786a4.504 4.504 0 0 1-.676 8.137v-5.677a.79.79 0 0 0-.402-.69zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057v-5.583a4.5 4.5 0 0 1 7.375-3.453l-.142.08-4.778 2.758a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z" fill="currentColor"/>
+                </svg>
+              {%- when 'Claude' -%}
+                <svg class="mt-augo__logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <path d="M4.709 15.955l4.72-2.647.08-.23-.08-.128H9.2l-.79-.048-2.698-.073-2.339-.097-1.785-.121-.952-.17-.436-.244-.194-.316.097-.389.388-.316.753-.146 1.056.097 1.396.243 1.785.389 1.736.389.146-.049.072-.121-.049-.146-1.08-1.65-1.396-2.078-1.08-1.712-.802-1.395-.389-.947-.048-.656.169-.437.389-.242.583.048.607.34 1.056.874 1.736 1.396 2.236 1.42 2.164.073.146.097-.024.049-.121-.121-.316-.559-1.542-.947-2.527-.607-1.712-.34-1.2-.049-.826.146-.559.413-.34.607-.072.729.218.608.486.486.729.729 1.566.826 2.284.608 1.566.34.729.097.049.072-.049.025-.146-.025-.243-.146-1.396-.316-2.746-.218-2.43v-1.517l.17-.753.413-.413.559-.169.656.097.559.413.34.656.388 1.517.316 2.139.17 1.882.072 1.323.049.146.097.049.097-.049.025-.146-.025-.462V3.996l.17-1.079.413-.753.608-.413.729-.072.607.218.486.559.17.802-.025.802-.218 2.188-.413 2.527-.17 1.517-.024.17.072.097h.121l.146-.146.364-.656.705-1.323.923-1.712.705-1.2.656-.874.68-.607.705-.243.607.072.486.389.218.608-.049.729-.316.826-.656 1.153-1.153 1.69-.923 1.396-.462.753-.049.17.072.097.146-.049 1.42-.437 2.455-.704 1.858-.462 1.153-.194.364.097.364.364.291.534.097.534-.194.413-.437.316-.656.146-.753.024-1.42-.218-1.955-.413-1.736-.437-.656-.049-.17.097-.17.316-.146.729-.291 1.882-.437 1.882-.316 1.08-.218.413.17.364.097.097.364-.049.267-.413.218-.607.097-.729-.049-.559-.218-.413-.413-.316-.656.049-1.323.413-2.527.413-1.712.316-1.517.049-.146-.024-.121-.097.024-.17.243-1.323 2.236-1.834 2.818-.947 1.274-.802.874-.826.583-.753.267-.656-.024-.559-.243-.316-.437v-.559l.267-.413.364-.243.729-.146 1.153.097 1.47.364 1.882.583.802.316.17.024.146-.097-.024-.17-.291-.559-.656-1.323-1.153-2.188-.704-1.566-.316-1.08v-.8l.218-.559.413-.316.607-.097.656.218.413.437.729 1.323 1.08 2.188.947 2.139.607 1.566.146.364.097.049.097-.024.049-.146-.025-.316-.218-1.396-.389-2.964-.194-2.139v-1.153l.194-.753.437-.486.656-.194.656.097.559.437.291.729.146 1.323V9.49l-.291 2.43-.17 1.567v.17l.097.097.121-.049.146-.243 1.08-1.785 1.42-2.188.923-1.323.802-.996.68-.607.656-.291.656-.024.534.316.316.583-.024.729-.316.826-.826 1.517-1.323 2.139-.923 1.517-.437.802-.049.17.097.097h.17l.316-.097 1.42-.437 1.882-.462 1.47-.316 1.056-.097.68.097.437.316.194.559-.049.607-.316.437-.607.316-1.056.218-1.858.316-1.712.316-.899.194-.194.097-.024.17.049.097.364.17.364-.049.364-.49.388.049.364.267.267.437.097.656-.194.583-.437.413-.656.242-.802.049-1.08-.218-1.542-.462-1.76-.535z" fill="currentColor"/>
+                </svg>
+              {%- when 'Gemini' -%}
+                <svg class="mt-augo__logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <path d="M12 24A14.304 14.304 0 0 0 0 12 14.304 14.304 0 0 0 12 0a14.305 14.305 0 0 0 12 12 14.305 14.305 0 0 0-12 12" fill="currentColor"/>
+                </svg>
+              {%- when 'Perplexity' -%}
+                <svg class="mt-augo__logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <path d="M18.73 3.42l-5.73 5.5V3.42H11.5v5.5L5.78 3.42H3.44l7.56 7.26v.3L4.6 17.26l1.74 1.3 5.16-4.96v7.98H13v-7.98l5.16 4.96 1.74-1.3-6.4-6.28v-.3l7.56-7.26h-2.33z" fill="currentColor"/>
+                </svg>
+              {%- when 'Copilot' -%}
+                <svg class="mt-augo__logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.95 7.05a7.07 7.07 0 0 1 0 9.9L7.05 9.05a7.07 7.07 0 0 1 9.9 0z" fill="currentColor"/>
+                </svg>
+              {%- else -%}
+                {%- comment -%} Meta AI {%- endcomment -%}
+                <svg class="mt-augo__logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069z" fill="currentColor"/>
+                </svg>
+            {%- endcase -%}
+          </div>
+          <div class="mt-augo__system-info">
+            <h3 class="mt-augo__system-name">{{ system }}</h3>
+            <span class="mt-augo__crawler" aria-label="Crawler: {{ crawler }}">{{ crawler }}</span>
+          </div>
+        </div>
+
+        <div class="mt-augo__prompt-wrap">
+          <p class="mt-augo__prompt-label">Try asking:</p>
+          <blockquote class="mt-augo__prompt">
+            <span class="mt-augo__prompt-quote" aria-hidden="true">"</span>{{ query }}<span class="mt-augo__prompt-quote" aria-hidden="true">"</span>
+          </blockquote>
+        </div>
+
+        <a
+          href="{{ ai_url }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-augo__open-btn"
+          aria-label="Open {{ system }} to ask about Maison Tavo"
+          style="--ai-color: {{ color }};"
+        >
+          Ask on {{ system }} →
+        </a>
+      </article>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} ── Signal section: robots.txt / llms.txt / structured data ── {%- endcomment -%}
+  <div class="mt-augo__signals">
+    <h3 class="mt-augo__signals-heading">Machine signals we publish</h3>
+    <div class="mt-augo__signal-grid">
+      <div class="mt-augo__signal">
+        <span class="mt-augo__signal-icon" aria-hidden="true">▸</span>
+        <div>
+          <strong>llms.txt</strong>
+          <p>A text overview of the catalogue and its agent-facing routes.</p>
+          <a href="{{ shop.url }}/pages/llms-txt" class="mt-augo__signal-link">View /llms.txt →</a>
+        </div>
+      </div>
+      <div class="mt-augo__signal">
+        <span class="mt-augo__signal-icon" aria-hidden="true">▸</span>
+        <div>
+          <strong>UCP /.well-known</strong>
+          <p>A demonstration of how software could discover and interpret commerce capabilities.</p>
+          <a href="{{ shop.url }}/pages/ucp" class="mt-augo__signal-link">View UCP explorer →</a>
+        </div>
+      </div>
+      <div class="mt-augo__signal">
+        <span class="mt-augo__signal-icon" aria-hidden="true">▸</span>
+        <div>
+          <strong>Schema.org JSON-LD</strong>
+          <p>Structured product information alongside the description a cook reads.</p>
+        </div>
+      </div>
+      <div class="mt-augo__signal">
+        <span class="mt-augo__signal-icon" aria-hidden="true">▸</span>
+        <div>
+          <strong>Open robots.txt</strong>
+          <p>The storefront’s crawler rules. The password gate still applies.</p>
+          <a href="{{ shop.url }}/robots.txt" class="mt-augo__signal-link" target="_blank" rel="noopener">View robots.txt →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Machine-readable AUGO structured data {%- endcomment -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Maison Tavo",
+    "url": "{{ shop.url }}",
+    "description": "A cookware proof of concept exploring durable tools, material design and product information for people and software.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "{{ shop.url }}/search?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    },
+    "sameAs": [
+      "{{ shop.url }}/pages/ucp",
+      "{{ shop.url }}/pages/kansa"
+    ]
+  }
+  </script>
+</div>
+
+{% stylesheet %}
+  .mt-augo {
+    padding-block: clamp(3rem, 6vw, 6rem);
+    color: var(--color-foreground);
+  }
+
+  .mt-augo__header {
+    max-width: 52rem;
+    margin-block-end: clamp(2.5rem, 4vw, 4rem);
+  }
+
+  .mt-augo__eyebrow-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-block-end: 1rem;
+    align-items: center;
+  }
+
+  .mt-augo__badge {
+    display: inline-block;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.3em 0.7em;
+    border: 1px solid rgba(var(--color-foreground-rgb) / 0.25);
+    color: rgba(var(--color-foreground-rgb) / 0.65);
+  }
+
+  .mt-augo__heading {
+    margin: 0 0 0.85rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-display);
+    font-weight: 400;
+    letter-spacing: var(--mt-type-tracking-heading);
+    line-height: 1.1;
+  }
+
+  .mt-augo__lede {
+    margin: 0;
+    max-width: 44rem;
+    font-size: var(--mt-type-lede);
+    line-height: 1.6;
+    color: rgba(var(--color-foreground-rgb) / 0.78);
+  }
+
+  /* ── Grid ── */
+  .mt-augo__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    gap: 1.25rem;
+    margin-block-end: clamp(3rem, 5vw, 5rem);
+  }
+
+  .mt-augo__card {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 1.1rem;
+    padding: clamp(1.25rem, 2vw, 1.75rem);
+    border: 1px solid rgba(var(--color-foreground-rgb) / 0.14);
+    background: rgba(var(--color-foreground-rgb) / 0.025);
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .mt-augo__card:hover {
+    border-color: rgba(var(--color-foreground-rgb) / 0.28);
+    background: rgba(var(--color-foreground-rgb) / 0.045);
+  }
+
+  .mt-augo__card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .mt-augo__logo-wrap {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--ai-color, #888) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--ai-color, #888) 25%, transparent);
+    color: var(--ai-color, #888);
+  }
+
+  .mt-augo__logo {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .mt-augo__system-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mt-augo__system-name {
+    margin: 0 0 0.15rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-title, 1.25rem);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .mt-augo__crawler {
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
+    letter-spacing: 0.08em;
+    color: rgba(var(--color-foreground-rgb) / 0.5);
+  }
+
+  .mt-augo__prompt-wrap {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .mt-augo__prompt-label {
+    margin: 0;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(var(--color-foreground-rgb) / 0.5);
+  }
+
+  .mt-augo__prompt {
+    margin: 0;
+    padding: 0.75rem 0.9rem;
+    background: rgba(var(--color-foreground-rgb) / 0.04);
+    border-inline-start: 2px solid rgba(var(--color-foreground-rgb) / 0.18);
+    font-size: var(--mt-type-nav, 0.825rem);
+    line-height: 1.55;
+    color: rgba(var(--color-foreground-rgb) / 0.82);
+    font-style: normal;
+  }
+
+  .mt-augo__prompt-quote {
+    color: rgba(var(--color-foreground-rgb) / 0.4);
+  }
+
+  .mt-augo__open-btn {
+    display: inline-block;
+    padding: 0.6rem 1rem;
+    text-align: center;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    border: 1px solid color-mix(in srgb, var(--ai-color, #888) 35%, transparent);
+    color: var(--ai-color, var(--color-foreground));
+    background: color-mix(in srgb, var(--ai-color, #888) 6%, transparent);
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .mt-augo__open-btn:hover {
+    background: color-mix(in srgb, var(--ai-color, #888) 14%, transparent);
+    border-color: color-mix(in srgb, var(--ai-color, #888) 55%, transparent);
+  }
+
+  .mt-augo__open-btn:focus-visible {
+    outline: 2px solid var(--ai-color, currentColor);
+    outline-offset: 2px;
+  }
+
+  /* ── Signals ── */
+  .mt-augo__signals {
+    border-block-start: 1px solid rgba(var(--color-foreground-rgb) / 0.14);
+    padding-block-start: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .mt-augo__signals-heading {
+    margin: 0 0 1.5rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(var(--color-foreground-rgb) / 0.6);
+  }
+
+  .mt-augo__signal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr));
+    gap: 1.5rem;
+  }
+
+  .mt-augo__signal {
+    display: flex;
+    gap: 0.9rem;
+  }
+
+  .mt-augo__signal-icon {
+    flex-shrink: 0;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--bell, #b8893a);
+  }
+
+  .mt-augo__signal strong {
+    display: block;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-block-end: 0.35rem;
+  }
+
+  .mt-augo__signal p {
+    margin: 0 0 0.5rem;
+    font-size: var(--mt-type-nav, 0.825rem);
+    line-height: 1.55;
+    color: rgba(var(--color-foreground-rgb) / 0.72);
+  }
+
+  .mt-augo__signal-link {
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
+    letter-spacing: 0.06em;
+    color: var(--bell, #b8893a);
+    text-decoration: none;
+  }
+
+  .mt-augo__signal-link:hover {
+    text-decoration: underline;
+  }
+
+  .mt-augo__signal-link:focus-visible {
+    outline: 2px solid var(--bell, #b8893a);
+    outline-offset: 2px;
+  }
+
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Ask AI / AUGO",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What can an assistant find?"
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "Lede",
+      "default": "Try a prompt and check which facts the assistant can source. Since this store is gated, it may only see public references."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ask AI / AUGO",
+      "category": "Maison Tavo"
+    }
+  ]
+}
+{% endschema %}

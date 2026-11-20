@@ -216,53 +216,12 @@
   }
 {% endstylesheet %}
 
-{% javascript %}
-  if (!customElements.get('maison-lens')) {
-    customElements.define(
-      'maison-lens',
-      class MaisonLens extends HTMLElement {
-        connectedCallback() {
-          this.options = [...this.querySelectorAll('[data-lens-option]')];
-          this.addEventListener('click', this.onClick);
-          this.addEventListener('keydown', this.onKeydown);
-        }
-
-        disconnectedCallback() {
-          this.removeEventListener('click', this.onClick);
-          this.removeEventListener('keydown', this.onKeydown);
-        }
-
-        onClick = (event) => {
-          const option = event.target.closest('[data-lens-option]');
-          if (!option) return;
-          event.preventDefault();
-          this.setLens(option.dataset.lensOption);
-        };
-
-        onKeydown = (event) => {
-          if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
-          const index = this.options.indexOf(document.activeElement);
-          if (index < 0) return;
-          const step = event.key === 'ArrowRight' ? 1 : -1;
-          const next = this.options[(index + step + this.options.length) % this.options.length];
-          next.focus();
-          this.setLens(next.dataset.lensOption);
-        };
-
-        setLens(lens) {
-          this.dataset.lens = lens;
-          this.options.forEach((option) => {
-            option.setAttribute('aria-pressed', String(option.dataset.lensOption === lens));
-          });
-          this.querySelectorAll('[data-lens-panel]').forEach((panel) => {
-            panel.hidden = panel.dataset.lensPanel !== lens;
-          });
-          this.dispatchEvent(new CustomEvent('maison:lens', { bubbles: true, detail: { lens } }));
-        }
-      }
-    );
-  }
-{% endjavascript %}
+{%- comment -%}
+  Behaviour lives in scripts/src/lens.js (bundled into assets/maison-runtime.js).
+  It is intentionally not a `{% javascript %}` tag here: that tag repeats per
+  block instance and left sections/maison-view-as.liquid without a handler on
+  pages that had no product-card lens block.
+{%- endcomment -%}
 
 {% schema %}
 {

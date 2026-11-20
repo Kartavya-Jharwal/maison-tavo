@@ -40,7 +40,7 @@
       "settings": {
         "eyebrow": "Assortment Hierarchy",
         "heading": "Shop by Category",
-        "lede": "Three working-kitchen departments encompassing all 25 Maison Tavo specifications.",
+        "lede": "Browse cookware, tableware, care supplies and replacement parts.",
         "padding-block-start": 48,
         "padding-block-end": 24
       }
@@ -48,13 +48,20 @@
     "lineups": {
       "type": "maison-lineups",
       "blocks": {
-        "forge_hybrid": {
+        "forge": {
           "type": "lineup",
           "settings": {
-            "kicker": "Range 01 · Mixed Metal",
-            "label": "Forge Hybrid",
-            "text": "Nitrided carbon-steel and clad stainless cookware paired with removable cast-bronze thermal mass, lids, and care rituals.",
-            "handle": "forge-hybrid"
+            "label": "Forge",
+            "text": "Stainless steel cookware in grouped sizes, with matched sets.",
+            "handle": "forge"
+          }
+        },
+        "chulha": {
+          "type": "lineup",
+          "settings": {
+            "label": "Chulha",
+            "text": "Terracotta forms developed around flatbreads, chai and slow-cooked meals.",
+            "handle": "chulha"
           }
         },
         "terre_clay": {
@@ -105,11 +112,11 @@
           }
         }
       },
-      "block_order": ["forge_hybrid", "terre_clay", "kuro_strip", "forge_terre", "new_arrivals", "kansa_room"],
+      "block_order": ["forge", "chulha", "terre_clay", "kuro_strip", "forge_terre", "new_arrivals", "kansa_room"],
       "settings": {
         "eyebrow": "Material Architecture",
         "heading": "Explore by Material Lineup",
-        "lede": "Four material ranges, the Releases room, and Kansa on a page of its own.",
+        "lede": "Explore the material ranges, new releases and the Kansa care companion.",
         "padding-block-start": 24,
         "padding-block-end": 32
       }

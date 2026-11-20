@@ -1,23 +1,5 @@
 {% doc %}
-  First-visit splash / intro overlay. Included from layout/theme.liquid.
-  Hidden on cart and checkout. Uses Brand tokens CSS variables.
-
-  Media drop-in (theme/assets/):
-  - maison-splash.mp4          → full-bleed background video
-  - maison-splash-audio.mp3    → optional separate audio bed
-  - maison-splash-poster.jpg   → poster / reduced-motion still
-
-  First paint: poster img + wordmark + Enter are in HTML. Video stays opacity 0 until a
-  decoded frame is ready (requestVideoFrameCallback / loadeddata), then fades in over poster.
-
-  Autoplay with sound (browser quirk path):
-  1. Try video.play() unmuted (+ audio if present).
-  2. If NotAllowedError / play rejects: mute video, play muted, keep audio paused.
-  3. On first pointerdown or keydown while splash is open: unmute video and start audio.
-  4. prefers-reduced-motion / data-reduced-motion: static poster only — no src, no audio.
-  5. Enter / Escape / backdrop: dismiss, pause + mute all media, reveal storefront.
-
-  Hooks: [data-mt-splash-video], [data-mt-splash-audio], [data-splash-skip]
+  First-visit splash dialog with a static poster and an optional motion background.
 {% enddoc %}
 
 {% liquid
@@ -54,13 +36,8 @@
       assign splash_storage = 'session'
     endif
 
-    comment
-      Asset URLs always resolve; until files exist in theme/assets/ they 404 and media stays idle.
-      Leave data-src empty only if you prefer wiring src by hand — defaults point at drop-in names.
-    endcomment
-    assign splash_video_url = 'maison-splash.mp4' | asset_url
-    assign splash_audio_url = 'maison-splash-audio.mp3' | asset_url
-    assign splash_poster_url = 'maison-splash-poster.jpg' | asset_url
+    assign splash_bg_image_url = 'maison-hero.webp' | asset_url
+    assign splash_logic_url = 'splash-bg.html' | asset_url
   %}
 
   <dialog
@@ -77,11 +54,12 @@
     <div
       class="splash-intro__media"
       aria-hidden="true"
-      style="--splash-poster: url('{{ splash_poster_url }}');"
+      style="--splash-poster: url('{{ splash_bg_image_url }}');"
     >
+      {%- comment -%} Static background placeholder image piped from assets with fallbacks {%- endcomment -%}
       <img
         class="splash-intro__poster"
-        src="{{ splash_poster_url }}"
+        src="{{ splash_bg_image_url }}"
         alt=""
         width="1920"
         height="1080"
@@ -89,25 +67,25 @@
         fetchpriority="high"
         draggable="false"
       >
-      <video
-        class="splash-intro__video"
-        data-mt-splash-video
-        data-src="{{ splash_video_url }}"
-        poster="{{ splash_poster_url }}"
-        playsinline
-        webkit-playsinline
-        loop
-        preload="metadata"
-        disablepictureinpicture
-        disableremoteplayback
-      ></video>
-      <audio
-        class="splash-intro__audio"
-        data-mt-splash-audio
-        data-src="{{ splash_audio_url }}"
-        preload="none"
-        loop
-      ></audio>
+
+      {%- comment -%}
+        Background Logic / Simulation Stage:
+        Pipes in interactive background logic / index.html (Three.js / WebGPU / GLSL shader)
+      {%- endcomment -%}
+      <div class="splash-intro__logic-stage" id="SplashLogicStage" data-mt-splash-logic>
+        <iframe
+          id="SplashLogicFrame"
+          class="splash-intro__logic-frame"
+          data-src="{{ splash_logic_url }}"
+          title="{{ splash_heading | escape }}"
+          tabindex="-1"
+          aria-hidden="true"
+          loading="eager"
+          style="display: none;"
+          onload="this.style.display='block';"
+        ></iframe>
+      </div>
+
       <div class="splash-intro__scrim"></div>
       <div class="splash-intro__grain" aria-hidden="true"></div>
     </div>
@@ -118,7 +96,16 @@
         class="splash-intro__heading"
         aria-label="{{ splash_heading | escape }}"
       >
-        <span class="splash-intro__mark" aria-hidden="true">{{ splash_heading }}</span>
+        <span class="splash-intro__mark" aria-hidden="true">
+          {%- assign chars = splash_heading | split: '' -%}
+          {%- for char in chars -%}
+            {%- if char == ' ' -%}
+              <span class="splash-intro__space">&nbsp;</span>
+            {%- else -%}
+              <span class="splash-intro__char" style="--char-idx: {{ forloop.index0 }};">{{ char }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </span>
       </h2>
 
       <button
@@ -161,13 +148,7 @@
       var reduceMotion =
         window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
         document.documentElement.getAttribute('data-reduced-motion') === 'true';
-      var video = dialog.querySelector('[data-mt-splash-video]');
-      var audio = dialog.querySelector('[data-mt-splash-audio]');
-      var closeTimer;
       var closing = false;
-      var soundUnlocked = false;
-      var unlockBound = false;
-      var frameReady = false;
 
       function getStore() {
         try {
@@ -193,161 +174,86 @@
         } catch (error) {}
       }
 
-      function bindMediaSrc(el) {
-        if (!el) return;
-        var src = el.getAttribute('data-src') || el.getAttribute('src') || '';
-        if (!src) return;
-        if (!el.getAttribute('src')) {
-          el.setAttribute('src', src);
-        }
-      }
-
-      function revealVideoFrame() {
-        if (!video || frameReady || reduceMotion) return;
-        frameReady = true;
-        video.classList.add('is-frame-ready');
-      }
-
-      /* Keep poster visible until a real frame can paint (avoids black flash). */
-      function armVideoFrameReady() {
-        if (!video || reduceMotion || frameReady) return;
-
-        if (typeof video.requestVideoFrameCallback === 'function') {
-          video.requestVideoFrameCallback(function () {
-            revealVideoFrame();
-          });
-        }
-
-        var onLoadedData = function () {
-          revealVideoFrame();
-        };
-        video.addEventListener('loadeddata', onLoadedData, { once: true });
-
-        video.addEventListener(
-          'loadedmetadata',
-          function () {
-            if (video.readyState >= 2) {
-              revealVideoFrame();
-              return;
-            }
-            try {
-              if (video.currentTime === 0) video.currentTime = 0.001;
-            } catch (error) {}
-          },
-          { once: true }
-        );
-      }
-
-      function pauseMedia() {
-        if (video) {
-          try {
-            video.pause();
-            video.muted = true;
-          } catch (error) {}
-        }
-        if (audio) {
-          try {
-            audio.pause();
-            audio.muted = true;
-          } catch (error) {}
-        }
-      }
-
-      function unlockSound() {
-        if (soundUnlocked || reduceMotion || closing) return;
-        soundUnlocked = true;
-        if (video) {
-          video.muted = false;
-          var vp = video.play();
-          if (vp && typeof vp.catch === 'function') vp.catch(function () {});
-        }
-        if (audio && audio.getAttribute('src')) {
-          audio.muted = false;
-          var ap = audio.play();
-          if (ap && typeof ap.catch === 'function') ap.catch(function () {});
-        }
-      }
-
-      function bindUnlockGesture() {
-        if (unlockBound || reduceMotion) return;
-        unlockBound = true;
-        var unlock = function () {
-          unlockSound();
-          dialog.removeEventListener('pointerdown', unlock, true);
-          dialog.removeEventListener('keydown', unlock, true);
-        };
-        dialog.addEventListener('pointerdown', unlock, true);
-        dialog.addEventListener('keydown', unlock, true);
-      }
-
-      function tryAutoplayWithSound() {
-        if (reduceMotion) return;
-        bindMediaSrc(video);
-        bindMediaSrc(audio);
-        armVideoFrameReady();
-
-        if (!video || !video.getAttribute('src')) {
-          bindUnlockGesture();
-          return;
-        }
-
-        video.muted = false;
-        var attempt = video.play();
-        if (attempt && typeof attempt.then === 'function') {
-          attempt
-            .then(function () {
-              soundUnlocked = true;
-              if (typeof video.requestVideoFrameCallback === 'function') {
-                video.requestVideoFrameCallback(function () {
-                  revealVideoFrame();
-                });
-              } else {
-                revealVideoFrame();
-              }
-              if (audio && audio.getAttribute('src')) {
-                audio.muted = false;
-                var ap = audio.play();
-                if (ap && typeof ap.catch === 'function') ap.catch(function () {});
-              }
-            })
-            .catch(function () {
-              /* Browser blocked unmuted autoplay — start muted, unlock on first gesture. */
-              video.muted = true;
-              var mutedPlay = video.play();
-              if (mutedPlay && typeof mutedPlay.then === 'function') {
-                mutedPlay
-                  .then(function () {
-                    if (typeof video.requestVideoFrameCallback === 'function') {
-                      video.requestVideoFrameCallback(function () {
-                        revealVideoFrame();
-                      });
-                    } else {
-                      revealVideoFrame();
-                    }
-                  })
-                  .catch(function () {});
-              }
-              bindUnlockGesture();
-            });
-        } else {
-          bindUnlockGesture();
-        }
-      }
-
       function finishClose() {
-        pauseMedia();
         if (typeof dialog.close === 'function') {
           dialog.close();
         } else {
           dialog.removeAttribute('open');
         }
-        dialog.removeAttribute('data-closing');
-        closing = false;
+        dialog.remove();
+      }
+
+      function runGsapIntro() {
+        var gsapObj = window.gsap || (window.MaisonRuntime && window.MaisonRuntime.gsap);
+        if (!gsapObj || reduceMotion) return;
+        var chars = dialog.querySelectorAll('.splash-intro__char');
+        var enterBtn = dialog.querySelector('[data-splash-skip]');
+        if (chars && chars.length) {
+          gsapObj.fromTo(chars, {
+            opacity: 0,
+            y: 36,
+            rotateX: -45,
+            scale: 0.94,
+            filter: 'blur(8px)'
+          }, {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            scale: 1,
+            filter: 'blur(0px)',
+            stagger: 0.045,
+            duration: 1.15,
+            ease: 'power3.out'
+          });
+        }
+        if (enterBtn) {
+          gsapObj.fromTo(enterBtn, {
+            opacity: 0,
+            y: 22,
+            scale: 0.9
+          }, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.85,
+            delay: 0.45,
+            ease: 'back.out(1.5)'
+          });
+        }
       }
 
       function closeWithMotion(done) {
-        var runtime = window.MaisonRuntime;
+        var gsapObj = window.gsap || (window.MaisonRuntime && window.MaisonRuntime.gsap);
         var panel = dialog.querySelector('.splash-intro__panel');
+        var chars = dialog.querySelectorAll('.splash-intro__char');
+        var enter = dialog.querySelector('[data-splash-skip]');
+
+        if (gsapObj) {
+          var tl = gsapObj.timeline({ onComplete: done });
+          if (enter) {
+            tl.to(enter, { scale: 0.85, opacity: 0, duration: 0.22, ease: 'power2.in' }, 0);
+          }
+          if (chars && chars.length) {
+            tl.to(chars, {
+              opacity: 0,
+              y: -28,
+              rotateX: 30,
+              filter: 'blur(6px)',
+              stagger: 0.018,
+              duration: 0.42,
+              ease: 'power2.in'
+            }, 0.06);
+          }
+          tl.to(dialog, {
+            opacity: 0,
+            scale: 1.025,
+            duration: 0.45,
+            ease: 'power2.inOut'
+          }, 0.12);
+          return;
+        }
+
+        var runtime = window.MaisonRuntime;
         if (!runtime || typeof runtime.animate !== 'function' || !panel) {
           window.setTimeout(done, 280);
           return;
@@ -369,9 +275,7 @@
       function closeSplash() {
         if (closing || !dialog.open) return;
         closing = true;
-        window.clearTimeout(closeTimer);
         markSeen();
-        pauseMedia();
         dialog.setAttribute('data-closing', '');
 
         if (reduceMotion) {
@@ -383,7 +287,6 @@
       }
 
       if (hasSeen()) {
-        pauseMedia();
         dialog.remove();
         return;
       }
@@ -394,7 +297,20 @@
         dialog.setAttribute('open', '');
       }
 
-      tryAutoplayWithSound();
+      /* Initialize GSAP text animation */
+      if (window.gsap || (window.MaisonRuntime && window.MaisonRuntime.gsap)) {
+        runGsapIntro();
+      } else {
+        window.addEventListener('DOMContentLoaded', runGsapIntro, { once: true });
+        window.addEventListener('load', runGsapIntro, { once: true });
+        var gsapCheck = window.setInterval(function () {
+          if (window.gsap || (window.MaisonRuntime && window.MaisonRuntime.gsap)) {
+            window.clearInterval(gsapCheck);
+            runGsapIntro();
+          }
+        }, 50);
+        window.setTimeout(function () { window.clearInterval(gsapCheck); }, 3000);
+      }
 
       var skipButton = dialog.querySelector('[data-splash-skip]');
       if (skipButton) {
@@ -412,12 +328,21 @@
         closeSplash();
       });
 
-      dialog.addEventListener('click', function (event) {
-        if (event.target === dialog) closeSplash();
-      });
+      /* Backdrop click intentionally NOT wired: the dialog is full-screen so
+         any tap on the container fires on dialog itself, not just the backdrop.
+         Only the Enter button is the deliberate gate. */
 
-      if (duration > 0) {
-        closeTimer = window.setTimeout(closeSplash, duration * 1000);
+      /* Send poster CDN URL to the fire iframe so it can set the placeholder src */
+      var logicFrame = document.getElementById('SplashLogicFrame');
+      if (logicFrame && !reduceMotion) {
+        var posterUrl = '{{ splash_bg_image_url }}';
+        var sendPoster = function () {
+          try {
+            logicFrame.contentWindow.postMessage({ type: 'mt-splash-poster', src: posterUrl }, '*');
+          } catch (err) {}
+        };
+        logicFrame.addEventListener('load', sendPoster, { once: true });
+        logicFrame.src = logicFrame.dataset.src;
       }
     })();
   </script>
@@ -547,6 +472,14 @@
     padding: clamp(var(--mt-space-5), 4vw, var(--mt-space-7));
     text-align: center;
     box-sizing: border-box;
+    /* Pass pointer events through the panel to the fire iframe.
+       Only the Enter button (interactive child) captures events. */
+    pointer-events: none;
+  }
+
+  /* Re-enable pointer events only on interactive panel children */
+  .splash-intro__enter {
+    pointer-events: auto;
   }
 
   .splash-intro[open] .splash-intro__panel {
@@ -576,9 +509,47 @@
   }
 
   .splash-intro__mark {
-    display: block;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     white-space: nowrap;
     transform: translateX(-1.5%);
+  }
+
+  .splash-intro__char {
+    display: inline-block;
+    will-change: transform, opacity, filter;
+    font-family: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+  }
+
+  .splash-intro__space {
+    display: inline-block;
+    width: 0.28em;
+  }
+
+  .splash-intro__logic-stage {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    /* Allow pointer events through to the fire iframe for cursor interaction.
+       The panel (z-index: 1 relative to media) captures events on its own
+       elements; the stage sits in .splash-intro__media which is z-index: 0. */
+    pointer-events: auto;
+    overflow: hidden;
+  }
+
+  .splash-intro__logic-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    /* Allow the iframe to receive pointer events so fire responds to cursor */
+    pointer-events: auto;
   }
 
   .splash-intro__enter {

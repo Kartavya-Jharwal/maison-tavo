@@ -1,6 +1,60 @@
 {
-  "generatedAt": "2026-11-17T03:37:32.604Z",
-  "count": 25,
+  "generatedAt": "2026-11-20T13:21:44.444Z",
+  "count": 48,
+  "categories": [
+    {
+      "handle": "forge",
+      "title": "Forge",
+      "summary": "Cookware and sets for searing, simmering and cooking at the table.",
+      "productHandles": [
+        "forge-tawa",
+        "forge-kadhai",
+        "forge-saucepan",
+        "forge-frying-pan",
+        "forge-saucier",
+        "forge-saute",
+        "forge-stockpot",
+        "forge-set-solo-couple-grouped-preview",
+        "forge-set-family-standard-grouped-preview",
+        "forge-set-entertainer-grouped-preview",
+        "forge-set-european-grouped-preview",
+        "forge-set-asian-grouped-preview",
+        "forge-set-everyday-grouped-preview",
+        "forge-set-full-house-grouped-preview"
+      ]
+    },
+    {
+      "handle": "chulha",
+      "title": "Chulha",
+      "summary": "Terracotta cookware shaped around flatbreads, chai, dal and slow-cooked meals.",
+      "productHandles": [
+        "chulha-tawa",
+        "chulha-artisanal-matka",
+        "chulha-pressure-cooker",
+        "chulha-heavy-kadhai",
+        "chulha-chai-saucier",
+        "chulha-biryani-handi",
+        "chulha-stockpot"
+      ]
+    },
+    {
+      "handle": "maintenance",
+      "title": "Maintenance",
+      "summary": "Care kits, lids and replacement parts for the pieces you cook with.",
+      "productHandles": [
+        "forge-seasoning-oil",
+        "forge-care-ritual-kit",
+        "forge-relay-lid-26",
+        "forge-relay-lid-30",
+        "forge-universal-lid-20",
+        "forge-universal-lid-24",
+        "forge-universal-lid-28",
+        "forge-universal-lid-16",
+        "forge-universal-lid-32",
+        "forge-stainless-steel-maintenance-kit"
+      ]
+    }
+  ],
   "pieces": [
     {
       "handle": "ardh-metal-lined-kulhad",
@@ -32,7 +86,11 @@
         "guaranteed dishwasher safe",
         "disposable earthenware"
       ],
-      "price_usd": 48,
+      "list_price_gbp": 48,
+      "dimensions": {
+        "capacity_ml": 140
+      },
+      "works_with_kansa": true,
       "materialCategory": "clay",
       "ritualTrack": "clay",
       "productUrl": "/products/ardh-metal-lined-kulhad"
@@ -67,7 +125,11 @@
         "monolithic cup",
         "disposable kulhad"
       ],
-      "price_usd": 58,
+      "list_price_gbp": 58,
+      "dimensions": {
+        "capacity_ml": 180
+      },
+      "works_with_kansa": true,
       "materialCategory": "clay",
       "ritualTrack": "clay",
       "productUrl": "/products/ardh-clay-lined-kulhad"
@@ -100,7 +162,11 @@
         "assumed dishwasher safe",
         "deep engraving on food surface"
       ],
-      "price_usd": 145,
+      "list_price_gbp": 145,
+      "dimensions": {
+        "diameter_cm": 34
+      },
+      "works_with_kansa": true,
       "materialCategory": "clay",
       "ritualTrack": "clay",
       "productUrl": "/products/rekha-laser-marked-serving-platter"
@@ -132,7 +198,11 @@
       "negative_constraints": [
         "microwave/dishwasher claims before testing"
       ],
-      "price_usd": 42,
+      "list_price_gbp": 42,
+      "dimensions": {
+        "capacity_ml": 220
+      },
+      "works_with_kansa": true,
       "materialCategory": "clay",
       "ritualTrack": "clay",
       "productUrl": "/products/rekha-laser-marked-chai-bowl"
@@ -170,7 +240,15 @@
         "remove ring hot",
         "nonstick coating"
       ],
-      "price_usd": 320,
+      "list_price_gbp": 175,
+      "dimensions": {
+        "diameter_cm": 26,
+        "induction_coil_zone_cm": 18
+      },
+      "quick_summary": "Signature modular dual-mass skillet — specialty above the standard fry ladder.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-C01",
+      "lid_compatibility": "Specialty Relay lid 26 (MT-FOR-LID-26) if held",
       "materialCategory": "metal",
       "ritualTrack": "metal",
       "productUrl": "/products/forge-relay-dual-mass-skillet"
@@ -207,7 +285,15 @@
         "dishwasher-safe assembly",
         "direct bronze food contact"
       ],
-      "price_usd": 480,
+      "list_price_gbp": 220,
+      "dimensions": {
+        "length_cm": 46,
+        "width_cm": 28
+      },
+      "quick_summary": "Split-field plancha specialty — outside the round diameter matrix.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-C01",
+      "lid_compatibility": "Not lid-ecosystem; open plancha",
       "materialCategory": "metal",
       "ritualTrack": "metal",
       "productUrl": "/products/forge-split-field-plancha"
@@ -244,7 +330,12 @@
         "monolithic cookware",
         "microwave use"
       ],
-      "price_usd": 390,
+      "list_price_gbp": 390,
+      "dimensions": {
+        "length_cm": 34,
+        "width_cm": 24
+      },
+      "works_with_kansa": true,
       "materialCategory": "metal",
       "ritualTrack": "metal",
       "productUrl": "/products/forge-terre-nested-roaster"
@@ -279,7 +370,11 @@
         "frozen food",
         "dishwasher before validation"
       ],
-      "price_usd": 260,
+      "list_price_gbp": 260,
+      "dimensions": {
+        "length_cm": 20
+      },
+      "works_with_kansa": true,
       "materialCategory": "blade",
       "ritualTrack": "metal",
       "productUrl": "/products/kuro-strip-200-chefs-knife"
@@ -315,7 +410,11 @@
         "heavy rocking",
         "universal never-sharpen claim"
       ],
-      "price_usd": 230,
+      "list_price_gbp": 230,
+      "dimensions": {
+        "length_cm": 18
+      },
+      "works_with_kansa": true,
       "materialCategory": "blade",
       "ritualTrack": "metal",
       "productUrl": "/products/kuro-trace-180-hybrid-edge-knife"
@@ -351,7 +450,11 @@
         "hard squash",
         "plain-edge chopping"
       ],
-      "price_usd": 175,
+      "list_price_gbp": 175,
+      "dimensions": {
+        "length_cm": 15
+      },
+      "works_with_kansa": true,
       "materialCategory": "blade",
       "ritualTrack": "metal",
       "productUrl": "/products/kuro-trace-150-micro-scalloped-utility-knife"
@@ -385,7 +488,11 @@
         "heavy lifting",
         "dishwasher claim"
       ],
-      "price_usd": 78,
+      "list_price_gbp": 78,
+      "dimensions": {
+        "length_cm": 24
+      },
+      "works_with_kansa": true,
       "materialCategory": "accessory",
       "ritualTrack": "metal",
       "productUrl": "/products/forge-terre-service-tongs"
@@ -424,7 +531,11 @@
         "ceramic cone directly on hob",
         "guaranteed dishwasher-safe cone"
       ],
-      "price_usd": 340,
+      "list_price_gbp": 340,
+      "dimensions": {
+        "diameter_cm": 28
+      },
+      "works_with_kansa": true,
       "materialCategory": "metal",
       "ritualTrack": "metal",
       "productUrl": "/products/forge-terre-tagine-28"
@@ -463,167 +574,162 @@
         "ceramic cone directly on hob",
         "dishwasher-safe cone before testing"
       ],
-      "price_usd": 395,
+      "list_price_gbp": 395,
+      "dimensions": {
+        "diameter_cm": 32
+      },
+      "works_with_kansa": true,
       "materialCategory": "metal",
       "ritualTrack": "metal",
       "productUrl": "/products/forge-terre-tagine-32"
     },
     {
-      "handle": "forge-relay-tava-26",
-      "title": "Forge Relay Compact Tava",
+      "handle": "forge-tawa",
+      "title": "Forge Tawa",
       "lineup": "Forge Hybrid",
-      "product_type": "Tava",
+      "product_type": "Tawa",
       "sku": "MT-FOR-TAV-26",
       "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Nitrided carbon steel with bronze-isolated handle",
-      "lining_material": "Unlined seasoned carbon steel",
-      "material_architecture": "Nitrided carbon-steel cooking plate + bronze-isolated stainless handle.",
-      "heat_sources": [
-        "induction",
-        "gas"
-      ],
-      "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
-      "induction_compatible": true,
-      "care_hypothesis": "Hand wash warm without soaking; dry over low heat and wipe with seasoning oil.",
-      "care_instructions": "[CONCEPT_SPEC] Hand wash warm without soaking; dry over low heat and wipe with seasoning oil.",
-      "dishwasher_suitability": "hand_wash_only",
-      "microwave_suitability": "not_microwave_safe",
-      "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze bridge stays external to the cooking face.",
-      "concept_thesis": "Gives cooks fast, seasoning-capable carbon-steel heat response with a thermally isolated bronze handle bridge designed to stay manageable during rapid roti turnarounds.",
-      "agent_intents": [
-        "tava",
-        "roti griddle",
-        "flatbread pan",
-        "induction griddle",
-        "high-heat searing"
-      ],
-      "negative_constraints": [
-        "dishwasher safe",
-        "synthetic nonstick coating",
-        "prolonged acidic soaking"
-      ],
-      "price_usd": 190,
-      "materialCategory": "metal",
-      "ritualTrack": "metal",
-      "productUrl": "/products/forge-relay-tava-26"
-    },
-    {
-      "handle": "forge-relay-tava-30",
-      "title": "Forge Relay Wide Tava",
-      "lineup": "Forge Hybrid",
-      "product_type": "Tava",
-      "sku": "MT-FOR-TAV-30",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Heavy-gauge nitrided carbon steel with bronze-isolated handle",
-      "lining_material": "Unlined seasoned carbon steel",
-      "material_architecture": "Heavy-gauge nitrided carbon-steel plate + bronze-isolated handle + helper tab.",
-      "heat_sources": [
-        "induction",
-        "gas"
-      ],
-      "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
-      "induction_compatible": true,
-      "care_hypothesis": "Hand wash warm; dry immediately on heat and condition lightly with seasoning oil.",
-      "care_instructions": "[CONCEPT_SPEC] Hand wash warm; dry immediately on heat and condition lightly with seasoning oil.",
-      "dishwasher_suitability": "hand_wash_only",
-      "microwave_suitability": "not_microwave_safe",
-      "food_contact_suitability": "[CONCEPT_SPEC] Seasoned nitrided carbon steel contacts food; bronze collar remains non-food-contact.",
-      "concept_thesis": "Extends the Relay griddle geometry for wider batter spreads while preserving flat hob contact and an isolated handle junction.",
-      "agent_intents": [
-        "wide tava",
-        "dosa pan",
-        "roti griddle",
-        "smash searing",
-        "carbon steel griddle"
-      ],
-      "negative_constraints": [
-        "dishwasher safe",
-        "synthetic nonstick coating",
-        "cold-water quench while hot"
-      ],
-      "price_usd": 225,
-      "materialCategory": "metal",
-      "ritualTrack": "metal",
-      "productUrl": "/products/forge-relay-tava-30"
-    },
-    {
-      "handle": "forge-relay-kadai-24",
-      "title": "Forge Relay Kadai",
-      "lineup": "Forge Hybrid",
-      "product_type": "Kadai",
-      "sku": "MT-FOR-KAD-24",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Spun nitrided carbon steel with bronze-isolated loop handles",
-      "lining_material": "Unlined seasoned carbon steel",
-      "material_architecture": "Spun nitrided carbon-steel vessel + twin bronze-isolated stainless loop handles.",
-      "heat_sources": [
-        "induction",
-        "gas"
-      ],
-      "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
-      "induction_compatible": true,
-      "care_hypothesis": "Hand wash; dry thoroughly over heat and oil lightly; avoid long acidic simmers before patina matures.",
-      "care_instructions": "[CONCEPT_SPEC] Hand wash; dry thoroughly over heat and oil lightly; avoid long acidic simmers before patina matures.",
-      "dishwasher_suitability": "hand_wash_only",
-      "microwave_suitability": "not_microwave_safe",
-      "food_contact_suitability": "[CONCEPT_SPEC] Nitrided carbon steel forms the entire interior cooking surface; external bronze collars do not contact food.",
-      "concept_thesis": "Bridges traditional curved kadai tossing geometry with a calibrated flat induction foot and twin loop handles for balanced oven-to-table movement.",
-      "agent_intents": [
-        "kadai",
-        "curry vessel",
-        "tadka pan",
-        "deep frying",
-        "induction wok"
-      ],
-      "negative_constraints": [
-        "dishwasher safe",
-        "unattended deep frying",
-        "long acidic storage"
-      ],
-      "price_usd": 275,
-      "materialCategory": "metal",
-      "ritualTrack": "metal",
-      "productUrl": "/products/forge-relay-kadai-24"
-    },
-    {
-      "handle": "forge-relay-saucepot-20",
-      "title": "Forge Relay Saucepot",
-      "lineup": "Forge Hybrid",
-      "product_type": "Saucepot",
-      "sku": "MT-FOR-SAU-20",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Fully-clad 18/10 stainless steel with removable bronze collar",
-      "lining_material": "Non-reactive 18/10 stainless steel interior",
-      "material_architecture": "Fully-clad 18/10 stainless vessel + removable external cast-bronze thermal collar.",
+      "primary_material": "Stainless steel (design brief)",
+      "lining_material": "Stainless steel cooking surface, grade pending",
+      "material_architecture": "Stainless steel body. Layer count, gauge and base construction await supplier specification.",
       "heat_sources": [
         "induction",
         "gas",
-        "electric",
-        "oven"
+        "electric"
       ],
-      "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric, oven (induction target yes; requires prototype thermal validation).",
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric (induction target yes; requires prototype thermal validation).",
       "induction_compatible": true,
-      "care_hypothesis": "Remove bronze collar before washing; stainless pot targets dishwasher validation; hand wipe collar.",
-      "care_instructions": "[CONCEPT_SPEC] Remove bronze collar before washing; stainless pot targets dishwasher validation; hand wipe collar.",
-      "dishwasher_suitability": "insert_only_pending_validation",
+      "care_hypothesis": "Allow to cool, hand wash with a soft brush and dry.",
+      "care_instructions": "[CONCEPT_SPEC] Allow to cool, hand wash with a soft brush and dry.",
+      "dishwasher_suitability": "pending_validation",
       "microwave_suitability": "not_microwave_safe",
-      "food_contact_suitability": "[CONCEPT_SPEC] Non-reactive 18/10 stainless steel contacts all liquids and acidic ingredients; bronze collar stays external.",
-      "concept_thesis": "Acidic dals and tomato reductions punish bare carbon steel; switching the wet-cooking vessel to non-reactive stainless while keeping a removable bronze heat collar preserves the Relay system logic.",
+      "food_contact_suitability": "[CONCEPT_SPEC] Stainless steel interior pending material and migration verification.",
+      "concept_thesis": "A low rim leaves the surface open for spreading batter and sliding a turner under flatbreads.",
       "agent_intents": [
-        "saucepot",
-        "dal pot",
-        "acidic sauce pan",
-        "grain pot",
-        "induction saucepan"
+        "tava",
+        "flat griddle",
+        "dosa",
+        "roti",
+        "crêpe"
       ],
       "negative_constraints": [
-        "washing with collar attached",
-        "removing collar while hot"
+        "Verified induction performance",
+        "Oven temperature rating"
       ],
-      "price_usd": 285,
+      "list_price_gbp": 130,
+      "size_family": "tawa",
+      "size_options": [
+        "26 cm",
+        "30 cm"
+      ],
+      "quick_summary": "26 cm stainless steel tawa for crêpe.",
+      "lineup_copy": "A low rim leaves the surface open for spreading batter and sliding a turner under flatbreads.",
+      "suggested_use_case": "Spread dosa batter in a thin spiral and lift the edges as they crisp.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "No matching universal lid specified",
       "materialCategory": "metal",
       "ritualTrack": "metal",
-      "productUrl": "/products/forge-relay-saucepot-20"
+      "productUrl": "/products/forge-tawa"
+    },
+    {
+      "handle": "forge-kadhai",
+      "title": "Forge Kadhai",
+      "lineup": "Forge Hybrid",
+      "product_type": "Kadhai",
+      "sku": "MT-FOR-KAD-24",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Stainless steel (design brief)",
+      "lining_material": "Stainless steel cooking surface, grade pending",
+      "material_architecture": "Stainless steel body. Layer count, gauge and base construction await supplier specification.",
+      "heat_sources": [
+        "induction",
+        "gas",
+        "electric"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Allow to cool, hand wash with a soft brush and dry.",
+      "care_instructions": "[CONCEPT_SPEC] Allow to cool, hand wash with a soft brush and dry.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Stainless steel interior pending material and migration verification.",
+      "concept_thesis": "A flat foot supports the curved bowl, which gathers spices in the centre and gives vegetables room to turn.",
+      "agent_intents": [
+        "kadai",
+        "flat-base wok",
+        "stir-fry",
+        "tadka"
+      ],
+      "negative_constraints": [
+        "Verified induction performance",
+        "Oven temperature rating"
+      ],
+      "list_price_gbp": 145,
+      "size_family": "kadhai",
+      "size_options": [
+        "24 cm",
+        "28 cm",
+        "32 cm"
+      ],
+      "quick_summary": "24 cm stainless steel kadhai for tadka.",
+      "lineup_copy": "A flat foot supports the curved bowl, which gathers spices in the centre and gives vegetables room to turn.",
+      "suggested_use_case": "Bloom cumin in oil, then toss peppers and paneer through the spiced oil.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "Target fit MT-FOR-LID-24, pending rim gauge test",
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-kadhai"
+    },
+    {
+      "handle": "forge-saucepan",
+      "title": "Forge Saucepan",
+      "lineup": "Forge Hybrid",
+      "product_type": "Saucepan",
+      "sku": "MT-FOR-SAU-20",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Stainless steel (design brief)",
+      "lining_material": "Stainless steel cooking surface, grade pending",
+      "material_architecture": "Stainless steel body. Layer count, gauge and base construction await supplier specification.",
+      "heat_sources": [
+        "induction",
+        "gas",
+        "electric"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Allow to cool, hand wash with a soft brush and dry.",
+      "care_instructions": "[CONCEPT_SPEC] Allow to cool, hand wash with a soft brush and dry.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Stainless steel interior pending material and migration verification.",
+      "concept_thesis": "The compact footprint leaves space on the hob while grains simmer or milk warms.",
+      "agent_intents": [
+        "milk pan",
+        "grains",
+        "chai"
+      ],
+      "negative_constraints": [
+        "Verified induction performance",
+        "Oven temperature rating"
+      ],
+      "list_price_gbp": 145,
+      "size_family": "saucepan",
+      "size_options": [
+        "16 cm",
+        "20 cm"
+      ],
+      "quick_summary": "20 cm stainless steel saucepan for chai.",
+      "lineup_copy": "The compact footprint leaves space on the hob while grains simmer or milk warms.",
+      "suggested_use_case": "Simmer ginger and cardamom for chai, add milk and strain to serve.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "Target fit MT-FOR-LID-20, pending rim gauge test",
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-saucepan"
     },
     {
       "handle": "rekha-dinner-plate-28",
@@ -654,7 +760,11 @@
         "oven broiler use",
         "deep laser ablation on central knife-contact zone"
       ],
-      "price_usd": 68,
+      "list_price_gbp": 68,
+      "dimensions": {
+        "diameter_cm": 28
+      },
+      "works_with_kansa": true,
       "materialCategory": "clay",
       "ritualTrack": "clay",
       "productUrl": "/products/rekha-dinner-plate-28"
@@ -689,7 +799,11 @@
         "direct flame",
         "commercial dishwasher claim before validation"
       ],
-      "price_usd": 92,
+      "list_price_gbp": 92,
+      "dimensions": {
+        "capacity_ml": 90
+      },
+      "works_with_kansa": true,
       "materialCategory": "clay",
       "ritualTrack": "clay",
       "productUrl": "/products/rekha-condiment-bowl-set"
@@ -723,7 +837,11 @@
         "stovetop or open-flame heating",
         "unverified dishwasher guarantee"
       ],
-      "price_usd": 125,
+      "list_price_gbp": 125,
+      "dimensions": {
+        "diameter_cm": 26
+      },
+      "works_with_kansa": true,
       "materialCategory": "clay",
       "ritualTrack": "clay",
       "productUrl": "/products/rekha-serving-bowl-26"
@@ -758,7 +876,11 @@
         "unverified smoke-point numbers",
         "aerosol propellant"
       ],
-      "price_usd": 28,
+      "list_price_gbp": 28,
+      "dimensions": {
+        "capacity_ml": 250
+      },
+      "works_with_kansa": true,
       "materialCategory": "accessory",
       "ritualTrack": "metal",
       "productUrl": "/products/forge-seasoning-oil"
@@ -792,7 +914,9 @@
         "tumble-drying oil-soaked cloths",
         "use on delicate mirror-polished silver or unsealed clay"
       ],
-      "price_usd": 72,
+      "list_price_gbp": 72,
+      "dimensions": {},
+      "works_with_kansa": true,
       "materialCategory": "accessory",
       "ritualTrack": "metal",
       "productUrl": "/products/forge-care-ritual-kit"
@@ -826,7 +950,14 @@
         "universal fit across non-Maison Tavo pans",
         "broiler use before glass rating verification"
       ],
-      "price_usd": 64,
+      "list_price_gbp": 35,
+      "dimensions": {
+        "diameter_cm": 26
+      },
+      "quick_summary": "Specialty Relay 26 cm lid retained for Dual-Mass Skillet / Compact Tawa era fit.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-C01",
+      "lid_compatibility": "26 cm Relay specialty vessels",
       "materialCategory": "accessory",
       "ritualTrack": "metal",
       "productUrl": "/products/forge-relay-lid-26"
@@ -860,7 +991,14 @@
         "universal pan compatibility",
         "high-heat broiler exposure"
       ],
-      "price_usd": 72,
+      "list_price_gbp": 40,
+      "dimensions": {
+        "diameter_cm": 30
+      },
+      "quick_summary": "Specialty Relay 30 cm wide lid retained for Wide Tawa era fit.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-C01",
+      "lid_compatibility": "30 cm Relay specialty vessels",
       "materialCategory": "accessory",
       "ritualTrack": "metal",
       "productUrl": "/products/forge-relay-lid-30"
@@ -895,10 +1033,1006 @@
         "soaking in water",
         "direct burner contact without water vessel"
       ],
-      "price_usd": 88,
+      "list_price_gbp": 88,
+      "dimensions": {
+        "diameter_cm": 24
+      },
+      "quick_summary": "A 24 cm woven bamboo steamer with a ceramic docking ring.",
+      "lineup_copy": "Stack the baskets over a compatible pot to cook dumplings and greens in rising steam. The docking ring supports the lower basket.",
+      "suggested_use_case": "Line the basket, space dumplings apart and steam over gently simmering water.",
+      "works_with_kansa": true,
+      "lid_compatibility": "Uses its bamboo basket cover. Forge pot pairings await seating and steam-clearance checks.",
       "materialCategory": "accessory",
       "ritualTrack": "metal",
       "productUrl": "/products/terre-bamboo-steamer-24"
+    },
+    {
+      "handle": "forge-frying-pan",
+      "title": "Forge Frying Pan",
+      "lineup": "Forge Hybrid",
+      "product_type": "Frying Pan",
+      "sku": "MT-FOR-FRY-20",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Stainless steel (design brief)",
+      "lining_material": "Stainless steel cooking surface, grade pending",
+      "material_architecture": "Stainless steel body. Layer count, gauge and base construction await supplier specification.",
+      "heat_sources": [
+        "induction",
+        "gas",
+        "electric"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Allow to cool, hand wash with a soft brush and dry.",
+      "care_instructions": "[CONCEPT_SPEC] Allow to cool, hand wash with a soft brush and dry.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Stainless steel interior pending material and migration verification.",
+      "concept_thesis": "Sloping sides give a spatula room to reach beneath an egg or a crisp fish fillet.",
+      "agent_intents": [
+        "skillet",
+        "searing",
+        "eggs"
+      ],
+      "negative_constraints": [
+        "Verified induction performance",
+        "Oven temperature rating"
+      ],
+      "list_price_gbp": 130,
+      "size_family": "frying_pan",
+      "size_options": [
+        "20 cm",
+        "24 cm",
+        "28 cm"
+      ],
+      "quick_summary": "20 cm stainless steel frying pan for eggs.",
+      "lineup_copy": "Sloping sides give a spatula room to reach beneath an egg or a crisp fish fillet.",
+      "suggested_use_case": "Sear a skin-on fillet, then loosen the browned juices with lemon.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "Target fit MT-FOR-LID-20, pending rim gauge test",
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-frying-pan"
+    },
+    {
+      "handle": "forge-saucier",
+      "title": "Forge High-Wall Saucier",
+      "lineup": "Forge Hybrid",
+      "product_type": "High-Wall Saucier",
+      "sku": "MT-FOR-SCR-20",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Stainless steel (design brief)",
+      "lining_material": "Stainless steel cooking surface, grade pending",
+      "material_architecture": "Stainless steel body. Layer count, gauge and base construction await supplier specification.",
+      "heat_sources": [
+        "induction",
+        "gas",
+        "electric"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Allow to cool, hand wash with a soft brush and dry.",
+      "care_instructions": "[CONCEPT_SPEC] Allow to cool, hand wash with a soft brush and dry.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Stainless steel interior pending material and migration verification.",
+      "concept_thesis": "A curved transition from base to wall lets a whisk follow the whole pan as a sauce thickens.",
+      "agent_intents": [
+        "high-wall skillet",
+        "risotto",
+        "reduction"
+      ],
+      "negative_constraints": [
+        "Verified induction performance",
+        "Oven temperature rating"
+      ],
+      "list_price_gbp": 140,
+      "size_family": "saucier",
+      "size_options": [
+        "20 cm",
+        "22 cm",
+        "24 cm",
+        "26 cm"
+      ],
+      "quick_summary": "20 cm stainless steel high-wall saucier for reduction.",
+      "lineup_copy": "A curved transition from base to wall lets a whisk follow the whole pan as a sauce thickens.",
+      "suggested_use_case": "Stir mushroom risotto, folding in the last ladle of stock just before serving.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "Target fit MT-FOR-LID-20, pending rim gauge test",
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-saucier"
+    },
+    {
+      "handle": "forge-saute",
+      "title": "Forge Sauté Pan",
+      "lineup": "Forge Hybrid",
+      "product_type": "Sauté Pan",
+      "sku": "MT-FOR-STE-24",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Stainless steel (design brief)",
+      "lining_material": "Stainless steel cooking surface, grade pending",
+      "material_architecture": "Stainless steel body. Layer count, gauge and base construction await supplier specification.",
+      "heat_sources": [
+        "induction",
+        "gas",
+        "electric"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Allow to cool, hand wash with a soft brush and dry.",
+      "care_instructions": "[CONCEPT_SPEC] Allow to cool, hand wash with a soft brush and dry.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Stainless steel interior pending material and migration verification.",
+      "concept_thesis": "Straight sides contain cooking liquid while the wide floor leaves space to brown ingredients in one layer.",
+      "agent_intents": [
+        "saute pan",
+        "braising",
+        "shallow frying"
+      ],
+      "negative_constraints": [
+        "Verified induction performance",
+        "Oven temperature rating"
+      ],
+      "list_price_gbp": 155,
+      "size_family": "saute",
+      "size_options": [
+        "24 cm",
+        "28 cm"
+      ],
+      "quick_summary": "24 cm stainless steel sauté pan for shallow frying.",
+      "lineup_copy": "Straight sides contain cooking liquid while the wide floor leaves space to brown ingredients in one layer.",
+      "suggested_use_case": "Brown chicken thighs, add stock and finish with a covered braise.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "Target fit MT-FOR-LID-24, pending rim gauge test",
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-saute"
+    },
+    {
+      "handle": "forge-stockpot",
+      "title": "Forge Deep Stockpot",
+      "lineup": "Forge Hybrid",
+      "product_type": "Deep Stockpot",
+      "sku": "MT-FOR-STK-24",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Stainless steel (design brief)",
+      "lining_material": "Stainless steel cooking surface, grade pending",
+      "material_architecture": "Stainless steel body. Layer count, gauge and base construction await supplier specification.",
+      "heat_sources": [
+        "induction",
+        "gas",
+        "electric"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Allow to cool, hand wash with a soft brush and dry.",
+      "care_instructions": "[CONCEPT_SPEC] Allow to cool, hand wash with a soft brush and dry.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Stainless steel interior pending material and migration verification.",
+      "concept_thesis": "Tall walls leave headroom for broth and pasta. Two side grips balance the pot when carrying it.",
+      "agent_intents": [
+        "deep saucepan",
+        "broth",
+        "pasta pot"
+      ],
+      "negative_constraints": [
+        "Verified induction performance",
+        "Oven temperature rating"
+      ],
+      "list_price_gbp": 160,
+      "size_family": "stockpot",
+      "size_options": [
+        "20 cm",
+        "24 cm",
+        "28 cm"
+      ],
+      "quick_summary": "24 cm stainless steel deep stockpot for pasta pot.",
+      "lineup_copy": "Tall walls leave headroom for broth and pasta. Two side grips balance the pot when carrying it.",
+      "suggested_use_case": "Simmer roasted vegetables with aromatics, then strain for stock.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "Target fit MT-FOR-LID-24, pending rim gauge test",
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-stockpot"
+    },
+    {
+      "handle": "forge-universal-lid-20",
+      "title": "Forge Universal Lid · 20 cm",
+      "lineup": "Forge Hybrid",
+      "product_type": "Replacement lid",
+      "sku": "MT-FOR-LID-20",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Glass and stainless steel (design target)",
+      "lining_material": "Glass underside",
+      "material_architecture": "Glass cover with stainless rim and bridge handle.",
+      "heat_sources": [],
+      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+      "induction_compatible": false,
+      "care_hypothesis": "Allow to cool, hand wash with a soft brush and dry.",
+      "care_instructions": "[CONCEPT_SPEC] Allow to cool, hand wash with a soft brush and dry.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_applicable",
+      "food_contact_suitability": "[CONCEPT_SPEC] Verify steam-contact materials.",
+      "concept_thesis": "Shared cover for matching 20 cm Forge vessel rims. Fit remains a design target.",
+      "agent_intents": [
+        "pan lid",
+        "shared lid",
+        "20 cm cover"
+      ],
+      "negative_constraints": [
+        "Verified induction performance",
+        "Oven temperature rating"
+      ],
+      "list_price_gbp": 30,
+      "size_family": "lid",
+      "dimensions": {
+        "diameter_cm": 20
+      },
+      "quick_summary": "Shared cover for matching 20 cm Forge vessel rims. Fit remains a design target.",
+      "lineup_copy": "Shared cover for matching 20 cm Forge vessel rims. Fit remains a design target.",
+      "suggested_use_case": "Cover the matching vessel for a gentle simmer.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "Shared cover for matching 20 cm Forge vessel rims. Fit remains a design target.",
+      "materialCategory": "accessory",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-universal-lid-20"
+    },
+    {
+      "handle": "forge-universal-lid-24",
+      "title": "Forge Universal Lid · 24 cm",
+      "lineup": "Forge Hybrid",
+      "product_type": "Replacement lid",
+      "sku": "MT-FOR-LID-24",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Glass and stainless steel (design target)",
+      "lining_material": "Glass underside",
+      "material_architecture": "Glass cover with stainless rim and bridge handle.",
+      "heat_sources": [],
+      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+      "induction_compatible": false,
+      "care_hypothesis": "Allow to cool, hand wash with a soft brush and dry.",
+      "care_instructions": "[CONCEPT_SPEC] Allow to cool, hand wash with a soft brush and dry.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_applicable",
+      "food_contact_suitability": "[CONCEPT_SPEC] Verify steam-contact materials.",
+      "concept_thesis": "Shared cover for matching 24 cm Forge vessel rims. Fit remains a design target.",
+      "agent_intents": [
+        "pan lid",
+        "shared lid",
+        "24 cm cover"
+      ],
+      "negative_constraints": [
+        "Verified induction performance",
+        "Oven temperature rating"
+      ],
+      "list_price_gbp": 35,
+      "size_family": "lid",
+      "dimensions": {
+        "diameter_cm": 24
+      },
+      "quick_summary": "Shared cover for matching 24 cm Forge vessel rims. Fit remains a design target.",
+      "lineup_copy": "Shared cover for matching 24 cm Forge vessel rims. Fit remains a design target.",
+      "suggested_use_case": "Cover the matching vessel for a gentle simmer.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "Shared cover for matching 24 cm Forge vessel rims. Fit remains a design target.",
+      "materialCategory": "accessory",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-universal-lid-24"
+    },
+    {
+      "handle": "forge-universal-lid-28",
+      "title": "Forge Universal Lid · 28 cm",
+      "lineup": "Forge Hybrid",
+      "product_type": "Replacement lid",
+      "sku": "MT-FOR-LID-28",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Glass and stainless steel (design target)",
+      "lining_material": "Glass underside",
+      "material_architecture": "Glass cover with stainless rim and bridge handle.",
+      "heat_sources": [],
+      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+      "induction_compatible": false,
+      "care_hypothesis": "Allow to cool, hand wash with a soft brush and dry.",
+      "care_instructions": "[CONCEPT_SPEC] Allow to cool, hand wash with a soft brush and dry.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_applicable",
+      "food_contact_suitability": "[CONCEPT_SPEC] Verify steam-contact materials.",
+      "concept_thesis": "Shared cover for matching 28 cm Forge vessel rims. Fit remains a design target.",
+      "agent_intents": [
+        "pan lid",
+        "shared lid",
+        "28 cm cover"
+      ],
+      "negative_constraints": [
+        "Verified induction performance",
+        "Oven temperature rating"
+      ],
+      "list_price_gbp": 40,
+      "size_family": "lid",
+      "dimensions": {
+        "diameter_cm": 28
+      },
+      "quick_summary": "Shared cover for matching 28 cm Forge vessel rims. Fit remains a design target.",
+      "lineup_copy": "Shared cover for matching 28 cm Forge vessel rims. Fit remains a design target.",
+      "suggested_use_case": "Cover the matching vessel for a gentle simmer.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "Shared cover for matching 28 cm Forge vessel rims. Fit remains a design target.",
+      "materialCategory": "accessory",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-universal-lid-28"
+    },
+    {
+      "handle": "forge-set-solo-couple-grouped-preview",
+      "title": "Forge Set — Solo / Couple",
+      "lineup": "Forge Hybrid",
+      "product_type": "Cookware set",
+      "sku": "MT-FOR-SET-SOLO",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Forge stainless steel vessels and shared lids",
+      "lining_material": "See component SKUs",
+      "material_architecture": "Set composition (SKU): MT-FOR-FRY-20, MT-FOR-SPN-16, MT-FOR-SCR-22, MT-FOR-LID-20. Lids included free: MT-FOR-LID-20.",
+      "heat_sources": [
+        "induction",
+        "gas"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+      "concept_thesis": "Compact starter: 20 fry, 16 sauce, 22 saucier and a 20 cm lid for the fry pan.",
+      "agent_intents": [
+        "starter set",
+        "solo cookware",
+        "couple set",
+        "forge bundle"
+      ],
+      "negative_constraints": [
+        "invented component performance",
+        "guaranteed inventory of every component",
+        "compare-at strikethrough without verified reference"
+      ],
+      "list_price_gbp": 408,
+      "dimensions": {},
+      "quick_summary": "Compact starter: 20 fry, 16 sauce, 22 saucier and a 20 cm lid for the fry pan.",
+      "lineup_copy": "Size-based Solo/Couple kit covering sear, wet cook and sauce work with one shared lid.",
+      "suggested_use_case": "Two-person weeknights: eggs, grains, small sauces.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "MT-FOR-LID-20",
+      "bundle_components": [
+        "MT-FOR-FRY-20",
+        "MT-FOR-SPN-16",
+        "MT-FOR-SCR-22",
+        "MT-FOR-LID-20"
+      ],
+      "included_lids": [
+        "MT-FOR-LID-20"
+      ],
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-set-solo-couple-grouped-preview"
+    },
+    {
+      "handle": "forge-set-family-standard-grouped-preview",
+      "title": "Forge Set — Family Standard",
+      "lineup": "Forge Hybrid",
+      "product_type": "Cookware set",
+      "sku": "MT-FOR-SET-FAM",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Forge stainless steel vessels and shared lids",
+      "lining_material": "See component SKUs",
+      "material_architecture": "Set composition (SKU): MT-FOR-FRY-24, MT-FOR-SAU-20, MT-FOR-STK-24, MT-FOR-KAD-24, MT-FOR-LID-20, MT-FOR-LID-24. Lids included free: MT-FOR-LID-20, MT-FOR-LID-24.",
+      "heat_sources": [
+        "induction",
+        "gas"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+      "concept_thesis": "Family kit: 24 fry, 20 sauce, 24 stock, 24 kadhai, lids 20+24.",
+      "agent_intents": [
+        "family set",
+        "forge bundle",
+        "24 cm set"
+      ],
+      "negative_constraints": [
+        "invented component performance",
+        "guaranteed inventory of every component",
+        "compare-at strikethrough without verified reference"
+      ],
+      "list_price_gbp": 595,
+      "dimensions": {},
+      "quick_summary": "Family kit: 24 fry, 20 sauce, 24 stock, 24 kadhai, lids 20+24.",
+      "lineup_copy": "Core family diameters spanning sear, wet cook, stock and tadka.",
+      "suggested_use_case": "Four-person household: weeknight sear through Sunday stock.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "MT-FOR-LID-20, MT-FOR-LID-24",
+      "bundle_components": [
+        "MT-FOR-FRY-24",
+        "MT-FOR-SAU-20",
+        "MT-FOR-STK-24",
+        "MT-FOR-KAD-24",
+        "MT-FOR-LID-20",
+        "MT-FOR-LID-24"
+      ],
+      "included_lids": [
+        "MT-FOR-LID-20",
+        "MT-FOR-LID-24"
+      ],
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-set-family-standard-grouped-preview"
+    },
+    {
+      "handle": "forge-set-entertainer-grouped-preview",
+      "title": "Forge Set — Entertainer",
+      "lineup": "Forge Hybrid",
+      "product_type": "Cookware set",
+      "sku": "MT-FOR-SET-ENT",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Forge stainless steel vessels and shared lids",
+      "lining_material": "See component SKUs",
+      "material_architecture": "Set composition (SKU): MT-FOR-FRY-28, MT-FOR-STE-28, MT-FOR-STK-28, MT-FOR-TAV-30, MT-FOR-LID-28. Lids included free: MT-FOR-LID-28.",
+      "heat_sources": [
+        "induction",
+        "gas"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+      "concept_thesis": "Guest kit: 28 fry, 28 sauté, 28 stock, 30 tawa, 28 lid.",
+      "agent_intents": [
+        "entertainer set",
+        "guest cookware",
+        "forge bundle"
+      ],
+      "negative_constraints": [
+        "invented component performance",
+        "guaranteed inventory of every component",
+        "compare-at strikethrough without verified reference"
+      ],
+      "list_price_gbp": 650,
+      "dimensions": {},
+      "quick_summary": "Guest kit: 28 fry, 28 sauté, 28 stock, 30 tawa, 28 lid.",
+      "lineup_copy": "Entertainer diameters for large sears, braises, stocks and wide flatbreads.",
+      "suggested_use_case": "Dinner parties and feast cooking.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "MT-FOR-LID-28",
+      "bundle_components": [
+        "MT-FOR-FRY-28",
+        "MT-FOR-STE-28",
+        "MT-FOR-STK-28",
+        "MT-FOR-TAV-30",
+        "MT-FOR-LID-28"
+      ],
+      "included_lids": [
+        "MT-FOR-LID-28"
+      ],
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-set-entertainer-grouped-preview"
+    },
+    {
+      "handle": "forge-set-european-grouped-preview",
+      "title": "Forge Cuisine Kit — European",
+      "lineup": "Forge Hybrid",
+      "product_type": "Cookware set",
+      "sku": "MT-FOR-SET-EUR",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Forge stainless steel vessels and shared lids",
+      "lining_material": "See component SKUs",
+      "material_architecture": "Set composition (SKU): MT-FOR-FRY-24, MT-FOR-SCR-26, MT-FOR-STE-28, MT-FOR-SAU-20, MT-FOR-LID-20, MT-FOR-LID-28. Lids included free: MT-FOR-LID-20, MT-FOR-LID-28.",
+      "heat_sources": [
+        "induction",
+        "gas"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+      "concept_thesis": "Four vessels for searing, reduction and braising, plus two lids.",
+      "agent_intents": [
+        "european cookware set",
+        "sauce kit",
+        "forge bundle"
+      ],
+      "negative_constraints": [
+        "invented component performance",
+        "guaranteed inventory of every component",
+        "compare-at strikethrough without verified reference"
+      ],
+      "list_price_gbp": 625,
+      "dimensions": {},
+      "quick_summary": "Four vessels for searing, reduction and braising, plus two lids.",
+      "lineup_copy": "Sauce-forward European weeknight kit emphasising sear, braise and emulsion.",
+      "suggested_use_case": "Risotto, pan sauces, braised chicken, sautéed vegetables.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "MT-FOR-LID-20, MT-FOR-LID-28",
+      "bundle_components": [
+        "MT-FOR-FRY-24",
+        "MT-FOR-SCR-26",
+        "MT-FOR-STE-28",
+        "MT-FOR-SAU-20",
+        "MT-FOR-LID-20",
+        "MT-FOR-LID-28"
+      ],
+      "included_lids": [
+        "MT-FOR-LID-20",
+        "MT-FOR-LID-28"
+      ],
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-set-european-grouped-preview"
+    },
+    {
+      "handle": "forge-set-asian-grouped-preview",
+      "title": "Forge Cuisine Kit — Asian",
+      "lineup": "Forge Hybrid",
+      "product_type": "Cookware set",
+      "sku": "MT-FOR-SET-ASN",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Forge stainless steel vessels and shared lids",
+      "lining_material": "See component SKUs",
+      "material_architecture": "Set composition (SKU): MT-FOR-KAD-28, MT-FOR-TAV-26, MT-FOR-SAU-20, MT-FOR-STK-24, MT-FOR-LID-28. Lids included free: MT-FOR-LID-28.",
+      "heat_sources": [
+        "induction",
+        "gas"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+      "concept_thesis": "A 28 cm kadhai with lid, 26 cm tawa, 20 cm saucepan and 24 cm stockpot.",
+      "agent_intents": [
+        "asian cookware set",
+        "tava kadai set",
+        "forge bundle"
+      ],
+      "negative_constraints": [
+        "invented component performance",
+        "guaranteed inventory of every component",
+        "compare-at strikethrough without verified reference"
+      ],
+      "list_price_gbp": 595,
+      "dimensions": {},
+      "quick_summary": "A 28 cm kadhai with lid, 26 cm tawa, 20 cm saucepan and 24 cm stockpot.",
+      "lineup_copy": "Flatbread, tadka and wet-cook set for South and East Asian home kitchens.",
+      "suggested_use_case": "Roti, dosa, tadka dal, stir-fry.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "MT-FOR-LID-28",
+      "bundle_components": [
+        "MT-FOR-KAD-28",
+        "MT-FOR-TAV-26",
+        "MT-FOR-SAU-20",
+        "MT-FOR-STK-24",
+        "MT-FOR-LID-28"
+      ],
+      "included_lids": [
+        "MT-FOR-LID-28"
+      ],
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-set-asian-grouped-preview"
+    },
+    {
+      "handle": "forge-set-everyday-grouped-preview",
+      "title": "Forge Cuisine Kit — All-in-One Everyday",
+      "lineup": "Forge Hybrid",
+      "product_type": "Cookware set",
+      "sku": "MT-FOR-SET-DAY",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Forge stainless steel vessels and shared lids",
+      "lining_material": "See component SKUs",
+      "material_architecture": "Set composition (SKU): MT-FOR-FRY-24, MT-FOR-STE-28, MT-FOR-SAU-20, MT-FOR-KAD-28, MT-FOR-LID-20, MT-FOR-LID-28. Lids included free: MT-FOR-LID-20, MT-FOR-LID-28.",
+      "heat_sources": [
+        "induction",
+        "gas"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+      "concept_thesis": "Four everyday vessels with 20 and 28 cm lids.",
+      "agent_intents": [
+        "everyday set",
+        "minimal cookware",
+        "forge bundle"
+      ],
+      "negative_constraints": [
+        "invented component performance",
+        "guaranteed inventory of every component",
+        "compare-at strikethrough without verified reference"
+      ],
+      "list_price_gbp": 620,
+      "dimensions": {},
+      "quick_summary": "Four everyday vessels with 20 and 28 cm lids.",
+      "lineup_copy": "Minimal daily rotation covering sear, wet cook and sauce without specialty shapes.",
+      "suggested_use_case": "Most weeknight meals with a saucepan and kadhai.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "MT-FOR-LID-20, MT-FOR-LID-28",
+      "bundle_components": [
+        "MT-FOR-FRY-24",
+        "MT-FOR-STE-28",
+        "MT-FOR-SAU-20",
+        "MT-FOR-KAD-28",
+        "MT-FOR-LID-20",
+        "MT-FOR-LID-28"
+      ],
+      "included_lids": [
+        "MT-FOR-LID-20",
+        "MT-FOR-LID-28"
+      ],
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-set-everyday-grouped-preview"
+    },
+    {
+      "handle": "forge-set-full-house-grouped-preview",
+      "title": "Forge Set — Full House Master Collection",
+      "lineup": "Forge Hybrid",
+      "product_type": "Cookware set",
+      "sku": "MT-FOR-SET-FUL",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Forge stainless steel vessels and shared lids",
+      "lining_material": "See component SKUs",
+      "material_architecture": "Set composition (SKU): MT-FOR-FRY-24, MT-FOR-FRY-28, MT-FOR-SCR-24, MT-FOR-SCR-26, MT-FOR-STE-24, MT-FOR-STE-28, MT-FOR-TAV-26, MT-FOR-TAV-30, MT-FOR-SAU-20, MT-FOR-STK-24, MT-FOR-STK-28, MT-FOR-KAD-28, MT-FOR-KAD-32, MT-FOR-LID-20, MT-FOR-LID-24, MT-FOR-LID-28. Lids included free: MT-FOR-LID-20, MT-FOR-LID-24, MT-FOR-LID-28.",
+      "heat_sources": [
+        "induction",
+        "gas"
+      ],
+      "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
+      "induction_compatible": true,
+      "care_hypothesis": "Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "care_instructions": "[CONCEPT_SPEC] Maintain each metal per Forge Care Ritual Kit; never dishwasher until validated.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_microwave_safe",
+      "food_contact_suitability": "[CONCEPT_SPEC] Follow each component vessel food-contact strategy.",
+      "concept_thesis": "Seven vessel shapes across medium and large sizes, with three shared lids.",
+      "agent_intents": [
+        "full set",
+        "master collection",
+        "forge bundle",
+        "complete cookware"
+      ],
+      "negative_constraints": [
+        "invented component performance",
+        "guaranteed inventory of every component",
+        "compare-at strikethrough without verified reference"
+      ],
+      "list_price_gbp": 2040,
+      "dimensions": {},
+      "quick_summary": "Seven vessel shapes across medium and large sizes, with three shared lids.",
+      "lineup_copy": "Master collection of the launch Forge diameter matrix — all core shapes and universal lids.",
+      "suggested_use_case": "Complete house cookware programme for exhibition and hospitality pilots.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "MT-FOR-LID-20, MT-FOR-LID-24, MT-FOR-LID-28",
+      "bundle_components": [
+        "MT-FOR-FRY-24",
+        "MT-FOR-FRY-28",
+        "MT-FOR-SCR-24",
+        "MT-FOR-SCR-26",
+        "MT-FOR-STE-24",
+        "MT-FOR-STE-28",
+        "MT-FOR-TAV-26",
+        "MT-FOR-TAV-30",
+        "MT-FOR-SAU-20",
+        "MT-FOR-STK-24",
+        "MT-FOR-STK-28",
+        "MT-FOR-KAD-28",
+        "MT-FOR-KAD-32",
+        "MT-FOR-LID-20",
+        "MT-FOR-LID-24",
+        "MT-FOR-LID-28"
+      ],
+      "included_lids": [
+        "MT-FOR-LID-20",
+        "MT-FOR-LID-24",
+        "MT-FOR-LID-28"
+      ],
+      "materialCategory": "metal",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-set-full-house-grouped-preview"
+    },
+    {
+      "handle": "forge-universal-lid-16",
+      "title": "Forge Universal Lid · 16 cm",
+      "lineup": "Forge Hybrid",
+      "product_type": "Replacement lid",
+      "sku": "MT-FOR-LID-16",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Glass and stainless steel (design target)",
+      "lining_material": "Glass underside",
+      "material_architecture": "Glass cover with stainless rim and bridge handle.",
+      "heat_sources": [],
+      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+      "induction_compatible": false,
+      "care_hypothesis": "Allow to cool, hand wash with a soft brush and dry.",
+      "care_instructions": "[CONCEPT_SPEC] Allow to cool, hand wash with a soft brush and dry.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_applicable",
+      "food_contact_suitability": "[CONCEPT_SPEC] Verify steam-contact materials.",
+      "concept_thesis": "Shared cover for matching 16 cm Forge vessel rims. Fit remains a design target.",
+      "agent_intents": [
+        "pan lid",
+        "shared lid",
+        "16 cm cover"
+      ],
+      "negative_constraints": [
+        "Verified induction performance",
+        "Oven temperature rating"
+      ],
+      "list_price_gbp": 30,
+      "size_family": "lid",
+      "dimensions": {
+        "diameter_cm": 16
+      },
+      "quick_summary": "Shared cover for matching 16 cm Forge vessel rims. Fit remains a design target.",
+      "lineup_copy": "Shared cover for matching 16 cm Forge vessel rims. Fit remains a design target.",
+      "suggested_use_case": "Cover the matching vessel for a gentle simmer.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "Shared cover for matching 16 cm Forge vessel rims. Fit remains a design target.",
+      "materialCategory": "accessory",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-universal-lid-16"
+    },
+    {
+      "handle": "forge-universal-lid-32",
+      "title": "Forge Universal Lid · 32 cm",
+      "lineup": "Forge Hybrid",
+      "product_type": "Replacement lid",
+      "sku": "MT-FOR-LID-32",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Glass and stainless steel (design target)",
+      "lining_material": "Glass underside",
+      "material_architecture": "Glass cover with stainless rim and bridge handle.",
+      "heat_sources": [],
+      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+      "induction_compatible": false,
+      "care_hypothesis": "Allow to cool, hand wash with a soft brush and dry.",
+      "care_instructions": "[CONCEPT_SPEC] Allow to cool, hand wash with a soft brush and dry.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_applicable",
+      "food_contact_suitability": "[CONCEPT_SPEC] Verify steam-contact materials.",
+      "concept_thesis": "Shared cover for matching 32 cm Forge vessel rims. Fit remains a design target.",
+      "agent_intents": [
+        "pan lid",
+        "shared lid",
+        "32 cm cover"
+      ],
+      "negative_constraints": [
+        "Verified induction performance",
+        "Oven temperature rating"
+      ],
+      "list_price_gbp": 40,
+      "size_family": "lid",
+      "dimensions": {
+        "diameter_cm": 32
+      },
+      "quick_summary": "Shared cover for matching 32 cm Forge vessel rims. Fit remains a design target.",
+      "lineup_copy": "Shared cover for matching 32 cm Forge vessel rims. Fit remains a design target.",
+      "suggested_use_case": "Cover the matching vessel for a gentle simmer.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "MT-FOR-KIT-SS1",
+      "lid_compatibility": "Shared cover for matching 32 cm Forge vessel rims. Fit remains a design target.",
+      "materialCategory": "accessory",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-universal-lid-32"
+    },
+    {
+      "handle": "forge-stainless-steel-maintenance-kit",
+      "title": "Forge Stainless Steel Maintenance Kit",
+      "lineup": "Forge Hybrid",
+      "product_type": "Cookware care kit",
+      "sku": "MT-FOR-KIT-SS1",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Soft brush and drying cloth (proposed)",
+      "lining_material": "Not applicable",
+      "material_architecture": "Brush and cloth for routine washing and drying.",
+      "heat_sources": [],
+      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
+      "induction_compatible": false,
+      "care_hypothesis": "Rinse brush and air dry after use.",
+      "care_instructions": "[CONCEPT_SPEC] Rinse brush and air dry after use.",
+      "dishwasher_suitability": "pending_validation",
+      "microwave_suitability": "not_applicable",
+      "food_contact_suitability": "[CONCEPT_SPEC] Verify brush and cloth suitability for cookware care.",
+      "concept_thesis": "Everyday care for stainless steel cookware.",
+      "agent_intents": [
+        "clean stainless steel",
+        "care kit",
+        "maintenance"
+      ],
+      "negative_constraints": [
+        "Restores damaged finishes"
+      ],
+      "list_price_gbp": 35,
+      "dimensions": {},
+      "quick_summary": "A soft brush and drying cloth for the stainless Forge range.",
+      "lineup_copy": "Use the brush to loosen residue after soaking a cooled pan. Dry the rim and handle joints with the cloth.",
+      "suggested_use_case": "After a pan sauce, soak the cooled saucier, brush the curved wall and towel dry.",
+      "works_with_kansa": true,
+      "pairs_with_care_kit": "",
+      "lid_compatibility": "Not applicable",
+      "materialCategory": "accessory",
+      "ritualTrack": "metal",
+      "productUrl": "/products/forge-stainless-steel-maintenance-kit"
+    },
+    {
+      "handle": "chulha-tawa",
+      "title": "Chulha Tawa",
+      "lineup": "Chulha",
+      "product_type": "Griddles & Grill Pans",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Unglazed terracotta vessel body (design target)",
+      "heat_sources": [],
+      "induction_compatible": false,
+      "concept_thesis": "Shallow-lipped flatbread plate with a raised centre",
+      "suggested_use_case": "Parathas and crêpes",
+      "list_price_gbp": 140,
+      "size_options": [
+        "26 cm",
+        "30 cm"
+      ],
+      "materialCategory": "clay",
+      "ritualTrack": "clay",
+      "productUrl": "/products/chulha-tawa"
+    },
+    {
+      "handle": "chulha-artisanal-matka",
+      "title": "Artisanal Matka",
+      "lineup": "Chulha",
+      "product_type": "Tagines & Clay Cooking Pots",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Unglazed terracotta vessel body (design target)",
+      "heat_sources": [],
+      "induction_compatible": false,
+      "concept_thesis": "Round-bellied pot with a narrow neck",
+      "suggested_use_case": "Slow-cooked dal",
+      "list_price_gbp": 155,
+      "size_options": [
+        "2.5 L",
+        "4 L"
+      ],
+      "materialCategory": "clay",
+      "ritualTrack": "clay",
+      "productUrl": "/products/chulha-artisanal-matka"
+    },
+    {
+      "handle": "chulha-pressure-cooker",
+      "title": "Chulha Pressure Cooker",
+      "lineup": "Chulha",
+      "product_type": "Pressure Cookers & Canners",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Unglazed terracotta vessel body (design target)",
+      "heat_sources": [],
+      "induction_compatible": false,
+      "concept_thesis": "Pressure-vessel research concept pending independent engineering and conformity assessment",
+      "list_price_gbp": 175,
+      "size_options": [
+        "3 L",
+        "5 L"
+      ],
+      "materialCategory": "clay",
+      "ritualTrack": "clay",
+      "productUrl": "/products/chulha-pressure-cooker"
+    },
+    {
+      "handle": "chulha-heavy-kadhai",
+      "title": "Heavy Kadhai",
+      "lineup": "Chulha",
+      "product_type": "Woks",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Unglazed terracotta vessel body (design target)",
+      "heat_sources": [],
+      "induction_compatible": false,
+      "concept_thesis": "Deep curved bowl with twin handles",
+      "suggested_use_case": "Vegetables with toasted spices",
+      "list_price_gbp": 155,
+      "size_options": [
+        "24 cm",
+        "28 cm",
+        "32 cm"
+      ],
+      "materialCategory": "clay",
+      "ritualTrack": "clay",
+      "productUrl": "/products/chulha-heavy-kadhai"
+    },
+    {
+      "handle": "chulha-chai-saucier",
+      "title": "Chai & Sauce Saucier",
+      "lineup": "Chulha",
+      "product_type": "Saucepans",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Unglazed terracotta vessel body (design target)",
+      "heat_sources": [],
+      "induction_compatible": false,
+      "concept_thesis": "Straight walls, a pour spout and an extended handle",
+      "suggested_use_case": "Cardamom chai",
+      "list_price_gbp": 137,
+      "size_options": [
+        "1 L",
+        "1.75 L"
+      ],
+      "materialCategory": "clay",
+      "ritualTrack": "clay",
+      "productUrl": "/products/chulha-chai-saucier"
+    },
+    {
+      "handle": "chulha-biryani-handi",
+      "title": "Daily Biryani Handi",
+      "lineup": "Chulha",
+      "product_type": "Tagines & Clay Cooking Pots",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Unglazed terracotta vessel body (design target)",
+      "heat_sources": [],
+      "induction_compatible": false,
+      "concept_thesis": "Wide, shallow body with a substantial rim for dum cooking",
+      "suggested_use_case": "Layered vegetable biryani",
+      "list_price_gbp": 157,
+      "size_options": [
+        "2.5 L",
+        "4 L"
+      ],
+      "materialCategory": "clay",
+      "ritualTrack": "clay",
+      "productUrl": "/products/chulha-biryani-handi"
+    },
+    {
+      "handle": "chulha-stockpot",
+      "title": "Chulha Multi-Use Stockpot",
+      "lineup": "Chulha",
+      "product_type": "Stock Pots",
+      "claim_status": "CONCEPT_SPEC",
+      "primary_material": "Unglazed terracotta vessel body (design target)",
+      "heat_sources": [],
+      "induction_compatible": false,
+      "concept_thesis": "Deep straight walls around a broad base",
+      "suggested_use_case": "Slow-simmered vegetable broth",
+      "list_price_gbp": 170,
+      "size_options": [
+        "4 L",
+        "6 L"
+      ],
+      "materialCategory": "clay",
+      "ritualTrack": "clay",
+      "productUrl": "/products/chulha-stockpot"
     }
   ]
 }

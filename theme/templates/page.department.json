@@ -93,7 +93,62 @@
         "padding-block-start": 24,
         "padding-block-end": 64
       }
+    },
+    "room_rail": {
+      "type": "maison-carousel",
+      "blocks": {
+        "cookware": {
+          "type": "room",
+          "settings": {
+            "collection": "cookware",
+            "kicker": "Category 01 · Kitchen & Pass",
+            "text": "Skillets, planchas, tavas, kadais, saucepots, roasters, tagines, knives, and service tongs.",
+            "link_label": "Enter the kitchen"
+          }
+        },
+        "tableware": {
+          "type": "room",
+          "settings": {
+            "collection": "tableware-pottery",
+            "kicker": "Category 02 · Tabletop & Chai",
+            "text": "Modular kulhads, laser-marked platters, dinner plates, katoris, and shared serving bowls.",
+            "link_label": "Enter the table"
+          }
+        },
+        "care": {
+          "type": "room",
+          "settings": {
+            "collection": "care-sets",
+            "kicker": "Category 03 · Ritual & Parts",
+            "text": "Seasoning oil, care ritual kits, stepped replacement lids, and ceramic-docked steamers.",
+            "link_label": "Enter the ritual"
+          }
+        },
+        "forge_terre": {
+          "type": "room",
+          "settings": {
+            "collection": "forge-terre",
+            "kicker": "Range 04 · Metal × Clay",
+            "text": "Hybrid metal–clay systems separating active induction cooking from tactile table service.",
+            "link_label": "Enter the range"
+          }
+        }
+      },
+      "block_order": ["cookware", "tableware", "care", "forge_terre"],
+      "settings": {
+        "eyebrow": "Across the house",
+        "heading": "Move between the rooms",
+        "lede": "Slide sideways instead of scanning a grid. Every card is a real department, not a campaign tile.",
+        "per_view": 3,
+        "gap": 20,
+        "align": "start",
+        "loop": false,
+        "show_dots": true,
+        "show_progress": true,
+        "padding-block-start": 8,
+        "padding-block-end": 64
+      }
     }
   },
-  "order": ["intro", "maison_categories"]
+  "order": ["intro", "maison_categories", "room_rail"]
 }

@@ -1,0 +1,68 @@
+{
+  "sections": {
+    "questions": {
+      "type": "maison-good-questions",
+      "settings": {
+        "heading": "Good questions",
+        "intro": "Cookware, craft and the Maison Tavo exhibition.",
+        "prompt": "Ask a question",
+        "button": "Ask",
+        "hint": "Try Kansa, refund, authentic or handmade. The demo matches words to prepared answers.",
+        "fallback": "<p>There’s no prepared answer for that question. Try asking about Kansa, refunds, authenticity or handmade cookware, or browse the <a href=\"/pages/faq\">store FAQ</a>.</p>"
+      },
+      "blocks": {
+        "exhibition": {
+          "type": "question",
+          "settings": {
+            "question": "What is Maison Tavo?",
+            "answer": "<p>Maison Tavo is a cookware concept and a gated exhibition. It explores how a piece can carry the knowledge you need to choose it, cook with it and pass it on. <a href=\"/pages/about\">About Maison Tavo</a></p>"
+          }
+        },
+        "hob": {
+          "type": "question",
+          "settings": {
+            "question": "How do I know if a pan fits my hob?",
+            "answer": "<p>Check the heat sources and size listed for the exact piece. The heat demo illustrates how heat might spread through different bases. The piece’s specifications tell you which hob it suits. <a href=\"/pages/heat\">Explore the heat demo</a></p>"
+          }
+        },
+        "care": {
+          "type": "question",
+          "settings": {
+            "question": "Where can I find care instructions?",
+            "answer": "<p>Start with the care guide for your piece’s cooking surface, or choose a piece in Kansa and ask about seasoning, heat or cleaning. <a href=\"/pages/care\">Read the care guide</a></p>"
+          }
+        },
+        "refund": {
+          "type": "sample",
+          "settings": {
+            "keywords": "refund,refunds,return,returns",
+            "answer": "<p>Maison Tavo is a concept store. <a href=\"/pages/delivery-returns\">Read the delivery, returns and refund policy</a>.</p>"
+          }
+        },
+        "kansa": {
+          "type": "sample",
+          "settings": {
+            "keywords": "kansa",
+            "answer": "<p>Kansa is Maison Tavo’s cookware companion. Its name comes from kansa, an Indian term for bell metal. The name connects the companion to a kitchen habit we care about: getting to know the tools you use every day, then passing that knowledge on with the piece.</p><p>The idea grew out of a move. Our founder unpacked a pan and couldn’t tell whether it would work on the new hob. A pan can outlast several kitchens, but its instructions can disappear after the first one. Even when the maker’s name is still visible, you may be left guessing about the cooking surface or how the pan should be cleaned.</p><p>In the demo, choose a cookware piece and ask about heat, seasoning or care. You might ask whether the selected pan works on induction, what to do before its first use or where to find the care routine for its surface. You can type your question, or use the microphone if your browser supports it. Kansa matches the question to prepared guidance using the prototype catalogue. The piece you select gives the answer its context.</p><p>The longer-term idea is that a piece could carry a code that takes its next owner straight to the correct record. That would give a cook somewhere to turn years after the box or receipt has gone. For now, you can choose a piece in the exhibition and see how that conversation would begin. <a href=\"/pages/kansa\">Try Kansa</a></p>"
+          }
+        },
+        "authentic": {
+          "type": "sample",
+          "settings": {
+            "keywords": "authentic,authenticity,genuine,original",
+            "answer": "<p>Maison Tavo starts with a familiar Indian kitchen tool, the tava, and a question our founder faced after moving. How do you know whether the pan you’ve kept belongs on the hob you have now? We show what shaped a piece and distinguish concept specifications from established facts. <a href=\"/pages/about\">Read the story behind Maison Tavo</a></p>"
+          }
+        },
+        "handmade": {
+          "type": "sample",
+          "settings": {
+            "keywords": "handmade,handcrafted,chulha,chulah,artisan,artisans",
+            "answer": "<p>Chulha is our terracotta design study. It starts with gestures cooks know well, like turning a paratha on a tawa, pouring chai or layering rice in a handi. We’re exploring how local potters could shape the vessels and receive credit for their techniques. The range is a set of concepts in development. <a href=\"/pages/building\">Read about the Chulha study</a></p>"
+          }
+        }
+      },
+      "block_order": ["exhibition", "hob", "care", "refund", "kansa", "authentic", "handmade"]
+    }
+  },
+  "order": ["questions"]
+}

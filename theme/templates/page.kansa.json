@@ -4,9 +4,45 @@
       "type": "kansa-app",
       "settings": {
         "heading": "Kansa",
-        "subheading": "The living will of the house — for the piece after the shelf."
+        "subheading": "Choose a piece, then ask how to use it or look after it. Try “Will this work on induction?” or “How do I season it?”"
+      }
+    },
+    "guide": {
+      "type": "maison-about",
+      "blocks": {
+        "start": {
+          "type": "pillar",
+          "settings": {
+            "heading": "Ask about the piece you have",
+            "text": "<p>Select a piece and type a question about its surface, hob or care. You can also use the microphone where your browser supports it. Kansa is named for bell metal and built around the habit of looking after the tools we cook with.</p>"
+          }
+        },
+        "scope": {
+          "type": "pillar",
+          "settings": {
+            "heading": "How the demo answers",
+            "text": "<p>Kansa matches your question to prepared answers and the prototype catalogue. Its results reflect the information in that record, including concept specifications. Use the <a href=\"/pages/care\">written care guide</a> to read the instructions at your own pace.</p>"
+          }
+        },
+        "handover": {
+          "type": "pillar",
+          "settings": {
+            "heading": "Designed to travel with the pan",
+            "text": "<p>We’re exploring a scannable identifier and a typed code for each piece. The identifier would take you straight to the relevant model record so you could check the hob, revisit the care routine or pass the instructions on.</p><p><a href=\"/pages/building\">Read about the prototype</a></p>"
+          }
+        }
+      },
+      "block_order": ["start", "scope", "handover"],
+      "settings": {
+        "secondary_heading": true,
+        "eyebrow": "",
+        "heading": "A companion for the next kitchen",
+        "lede": "",
+        "closing": "",
+        "padding-block-start": 32,
+        "padding-block-end": 64
       }
     }
   },
-  "order": ["kansa_app_main"]
+  "order": ["kansa_app_main", "guide"]
 }

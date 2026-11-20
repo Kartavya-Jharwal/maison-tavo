@@ -1,0 +1,29 @@
+{%- comment -%}
+  Canonical agent-facing manifest for Maison Tavo.
+
+  Rendered by the raw `/llms.txt`, `/llms-full.txt`, `/agents.md` template
+  routes and by the legacy `/pages/llms-txt` page so every discovery surface
+  stays byte-identical. Keep this file plain markdown: no theme chrome, no
+  layout, no HTML.
+{%- endcomment -%}
+# Maison Tavo catalog and care
+
+## Cookware
+- Forge is the stainless steel cookware and fixed-set range. Vessel sizes are grouped as diameter variants.
+- Chulha is the terracotta cookware range. Its vessel sizes are grouped by diameter or capacity. Materials, dimensions and use limits are subject to product validation.
+- Maintenance includes care supplies and replacement parts. Check model and size compatibility before ordering.
+
+## Storefront resources
+- Catalog: {{ shop.url }}{{ routes.collections_url }}
+{% assign forge_catalog = collections['forge'] -%}
+{% if forge_catalog != blank and forge_catalog.products_count > 0 -%}
+- Forge: {{ shop.url }}{{ forge_catalog.url }}
+{% endif -%}
+{% assign chulha_catalog = collections['chulha'] -%}
+{% if chulha_catalog != blank and chulha_catalog.products_count > 0 -%}
+- Chulha: {{ shop.url }}{{ chulha_catalog.url }}
+{% endif -%}
+- Care & Seasoning Companion: {{ shop.url }}/pages/kansa
+- About & Provenance: {{ shop.url }}/pages/about
+
+Read the product page for current variants, prices, availability and validated use instructions.

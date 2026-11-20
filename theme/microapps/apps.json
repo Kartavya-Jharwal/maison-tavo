@@ -5,14 +5,16 @@
       "title": "Lookbook / colour story explorer",
       "description": "Frontend-only demo: pair Maison Tavo palettes with silhouettes. No backend, no cart, no personal data.",
       "entry": "microapp-lookbook.js",
-      "route_handle": "lookbook"
+      "route_handle": "lookbook",
+      "embed": "iframe"
     },
     {
       "id": "kansa",
       "title": "Kansa companion",
       "description": "Voice-capable piece companion. Requires HTTPS secure context (SpeechRecognition API). Loads directly via kansa-app section — not a sandboxed iframe.",
       "entry": "microapp-kansa.js",
-      "route_handle": "kansa"
+      "route_handle": "kansa",
+      "embed": "section"
     }
   ]
 }

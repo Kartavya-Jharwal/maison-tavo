@@ -1,4 +1,11 @@
 {% liquid
+  assign section_heading_tag = 'h1'
+  assign card_heading_tag = 'h2'
+  if section.settings.secondary_heading
+    assign section_heading_tag = 'h2'
+    assign card_heading_tag = 'h3'
+  endif
+
   if section.settings.background_color != blank
     render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
   endif
@@ -8,7 +15,7 @@
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
 <div
-  class="section section--page-width spacing-style maison-editorial{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  class="section section--page-width spacing-style maison-reading{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
   style="{% render 'spacing-style', settings: section.settings %}"
 >
   <header class="maison-editorial__header">
@@ -16,7 +23,7 @@
       <p class="maison-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
     {% endif %}
     {% if section.settings.heading != blank %}
-      <h1 class="maison-editorial__title">{{ section.settings.heading | escape }}</h1>
+      <{{ section_heading_tag }} class="maison-editorial__title">{{ section.settings.heading | escape }}</{{ section_heading_tag }}>
     {% endif %}
     {% if section.settings.lede != blank %}
       <p class="maison-editorial__lede">{{ section.settings.lede | escape }}</p>
@@ -26,22 +33,28 @@
   {% if section.blocks.size > 0 %}
     <div class="maison-editorial__grid">
       {% for block in section.blocks %}
-        <article
-          class="maison-editorial__card"
-          {{ block.shopify_attributes }}
-        >
-          {% if block.settings.evidence_tier != blank and block.settings.evidence_tier != 'none' %}
-            <p class="maison-evidence maison-evidence--{{ block.settings.evidence_tier }}">
-              <span class="maison-evidence__tag">{{ block.settings.evidence_tier | upcase }}</span>
-            </p>
-          {% endif %}
-          {% if block.settings.heading != blank %}
-            <h2 class="maison-editorial__card-title">{{ block.settings.heading | escape }}</h2>
-          {% endif %}
-          {% if block.settings.text != blank %}
-            <div class="maison-editorial__rte rte">{{ block.settings.text }}</div>
-          {% endif %}
-        </article>
+        {% if block.type == 'testimonial' %}
+          <figure class="maison-editorial__card maison-editorial__testimonial" {{ block.shopify_attributes }}>
+            <blockquote class="maison-editorial__rte">
+              <p>“{{ block.settings.quote | escape }}”</p>
+            </blockquote>
+            <figcaption>{{ block.settings.attribution | escape }}</figcaption>
+          </figure>
+        {% else %}
+          <article class="maison-editorial__card" {{ block.shopify_attributes }}>
+            {% if block.settings.evidence_tier != blank and block.settings.evidence_tier != 'none' %}
+              <p class="maison-evidence maison-evidence--{{ block.settings.evidence_tier }}">
+                {{ block.settings.evidence_tier | escape }}
+              </p>
+            {% endif %}
+            {% if block.settings.heading != blank %}
+              <{{ card_heading_tag }} class="maison-editorial__card-title">{{ block.settings.heading | escape }}</{{ card_heading_tag }}>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <div class="maison-editorial__rte rte">{{ block.settings.text }}</div>
+            {% endif %}
+          </article>
+        {% endif %}
       {% endfor %}
     </div>
   {% endif %}
@@ -52,111 +65,54 @@
 </div>
 
 {% stylesheet %}
-  .maison-editorial {
-    color: var(--color-foreground);
-  }
-
-  .maison-editorial__header {
-    max-width: 42rem;
-    margin-block-end: 3rem;
-  }
-
-  .maison-editorial__eyebrow {
-    margin: 0;
-    font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-accent);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-foreground-muted);
-  }
-
-  .maison-editorial__title {
-    margin-block: 0.75rem 1rem;
-    font-family: var(--mt-type-family-heading);
-    font-weight: var(--font-heading--weight);
-    letter-spacing: 0.04em;
-    font-variation-settings: 'opsz' 144;
-  }
-
-  .maison-editorial__lede,
-  .maison-editorial__closing {
-    margin: 0;
-    max-width: 40rem;
-    color: var(--color-foreground-muted);
-    font-size: var(--mt-type-lede);
-    line-height: 1.6;
-  }
-
-  .maison-editorial__closing {
-    margin-block-start: 3rem;
-    font-size: var(--mt-type-body);
-  }
-
   .maison-editorial__grid {
     display: grid;
-    gap: 1.75rem;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.25rem, 2.4vw, 2.5rem);
   }
 
-  @media screen and (min-width: 750px) {
+  @media (min-width: 60rem) {
     .maison-editorial__grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 
   .maison-editorial__card {
-    border-block-start: 1px solid var(--brand-color-damascus-silver, var(--color-border));
-    padding-block-start: 1.25rem;
+    min-inline-size: 0;
+    border-block-start: 1px solid var(--color-border);
+    padding-block-start: clamp(0.85rem, 1.4vw, 1.25rem);
   }
 
-  .maison-editorial__card-title {
-    margin: 0 0 0.75rem;
-    font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-lede);
-    letter-spacing: 0.03em;
+  .maison-editorial__card > .maison-editorial__rte {
+    max-inline-size: 52ch;
   }
 
-  .maison-editorial__rte,
-  .maison-editorial__rte p {
+  .maison-editorial__testimonial,
+  .maison-editorial__testimonial blockquote {
+    margin: 0;
+  }
+
+  .maison-editorial__testimonial figcaption,
+  .maison-evidence {
+    font-family: var(--mt-type-family-accent);
+    font-size: var(--maison-reading-label);
+    font-weight: 500;
+    line-height: 1.4;
     color: var(--color-foreground-muted);
+    overflow-wrap: anywhere;
   }
 
-  .maison-editorial__rte p:first-child {
-    margin-block-start: 0;
-  }
-
-  .maison-editorial__rte p:last-child {
-    margin-block-end: 0;
+  .maison-editorial__testimonial figcaption {
+    margin-block-start: 0.85rem;
   }
 
   .maison-evidence {
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.5rem;
+    text-transform: capitalize;
   }
 
-  .maison-evidence__tag {
-    display: inline-block;
-    font-family: var(--mt-type-family-mono);
-    font-size: var(--mt-type-mono);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 0.2em 0.55em;
-    border: 1px solid var(--brand-color-damascus-silver, var(--color-border));
-    color: var(--brand-color-obsidian-charcoal, var(--color-foreground));
-  }
-
-  .maison-evidence--verified .maison-evidence__tag {
-    border-color: var(--brand-color-aged-bronze, var(--color-foreground));
-    color: var(--brand-color-aged-bronze, var(--color-foreground));
-  }
-
-  .maison-evidence--observed .maison-evidence__tag {
-    border-color: var(--brand-color-raw-copper, var(--color-foreground));
-    color: var(--brand-color-raw-copper, var(--color-foreground));
-  }
-
-  .maison-evidence--hypothesis .maison-evidence__tag {
-    border-style: dashed;
-    color: var(--color-foreground-muted);
+  .maison-editorial__closing {
+    margin-block: var(--maison-reading-gap) 0;
   }
 {% endstylesheet %}
 
@@ -180,6 +136,12 @@
       "id": "heading",
       "label": "t:settings.heading",
       "default": "Maison Tavo"
+    },
+    {
+      "type": "checkbox",
+      "id": "secondary_heading",
+      "label": "Use a secondary heading",
+      "default": false
     },
     {
       "type": "textarea",
@@ -225,6 +187,22 @@
     }
   ],
   "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote"
+        },
+        {
+          "type": "text",
+          "id": "attribution",
+          "label": "Attribution"
+        }
+      ]
+    },
     {
       "type": "pillar",
       "name": "t:names.maison_pillar",

@@ -109,10 +109,18 @@
   }
   @font-face {
     font-family: 'Instrument Serif Fallback';
-    src: local('Georgia'), local('Times New Roman');
-    size-adjust: 108%;
-    ascent-override: 90%;
-    descent-override: 22%;
+    src: local('Georgia');
+    size-adjust: 77%;
+    ascent-override: 128.6%;
+    descent-override: 40.3%;
+    line-gap-override: 0%;
+  }
+  @font-face {
+    font-family: 'Instrument Serif Times Fallback';
+    src: local('Times New Roman');
+    size-adjust: 83%;
+    ascent-override: 119.3%;
+    descent-override: 37.3%;
     line-gap-override: 0%;
   }
 
@@ -187,7 +195,8 @@
     --font-body--family: 'Bai Jamjuree', 'Bai Jamjuree Fallback', system-ui, sans-serif;
     --font-accent--family: 'Satoshi', 'Satoshi Fallback', system-ui, sans-serif;
     --font-subheading--family: var(--font-accent--family);
-    --font-heading--family: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
+    --font-instrument-serif--family: 'Instrument Serif', 'Instrument Serif Fallback', 'Instrument Serif Times Fallback', Georgia, serif;
+    --font-heading--family: var(--font-instrument-serif--family);
     --font-highlight--family: var(--font-heading--family);
     --font-wordmark--family: 'Noto Serif', 'Noto Serif Wordmark Fallback', Georgia, serif;
     --font-mono--family: 'JetBrains Mono', 'JetBrains Mono Fallback', ui-monospace, monospace;

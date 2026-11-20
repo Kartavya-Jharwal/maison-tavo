@@ -15,6 +15,16 @@
   assign asset_file = 'microapp-' | append: app_id | append: '.js'
   assign script_url = asset_file | asset_url
   assign frame_title = section.settings.heading | default: app_id
+  comment
+    Only iframe-safe microapps. `kansa` ships its own full-page shell and is
+    mounted by sections/kansa-app.liquid, so framing it would load a bundle
+    with no matching markup. Keep in sync with microapps/apps.json (embed).
+  endcomment
+  assign iframe_apps = 'lookbook' | split: ','
+  assign is_frame_app = false
+  if iframe_apps contains app_id
+    assign is_frame_app = true
+  endif
 %}
 
 <div
@@ -40,7 +50,7 @@
     <p class="maison-microapp__demo-note">{{ 'maison.microapp_demo_note' | t }}</p>
   </header>
 
-  {% if app_id == blank %}
+  {% if app_id == blank or is_frame_app == false %}
     <p class="maison-microapp__missing">{{ 'maison.microapp_invalid' | t }}</p>
   {% else %}
     <iframe

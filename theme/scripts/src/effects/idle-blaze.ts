@@ -8,7 +8,7 @@
 import { createBlaze, type BlazeInstance } from './blaze';
 import { supportsWebGPU } from './shared';
 
-export const IDLE_BLAZE_MS = 90_000;
+export const IDLE_BLAZE_MS = 18_000;
 export const IDLE_BLAZE_FADE_OUT_MS = 1600;
 export const IDLE_BLAZE_FADE_IN_MS = 900;
 export const IDLE_BLAZE_STORAGE_KEY = 'mt-idle-blaze';
@@ -72,7 +72,6 @@ function datasetDisabled(): boolean {
 function isBlockedHost(): boolean {
   if (!enabled || datasetDisabled() || storageDisabled()) return true;
   if (motionReduced()) return true;
-  if (!supportsWebGPU()) return true;
   if (BLOCKED_PATH.test(location.pathname)) return true;
 
   const main = document.getElementById('MainContent');
@@ -179,44 +178,39 @@ function startEffect() {
 
   active = true;
 
-  const instance = createBlaze(
-    { source, content, output },
-    {
-      height: 0.4,
-      distortion: 0,
-      distortionScale: 0.5,
-      speed: 0.85,
-      sparks: 0.32,
-      sparkDensity: 1.35,
-      sparkSize: 0.9,
-      layers: 3,
-      smoke: 0.38,
-      glow: 1.05,
-      sparkColor: [1, 0.38, 0.06],
-      smokeColor: [1, 0.42, 0.12],
-      onFirstFrame: () => {
-        clearPaintWatchdog();
-        if (!host || host !== el) return;
-        // Fade canvas in only after first successful paint; underlay yields.
-        host.classList.add('is-painted');
+  if (supportsWebGPU()) {
+    const instance = createBlaze(
+      { source, content, output },
+      {
+        height: 0.4,
+        distortion: 0,
+        distortionScale: 0.5,
+        speed: 0.85,
+        sparks: 0.32,
+        sparkDensity: 1.35,
+        sparkSize: 0.9,
+        layers: 3,
+        smoke: 0.38,
+        glow: 1.05,
+        sparkColor: [1, 0.38, 0.06],
+        smokeColor: [1, 0.42, 0.12],
+        onFirstFrame: () => {
+          clearPaintWatchdog();
+          if (!host || host !== el) return;
+          // Fade canvas in only after first successful paint; underlay yields.
+          host.classList.add('is-painted');
+        },
       },
-    },
-  );
+    );
 
-  if (!instance) {
-    destroyEffect();
-    return;
+    if (instance) {
+      blaze = instance;
+    }
   }
 
-  blaze = instance;
-
-  // If GPU never paints, drop the temporary underlay — no blank canvas left behind.
+  // Underlay remains visible as a warm ambient hearth fire even if GPU canvas does not paint.
   paintWatchdog = window.setTimeout(() => {
     paintWatchdog = 0;
-    if (host && !host.classList.contains('is-painted')) {
-      destroyEffect();
-      scheduleIdle();
-    }
   }, PAINT_WATCHDOG_MS);
 }
 

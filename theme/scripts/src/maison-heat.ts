@@ -24,8 +24,11 @@ function prefersReduced(): boolean {
   );
 }
 
-function markReady(stage: HTMLElement) {
+function markReady(stage: HTMLElement, htmlCaptured: boolean = false) {
   stage.dataset.mtFxReady = 'true';
+  if (htmlCaptured) {
+    stage.dataset.mtHtmlCaptured = 'true';
+  }
   stage.classList.add('is-fx-ready');
 }
 
@@ -39,11 +42,12 @@ function mountFlameWrap(root: HTMLElement): FlameWrapInstance | null {
   // Without html-in-canvas or WebGPU, keep that HTML and hide GPU canvases.
   if (!supportsWebGPU() || prefersReduced()) {
     showHtmlFallback(source, content, output);
-    markReady(root);
+    markReady(root, false);
     return null;
   }
 
-  if (!supportsHtmlInCanvas()) {
+  const hasCapture = supportsHtmlInCanvas();
+  if (!hasCapture) {
     showHtmlFallback(source, content, null);
   }
 
@@ -66,13 +70,13 @@ function mountFlameWrap(root: HTMLElement): FlameWrapInstance | null {
 
   if (!flame) {
     showHtmlFallback(source, content, output);
-    markReady(root);
+    markReady(root, false);
     return null;
   }
 
   // Reveal GPU overlay after a short paint window so the poster never blanks.
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => markReady(root));
+    requestAnimationFrame(() => markReady(root, hasCapture));
   });
 
   return flame;
@@ -86,11 +90,12 @@ function mountBlazeProfile(root: HTMLElement): BlazeInstance | null {
 
   if (!supportsWebGPU() || prefersReduced()) {
     showHtmlFallback(source, content, output);
-    markReady(root);
+    markReady(root, false);
     return null;
   }
 
-  if (!supportsHtmlInCanvas()) {
+  const hasCapture = supportsHtmlInCanvas();
+  if (!hasCapture) {
     showHtmlFallback(source, content, null);
   }
 
@@ -113,12 +118,12 @@ function mountBlazeProfile(root: HTMLElement): BlazeInstance | null {
 
   if (!blaze) {
     showHtmlFallback(source, content, output);
-    markReady(root);
+    markReady(root, false);
     return null;
   }
 
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => markReady(root));
+    requestAnimationFrame(() => markReady(root, hasCapture));
   });
 
   return blaze;

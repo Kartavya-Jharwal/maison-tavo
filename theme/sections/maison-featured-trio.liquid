@@ -69,9 +69,74 @@
       {% endfor %}
     </ul>
   {% else %}
-    <p class="maison-featured-trio__empty" role="status">
-      Choose three products in the theme editor: flagship pan, service kit, and a secondary flagship.
-    </p>
+    <ul class="maison-featured-trio__grid" role="list" data-mt-scroll="stagger">
+      <li class="maison-featured-trio__item" data-mt-scroll-item>
+        <p class="maison-featured-trio__role">{{ section.settings.label_1 | default: 'Flagship Pan' | escape }}</p>
+        <div class="resource-card">
+          <a class="resource-card__link" href="/collections/cookware">
+            <span class="visually-hidden">The Flagship Kadhai</span>
+          </a>
+          <div class="resource-card__media" style="--image-aspect-ratio: 4 / 5;">
+            <img
+              class="resource-card__image"
+              src="{{ 'maison-flagship-kadai.webp' | asset_url }}"
+              alt="The Flagship Kadhai — Bell Bronze and Carbon Steel"
+              width="1200"
+              height="1500"
+              loading="lazy"
+            >
+          </div>
+          <div class="resource-card__content">
+            <h3 class="resource-card__title">The Flagship Kadhai</h3>
+            <p class="resource-card__subtitle">78:22 Bell Bronze &amp; Carbon Steel</p>
+          </div>
+        </div>
+      </li>
+      <li class="maison-featured-trio__item" data-mt-scroll-item>
+        <p class="maison-featured-trio__role">{{ section.settings.label_2 | default: 'Slow-Heat Clay' | escape }}</p>
+        <div class="resource-card">
+          <a class="resource-card__link" href="/collections/cookware">
+            <span class="visually-hidden">Terre Clay Open Vessel</span>
+          </a>
+          <div class="resource-card__media" style="--image-aspect-ratio: 4 / 5;">
+            <img
+              class="resource-card__image"
+              src="{{ 'maison-clay-openpot.webp' | asset_url }}"
+              alt="Terre Clay Open Vessel — Refractory Stoneware"
+              width="1200"
+              height="1500"
+              loading="lazy"
+            >
+          </div>
+          <div class="resource-card__content">
+            <h3 class="resource-card__title">Terre Clay Open Vessel</h3>
+            <p class="resource-card__subtitle">Hand-Turned Refractory Stoneware</p>
+          </div>
+        </div>
+      </li>
+      <li class="maison-featured-trio__item" data-mt-scroll-item>
+        <p class="maison-featured-trio__role">{{ section.settings.label_3 | default: 'Secondary Flagship' | escape }}</p>
+        <div class="resource-card">
+          <a class="resource-card__link" href="/collections/cookware">
+            <span class="visually-hidden">The Foundry High Pot</span>
+          </a>
+          <div class="resource-card__media" style="--image-aspect-ratio: 4 / 5;">
+            <img
+              class="resource-card__image"
+              src="{{ 'maison-highpot-set.webp' | asset_url }}"
+              alt="The Foundry High Pot — Dual-Mass Lathe Spun with Lid"
+              width="1200"
+              height="1500"
+              loading="lazy"
+            >
+          </div>
+          <div class="resource-card__content">
+            <h3 class="resource-card__title">The Foundry High Pot</h3>
+            <p class="resource-card__subtitle">Dual-Mass Lathe Spun with Lid</p>
+          </div>
+        </div>
+      </li>
+    </ul>
   {% endif %}
 </div>
 

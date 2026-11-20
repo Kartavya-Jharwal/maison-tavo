@@ -3,51 +3,55 @@
     "story": {
       "type": "maison-story",
       "blocks": {
+        "grandmother": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "",
+            "heading": "What we learn at the stove",
+            "text": "<p>A grandmother teaches you to turn a flatbread by standing beside you. She can tell from a change in the sound or the way the dough lifts.</p><p>She also knows how to dry the pan and when its surface needs attention. Those habits are part of what she passes on. We started with that picture of an heirloom you know how to live with.</p>"
+          }
+        },
+        "moving": {
+          "type": "chapter",
+          "settings": {
+            "kicker": "",
+            "heading": "The pan in the moving box",
+            "text": "<p>After moving, Kartavya Jharwal unpacked a pan and couldn’t tell whether it would work on the new hob. Changing kitchens had separated the tool from the knowledge that made it useful.</p><p>What would the pan need to carry into its next kitchen? That question became Maison Tavo.</p>"
+          }
+        },
         "commission": {
           "type": "chapter",
           "settings": {
-            "kicker": "I",
-            "heading": "The hotel",
-            "text": "<p>Savi Hotels &amp; Resorts, Operational Lead, Jaipur, January 2021 to July 2026. Kartavya took entrepreneurship-through-acquisition control of a leased Savi property within SRBS Group — from handover and F&amp;B inventory through meeting rooms, banquet spaces, MICE catering, and walk-in lunches. He partnered with head chefs on kitchen standards and does not claim a formal line-cook title.</p>"
+            "kicker": "",
+            "heading": "One kitchen, many tables",
+            "text": "<p>In Jaipur, Kartavya managed a leased Savi property where one kitchen fed conferences, banquets and families walking in for lunch. He worked with head chefs on the standards that kept the kitchen running. A pan earned its place by being ready for the next service.</p>"
           }
         },
         "atelier": {
           "type": "chapter",
           "settings": {
-            "kicker": "II",
-            "heading": "The restaurant",
-            "text": "<p>Siya The Restaurant, SRBS Group, Menu Engineering Consultant, 2025 to 2026. On-property menu design and back-of-house economics: two years of handwritten kitchen registers digitised, FIFO controls, and a margin-times-velocity matrix for 191 dishes.</p>"
-          }
-        },
-        "wardrobe": {
-          "type": "chapter",
-          "settings": {
-            "kicker": "III",
-            "heading": "Practice",
-            "text": "<p>Independent culinary and kitchen-systems practice; published London restaurant rotations; small-batch food-science work under PACA; a modelled precision-nutrition diagnostic for Danone YoPRO. Earlier still: Hospiteri, a hotel management system, and Soma, a Class 12 marketing project for the samosa snack industry.</p>"
+            "kicker": "",
+            "heading": "The work behind the menu",
+            "text": "<p>At Siya, Kartavya digitised two years of handwritten kitchen registers and compared how often dishes sold with what it cost to serve them. That work informs how we think about cookware: the shape, the care routine and the parts needed for the next service all matter.</p>"
           }
         },
         "invitation": {
           "type": "chapter",
           "settings": {
-            "kicker": "IV",
+            "kicker": "",
             "heading": "The house",
-            "text": "<p>Maison Tavo is public so that standard can sit in the open: limited editions, honest materials, a storefront that behaves like a pass rather than a shout. The design story is deliberate synthesis — casting, forging, and room language held as one texture. Spec depth and craft surface share the same pass; software is how the rooms are built, not the tasting menu.</p>"
+            "text": "<p>Maison Tavo brings the care learned at home together with the demands of a working kitchen. The piece should feel familiar in the hand. The information that comes with it should be clear enough for the cook who picks it up next.</p><p><a href=\"/pages/building\">See how we’re building Maison Tavo</a></p>"
           }
         }
       },
-      "block_order": ["commission", "atelier", "wardrobe", "invitation"],
+      "block_order": ["grandmother", "moving", "commission", "atelier", "invitation"],
       "settings": {
-        "eyebrow": "Origin",
+        "eyebrow": "Maison Tavo",
         "heading": "Our story",
-        "lede": "Maison Tavo is Kartavya Jharwal’s food house. The public record begins in Jaipur hospitality: a leased hotel, a property restaurant, and the work of feeding rooms, banquets, and walk-in tables from one kitchen.",
-        "provenance_eyebrow": "Three places",
-        "place_1_label": "Jaipur casting",
-        "place_1_text": "Hospitality kitchens and clay grain — the Terre lineage as kitchen memory, not borrowed prestige.",
-        "place_2_label": "Japanese forging",
-        "place_2_text": "Blade discipline and strip geometry — Kuro as craft language on the board.",
-        "place_3_label": "European rooms",
-        "place_3_text": "Composition and restraint — dual depth for the technologist and the curator on one surface.",
+        "lede": "A grandmother’s tava, a pan in a moving box and the work of keeping one kitchen ready to feed a room.",
+        "place_1_label": "",
+        "place_2_label": "",
+        "place_3_label": "",
         "padding-block-start": 56,
         "padding-block-end": 96
       }

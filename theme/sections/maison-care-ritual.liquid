@@ -79,6 +79,30 @@
         <span class="mono">1.0085 Carbon Steel · VG10 Damascus 60 HRC</span><br>
         No synthetic coatings. No PTFE. No forgiveness. The metal remembers every cook.
       </p>
+      <div class="maison-ritual-v7__intro-media">
+        <figure class="maison-ritual-v7__intro-figure">
+          <img
+            src="{{ 'maison-kadai-closeup.webp' | asset_url }}"
+            alt="Living Patina &amp; Metallurgy"
+            width="600"
+            height="400"
+            loading="lazy"
+            class="maison-ritual-v7__intro-img"
+          >
+          <figcaption class="maison-ritual-v7__intro-cap">Living acoustic patina &amp; 78:22 bell bronze rim</figcaption>
+        </figure>
+        <figure class="maison-ritual-v7__intro-figure">
+          <img
+            src="{{ 'maison-handle-engineering.webp' | asset_url }}"
+            alt="Handle Thermal Dissipation"
+            width="600"
+            height="400"
+            loading="lazy"
+            class="maison-ritual-v7__intro-img"
+          >
+          <figcaption class="maison-ritual-v7__intro-cap">Stay-cool handle thermal barrier under continuous flame</figcaption>
+        </figure>
+      </div>
     </div>
 
     <div class="maison-ritual-v7__rites" data-ritual-track="metal">
@@ -375,6 +399,30 @@
         <span class="mono">High-fire stoneware · Feldspathic glaze · Lead-free vitrified slip</span><br>
         Clay remembers heat differently. Never shock it. Never rush it. The vessel is a living object — thermal patience is not optional.
       </p>
+      <div class="maison-ritual-v7__intro-media">
+        <figure class="maison-ritual-v7__intro-figure">
+          <img
+            src="{{ 'maison-clay-openpot.webp' | asset_url }}"
+            alt="Terre Clay Refractory Vessel"
+            width="600"
+            height="400"
+            loading="lazy"
+            class="maison-ritual-v7__intro-img"
+          >
+          <figcaption class="maison-ritual-v7__intro-cap">High-fire refractory stoneware shell for slow-heat simmering</figcaption>
+        </figure>
+        <figure class="maison-ritual-v7__intro-figure">
+          <img
+            src="{{ 'maison-clay-potter-craft.webp' | asset_url }}"
+            alt="Handcrafted Pottery Wheel Ceremony"
+            width="600"
+            height="400"
+            loading="lazy"
+            class="maison-ritual-v7__intro-img"
+          >
+          <figcaption class="maison-ritual-v7__intro-cap">Master potter shaping raw earthenware on traditional wheel</figcaption>
+        </figure>
+      </div>
     </div>
 
     <div class="maison-ritual-v7__rites" data-ritual-track="clay">
@@ -897,6 +945,43 @@
     font-family: var(--mt-type-family-mono);
     font-size: var(--mt-type-accent);
     letter-spacing: 0.04em;
+  }
+
+  .maison-ritual-v7__intro-media {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--mt-space-4);
+    margin-top: var(--mt-space-4);
+  }
+
+  .maison-ritual-v7__intro-figure {
+    margin: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background: rgb(var(--color-foreground-rgb, 26 23 20) / 0.04);
+    border: 1px solid var(--color-border, rgba(110, 90, 61, 0.2));
+  }
+
+  .maison-ritual-v7__intro-img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .maison-ritual-v7__intro-figure:hover .maison-ritual-v7__intro-img {
+    transform: scale(1.025);
+  }
+
+  .maison-ritual-v7__intro-cap {
+    padding: 0.65rem 0.85rem;
+    font-family: var(--mt-type-family-mono, monospace);
+    font-size: var(--mt-type-mono, 0.72rem);
+    letter-spacing: 0.06em;
+    color: var(--color-foreground-muted);
+    border-top: 1px solid var(--color-border, rgba(110, 90, 61, 0.15));
   }
 
   /* ── Rites list ──────────────────────────────────────── */

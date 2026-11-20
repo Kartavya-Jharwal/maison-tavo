@@ -4,20 +4,20 @@
 {% endcomment %}
 
 <div
-  class="section section--page-width spacing-style maison-room"
+  class="section section--page-width spacing-style maison-reading maison-room"
   style="{% render 'spacing-style', settings: section.settings %}"
 >
-  <header class="maison-room__header" data-mt-scroll="chapter">
+  <header class="maison-editorial__header" data-mt-scroll="chapter">
     {% if section.settings.eyebrow != blank %}
-      <p class="maison-room__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      <p class="maison-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
     {% endif %}
     {% if section.settings.heading != blank %}
-      <h1 class="maison-room__title">{{ section.settings.heading | escape }}</h1>
+      <h1 class="maison-editorial__title">{{ section.settings.heading | escape }}</h1>
     {% elsif page != blank %}
-      <h1 class="maison-room__title">{{ page.title | escape }}</h1>
+      <h1 class="maison-editorial__title">{{ page.title | escape }}</h1>
     {% endif %}
     {% if section.settings.lede != blank %}
-      <div class="maison-room__lede rte">{{ section.settings.lede }}</div>
+      <div class="maison-editorial__lede rte">{{ section.settings.lede }}</div>
     {% endif %}
   </header>
 
@@ -31,10 +31,10 @@
         {% when 'clause' %}
           <section class="maison-room__clause" {{ block.shopify_attributes }}>
             {% if block.settings.heading != blank %}
-              <h2>{{ block.settings.heading | escape }}</h2>
+              <h2 class="maison-editorial__card-title">{{ block.settings.heading | escape }}</h2>
             {% endif %}
             {% if block.settings.text != blank %}
-              <div class="rte">{{ block.settings.text }}</div>
+              <div class="maison-editorial__rte rte">{{ block.settings.text }}</div>
             {% endif %}
           </section>
         {% when 'pathway' %}
@@ -51,7 +51,7 @@
         {% when 'place' %}
           <article class="maison-room__place" {{ block.shopify_attributes }}>
             {% if block.settings.heading != blank %}
-              <h2>{{ block.settings.heading | escape }}</h2>
+              <h2 class="maison-editorial__card-title">{{ block.settings.heading | escape }}</h2>
             {% endif %}
             {% if block.settings.address != blank %}
               <p>{{ block.settings.address | newline_to_br }}</p>
@@ -91,85 +91,64 @@
   </div>
 </div>
 
+{%- if template.suffix == 'faq' -%}
+  {%- assign faq_items = '' -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'clause' and block.settings.heading != blank -%}
+      {%- capture faq_answer -%}{{ block.settings.text | strip_html | strip | json }}{%- endcapture -%}
+      {%- capture faq_item -%}{"@type":"Question","name":{{ block.settings.heading | json }},"acceptedAnswer":{"@type":"Answer","text":{{ faq_answer }}}}{%- endcapture -%}
+      {%- if faq_items != '' -%}
+        {%- assign faq_items = faq_items | append: ',' -%}
+      {%- endif -%}
+      {%- assign faq_items = faq_items | append: faq_item -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if faq_items != '' -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [{{ faq_items }}]
+      }
+    </script>
+  {%- endif -%}
+{%- endif -%}
+
 {% stylesheet %}
-  .maison-room {
-    color: var(--color-foreground);
-  }
-
-  .maison-room__header {
-    max-width: 42rem;
-    margin-block-end: 2rem;
-  }
-
-  .maison-room__eyebrow {
-    margin: 0;
-    font-family: var(--mt-type-family-mono);
-    font-size: var(--mt-type-accent);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-foreground-muted);
-  }
-
-  .maison-room__title {
-    margin: 0.5rem 0 1rem;
-    font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-display);
-    font-weight: 400;
-    line-height: 1.05;
-  }
-
-  .maison-room__lede {
-    max-width: 42rem;
-    color: var(--color-foreground-muted);
+  .maison-room__body,
+  .maison-room__notice {
+    max-inline-size: var(--maison-reading-measure);
   }
 
   .maison-room__notice {
-    max-width: 44rem;
-    margin: 0 0 2rem;
-    padding: 1rem 1.15rem;
-    border: 1px solid var(--color-border);
-    color: var(--color-foreground-muted);
+    margin: 0 0 var(--maison-reading-gap);
+    padding-inline-start: 1rem;
+    border-inline-start: 1px solid var(--color-border);
   }
 
   .maison-room__clause,
-  .maison-room__place {
-    max-width: 44rem;
-    padding-block: 1.25rem;
+  .maison-room__place,
+  .maison-room__pathway {
+    padding-block: clamp(1rem, 1.6vw, 1.5rem);
     border-block-start: 1px solid var(--color-border);
-  }
-
-  .maison-room__clause h2,
-  .maison-room__place h2 {
-    margin: 0 0 0.6rem;
-    font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-title);
-    font-weight: 400;
-  }
-
-  .maison-room__clause p,
-  .maison-room__place p,
-  .maison-room__lede p {
-    margin: 0 0 0.75rem;
-  }
-
-  .maison-room__note {
-    color: var(--color-foreground-muted);
+    overflow-wrap: anywhere;
   }
 
   .maison-room__pathway {
     display: grid;
-    gap: 0.2rem;
-    max-width: 44rem;
+    gap: 0.25rem;
     margin: 0;
-    padding-block: 0.9rem;
-    border-block-start: 1px solid var(--color-border);
   }
 
   .maison-room__pathway a {
+    justify-self: start;
     color: inherit;
-    font-family: var(--mt-type-family-heading);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
   }
 
+  .maison-room__note,
   .maison-room__pathway span {
     color: var(--color-foreground-muted);
   }

@@ -3,60 +3,60 @@
     "building": {
       "type": "maison-building",
       "blocks": {
-        "rooms": {
+        "lenses": {
           "type": "entry",
           "settings": {
-            "date_label": "Note 01",
-            "heading": "The mixed-revenue kitchen",
-            "text": "<p>At Savi, rooms only held after corporate MICE banquets ran morning to evening and walk-in family lunches shared the same kitchen and service spine. Mixed revenue, not a single hero dish.</p>"
+            "date_label": "The catalogue",
+            "heading": "Three ways to read a pan",
+            "text": "<p>Open a catalogue card and use the Human, Engineer and Machine controls. Human shows the piece. Engineer opens the construction view. Machine shows a structured record a software agent could read. All three describe the same pan, so the finish that drew you in and the dimensions that determine fit stay attached to the same piece.</p><p><a href=\"/collections\">Explore the catalogue</a></p>"
           }
         },
-        "pattern": {
+        "heat": {
           "type": "entry",
           "settings": {
-            "date_label": "Note 02",
-            "heading": "Menu before merch",
-            "text": "<p>At Siya, every historical menu was digitised before repricing. Culinary families, seasonals, rotational pop-ups, print-ready composition. The storefront inherits that order: rooms that exist before merchandise shouts.</p>"
-          }
-        },
-        "cloth": {
-          "type": "entry",
-          "settings": {
-            "date_label": "Note 03",
-            "heading": "Kill gates",
-            "text": "<p>The leased-hotel hold was returned when the thesis failed — offboarding records, inventory state, a pitchbook. The house keeps that honesty: stop when the work will not hold.</p>"
-          }
-        },
-        "light": {
-          "type": "entry",
-          "settings": {
-            "date_label": "Note 04",
-            "heading": "Software as mise en place",
-            "text": "<p>Kartavya also builds software — restaurant platforms, hospitality automation, this storefront. Code is prep: labelled, rotated, ready for service. It is not the tasting menu.</p>"
+            "date_label": "The heat study",
+            "heading": "Change the hob. Watch the heat spread.",
+            "text": "<p>Choose induction, gas, coil, ceramic or charcoal, then change the heat map to model a ring, dead spots or uneven hotspots. The side-by-side views show how heat spreads through two modelled bases. Use the demo to explore conduction. Use the piece’s own specifications for hob compatibility.</p><p><a href=\"/pages/heat\">Try the heat demo</a> · <a href=\"/pages/finder\">Find a piece for your hob</a></p>"
           }
         },
         "lineage": {
           "type": "entry",
           "settings": {
-            "date_label": "Note 05",
-            "heading": "Four rooms, still in draft",
-            "text": "<p>Forge for skillets, Terre for clay, Kuro for knives, Sets for hybrid service. Collection doors are framed before products publish — empty rooms on purpose, not stock filler.</p>"
+            "date_label": "Material design",
+            "heading": "Chulha starts with what’s cooking",
+            "text": "<p>A shallow tawa makes room to turn a paratha. A saucier gives chai somewhere to pour from. A broad handi gives a cook room to layer rice. For Chulha, our terracotta design study, we start with the cooking gesture and ask what shaping, firing and finishing can do for it. The draft concepts carry design targets while compatibility and material testing remain open.</p><p>We want local potters to help set those design choices, receive visible credit for their techniques and agree the price and terms of participation. A maker should be able to tell the story of a vessel wherever they sell it.</p>"
           }
         },
-        "open": {
+        "companion": {
           "type": "entry",
           "settings": {
-            "date_label": "Note 06",
-            "heading": "Opening the door",
-            "text": "<p>About, Story, Building of, Journal. Add entries as the kitchen advances. Keep the voice of the house — synthesis as ambition, evidence tags where claims appear, no invented performance numbers.</p>"
+            "date_label": "After purchase",
+            "heading": "A way back from the pan",
+            "text": "<p>Choose a piece in <a href=\"/pages/kansa\">Kansa</a> and ask a question about its surface, heat or care. The prototype looks up prepared guidance from the concept catalogue. The proposed next step is a durable identifier on each vessel or its care card. Scanning it or entering its short code would take you to the right piece’s record, ready for a question or a handover to the next owner.</p><p>A 3D explorer is under consideration. With accurate models, a supported device could show how a pan would sit on a hob or how far the handle would reach.</p>"
+          }
+        },
+        "economics": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Platform economics",
+            "heading": "Make participation worthwhile on both sides",
+            "text": "<p>Cooks gain access to more techniques and useful forms. Makers gain customers who can find and understand their work. Who pays for discovery and support matters as much as the fee itself.</p><p>We would test how price-sensitive cooks and makers are, what each group brings to the other and what changes when makers sell elsewhere. This is the pricing question we take from <a href=\"https://doi.org/10.1162/154247603322493212\">Rochet and Tirole (2003)</a>.</p>"
+          }
+        },
+        "governance": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Platform power",
+            "heading": "Who keeps hold of the record?",
+            "text": "<p>What happens when the intermediary controls the infrastructure and collects the data? The question comes from <a href=\"https://www.wiley.com/en-us/Platform%2BCapitalism-p-9781509504879\">Nick Srnicek (2017)</a>.</p><p>Our response is to credit the maker, give makers records they can take with them and make care instructions accessible without a sign-in. Before asking a shopper for data, we ask whether the service needs it.</p>"
           }
         }
       },
-      "block_order": ["rooms", "pattern", "cloth", "light", "lineage", "open"],
+      "block_order": ["lenses", "heat", "lineage", "companion", "economics", "governance"],
       "settings": {
-        "eyebrow": "Kitchen",
-        "heading": "Building of",
-        "lede": "A making-of journal for the house: how hotel F&B and restaurant menus became a product house, and how the storefront is composed. Living notes, sourced from published work — not a fab sheet.",
+        "eyebrow": "The project",
+        "heading": "Building Maison Tavo",
+        "lede": "What will an online shop need to do when people find things through a feed, ask for them by voice and compare them with an assistant? This proof of concept follows one piece of cookware from discovery to use, care and handover.",
         "padding-block-start": 56,
         "padding-block-end": 96
       }

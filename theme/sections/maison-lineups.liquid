@@ -2,7 +2,16 @@
   if section.settings.background_color != blank
     render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
   endif
+
+  assign heading_tag = 'h2'
+  if template.name == 'list-collections' and section.index == 1
+    assign heading_tag = 'h1'
+  endif
 %}
+
+{% if template.name == 'list-collections' and section.index == 1 %}
+  {% render 'maison-breadcrumbs' %}
+{% endif %}
 
 <div
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
@@ -18,10 +27,10 @@
       <p class="maison-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
     {% endif %}
     {% if section.settings.heading != blank %}
-      <h2
+      <{{ heading_tag }}
         class="maison-editorial__title maison-lineups__title"
         data-mt-scroll="kinetic"
-      >{{ section.settings.heading | escape }}</h2>
+      >{{ section.settings.heading | escape }}</{{ heading_tag }}>
     {% endif %}
     {% if section.settings.lede != blank %}
       <p class="maison-editorial__lede">{{ section.settings.lede | escape }}</p>
@@ -43,6 +52,11 @@
             if lineup_url == blank and block.settings.handle != blank
               assign lineup_url = '/collections/' | append: block.settings.handle
             endif
+            if block.settings.handle == 'forge' or block.settings.handle == 'chulha'
+              if target_col == blank or target_col.all_products_count == 0
+                assign lineup_url = blank
+              endif
+            endif
           %}
         <li
           class="maison-lineups__item"
@@ -54,21 +68,47 @@
           {% else %}
             <div class="maison-lineups__link maison-lineups__link--static">
           {% endif %}
-            <div class="maison-lineups__kicker-row">
-              {% if block.settings.kicker != blank %}
-                <p class="maison-lineups__kicker">{{ block.settings.kicker | escape }}</p>
+            <div class="maison-lineups__content">
+              <div class="maison-lineups__kicker-row">
+                {% if block.settings.kicker != blank %}
+                  <p class="maison-lineups__kicker">{{ block.settings.kicker | escape }}</p>
+                {% endif %}
+                {% if target_col != blank and target_col.all_products_count > 0 %}
+                  <span class="maison-lineups__count">{{ target_col.all_products_count }} {{ target_col.all_products_count | pluralize: 'piece', 'pieces' }}</span>
+                {% endif %}
+              </div>
+              {% if block.settings.label != blank %}
+                <h3 class="maison-lineups__label">{{ block.settings.label | escape }}</h3>
               {% endif %}
-              {% if target_col != blank and target_col.all_products_count > 0 %}
-                <span class="maison-lineups__count">{{ target_col.all_products_count }} {{ target_col.all_products_count | pluralize: 'piece', 'pieces' }}</span>
+              {% if block.settings.text != blank %}
+                <p class="maison-lineups__text">{{ block.settings.text | escape }}</p>
+              {% endif %}
+              {% if lineup_url != blank %}
+                <span class="maison-lineups__cta">{{ 'maison.lineup_browse' | t }}</span>
               {% endif %}
             </div>
-            {% if block.settings.label != blank %}
-              <h3 class="maison-lineups__label">{{ block.settings.label | escape }}</h3>
-            {% endif %}
-            {% if block.settings.text != blank %}
-              <p class="maison-lineups__text">{{ block.settings.text | escape }}</p>
-            {% endif %}
-            <span class="maison-lineups__cta">{{ 'maison.lineup_browse' | t }}</span>
+            {% liquid
+              assign lineup_key = block.settings.handle | append: ' ' | append: block.settings.label | downcase
+              if lineup_key contains 'cookware' or lineup_key contains 'forge'
+                assign lineup_asset = 'maison-pan-stacked-showcase.webp'
+              elsif lineup_key contains 'tableware' or lineup_key contains 'pottery' or lineup_key contains 'terre' or lineup_key contains 'clay'
+                assign lineup_asset = 'maison-dining-set-6pc.webp'
+              elsif lineup_key contains 'care' or lineup_key contains 'set'
+                assign lineup_asset = 'maison-handles-grip-study.avif'
+              else
+                assign lineup_asset = 'maison-hero.webp'
+              endif
+            %}
+            <div class="maison-lineups__media" aria-hidden="true">
+              <img
+                class="maison-lineups__img"
+                src="{{ lineup_asset | asset_url }}"
+                alt=""
+                loading="lazy"
+                width="600"
+                height="450"
+              >
+            </div>
           {% if lineup_url != blank %}
             </a>
           {% else %}
@@ -197,6 +237,32 @@
       min-height: 100%;
       padding: 1.75rem 1.5rem;
     }
+  }
+
+  .maison-lineups__content {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .maison-lineups__media {
+    margin-top: 1rem;
+    border-radius: 4px;
+    overflow: hidden;
+    background: rgb(var(--color-foreground-rgb) / 0.04);
+    border: 1px solid var(--color-border);
+    aspect-ratio: 16 / 10;
+  }
+
+  .maison-lineups__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .maison-lineups__link:hover .maison-lineups__img {
+    transform: scale(1.035);
   }
 
   .maison-lineups__title .mt-word,

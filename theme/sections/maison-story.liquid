@@ -13,15 +13,15 @@
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
 <div
-  class="section section--page-width spacing-style maison-editorial maison-story{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  class="section section--page-width spacing-style maison-reading maison-story{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
   style="{% render 'spacing-style', settings: section.settings %}"
 >
-  <header class="maison-editorial__header maison-story__header" data-mt-scroll="chapter">
+  <header class="maison-editorial__header" data-mt-scroll="chapter">
     {% if section.settings.eyebrow != blank %}
       <p class="maison-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
     {% endif %}
     {% if section.settings.heading != blank %}
-      <h1 class="maison-editorial__title" data-mt-scroll="kinetic">{{ section.settings.heading | escape }}</h1>
+      <h1 class="maison-editorial__title">{{ section.settings.heading | escape }}</h1>
     {% endif %}
     {% if section.settings.lede != blank %}
       <p class="maison-editorial__lede">{{ section.settings.lede | escape }}</p>
@@ -30,7 +30,7 @@
 
   {% if show_provenance %}
     <aside class="maison-story__provenance" aria-label="{{ 'maison.provenance_label' | t }}" data-mt-scroll>
-      <p class="maison-story__provenance-eyebrow">{{ section.settings.provenance_eyebrow | default: 'Three places' | escape }}</p>
+      <p class="maison-editorial__eyebrow maison-story__provenance-label">{{ section.settings.provenance_eyebrow | default: 'Three places' | escape }}</p>
       <ul class="maison-story__places list-unstyled" role="list">
         {% if section.settings.place_1_label != blank %}
           <li class="maison-story__place">
@@ -61,16 +61,13 @@
   {% endif %}
 
   {% if section.blocks.size > 0 %}
-    <ol class="maison-story__chapters list-unstyled">
+    <ol class="maison-story__chapters list-unstyled" role="list">
       {% for block in section.blocks %}
         <li
           class="maison-story__chapter"
           data-mt-scroll
           {{ block.shopify_attributes }}
         >
-          {% if block.settings.kicker != blank %}
-            <p class="maison-story__chapter-num" aria-hidden="true">{{ block.settings.kicker | escape }}</p>
-          {% endif %}
           <div class="maison-story__chapter-body">
             {% if block.settings.kicker != blank %}
               <p class="maison-editorial__eyebrow">{{ block.settings.kicker | escape }}</p>
@@ -82,6 +79,35 @@
               <div class="maison-editorial__rte rte">{{ block.settings.text }}</div>
             {% endif %}
           </div>
+          {% liquid
+            assign chapter_image = block.settings.image
+            if chapter_image == blank
+              case forloop.index
+                when 1
+                  assign fallback_asset = 'maison-about-provenance.webp'
+                when 2
+                  assign fallback_asset = 'maison-clay-potter-craft.webp'
+                when 3
+                  assign fallback_asset = 'maison-about-artisan-heritage.webp'
+                else
+                  assign fallback_asset = 'maison-handles-grip-study.avif'
+              endcase
+            endif
+          %}
+          <div class="maison-story__chapter-media">
+            {% if chapter_image != blank %}
+              {{ chapter_image | image_url: width: 1200 | image_tag: class: 'maison-story__chapter-img', loading: 'lazy' }}
+            {% else %}
+              <img
+                class="maison-story__chapter-img"
+                src="{{ fallback_asset | asset_url }}"
+                alt="{{ block.settings.heading | escape }}"
+                loading="lazy"
+                width="800"
+                height="600"
+              >
+            {% endif %}
+          </div>
         </li>
       {% endfor %}
     </ol>
@@ -89,170 +115,83 @@
 </div>
 
 {% stylesheet %}
-  .maison-editorial {
-    color: var(--color-foreground);
-    font-kerning: normal;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  .maison-editorial__header {
-    max-width: 44rem;
-    margin-block-end: clamp(2rem, 4vw, 3.5rem);
-  }
-
-  .maison-editorial__eyebrow {
-    margin: 0;
-    font-family: var(--mt-type-family-mono);
-    font-size: var(--mt-type-accent);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--brand-color-raw-copper, #C4784A);
-    font-feature-settings: "zero" 1;
-  }
-
-  .maison-editorial__title {
-    margin-block: 0.75rem 1.25rem;
-    font-family: var(--mt-type-family-heading);
-    font-weight: 400;
-    letter-spacing: -0.015em;
-    font-feature-settings: "liga" 1, "dlig" 1;
-    font-variation-settings: 'opsz' 144;
-    font-size: var(--mt-type-display);
-    line-height: 1.08;
-    color: var(--color-foreground);
-  }
-
-  .maison-editorial__lede {
-    margin: 0;
-    max-width: 42rem;
-    color: var(--color-foreground);
-    opacity: 0.85;
-    font-size: var(--mt-type-lede);
-    line-height: 1.7;
-    font-kerning: normal;
-  }
-
-  .maison-editorial__card-title {
-    margin: 0 0 0.75rem;
-    font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-title);
-    letter-spacing: -0.01em;
-    font-feature-settings: "liga" 1;
-    font-variation-settings: 'opsz' 72;
-    color: var(--color-foreground);
-  }
-
-  .maison-editorial__rte,
-  .maison-editorial__rte p {
-    color: var(--color-foreground);
-    opacity: 0.82;
-    font-size: var(--mt-type-lede);
-    line-height: 1.75;
-    font-kerning: normal;
-  }
-
   .maison-story__provenance {
-    margin-block-end: clamp(2.5rem, 5vw, 4rem);
-    padding-block: clamp(1.5rem, 3vw, 2.25rem);
-    border-block: 1px solid var(--color-border, rgba(110, 90, 61, 0.25));
+    margin-block-end: var(--maison-reading-gap);
+    padding-block: clamp(1rem, 2.5vw, 1.75rem);
+    border-block: 1px solid var(--color-border);
   }
 
-  .maison-story__provenance-eyebrow {
-    margin: 0 0 1.25rem;
-    font-family: var(--mt-type-family-mono);
-    font-size: var(--mt-type-mono);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--brand-color-aged-bronze, #6E5A3D);
+  .maison-story .maison-story__provenance-label {
+    margin-block-end: 1rem;
   }
 
   .maison-story__places {
     display: grid;
-    gap: 1.5rem;
+    gap: 1rem 2rem;
     margin: 0;
     padding: 0;
   }
 
   .maison-story__place-label {
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.25rem;
     font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-lede);
-    letter-spacing: -0.01em;
-    font-feature-settings: "liga" 1;
-    color: var(--color-foreground);
+    font-size: var(--maison-reading-lede);
+    letter-spacing: var(--mt-type-tracking-heading);
   }
 
   .maison-story__place-text {
     margin: 0;
-    max-width: 24rem;
-    color: var(--color-foreground);
-    opacity: 0.75;
-    font-size: var(--mt-type-body);
-    line-height: 1.6;
+    max-inline-size: 46ch;
   }
 
   .maison-story__chapters {
-    display: grid;
-    gap: 0;
     margin: 0;
     padding: 0;
   }
 
   .maison-story__chapter {
     display: grid;
-    gap: 1rem;
-    padding-block: clamp(2rem, 4vw, 3rem);
-    border-block-start: 1px solid var(--color-border, rgba(110, 90, 61, 0.2));
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--maison-reading-gap);
+    align-items: start;
+    padding-block: var(--maison-reading-gap);
+    border-block-start: 1px solid var(--color-border);
   }
 
   .maison-story__chapter:last-child {
-    border-block-end: 1px solid var(--color-border, rgba(110, 90, 61, 0.2));
+    border-block-end: 1px solid var(--color-border);
   }
 
-  .maison-story__chapter-num {
-    display: none;
-    margin: 0;
-    font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-display-lg);
-    line-height: 0.9;
-    letter-spacing: var(--mt-type-tracking-heading);
-    color: rgb(var(--color-foreground-rgb, 26 23 20) / 0.15);
-    font-variation-settings: 'opsz' 144;
-    user-select: none;
+  .maison-story .maison-story__chapter-body .maison-editorial__eyebrow {
+    margin-block-end: 0.5rem;
   }
 
-  .maison-story__chapter-body .maison-editorial__eyebrow {
-    color: var(--brand-color-raw-copper, #C4784A);
-    margin-bottom: 0.35rem;
+  .maison-story__chapter-media {
+    inline-size: 100%;
+    max-inline-size: 34rem;
+    background: rgb(var(--color-foreground-rgb) / 0.04);
   }
 
-  @media screen and (min-width: 750px) {
+  .maison-story__chapter-img {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  @media (min-width: 56rem) {
     .maison-story__places {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 2rem;
     }
 
     .maison-story__chapter {
-      grid-template-columns: 5.5rem minmax(0, 1fr);
-      column-gap: 2rem;
-      align-items: start;
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     }
 
-    .maison-story__chapter-num {
-      display: block;
-      grid-row: 1;
+    .maison-story__chapter-media {
+      justify-self: end;
     }
-
-    .maison-story__chapter-body {
-      grid-column: 2;
-      max-width: 40rem;
-    }
-  }
-
-  .maison-story__header .mt-word,
-  .maison-story__header .mt-word-mask {
-    vertical-align: top;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -396,6 +335,11 @@
           "id": "text",
           "label": "t:settings.content",
           "default": "<p>Savi Hotels &amp; Resorts, Operational Lead, Jaipur, January 2021 to July 2026. Kartavya took entrepreneurship-through-acquisition control of a leased Savi property within SRBS Group — from handover and F&amp;B inventory through meeting rooms, banquet spaces, MICE catering, and walk-in lunches. He partnered with head chefs on kitchen standards and does not claim a formal line-cook title.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:settings.image"
         }
       ]
     }

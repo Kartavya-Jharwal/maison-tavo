@@ -48,5 +48,31 @@ Allow: /
 Allow: /pages/ucp
 Allow: /products/
 
-# Agent Manifest Reference
-# LLMs: {{ shop.url }}/pages/llms-txt
+User-agent: FacebookBot
+Allow: /
+Allow: /pages/ucp
+Allow: /products/
+
+User-agent: Bingbot
+Allow: /
+Allow: /pages/ucp
+Allow: /pages/kansa
+Allow: /products/
+
+User-agent: cohere-ai
+Allow: /
+Allow: /pages/ucp
+Allow: /products/
+
+User-agent: anthropic-ai
+Allow: /
+Allow: /pages/ucp
+Allow: /products/
+
+# ==============================================================================
+# Maison Tavo · AI & Agent Manifest References
+# ==============================================================================
+# LLMs.txt:   {{ shop.url }}/pages/llms-txt
+# UCP:        {{ shop.url }}/pages/ucp
+# Ask AI:     {{ shop.url }}/pages/ask-ai
+# AUGO:       All major AI crawlers permitted above

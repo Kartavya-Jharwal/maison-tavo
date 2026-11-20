@@ -18,7 +18,9 @@ Kansa's bell-metal reference connects the companion to reverence for utensils as
 
 The bell can recur in the splash, voice opener, care-kit card, A3 sonic identity and pitch opening. Website sound is opt-in with a complete silent equivalent. Record an original bell sample and keep its production record. Source any chants, translations and religious references properly, preserving context rather than using reverence as decorative exoticism.
 
-Kansa helps before purchase through guidance and fit; during purchase through bounded proposals; after purchase through care and maintenance. The current integration is reported as mocked, with architecture specified and APIs not yet wired. Its value can be demonstrated honestly without calling scripted behavior real AI.
+Kansa helps visitors explore fit, heat and care with a browser-based prototype. Its intent matcher selects prepared guidance for the chosen piece from the concept catalogue. Where supported, browser speech provides an optional voice interface. A live conversational model and agent negotiation are future integrations. Any transaction proposal would need fresh availability and price checks and explicit human review.
+
+The ownership prototype proposes a durable part of each vessel or its care card that carries a scannable identifier and a typed short code. The code should lead directly to the model and revision record, with construction, compatibility, care, parts and evidence status available in readable HTML and structured fields. Reading the record should require neither an account nor an owner identifier. Kansa already supports model selection by URL. Physical identifiers, revision-level records and long-term link stewardship still need a prototype and tests. Model-specific AR depends on accurate assets and supported devices.
 
 ## The assortment expresses a material system and a commercial ladder
 
@@ -29,6 +31,8 @@ The latest planning range is 21–28 SKUs, targeting approximately 25 live recor
 3. Sets, bundles, refresh/maintenance kits, bamboo steamers and extra lids.
 
 Earlier skillets, tagines, knives and the eleven repository concept additions must be reconciled into this assortment. They are not automatically the final twenty-five. Each SKU needs an approved role, material brief, claim status, price rationale, media and care information.
+
+[Chulha](catalogue-categories.md#chulha) explores terracotta through specific cooking gestures, including turning flatbread, pouring chai and layering biryani. It is also the first candidate for a proposed artisan programme in which local makers shape the design, agree commercial terms and retain portable credit for their techniques. Capabilities, manufacturing partnerships and service terms depend on testing and maker agreements.
 
 Entry, hero, mid-range, gift and heirloom purchases form the commercial ladder. Modular sets support order value through suitability. Care products, potential refurbishment services, gifting and referrals sustain a relationship around deliberately durable objects. Proposed services cannot be marketed as operational before their delivery is established.
 

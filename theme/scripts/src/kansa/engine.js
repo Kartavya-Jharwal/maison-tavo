@@ -318,7 +318,7 @@ export function buildFixtureAnswer(piece, intentId) {
     case 'commerce':
       out = {
         tag: 'PRODUCT',
-        text: `${title} is in the catalogue${piece.price_usd ? ` from about $${piece.price_usd}` : ''}. Open the product page to review size, stock, and add to bag.`,
+        text: `${title} is in the catalogue${piece.list_price_gbp ? ` with a proposed list price of £${piece.list_price_gbp}` : ''}. Check the storefront for current pricing and availability.`,
         tools: ['link_product'],
         followUps: ['Heat compatibility?', 'Care protocol?'],
       };

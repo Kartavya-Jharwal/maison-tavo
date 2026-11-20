@@ -1,0 +1,95 @@
+<!doctype html>
+<html
+  {% if request.design_mode %}class="shopify-design-mode"{% endif %}
+  lang="{{ request.locale.iso_code }}"
+  dir="{{ request.locale.direction | default: 'ltr' }}"
+  data-mt-layout="agent"
+>
+  <head>
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
+      >
+    {%- endif -%}
+
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('mt_reduced_motion');
+          var reduce =
+            saved === 'true' ||
+            (saved === null && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+          document.documentElement.dataset.reducedMotion = String(reduce);
+        } catch (e) {
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.dataset.reducedMotion = 'true';
+          }
+        }
+      })();
+    </script>
+
+    {%- render 'view-transition-opt-in' -%}
+    {%- render 'meta-tags' -%}
+    {%- render 'stylesheets' -%}
+    {%- render 'fonts' -%}
+    {%- render 'scripts' -%}
+    {%- render 'theme-styles-variables' -%}
+    {%- render 'color-palette' -%}
+    {%- render 'font-awesome' -%}
+
+    {% if request.design_mode %}
+      {%- render 'theme-editor' -%}
+    {% endif %}
+
+    {{ content_for_header }}
+
+    <style>
+      /* Agent layout: full-bleed TUI, no Horizon chrome */
+      html[data-mt-layout="agent"],
+      html[data-mt-layout="agent"] body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow-x: hidden;
+        background: #0a0906;
+      }
+      html[data-mt-layout="agent"] .page-width { max-width: none; padding: 0; }
+      /* Hide Horizon header / footer / splash */
+      html[data-mt-layout="agent"] #shopify-section-header,
+      html[data-mt-layout="agent"] #shopify-section-footer-group,
+      html[data-mt-layout="agent"] #SplashIntro,
+      html[data-mt-layout="agent"] [data-mt-consent-bar],
+      html[data-mt-layout="agent"] [data-mt-profiler] {
+        display: none !important;
+      }
+      html[data-mt-layout="agent"] .mt-tui-wrapper {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body class="page-width-{{ settings.page_width }}" id="body-agent">
+    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
+      {{ 'actions.skip_to_content' | t }}
+    </a>
+
+    {{ content_for_layout }}
+
+    {%- render 'maison-toasts' -%}
+
+    <script>
+      /* Minimal runtime for agent layout (no idle blaze, no profiler) */
+      (function () {
+        document.addEventListener('click', function (event) {
+          if (!event.target.closest('[data-mt-reset]')) return;
+          event.preventDefault();
+          try { localStorage.clear(); sessionStorage.clear(); } catch (e) {}
+          window.location.href = '/';
+        });
+      })();
+    </script>
+  </body>
+</html>

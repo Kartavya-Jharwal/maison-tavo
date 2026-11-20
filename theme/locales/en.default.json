@@ -98,7 +98,8 @@
     "sign_up": "Sign up",
     "submit": "Submit",
     "view_store_information": "View store information",
-    "sort": "Sort"
+    "sort": "Sort",
+    "skip_to_content": "Skip to content"
   },
   "blocks": {
     "contact_form": {
@@ -349,7 +350,8 @@
   },
   "maison": {
     "designed_developed_by": "Site designed and developed by",
-    "legal_template_notice": "Template copy requiring lawyer review. This is professional placeholder text for Maison Tavo / Kartavya and is not legal advice.",
+    "legal_template_notice": "Maison Tavo is a password-gated cookware and commerce exhibition.",
+    "accept_house_joke": "Accept the house joke",
     "native_shopify_policy": "Shopify-hosted policy",
     "microapp_demo_note": "Frontend demo microapp. Nothing is saved or sent to a backend.",
     "microapp_invalid": "Choose a registered microapp id in the section or page metafield.",

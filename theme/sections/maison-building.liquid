@@ -8,11 +8,10 @@
   class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
 ></div>
 <div
-  class="section section--page-width spacing-style maison-editorial maison-building{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+  class="section section--page-width spacing-style maison-reading maison-building{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
   style="{% render 'spacing-style', settings: section.settings %}"
-  data-maison-reveal-root
 >
-  <header class="maison-editorial__header maison-building__header" data-maison-reveal>
+  <header class="maison-editorial__header" data-mt-scroll="chapter">
     {% if section.settings.eyebrow != blank %}
       <p class="maison-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
     {% endif %}
@@ -29,16 +28,12 @@
       {% for block in section.blocks %}
         <article
           class="maison-building__entry"
-          data-maison-reveal
-          style="--maison-reveal-delay: {{ forloop.index0 | times: 60 }}ms"
+          data-mt-scroll="chapter"
           {{ block.shopify_attributes }}
         >
-          <div class="maison-building__rail" aria-hidden="true"></div>
-          <div class="maison-building__meta">
-            {% if block.settings.date_label != blank %}
-              <p class="maison-editorial__eyebrow">{{ block.settings.date_label | escape }}</p>
-            {% endif %}
-          </div>
+          {% if block.settings.date_label != blank %}
+            <p class="maison-editorial__eyebrow maison-building__meta">{{ block.settings.date_label | escape }}</p>
+          {% endif %}
           <div class="maison-building__body">
             {% if block.settings.heading != blank %}
               <h2 class="maison-editorial__card-title">{{ block.settings.heading | escape }}</h2>
@@ -54,156 +49,32 @@
 </div>
 
 {% stylesheet %}
-  .maison-editorial {
-    color: var(--color-foreground);
-  }
-
-  .maison-editorial__header {
-    max-width: 42rem;
-    margin-block-end: 3rem;
-  }
-
-  .maison-editorial__eyebrow {
-    margin: 0;
-    font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-accent);
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--color-foreground-muted);
-  }
-
-  .maison-editorial__title {
-    margin-block: 0.75rem 1rem;
-    font-family: var(--mt-type-family-heading);
-    font-weight: var(--font-heading--weight);
-    letter-spacing: 0.04em;
-    font-variation-settings: 'opsz' 144;
-    font-size: var(--mt-type-display);
-    line-height: 1.1;
-  }
-
-  .maison-editorial__lede {
-    margin: 0;
-    max-width: 40rem;
-    color: var(--color-foreground-muted);
-    font-size: var(--mt-type-lede);
-    line-height: 1.6;
-  }
-
-  .maison-editorial__card-title {
-    margin: 0 0 0.75rem;
-    font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-title);
-    letter-spacing: 0.03em;
-    font-variation-settings: 'opsz' 72;
-  }
-
-  .maison-editorial__rte,
-  .maison-editorial__rte p {
-    color: var(--color-foreground-muted);
-  }
-
   .maison-building__log {
-    display: grid;
-    gap: 0;
     border-block-start: 1px solid var(--color-border);
   }
 
   .maison-building__entry {
-    position: relative;
     display: grid;
-    gap: 0.5rem;
-    padding-block: 1.85rem;
-    padding-inline-start: 1.25rem;
+    gap: 0.5rem var(--maison-reading-gap);
+    padding-block: var(--maison-reading-gap);
     border-block-end: 1px solid var(--color-border);
   }
 
-  .maison-building__rail {
-    position: absolute;
-    inset-block: 1.85rem;
-    inset-inline-start: 0;
-    width: 2px;
-    background: var(--brand-color-raw-copper, var(--color-border));
-    opacity: 0.55;
-  }
-
-  .maison-building__entry .maison-editorial__eyebrow {
-    color: var(--brand-color-aged-bronze, var(--color-foreground-muted));
-  }
-
-  @media screen and (min-width: 750px) {
+  @media (min-width: 56rem) {
     .maison-building__entry {
-      grid-template-columns: 8.5rem minmax(0, 1fr);
-      column-gap: 2.25rem;
+      grid-template-columns: minmax(7rem, 1fr) minmax(0, 4fr);
       align-items: start;
-      padding-inline-start: 1.5rem;
     }
 
     .maison-building__meta {
-      grid-column: 1;
-      padding-block-start: 0.15rem;
+      padding-block-start: 0.38rem;
     }
 
     .maison-building__body {
       grid-column: 2;
-      max-width: 40rem;
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .maison-building [data-maison-reveal] {
-      opacity: 0;
-      transform: translateY(0.7rem);
-      transition:
-        opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-      transition-delay: var(--maison-reveal-delay, 0ms);
-    }
-
-    .maison-building [data-maison-reveal].is-revealed {
-      opacity: 1;
-      transform: none;
-    }
-
-    .maison-building__rail {
-      transform-origin: top;
-      transform: scaleY(0);
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-      transition-delay: var(--maison-reveal-delay, 0ms);
-    }
-
-    .maison-building__entry.is-revealed .maison-building__rail {
-      transform: scaleY(1);
     }
   }
 {% endstylesheet %}
-
-{% javascript %}
-  (() => {
-    const root = document.querySelector('.maison-building[data-maison-reveal-root]');
-    if (!root) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const items = root.querySelectorAll('[data-maison-reveal]');
-    if (!items.length || !('IntersectionObserver' in window)) {
-      items.forEach((el) => el.classList.add('is-revealed'));
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-revealed');
-          observer.unobserve(entry.target);
-        });
-      },
-      { rootMargin: '0px 0px -6% 0px', threshold: 0.12 }
-    );
-
-    items.forEach((el) => observer.observe(el));
-  })();
-{% endjavascript %}
 
 {% schema %}
 {

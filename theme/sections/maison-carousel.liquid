@@ -1,0 +1,596 @@
+{%- comment -%}
+  Inter-page rail — an Embla-powered carousel whose slides are rooms rather
+  than stock. Each block links to a page, collection, or product, so the rail
+  carries a visitor across the storefront instead of looping a single grid.
+
+  Behaviour: scripts/src/carousel.js (assets/maison-carousel.js), lazy-loaded
+  from maison-runtime.js when this section is present. Without JS the track
+  stays a native horizontal scroller and the chrome stays hidden.
+
+  Slide position is remembered per section in sessionStorage, so returning to
+  the room (or moving away and back) resumes the same slide.
+{%- endcomment -%}
+
+{% liquid
+  assign slides = section.blocks.size
+  assign uid = 'MaisonCarousel-' | append: section.id
+  assign per_view = section.settings.per_view | default: 3
+  assign gap = section.settings.gap | default: 20
+  assign heading_text = section.settings.heading | default: page.title
+%}
+
+{% if slides > 0 %}
+  <div
+    class="section section--page-width spacing-style maison-carousel"
+    style="
+      {% render 'spacing-style', settings: section.settings %}
+      --mt-carousel-gap: {{ gap }}px;
+      --mt-carousel-per-view: {{ per_view }};
+    "
+    data-mt-carousel
+    data-mt-carousel-id="{{ section.id }}"
+    data-mt-carousel-align="{{ section.settings.align | default: 'start' }}"
+    data-mt-carousel-loop="{{ section.settings.loop }}"
+  >
+    <header class="maison-carousel__header">
+      <div class="maison-carousel__heading-group">
+        {% if section.settings.eyebrow != blank %}
+          <p class="maison-carousel__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {% endif %}
+        {% if heading_text != blank %}
+          <h2 class="maison-carousel__title" id="{{ uid }}-title">{{ heading_text | escape }}</h2>
+        {% endif %}
+        {% if section.settings.lede != blank %}
+          <p class="maison-carousel__lede">{{ section.settings.lede | escape }}</p>
+        {% endif %}
+      </div>
+
+      <div class="maison-carousel__controls">
+        <button
+          type="button"
+          class="maison-carousel__control"
+          data-mt-carousel-prev
+          aria-label="Previous slide"
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+        <button
+          type="button"
+          class="maison-carousel__control"
+          data-mt-carousel-next
+          aria-label="Next slide"
+        >
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </header>
+
+    <div
+      class="maison-carousel__viewport"
+      data-mt-carousel-viewport
+      tabindex="0"
+      role="group"
+      {% if heading_text != blank %}
+        aria-labelledby="{{ uid }}-title"
+      {% else %}
+        aria-label="Rooms"
+      {% endif %}
+    >
+      <ul class="maison-carousel__track" data-mt-carousel-track>
+        {% for block in section.blocks %}
+          {% liquid
+            assign card_collection = block.settings.collection
+            assign card_url = block.settings.link
+            if card_url == blank and card_collection != blank
+              assign card_url = card_collection.url
+            endif
+
+            assign image = block.settings.image
+            if image == blank and card_collection != blank
+              assign image = card_collection.featured_image
+            endif
+
+            assign card_label = block.settings.label
+            if card_label == blank and card_collection != blank
+              assign card_label = card_collection.title
+            endif
+
+            assign fallbacks = 'maison-pan-stacked-showcase.webp,maison-dining-set-6pc.webp,maison-handles-grip-study.avif,maison-hero.webp' | split: ','
+            assign fallback_index = forloop.index0 | modulo: fallbacks.size
+            assign fallback_asset = fallbacks[fallback_index]
+          %}
+          <li
+            class="maison-carousel__slide"
+            data-mt-carousel-slide
+            aria-roledescription="slide"
+            aria-label="{{ forloop.index }} of {{ slides }}"
+            {{ block.shopify_attributes }}
+          >
+            {% if card_url != blank %}
+              <a class="maison-carousel__card" href="{{ card_url }}">
+            {% else %}
+              <div class="maison-carousel__card">
+            {% endif %}
+              <div class="maison-carousel__media" data-mt-carousel-reveal>
+                {% if image != blank %}
+                  <img
+                    src="{{ image | image_url: width: 900 }}"
+                    srcset="
+                      {{ image | image_url: width: 480 }} 480w,
+                      {{ image | image_url: width: 720 }} 720w,
+                      {{ image | image_url: width: 900 }} 900w
+                    "
+                    sizes="(min-width: 990px) 30vw, 80vw"
+                    alt="{{ image.alt | default: card_label | escape }}"
+                    width="{{ image.width }}"
+                    height="{{ image.height }}"
+                    loading="lazy"
+                  >
+                {% else %}
+                  <img
+                    src="{{ fallback_asset | asset_url }}"
+                    alt=""
+                    width="900"
+                    height="675"
+                    loading="lazy"
+                  >
+                {% endif %}
+              </div>
+
+              <div class="maison-carousel__body">
+                {% if block.settings.kicker != blank %}
+                  <p class="maison-carousel__kicker" data-mt-carousel-reveal>
+                    {{ block.settings.kicker | escape }}
+                  </p>
+                {% endif %}
+                {% if card_label != blank %}
+                  <h3 class="maison-carousel__label" data-mt-carousel-reveal>
+                    {{ card_label | escape }}
+                  </h3>
+                {% endif %}
+                {% if block.settings.text != blank %}
+                  <p class="maison-carousel__text" data-mt-carousel-reveal>
+                    {{ block.settings.text | escape }}
+                  </p>
+                {% endif %}
+                {% if card_url != blank %}
+                  <span class="maison-carousel__cta" data-mt-carousel-reveal>
+                    {{ block.settings.link_label | default: 'Enter the room' | escape }}
+                    <span aria-hidden="true">→</span>
+                  </span>
+                {% endif %}
+              </div>
+            {% if card_url != blank %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    {% if section.settings.show_dots %}
+      <div class="maison-carousel__dots" data-mt-carousel-dots></div>
+    {% endif %}
+
+    {% if section.settings.show_progress %}
+      <div class="maison-carousel__progress" data-mt-carousel-progress aria-hidden="true">
+        <span></span>
+      </div>
+    {% endif %}
+  </div>
+{% elsif request.design_mode %}
+  <div class="section section--page-width maison-carousel maison-carousel--empty">
+    <p>Add at least one room to this carousel.</p>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .maison-carousel {
+    --mt-carousel-gap: 20px;
+    --mt-carousel-per-view: 3;
+    --mt-carousel-size: calc(100% - 2.5rem);
+    color: var(--color-foreground);
+  }
+
+  @media (min-width: 750px) {
+    .maison-carousel {
+      --mt-carousel-size: calc(
+        (100% - (var(--mt-carousel-gap) * (var(--mt-carousel-per-view) - 1))) / var(--mt-carousel-per-view)
+      );
+    }
+  }
+
+  .maison-carousel__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-block-end: 1.75rem;
+  }
+
+  .maison-carousel__heading-group {
+    max-width: 40rem;
+  }
+
+  .maison-carousel__eyebrow {
+    margin: 0 0 0.5rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-carousel__title {
+    margin: 0;
+    font-family: var(--mt-type-family-heading);
+    font-weight: 400;
+    font-size: var(--mt-type-heading);
+    line-height: 1.05;
+  }
+
+  .maison-carousel__lede {
+    margin: 0.75rem 0 0;
+    color: var(--color-foreground-muted);
+    font-size: var(--mt-type-lede);
+    line-height: 1.55;
+  }
+
+  .maison-carousel__controls {
+    display: none;
+    gap: 0.5rem;
+    flex: none;
+  }
+
+  [data-mt-carousel-ready='true'] .maison-carousel__controls {
+    display: flex;
+  }
+
+  .maison-carousel__control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.28);
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .maison-carousel__control:hover:not(:disabled) {
+    border-color: currentColor;
+  }
+
+  .maison-carousel__control:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .maison-carousel__control:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  .maison-carousel__viewport {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .maison-carousel__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .maison-carousel__viewport:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  [data-mt-carousel-ready='true'] .maison-carousel__viewport {
+    overflow: hidden;
+    scroll-snap-type: none;
+  }
+
+  .maison-carousel__track {
+    display: flex;
+    gap: var(--mt-carousel-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .maison-carousel__slide {
+    flex: 0 0 var(--mt-carousel-size);
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .maison-carousel__card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .maison-carousel__media {
+    position: relative;
+    overflow: clip;
+    aspect-ratio: 4 / 5;
+    background: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+
+  .maison-carousel__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .maison-carousel__card:hover .maison-carousel__media img {
+    transform: scale(1.03);
+  }
+
+  .maison-carousel__body {
+    display: grid;
+    gap: 0.35rem;
+    padding-block-start: 0.9rem;
+  }
+
+  .maison-carousel__kicker {
+    margin: 0;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted);
+  }
+
+  .maison-carousel__label {
+    margin: 0;
+    font-family: var(--mt-type-family-heading);
+    font-weight: 400;
+    font-size: var(--mt-type-title);
+    line-height: 1.15;
+  }
+
+  .maison-carousel__text {
+    margin: 0;
+    color: var(--color-foreground-muted);
+    font-size: var(--mt-type-nav);
+    line-height: 1.5;
+  }
+
+  .maison-carousel__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-block-start: 0.35rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .maison-carousel__dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-block-start: 1.5rem;
+  }
+
+  .maison-carousel__dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    background: transparent;
+    opacity: 0.4;
+    cursor: pointer;
+  }
+
+  .maison-carousel__dot.is-active {
+    opacity: 1;
+    background: currentColor;
+  }
+
+  .maison-carousel__dot:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  .maison-carousel__progress {
+    position: relative;
+    height: 1px;
+    margin-block-start: 1.5rem;
+    background: rgb(var(--color-foreground-rgb) / 0.18);
+  }
+
+  .maison-carousel__progress span {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .maison-carousel__media img {
+      transition: none;
+    }
+  }
+
+  html[data-reduced-motion='true'] .maison-carousel__media img {
+    transition: none;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Room rail (Embla)",
+  "tag": "section",
+  "class": "section-wrapper",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Across the house"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Rooms to move through"
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "Introduction",
+      "default": "Slide sideways between the rooms of the house."
+    },
+    {
+      "type": "range",
+      "id": "per_view",
+      "label": "Slides on desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignment",
+      "options": [
+        { "value": "start", "label": "Start" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "label": "Loop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress",
+      "label": "Show progress rule",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "room",
+      "name": "Room",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection",
+          "info": "Optional. Supplies the image, title, and link when the fields below are blank."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker",
+          "default": "Room"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Title",
+          "default": "The kitchen"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "What lives in this room."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "Enter the room"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Room rail (Embla)",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

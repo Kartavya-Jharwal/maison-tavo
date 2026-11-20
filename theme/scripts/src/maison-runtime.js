@@ -1,5 +1,6 @@
 import { animate, inView, scroll, stagger } from 'motion';
 import { createStore } from 'zustand/vanilla';
+import gsap from 'gsap';
 import { initHorizonScroll } from './horizon-scroll.js';
 import { initDrawerGesture } from './drawer-gesture.js';
 import { initPageTransitions } from './page-transition.js';
@@ -7,6 +8,7 @@ import { initMicroInteractions, refreshMicroInteractions } from './micro-interac
 import { initIdleBlazeLoader } from './effects/idle-blaze-loader.js';
 import { initMaisonToasts, MaisonToast, showToast } from './maison-toasts.js';
 import { initStreak, streakApi } from './streak.js';
+import { initLens } from './lens.js';
 
 /**
  * Lightweight Spring Physics Helper
@@ -44,9 +46,11 @@ const MaisonRuntime = {
   spring,
   toast: showToast,
   MaisonToast,
+  gsap,
 };
 
 globalThis.MaisonRuntime = MaisonRuntime;
+globalThis.gsap = gsap;
 
 /** Respect OS preference and the footer / consent-bar motion toggle. */
 function motionReduced() {
@@ -459,18 +463,28 @@ if (typeof document !== 'undefined') {
   MaisonRuntime.streak = streakApi;
 
   function loadScript(src) {
-    if (!src) return Promise.reject(new Error('missing asset'));
-    if (window.__mtVesselScript) return window.__mtVesselScript;
-    if (window.MaisonVessel) return Promise.resolve();
-    const existing = [...document.scripts].find((script) => script.src === src);
-    if (existing?.dataset.loaded === 'true') return Promise.resolve();
-    if (existing) {
-      return new Promise((resolve, reject) => {
+    return loadAsset('vessel', src);
+  }
+
+  /** One in-flight promise per lazily loaded theme asset. */
+  const assetPromises = new Map();
+
+  function loadAsset(key, src) {
+    if (!src) return Promise.reject(new Error(`missing asset: ${key}`));
+    const pending = assetPromises.get(key);
+    if (pending) return pending;
+
+    const created = new Promise((resolve, reject) => {
+      const existing = [...document.scripts].find((script) => script.src === src);
+      if (existing?.dataset.loaded === 'true') {
+        resolve();
+        return;
+      }
+      if (existing) {
         existing.addEventListener('load', () => resolve(), { once: true });
         existing.addEventListener('error', () => reject(new Error('asset failed')), { once: true });
-      });
-    }
-    const pending = new Promise((resolve, reject) => {
+        return;
+      }
       const script = document.createElement('script');
       script.src = src;
       script.async = true;
@@ -481,8 +495,10 @@ if (typeof document !== 'undefined') {
       script.onerror = () => reject(new Error('asset failed'));
       document.body.appendChild(script);
     });
-    window.__mtVesselScript = pending;
-    return pending;
+
+    assetPromises.set(key, created);
+    created.catch(() => assetPromises.delete(key));
+    return created;
   }
 
   let vesselWatch = null;
@@ -522,6 +538,45 @@ if (typeof document !== 'undefined') {
     nodes.forEach((node) => vesselWatch.observe(node));
   }
 
+  let carouselWatch = null;
+
+  /**
+   * Embla is only on the page when a merchant adds a carousel, so it ships as
+   * a lazy asset like the vessel study. Mount is idempotent.
+   */
+  function ensureCarousel() {
+    const nodes = [...document.querySelectorAll('[data-mt-carousel]')];
+    if (!nodes.length) return;
+    if (window.MaisonCarousel) {
+      window.MaisonCarousel.mountAll();
+      return;
+    }
+    if (carouselWatch) return;
+
+    const scroller = getScroller();
+    const root =
+      scroller instanceof Element && scroller !== document.body && scroller !== document.documentElement
+        ? scroller
+        : null;
+
+    carouselWatch = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        carouselWatch?.disconnect();
+        carouselWatch = null;
+        loadAsset('carousel', window.MaisonAssets?.carousel)
+          .then(() => window.MaisonCarousel?.mountAll())
+          .catch(() => {
+            document.querySelectorAll('[data-mt-carousel]').forEach((node) => {
+              node.classList.add('is-carousel-static');
+            });
+          });
+      },
+      { root, rootMargin: '320px 0px' },
+    );
+    nodes.forEach((node) => carouselWatch.observe(node));
+  }
+
   globalThis.MaisonToast = MaisonToast;
 
   const boot = () => {
@@ -538,7 +593,9 @@ if (typeof document !== 'undefined') {
     initStorageReset();
     initStreak();
     tagProfileFits();
+    initLens();
     ensureVessel();
+    ensureCarousel();
     MaisonRuntime.idleBlaze = initIdleBlazeLoader();
   };
 
@@ -551,7 +608,9 @@ if (typeof document !== 'undefined') {
     initInViewReveals();
     refreshMicroInteractions();
     tagProfileFits();
+    initLens();
     ensureVessel();
+    ensureCarousel();
     const template = document.getElementById('MainContent')?.dataset.template || '';
     if (!template.startsWith('product')) return;
     const seen = Number(sessionStorage.getItem(VIEWS_KEY) || 0) + 1;
@@ -569,6 +628,8 @@ if (typeof document !== 'undefined') {
     initInViewReveals();
     initGhostParallax();
     tagProfileFits(event.target);
+    initLens(event.target);
+    ensureCarousel();
   });
 
   // Horizon re-renders cards on filter, sort, and pagination.

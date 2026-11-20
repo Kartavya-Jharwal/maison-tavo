@@ -2,7 +2,10 @@
   "sections": {
     "maison_hero": {
       "type": "maison-hero",
-      "settings": {}
+      "settings": {
+        "headline": "Live with cookware that outlasts you.",
+        "tagline": "Know what fits your hob, how it was made and how to keep it."
+      }
     },
     "maison_story_brief": {
       "type": "maison-story-brief",
@@ -10,35 +13,35 @@
         "heat": {
           "type": "highlight",
           "settings": {
-            "kicker": "01",
-            "heading": "Heat with memory",
-            "text": "Mass where it matters. Control where the hand needs it."
+            "kicker": "",
+            "heading": "Know it fits",
+            "text": "Check the hob, size and cooking task before you choose a piece."
           }
         },
         "service": {
           "type": "highlight",
           "settings": {
-            "kicker": "02",
-            "heading": "Built for service",
-            "text": "Hospitality handling, induction-ready bases, care that is a ritual not a chore."
+            "kicker": "",
+            "heading": "See the work in it",
+            "text": "Explore the materials and the techniques that give each vessel its shape."
           }
         },
         "specs": {
           "type": "highlight",
           "settings": {
-            "kicker": "03",
-            "heading": "Specs you can read",
-            "text": "Alloy, thickness, and heat claims marked with evidence tiers — not marketing fog."
+            "kicker": "",
+            "heading": "Keep it in use",
+            "text": "Choose a piece whose care suits your kitchen, and keep the instructions with it."
           }
         }
       },
       "block_order": ["heat", "service", "specs"],
       "settings": {
         "eyebrow": "The house",
-        "heading": "Cook with what outlasts you.",
-        "lede": "Dual-mass cookware, refractory clay, and care rituals built for the working kitchen — verified where we can, honest where we cannot.",
-        "cta_label": "Read our story",
-        "cta_link": "/pages/our-story",
+        "heading": "For the kitchens you’ll live in",
+        "lede": "A cookware concept for people who cook often, whether you’re unpacking in a new flat or keeping a small restaurant running.",
+        "cta_label": "About Maison Tavo",
+        "cta_link": "/pages/about",
         "padding-block-start": 48,
         "padding-block-end": 40
       }
@@ -83,7 +86,7 @@
           "settings": {
             "kicker": "Thermal",
             "label": "Heat",
-            "text": "Why white heat does not scorch — diffusion made visible.",
+            "text": "Change the burner profile and see how heat spreads in two modelled pan bases.",
             "url": "/pages/heat",
             "emphasis": "heat"
           }

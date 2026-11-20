@@ -3,9 +3,10 @@
     "intro": {
       "type": "maison-room",
       "settings": {
-        "eyebrow": "Thermal",
+        "eyebrow": "",
         "heading": "Heat, made visible",
-        "lede": "<p>Comparative heat maps of how a burner loads the pan. Toggle stovetop profile and map mode — composite mass spreads sideways; thin steel keeps the hotspot.</p>",
+        "lede": "<p>Choose a stovetop profile to set where heat enters the base. Then try a different heat map mode to model a ring, dead spots or uneven hotspots. Compare how the warmer areas spread on the two plates.</p>",
+        "notice": "Educational simulation. The numbers describe the model. Check the piece’s specifications for actual hob compatibility.",
         "padding-block-start": 48,
         "padding-block-end": 8
       },
@@ -13,9 +14,9 @@
         "finder": {
           "type": "pathway",
           "settings": {
-            "label": "Finder ceremony",
+            "label": "Find a piece for your hob",
             "url": "/pages/finder",
-            "text": "Match heat source and ritual to a piece."
+            "text": "Compare by hob and cooking task."
           }
         }
       },
@@ -24,9 +25,9 @@
     "maison_thermal": {
       "type": "maison-thermal",
       "settings": {
-        "kicker": "Heat, made visible",
-        "heading": "Why it doesn't scorch",
-        "lede": "Pick a stovetop profile and a heat-map mode. Composite mass spreads sideways; thin steel keeps the hotspot."
+        "kicker": "",
+        "heading": "Compare the two bases",
+        "lede": "Start with the same heat input on both plates. The spread indicator summarises the gap between each model’s hottest and coolest points on a relative scale."
       }
     }
   },

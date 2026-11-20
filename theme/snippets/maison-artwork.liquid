@@ -1,0 +1,20 @@
+{% doc %}
+  Renders shared product artwork from an image-only product metafield.
+  @param images - Product artwork files.
+{% enddoc %}
+<div class="maison-product-artwork">
+  {% for file in images %}
+    {% if file.media_type == 'image' %}
+      {{ file | image_url: width: 1600 | image_tag: widths: '360, 540, 720, 1080, 1600', sizes: '(min-width: 990px) 48vw, 100vw', loading: 'lazy' }}
+    {% endif %}
+  {% endfor %}
+</div>
+
+{% stylesheet %}
+  .maison-product-artwork {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    gap: 1rem;
+  }
+  .maison-product-artwork img { width: 100%; height: auto; }
+{% endstylesheet %}

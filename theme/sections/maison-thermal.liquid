@@ -8,12 +8,12 @@
 
 <div class="maison-thermal section section--page-width" data-mt-chapter data-mt-heat-page data-mt-no-idle-blaze>
   <header class="maison-thermal__header" data-mt-scroll="chapter">
-    <p class="maison-thermal__kicker">{{ section.settings.kicker | escape }}</p>
+    {% if section.settings.kicker != blank %}
+      <p class="maison-thermal__kicker">{{ section.settings.kicker | escape }}</p>
+    {% endif %}
     <h2
       class="maison-thermal__heading"
       id="maison-thermal-heading-{{ section.id }}"
-      data-mt-scroll="kinetic"
-      aria-label="{{ section.settings.heading | escape }}"
     >
       {{ section.settings.heading | escape }}
     </h2>
@@ -135,7 +135,7 @@
         </div>
         <figcaption>
           <span>Kansa × clay</span>
-          <output data-spread="composite" aria-live="polite">ΔT —</output>
+          <output data-spread="composite" aria-live="polite">Spread index unavailable</output>
         </figcaption>
       </figure>
       <figure class="maison-thermal__plate" data-mt-scroll-item>
@@ -169,12 +169,12 @@
         </div>
         <figcaption>
           <span>1 mm steel</span>
-          <output data-spread="steel" aria-live="polite">ΔT —</output>
+          <output data-spread="steel" aria-live="polite">Spread index unavailable</output>
         </figcaption>
       </figure>
     </div>
     <p class="maison-thermal__note">
-      Comparative FTCS heat maps — educational automations of conduction on the pan base, not laboratory measurements.
+      The maps simulate conduction across each pan base. The spread index describes the model on a relative scale.
     </p>
   </maison-thermal>
 
@@ -216,7 +216,7 @@
 
 {% stylesheet %}
   .maison-thermal {
-    padding-block: clamp(3rem, 6vw, 6rem);
+    padding-block: clamp(1.75rem, 4vw, 3.5rem);
   }
 
   .maison-thermal__header {
@@ -243,22 +243,21 @@
   .maison-thermal__heading {
     margin: 0;
     font-family: var(--mt-type-family-heading);
-    font-size: var(--mt-type-display);
+    font-size: var(--mt-type-heading);
     font-weight: 400;
-    line-height: 1.05;
+    line-height: 1.12;
     letter-spacing: var(--mt-type-tracking-heading);
-  }
-
-  .maison-thermal__heading .mt-word,
-  .maison-thermal__heading .mt-word-mask {
-    vertical-align: top;
+    font-kerning: normal;
+    font-variant-ligatures: common-ligatures contextual no-discretionary-ligatures;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
   }
 
   .maison-thermal__lede {
     margin: 0;
-    max-width: 34rem;
-    line-height: 1.55;
-    color: rgb(var(--color-foreground-rgb) / 0.88);
+    max-inline-size: 58ch;
+    font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+    line-height: var(--mt-type-leading-body);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -279,6 +278,7 @@
   .maison-thermal__modes {
     display: flex;
     flex-wrap: wrap;
+    min-inline-size: 0;
     gap: 0.45rem;
     margin: 0 0 1rem;
     padding: 0;
@@ -299,7 +299,7 @@
     padding: 0 1rem;
     border: 1px solid rgb(var(--color-foreground-rgb) / 0.22);
     border-radius: 999px;
-    font-size: var(--mt-type-accent);
+    font-size: max(0.875rem, var(--mt-type-nav));
     letter-spacing: 0.01em;
     cursor: pointer;
     transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
@@ -399,8 +399,12 @@
 
   .maison-thermal__plate figcaption {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.35rem 0.75rem;
+    font-size: max(0.75rem, var(--mt-type-mono));
+    letter-spacing: 0.03em;
+    text-transform: none;
   }
 
   .maison-thermal__plate output {
@@ -409,7 +413,12 @@
 
   .maison-thermal__note {
     margin-block-start: 1.15rem;
-    letter-spacing: var(--mt-type-tracking-accent);
+    max-inline-size: 60ch;
+    font-family: var(--mt-type-family-body);
+    font-size: max(0.875rem, var(--mt-type-nav));
+    line-height: var(--mt-type-leading-body);
+    letter-spacing: normal;
+    text-transform: none;
   }
 
   /* GPU stages — poster HTML first, output fades in when ready */
@@ -456,19 +465,38 @@
     opacity: 1;
   }
 
-  .mt-fx-stage.is-fx-ready .mt-fx-stage__poster {
+  /* Keep the card poster visible so text, headings and kickers remain readable.
+     Only hide the poster if experimental html-in-canvas actually captured the DOM into WebGPU. */
+  .mt-fx-stage[data-mt-html-captured='true'] .mt-fx-stage__poster {
     opacity: 0;
     pointer-events: none;
   }
 
+  /* Ambient glowing flame atmosphere on the card frames */
   .maison-thermal__flame-card,
   .maison-thermal__blaze-copy {
+    position: relative;
     box-sizing: border-box;
     padding: clamp(1.25rem, 3vw, 2rem);
     border-radius: 1.75rem;
-    background: rgb(var(--color-foreground-rgb) / 0.04);
-    border: 1px solid rgb(var(--color-foreground-rgb) / 0.14);
+    background:
+      radial-gradient(120% 80% at 50% 100%, rgba(226, 85, 43, 0.12) 0%, transparent 60%),
+      rgb(var(--color-foreground-rgb) / 0.04);
+    border: 1px solid rgba(184, 137, 58, 0.35);
+    box-shadow:
+      0 0 24px rgba(226, 85, 43, 0.12),
+      inset 0 0 16px rgba(184, 137, 58, 0.08);
     max-width: 36rem;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+  }
+
+  .mt-fx-stage.is-fx-ready .maison-thermal__flame-card,
+  .mt-fx-stage.is-fx-ready .maison-thermal__blaze-copy {
+    border-color: rgba(226, 85, 43, 0.55);
+    box-shadow:
+      0 0 36px rgba(226, 85, 43, 0.22),
+      0 0 8px rgba(184, 137, 58, 0.35),
+      inset 0 0 20px rgba(226, 85, 43, 0.1);
   }
 
   .maison-thermal__flame-title {
@@ -758,11 +786,11 @@
             ctx.putImageData(image, 0, 0);
 
             if (output && Number.isFinite(min)) {
-              const delta = Math.round(((max - min) / peak) * 120);
-              output.value = `ΔT ${delta} °C`;
+              const spread = Math.round(((max - min) / peak) * 120);
+              output.value = `Spread index ${spread}`;
               canvas.setAttribute(
                 'aria-label',
-                `Heat map of ${material.label} under ${sourceName}, ${modeName}. Surface spread about ${delta} degrees Celsius.`,
+                `Heat map of ${material.label} under ${sourceName}, ${modeName}. Relative spread index ${spread}.`,
               );
             }
           }
@@ -788,13 +816,13 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Why it doesn't scorch"
+      "default": "Compare the two bases"
     },
     {
       "type": "textarea",
       "id": "lede",
       "label": "Lede",
-      "default": "Pick a stovetop profile and a heat-map mode. Composite mass spreads sideways; thin steel keeps the hotspot."
+      "default": "Choose a stovetop and heat map mode to compare how heat spreads through two modelled pan bases."
     }
   ],
   "presets": [

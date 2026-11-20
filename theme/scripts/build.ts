@@ -44,6 +44,10 @@ const jobs = [
     entry: `${themeRoot}/scripts/src/idle-blaze-entry.js`,
     outfile: `${themeRoot}/assets/maison-idle-blaze.js`,
   },
+  {
+    entry: `${themeRoot}/scripts/src/carousel.js`,
+    outfile: `${themeRoot}/assets/maison-carousel.js`,
+  },
 ];
 
 for (const job of jobs) {
@@ -72,5 +76,5 @@ for (const job of jobs) {
 }
 
 console.log(
-  'Bundled theme assets: maison-runtime.js, microapp-lookbook.js, microapp-kansa.js, maison-vessel.js, maison-search-assist.js, maison-heat.js, maison-idle-blaze.js',
+  'Bundled theme assets: maison-runtime.js, microapp-lookbook.js, microapp-kansa.js, maison-vessel.js, maison-search-assist.js, maison-heat.js, maison-idle-blaze.js, maison-carousel.js',
 );

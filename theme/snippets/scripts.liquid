@@ -283,8 +283,9 @@
 {% endif %}
 
 {%- comment -%}
-  M0 → M3/M4 experience (WS5) — vendored ESM, no build step, fully removable (D10).
-  Motion: hero / card / spec reveals + cart feedback (prefers-reduced-motion).
+  M0 → M3/M4 experience (WS5) — hand-written, no build step, fully removable (D10).
+  Motion: hero / card / spec reveals + cart feedback on the runtime's GSAP
+  bundle (window.gsap) so the page ships one animation engine, not three.
   Sound: opt-in toggle (silent default) + soft cart / strike cues. No ambient bed.
   Howler ships no ESM build, so it loads as a classic script → window.Howl.
   Exposes window.MaisonSound for strike / last-call (maison-runtime).

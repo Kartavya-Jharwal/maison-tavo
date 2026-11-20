@@ -1288,6 +1288,118 @@ summary:hover {
   transition: top var(--animation-speed) ease, font-size var(--animation-speed) ease;
 }
 
+/* Maison editorial typography */
+.maison-reading {
+  --maison-reading-measure: 56ch;
+  --maison-reading-gap: clamp(1.5rem, 1rem + 1.6vw, 3rem);
+  --maison-reading-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --maison-reading-lede: clamp(1.125rem, 1.04rem + 0.35vw, 1.375rem);
+  --maison-reading-title: clamp(2.5rem, 1.85rem + 2.55vw, 4.5rem);
+  --maison-reading-subtitle: clamp(1.625rem, 1.35rem + 1vw, 2.375rem);
+  --maison-reading-label: max(0.8125rem, var(--mt-type-nav));
+  color: var(--color-foreground);
+  font-family: var(--mt-type-family-body);
+  font-size: var(--maison-reading-body);
+  line-height: var(--mt-type-leading-body);
+  font-kerning: normal;
+  font-variant-ligatures: common-ligatures contextual no-discretionary-ligatures;
+}
+
+.maison-reading .maison-editorial__header {
+  display: grid;
+  gap: clamp(0.65rem, 0.5rem + 0.5vw, 1rem);
+  max-inline-size: 54rem;
+  margin-block-end: var(--maison-reading-gap);
+}
+
+.maison-reading .maison-editorial__eyebrow {
+  margin: 0;
+  color: var(--color-foreground-muted);
+  font-family: var(--mt-type-family-accent);
+  font-size: var(--maison-reading-label);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.035em;
+}
+
+.maison-reading .maison-editorial__title,
+.maison-reading .maison-editorial__card-title,
+.maison-reading .maison-editorial__rte :is(h2, h3) {
+  color: var(--color-foreground);
+  font-family: var(--mt-type-family-heading);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: var(--mt-type-tracking-heading);
+  text-transform: none;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.maison-reading .maison-editorial__title {
+  margin: 0;
+  max-inline-size: 25ch;
+  font-size: var(--maison-reading-title);
+  line-height: 1.05;
+}
+
+.maison-reading h2.maison-editorial__title {
+  font-size: var(--maison-reading-subtitle);
+  line-height: 1.12;
+}
+
+.maison-reading .maison-editorial__card-title,
+.maison-reading .maison-editorial__rte :is(h2, h3) {
+  margin-block-end: 0.6rem;
+  font-size: var(--maison-reading-subtitle);
+  line-height: 1.12;
+}
+
+.maison-reading .maison-editorial__card-title {
+  margin-block-start: 0;
+}
+
+.maison-reading h3.maison-editorial__card-title,
+.maison-reading .maison-editorial__rte h3 {
+  font-size: clamp(1.3125rem, 1.15rem + 0.55vw, 1.75rem);
+}
+
+.maison-reading .maison-editorial__lede,
+.maison-reading .maison-editorial__rte,
+.maison-reading .maison-editorial__closing {
+  max-inline-size: var(--maison-reading-measure);
+  font-size: var(--maison-reading-body);
+  line-height: inherit;
+  letter-spacing: normal;
+  overflow-wrap: anywhere;
+}
+
+.maison-reading .maison-editorial__lede {
+  margin: 0;
+  max-inline-size: 50ch;
+  font-size: var(--maison-reading-lede);
+  text-wrap: pretty;
+}
+
+.maison-reading :is(.maison-editorial__lede, .maison-editorial__rte) :is(p, li) {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.maison-reading :is(.maison-editorial__lede, .maison-editorial__rte) p {
+  margin-block: 0 0.85em;
+  text-wrap: pretty;
+}
+
+.maison-reading :is(.maison-editorial__lede, .maison-editorial__rte) > :last-child {
+  margin-block-end: 0;
+}
+
+.maison-reading :is(.maison-editorial__rte, .maison-editorial__lede) a {
+  color: inherit;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.18em;
+}
+
 /* RTE styles */
 .rte,
 .shopify-policy__title {
@@ -2358,9 +2470,17 @@ header-drawer,
   opacity: 1;
   transition: opacity 0.9s var(--mt-ease-strike, cubic-bezier(0.2, 0.8, 0.2, 1));
   background:
-    radial-gradient(120% 90% at 50% 100%, rgba(226, 85, 43, 0.42) 0%, rgba(226, 85, 43, 0.12) 38%, transparent 72%),
-    linear-gradient(180deg, transparent 0%, rgba(184, 137, 58, 0.08) 45%, rgba(20, 17, 15, 0.22) 100%);
+    radial-gradient(120% 90% at 50% 100%, rgba(226, 85, 43, 0.48) 0%, rgba(226, 85, 43, 0.16) 38%, transparent 72%),
+    radial-gradient(80% 60% at 50% 100%, rgba(247, 180, 50, 0.24) 0%, transparent 60%),
+    linear-gradient(180deg, transparent 0%, rgba(184, 137, 58, 0.12) 45%, rgba(20, 17, 15, 0.22) 100%);
   mix-blend-mode: screen;
+  animation: mt-blaze-hearth 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes mt-blaze-hearth {
+  0% { transform: scaleY(0.96); opacity: 0.82; }
+  50% { transform: scaleY(1.04); opacity: 1; }
+  100% { transform: scaleY(0.98); opacity: 0.88; }
 }
 
 .mt-idle-blaze.is-painted .mt-idle-blaze__underlay {

@@ -1,0 +1,226 @@
+<div class="section section--page-width">
+  <maison-good-questions class="maison-gq maison-reading">
+    <header class="maison-editorial__header">
+      <h1 class="maison-editorial__title">{{ section.settings.heading | escape }}</h1>
+      <p class="maison-editorial__lede">{{ section.settings.intro | escape }}</p>
+    </header>
+
+    <div class="maison-gq__questions">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'question' %}
+            <details class="maison-gq__item" {% if forloop.first %}open{% endif %} {{ block.shopify_attributes }}>
+              <summary>{{ block.settings.question | escape }}</summary>
+              <div class="maison-editorial__rte rte">{{ block.settings.answer }}</div>
+            </details>
+          {% when 'sample' %}
+            <template data-keywords="{{ block.settings.keywords | escape }}">
+              {{ block.settings.answer }}
+            </template>
+        {% endcase %}
+      {% endfor %}
+
+      <form class="maison-gq__form" hidden>
+        <label for="GoodQuestion-{{ section.id }}">{{ section.settings.prompt | escape }}</label>
+        <div class="maison-gq__input-row">
+          <input id="GoodQuestion-{{ section.id }}" type="text" maxlength="280" autocomplete="off" required>
+          <button type="submit" class="button">{{ section.settings.button | escape }}</button>
+        </div>
+        <p class="maison-gq__hint">{{ section.settings.hint | escape }}</p>
+      </form>
+      <div class="maison-gq__result" aria-live="polite"></div>
+      <template data-fallback>
+        {{ section.settings.fallback }}
+      </template>
+    </div>
+  </maison-good-questions>
+</div>
+
+{% stylesheet %}
+  .maison-gq {
+    display: grid;
+    gap: var(--maison-reading-gap);
+    margin-block: var(--mt-space-section);
+    padding: var(--mt-space-gutter);
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-lg);
+  }
+
+  @media (min-width: 56rem) {
+    .maison-gq {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 5fr);
+    }
+  }
+
+  .maison-gq__questions {
+    min-inline-size: 0;
+  }
+
+  .maison-gq .maison-editorial__header {
+    align-content: start;
+    margin: 0;
+  }
+
+  .maison-gq__item {
+    border-block-end: 1px solid var(--color-border);
+  }
+
+  .maison-gq__item summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--mt-space-md);
+    min-block-size: var(--minimum-touch-target);
+    padding-block: var(--mt-space-sm);
+    cursor: pointer;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--mt-type-title);
+    font-weight: 400;
+    letter-spacing: var(--mt-type-tracking-heading);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  .maison-gq__item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .maison-gq__item summary::after {
+    content: '+' / '';
+    font-family: var(--mt-type-family-body);
+  }
+
+  .maison-gq__item[open] summary::after {
+    content: '−' / '';
+  }
+
+  .maison-gq__item .maison-editorial__rte {
+    padding-block-end: var(--mt-space-md);
+  }
+
+  .maison-gq__form {
+    margin-block: var(--mt-space-xl) var(--mt-space-xs);
+  }
+
+  .maison-gq__form label,
+  .maison-gq__hint {
+    font-family: var(--mt-type-family-accent);
+    font-size: var(--maison-reading-label);
+  }
+
+  .maison-gq__form label {
+    font-weight: 500;
+  }
+
+  .maison-gq__input-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--mt-space-xs);
+    margin-block-start: var(--mt-space-xs);
+  }
+
+  .maison-gq__input-row input,
+  .maison-gq__input-row button {
+    min-block-size: var(--minimum-touch-target);
+  }
+
+  .maison-gq__input-row input {
+    flex: 1 1 10em;
+    min-inline-size: 0;
+    padding: var(--mt-space-xs) var(--mt-space-sm);
+    border: 1px solid var(--color-input-border);
+    border-radius: var(--style-border-radius-inputs);
+    color: var(--color-input-text);
+    background: var(--color-input-background);
+    font-family: var(--mt-type-family-body);
+    font-size: var(--maison-reading-body);
+    line-height: var(--mt-type-leading-body);
+  }
+
+  .maison-gq__input-row .button {
+    font-family: var(--mt-type-family-accent);
+  }
+
+  .maison-gq :is(summary, input, button):focus-visible {
+    outline: var(--focus-outline-width) solid currentColor;
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  .maison-gq__hint {
+    margin-block: var(--mt-space-xs) 0;
+    color: var(--color-foreground-muted);
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  if (!customElements.get('maison-good-questions')) {
+    customElements.define('maison-good-questions', class extends HTMLElement {
+      connectedCallback() {
+        const form = this.querySelector('form');
+        if (!form || !form.hidden) return;
+
+        const input = form.querySelector('input');
+        const result = this.querySelector('.maison-gq__result');
+        const samples = [...this.querySelectorAll('template[data-keywords]')];
+        const fallback = this.querySelector('template[data-fallback]');
+
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const question = input.value.trim();
+          if (!question) {
+            input.focus();
+            return;
+          }
+
+          const words = new Set(question.toLowerCase().match(/[a-z]+/g));
+          const sample = samples.find((entry) => entry.dataset.keywords
+            .split(',').some((keyword) => words.has(keyword.trim().toLowerCase()))) ?? fallback;
+          const item = document.createElement('details');
+          item.className = 'maison-gq__item';
+          item.open = true;
+
+          const title = document.createElement('summary');
+          title.textContent = question;
+          const answer = document.createElement('div');
+          answer.className = 'maison-editorial__rte rte';
+          answer.append(sample.content.cloneNode(true));
+          item.append(title, answer);
+          result.replaceChildren(item);
+          input.value = '';
+        });
+        form.hidden = false;
+      }
+    });
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Good questions",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "text", "id": "intro", "label": "Introduction" },
+    { "type": "text", "id": "prompt", "label": "Question field label" },
+    { "type": "text", "id": "button", "label": "Button label" },
+    { "type": "text", "id": "hint", "label": "Question hint" },
+    { "type": "richtext", "id": "fallback", "label": "Answer when no keyword matches" }
+  ],
+  "blocks": [
+    {
+      "type": "question", "name": "FAQ",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question" },
+        { "type": "richtext", "id": "answer", "label": "Answer" }
+      ]
+    },
+    {
+      "type": "sample", "name": "Sample answer",
+      "settings": [
+        { "type": "text", "id": "keywords", "label": "Keywords, separated by commas" },
+        { "type": "richtext", "id": "answer", "label": "Answer" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Good questions" }]
+}
+{% endschema %}

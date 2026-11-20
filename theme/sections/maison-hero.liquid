@@ -10,13 +10,17 @@
   assign hero_tablet = section.settings.image_tablet
   assign hero_mobile = section.settings.image_mobile
   assign hero_alt = section.settings.image_alt | strip
-  assign headline = section.settings.headline | default: 'Heat takes shape.'
-  assign tagline = section.settings.tagline | default: 'Cook with what outlasts you.'
+  assign headline = section.settings.headline | default: 'Live with cookware that outlasts you.'
+  assign tagline = section.settings.tagline | default: 'Know what fits your hob, how it was made and how to keep it.'
   assign brand_label = section.settings.brand | default: 'Maison Tavo'
   assign media_mode = 'asset'
+  assign forge_collection = collections['forge']
+  assign forge_url = routes.collections_url
+  if forge_collection != blank and forge_collection.products_count > 0
+    assign forge_url = forge_collection.url
+  endif
 
   if hero_desktop == blank
-    assign forge_collection = collections['forge-hybrid']
     if forge_collection != blank and forge_collection.products_count > 0
       assign hero_product = forge_collection.products.first
       if hero_product.featured_image != blank
@@ -102,17 +106,38 @@
           }}
         </picture>
       {% else %}
-        <img
-          class="maison-hero__img maison-hero__img--asset"
-          src="{{ 'maison-hero.svg' | asset_url }}"
-          alt="{{ hero_alt | escape }}"
-          width="2400"
-          height="1600"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-          data-mt-scrub="16"
-        >
+        <picture class="maison-hero__picture" data-mt-scrub="16">
+          <source
+            media="(max-width: 749px)"
+            srcset="{{ 'maison-kadai-topdown.webp' | asset_url }}"
+            width="1200"
+            height="1200"
+          >
+          <source
+            media="(min-width: 750px) and (max-width: 1199px)"
+            srcset="{{ 'maison-hero-kadai.webp' | asset_url }}"
+            width="1800"
+            height="1200"
+          >
+          <source
+            media="(min-width: 1200px)"
+            srcset="{{ 'maison-hero.webp' | asset_url }}"
+            width="2400"
+            height="1600"
+          >
+          <img
+            class="maison-hero__img maison-hero__img--asset"
+            src="{{ 'maison-hero.webp' | asset_url }}"
+            alt="{{ hero_alt | escape }}"
+            width="2400"
+            height="1600"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            data-mt-scrub="16"
+            onerror="if(this.src!=='{{ 'maison-hero.svg' | asset_url }}'){this.src='{{ 'maison-hero.svg' | asset_url }}';}"
+          >
+        </picture>
       {% endif %}
     </div>
 
@@ -124,9 +149,8 @@
       <h1
         class="maison-hero__headline"
         id="maisonHeroTitle"
-        data-mt-scroll="kinetic"
+        data-mt-scroll="beat"
         data-mt-when="load"
-        aria-label="{{ headline | escape }}"
       >
         {{ headline | escape }}
       </h1>
@@ -169,10 +193,10 @@
     </form>
 
     <div class="maison-hero__provenance-strip" id="lineups" data-mt-scroll="stagger">
-      <a class="provenance-col" data-mt-scroll-item href="{{ collections['forge-hybrid'].url | default: '/collections/forge-hybrid' }}">
+      <a class="provenance-col" data-mt-scroll-item href="{{ forge_url }}">
         <span class="provenance-num">01</span>
-        <h2 class="provenance-title">Forge Hybrid</h2>
-        <p class="provenance-desc">Carbon-steel cookline. Dual-mass heat with hospitality handling.</p>
+        <h2 class="provenance-title">Forge</h2>
+        <p class="provenance-desc">Stainless steel cookware in grouped sizes, with matched sets.</p>
       </a>
       <a class="provenance-col" data-mt-scroll-item href="{{ collections['terre-clay'].url | default: '/collections/terre-clay' }}">
         <span class="provenance-num">02</span>
@@ -205,8 +229,7 @@
     isolation: isolate;
     display: grid;
     align-items: end;
-    min-height: 100svh;
-    min-height: 100dvh;
+    min-height: min(100svh, 48rem);
     width: 100%;
     overflow: hidden;
     color: var(--bone, #f7f2e9);
@@ -255,48 +278,48 @@
   .maison-hero__content {
     position: relative;
     z-index: 2;
-    width: min(42rem, 100%);
+    width: min(49rem, 100%);
     padding:
-      clamp(var(--mt-space-8), 12vw, var(--mt-space-10))
-      clamp(var(--mt-space-5), 4vw, var(--mt-space-8))
-      clamp(var(--mt-space-6), 6vw, var(--mt-space-8));
+      clamp(3rem, 12svh, 8rem)
+      clamp(1rem, 4vw, 4rem)
+      clamp(1.5rem, 5svh, 4rem);
   }
 
   .maison-hero__brand {
-    margin: 0 0 var(--mt-space-4);
-    font-family: var(--mt-type-family-heading, var(--font-heading--family, 'Instrument Serif', Georgia, serif));
-    font-size: var(--mt-type-wordmark, var(--font-size--brand-wordmark, clamp(1.25rem, 1.05rem + 0.8vw, 1.875rem)));
-    font-weight: 400;
-    letter-spacing: var(--mt-type-tracking-wordmark, var(--letter-spacing--wordmark, -0.07em));
-    line-height: 1.1;
+    margin: 0 0 0.85rem;
+    font-family: var(--mt-type-family-accent);
+    font-size: max(0.875rem, var(--mt-type-nav));
+    font-weight: 500;
+    letter-spacing: 0.035em;
+    line-height: 1.4;
     color: var(--bone, #f7f2e9);
   }
 
-  .maison-hero__headline {
-    margin: 0 0 var(--mt-space-4);
-    font-family: var(--mt-type-family-heading, var(--font-heading--family, 'Instrument Serif', Georgia, serif));
-    font-size: var(--mt-type-display-lg, var(--font-size--fluid-display, var(--mt-type-4xl, clamp(2.4883rem, 1.6943rem + 0.2481vw, 5.2675rem))));
+  .maison-hero .maison-hero__headline {
+    margin: 0 0 0.85rem;
+    max-inline-size: 23ch;
+    font-family: var(--mt-type-family-heading);
+    font-size: clamp(2.625rem, 1.95rem + 3.2vw, 4.75rem);
     font-weight: 400;
-    line-height: 0.95;
+    line-height: 1.04;
     letter-spacing: var(--mt-type-tracking-heading, -0.02em);
+    font-kerning: normal;
+    font-variant-ligatures: common-ligatures contextual no-discretionary-ligatures;
+    text-transform: none;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
     color: var(--bone, #f7f2e9);
-  }
-
-  .maison-hero__headline .mt-word,
-  .maison-hero__headline .mt-word-mask {
-    vertical-align: top;
   }
 
   .maison-hero__tagline {
-    margin: 0 0 var(--mt-space-6);
-    max-width: 28ch;
-    font-family: var(--mt-type-family-heading, var(--font-heading--family, 'Instrument Serif', Georgia, serif));
-    font-size: var(--mt-type-lede, var(--font-size--fluid-lg, clamp(1.125rem, 1.02rem + 0.48vw, 1.375rem)));
-    font-style: italic;
+    margin: 0 0 clamp(1.25rem, 3vw, 2rem);
+    max-inline-size: 43ch;
+    font-family: var(--mt-type-family-body);
+    font-size: clamp(1.0625rem, 0.98rem + 0.35vw, 1.25rem);
     font-weight: 400;
-    line-height: 1.35;
-    letter-spacing: -0.015em;
-    color: color-mix(in srgb, var(--bone, #f7f2e9) 88%, transparent);
+    line-height: 1.55;
+    letter-spacing: normal;
+    color: var(--bone, #f7f2e9);
   }
 
   .maison-hero__actions {
@@ -447,11 +470,6 @@
       object-position: 46% 32%;
     }
 
-    .maison-hero__content {
-      width: 100%;
-      padding-bottom: clamp(var(--mt-space-6), 8vw, var(--mt-space-7));
-    }
-
     .maison-hero__provenance-strip {
       grid-template-columns: 1fr;
       gap: var(--mt-space-6);
@@ -506,13 +524,13 @@
       "type": "text",
       "id": "headline",
       "label": "Headline",
-      "default": "Heat takes shape."
+      "default": "Live with cookware that outlasts you."
     },
     {
       "type": "text",
       "id": "tagline",
       "label": "Tagline",
-      "default": "Cook with what outlasts you."
+      "default": "Know what fits your hob, how it was made and how to keep it."
     },
     {
       "type": "image_picker",

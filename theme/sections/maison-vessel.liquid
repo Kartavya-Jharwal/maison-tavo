@@ -29,9 +29,19 @@
       aria-describedby="MaisonVesselHint-{{ section.id }}"
     >
       <div class="maison-vessel__canvas" data-mt-canvas></div>
-      <p class="maison-vessel__fallback" data-mt-fallback hidden>
-        This browser cannot draw the study. The finishes below still describe the metal.
-      </p>
+      <div class="maison-vessel__fallback" data-mt-fallback hidden>
+        <img
+          class="maison-vessel__poster"
+          src="{{ 'maison-flagship-kadai.webp' | asset_url }}"
+          alt="{{ section.settings.heading | escape }}"
+          width="1200"
+          height="900"
+          loading="lazy"
+        >
+        <p class="maison-vessel__fallback-caption">
+          This browser cannot draw the interactive 3D study. The finishes below describe the surface metallurgy.
+        </p>
+      </div>
 
       <fieldset class="maison-vessel__finishes">
         <legend class="visually-hidden">Finish</legend>
@@ -109,6 +119,25 @@
 
   .maison-vessel__fallback {
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .maison-vessel__poster {
+    width: 100%;
+    max-height: 28rem;
+    object-fit: contain;
+    border-radius: 4px;
+    display: block;
+  }
+
+  .maison-vessel__fallback-caption {
+    margin-top: 0.75rem;
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-accent);
+    color: var(--color-foreground-muted);
+    text-align: center;
   }
 
   .maison-vessel__finishes {

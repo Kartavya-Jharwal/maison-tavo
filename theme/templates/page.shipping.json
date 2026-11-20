@@ -5,8 +5,8 @@
       "settings": {
         "eyebrow": "Support",
         "heading": "Delivery and returns",
-        "lede": "<p>When a piece ships, what checkout calculates, and how a return starts. Questions about washing and heat belong on <a href=\"/pages/kansa\">Kansa</a>.</p>",
-        "notice": "House draft. Publish Shopify shipping and refund policies before treating this page as the legal terms.",
+        "lede": "<p>The gated exhibition lets you see how the delivery and returns journey would work.</p>",
+        "notice": "For checkout evaluation, use only test details supplied by the project team.",
         "padding-block-start": 48,
         "padding-block-end": 64
       },
@@ -14,29 +14,29 @@
         "window": {
           "type": "clause",
           "settings": {
-            "heading": "Shipping window",
-            "text": "<p>Allocations open when a foundry heat is struck, measured, and ready. Lead time is the window on your confirmation, not a standing same-week promise. You will receive that window by email after the order is placed.</p>"
+            "heading": "Delivery for a future release",
+            "text": "<p>A release page would tell you what is ready to dispatch, what is made to order and when a piece is expected to arrive. Use the exhibition dates and stock as examples.</p>"
           }
         },
         "rates": {
           "type": "clause",
           "settings": {
-            "heading": "Rates",
-            "text": "<p>Checkout calculates the rate from the address and the piece. Review the shipping method on the checkout step before you pay. This page does not quote a flat price.</p>"
+            "heading": "Delivery charges",
+            "text": "<p>In the test journey, the delivery step shows the available methods and charges for the test address and selected pieces before the final review.</p>"
           }
         },
         "steps": {
           "type": "clause",
           "settings": {
-            "heading": "Return steps",
-            "text": "<p>1. Contact the house with the order number and photographs before you ship a piece back.</p><p>2. Wait for the return address. Do not post a piece without it.</p><p>3. Pack the piece dry, with its care card.</p><p>4. When a return is accepted, the refund goes to the original payment method after inspection.</p>"
+            "heading": "Returns in the demonstration",
+            "text": "<p>Send any feedback about a test order through Contact. Include its test reference where available and omit payment information. Test orders need no parcel sent back.</p>"
           }
         },
         "checkout": {
           "type": "clause",
           "settings": {
-            "heading": "Where this sits in the shop",
-            "text": "<p>The bag holds quantities, the subtotal, and any promo code. Checkout is the secure Shopify step after that: address, shipping method, payment, review, and confirmation. Order history lives in the account.</p>"
+            "heading": "The bag and checkout",
+            "text": "<p>Try changing the size or quantity in the bag. If you have been invited to test checkout, follow Shopify’s delivery and payment steps with the test details supplied for that session.</p>"
           }
         },
         "contact": {
@@ -44,7 +44,7 @@
           "settings": {
             "label": "Contact and locations",
             "url": "/pages/contact",
-            "text": "Write before you send a piece back."
+            "text": "Send feedback or ask about the exhibition."
           }
         },
         "faq": {
@@ -52,7 +52,7 @@
           "settings": {
             "label": "FAQ",
             "url": "/pages/faq",
-            "text": "Size, heat, and payment."
+            "text": "Find the right size, heat source and care guide."
           }
         }
       },

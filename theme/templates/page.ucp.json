@@ -1,9 +1,10 @@
 {
+  "layout": "agent",
   "sections": {
-    "main_ucp": {
-      "type": "maison-ucp-viewer",
+    "main_ucp_tui": {
+      "type": "maison-ucp-tui",
       "settings": {}
     }
   },
-  "order": ["main_ucp"]
+  "order": ["main_ucp_tui"]
 }
