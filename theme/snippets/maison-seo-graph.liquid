@@ -43,6 +43,7 @@
   endif
   assign social_list = social_urls | split: '|'
 -%}
+{%- capture search_template -%}{{ search_url }}?q={search_term_string}{%- endcapture -%}
 
 <script type="application/ld+json">
   {
@@ -79,7 +80,7 @@
           "@type": "SearchAction",
           "target": {
             "@type": "EntryPoint",
-            "urlTemplate": {{ search_url | append: '?q={search_term_string}' | json }}
+            "urlTemplate": {{ search_template | json }}
           },
           "query-input": "required name=search_term_string"
         }
