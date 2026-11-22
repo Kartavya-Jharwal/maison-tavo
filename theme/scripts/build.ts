@@ -32,7 +32,7 @@ const jobs = [
     outfile: `${themeRoot}/assets/microapp-kansa.js`,
   },
   {
-    entry: `${themeRoot}/scripts/src/vessel.js`,
+    entry: `${themeRoot}/scripts/src/round-room/entry.tsx`,
     outfile: `${themeRoot}/assets/maison-vessel.js`,
   },
   {

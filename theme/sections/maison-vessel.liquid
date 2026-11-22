@@ -1,229 +1,75 @@
-{% comment %}
-  Spatial material study. React Three Fiber mounts into the canvas from
-  assets/maison-vessel.js. It does not select a variant or add to the bag.
-{% endcomment %}
+{% comment %}Full Round Room: lazy React/Three island bundled as maison-vessel.js.{% endcomment %}
+{{ 'maison-round-room.css' | asset_url | stylesheet_tag }}
 {% liquid
-  assign vessel_name = product.title | downcase
-  assign vessel_kind = 'pan'
-  if vessel_name contains 'kadai' or vessel_name contains 'kadhai' or vessel_name contains 'wok'
-    assign vessel_kind = 'kadai'
-  elsif vessel_name contains 'handi' or vessel_name contains 'matka'
-    assign vessel_kind = 'handi'
-  elsif vessel_name contains 'pot' or vessel_name contains 'saucier' or vessel_name contains 'cocotte'
-    assign vessel_kind = 'pot'
+  assign initial_series = 'forge'
+  assign initial_key = product.handle | append: ' ' | append: product.title | append: ' ' | append: collection.handle | append: ' ' | append: collection.title | downcase
+  if initial_key contains 'chulha' or initial_key contains 'matka' or initial_key contains 'handi'
+    assign initial_series = 'matka'
   endif
 %}
-
-<div
-  class="section section--page-width spacing-style maison-vessel"
-  style="{% render 'spacing-style', settings: section.settings %}"
-  data-mt-vessel
-  data-finish="bronze"
-  data-finish-group="mt-finish-{{ section.id }}"
-  data-vessel-kind="{{ vessel_kind }}"
->
-  <div class="maison-vessel__layout" data-mt-scroll="chapter">
-    <div class="maison-vessel__copy">
-      {% if section.settings.eyebrow != blank %}
-        <p class="maison-vessel__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-      {% endif %}
-      <h2 class="maison-vessel__title">{{ section.settings.heading | escape }}</h2>
-      {% if section.settings.lede != blank %}
-        <p class="maison-vessel__lede">{{ section.settings.lede | escape }}</p>
-      {% endif %}
-    </div>
-
-    <div
-      class="maison-vessel__stage"
-      data-finish="bronze"
-      role="group"
-      aria-label="{{ section.settings.heading | escape }}"
-      aria-describedby="MaisonVesselHint-{{ section.id }}"
-    >
-      <div class="maison-vessel__canvas" data-mt-canvas></div>
-      <div class="maison-vessel__fallback" data-mt-fallback hidden>
-        {% if product.featured_image != blank %}
-          {{ product.featured_image | image_url: width: 1200 | image_tag: class: 'maison-vessel__poster', loading: 'lazy', widths: '600, 900, 1200', sizes: '(min-width: 990px) 56vw, 100vw' }}
-        {% else %}
-          {% capture concept_poster %}{% render 'maison-concept-image', product: product, class_name: 'maison-vessel__poster' %}{% endcapture %}
-          {% assign concept_poster = concept_poster | strip %}
-          {% if concept_poster != blank %}
-            {{ concept_poster }}
-          {% else %}
-            <img class="maison-vessel__poster" src="{{ 'maison-flagship-kadai.webp' | asset_url }}" alt="Illustrative cookware study" width="823" height="823" loading="lazy">
-          {% endif %}
-        {% endif %}
-        <p class="maison-vessel__fallback-caption">
-          This browser cannot draw the interactive 3D study. The finishes below describe the surface metallurgy.
-        </p>
-      </div>
-
-      <fieldset class="maison-vessel__finishes">
-        <legend class="visually-hidden">Finish</legend>
-        <label class="maison-vessel__finish">
-          <input type="radio" name="mt-finish-{{ section.id }}" value="bronze" checked>
-          <span>{{ section.settings.bronze_label | escape }}</span>
-        </label>
-        <label class="maison-vessel__finish">
-          <input type="radio" name="mt-finish-{{ section.id }}" value="clay">
-          <span>{{ section.settings.clay_label | escape }}</span>
-        </label>
-        <label class="maison-vessel__finish">
-          <input type="radio" name="mt-finish-{{ section.id }}" value="soot">
-          <span>{{ section.settings.soot_label | escape }}</span>
-        </label>
-      </fieldset>
-
-      <div class="maison-vessel__controls">
-        <button type="button" data-mt-view="hero" aria-pressed="true">Hero view</button>
-        <button type="button" data-mt-view="overhead" aria-pressed="false">Overhead</button>
-        <button type="button" data-mt-view="profile" aria-pressed="false">Profile</button>
-        <button type="button" data-mt-lid aria-pressed="false">Seat lid</button>
-        <button type="button" data-mt-explode aria-pressed="false">Separate layers</button>
-        <button type="button" data-mt-turn="-1">Turn left</button>
-        <button type="button" data-mt-turn="1">Turn right</button>
-        <button type="button" data-mt-dolly="-1">Closer</button>
-        <button type="button" data-mt-dolly="1">Further</button>
-      </div>
-      <p class="maison-vessel__hint" id="MaisonVesselHint-{{ section.id }}">
-        Drag to turn the vessel. Pinch, or use the buttons, to inspect the form. This illustrative study does not change the piece selected above.
-      </p>
-      <p class="visually-hidden" data-mt-finish-status aria-live="polite"></p>
-    </div>
-  </div>
+<div class="maison-round-room" data-mt-vessel data-maison-round-room data-initial-series="{{ initial_series }}" data-initial-product="{{ product.handle | escape }}" data-product-handle="{{ product.handle | escape }}">
+  <div data-round-room-mount></div>
+  <figure data-round-room-fallback data-mt-fallback>
+    {% if product.featured_image != blank %}
+      {{ product.featured_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600, 900, 1200', sizes: '100vw' }}
+    {% else %}
+      <img src="{{ 'maison-concept-tavo-collection.webp' | asset_url }}" alt="Cookware material study" width="1600" height="1600" loading="lazy">
+    {% endif %}
+    <figcaption>Explore Forge and Chulha in the round. Rotate the piece, inspect its layers, and switch on the illustrative heat map.</figcaption>
+  </figure>
+  <script type="application/json" data-round-room-products>
+    [
+    {% assign range_handles = 'forge,chulha' | split: ',' %}
+    {% assign product_count = 0 %}
+    {% for range_handle in range_handles %}
+      {% for piece in collections[range_handle].products limit: 50 %}
+        {% liquid
+          assign model = 'skillet'
+          assign name = piece.handle | append: ' ' | append: piece.title | downcase
+          if name contains 'tawa'
+            assign model = 'tawa'
+          elsif name contains 'kadhai' or name contains 'kadai' or name contains 'wok'
+            assign model = 'wok'
+          elsif name contains 'handi'
+            assign model = 'handi'
+          elsif name contains 'pressure'
+            assign model = 'pressure'
+          elsif name contains 'chai'
+            assign model = 'chai'
+          elsif name contains 'stockpot'
+            assign model = 'stockpot'
+          elsif name contains 'saucier'
+            assign model = 'saucier'
+          elsif name contains 'saucepan'
+            assign model = 'saucepan'
+          elsif name contains 'saute'
+            assign model = 'sauteuse'
+          elsif name contains 'cocotte'
+            assign model = 'cocotte'
+          elsif name contains 'rondeau' or name contains 'roaster'
+            assign model = 'rondeau'
+          elsif name contains 'grill' or name contains 'plancha'
+            assign model = 'grill'
+          elsif name contains 'lid'
+            assign model = 'lid'
+          elsif name contains 'set'
+            assign model = 'collection'
+          elsif name contains 'matka'
+            assign model = 'matka'
+          endif
+          assign series = 'forge'
+          if range_handle == 'chulha'
+            assign series = 'matka'
+          endif
+        %}
+        {% if product_count > 0 %},{% endif %}
+        {"handle":{{ piece.handle | json }},"title":{{ piece.title | json }},"url":{{ piece.url | json }},"series":{{ series | json }},"model":{{ model | json }}}
+        {% assign product_count = product_count | plus: 1 %}
+      {% endfor %}
+    {% endfor %}
+    ]
+  </script>
 </div>
-
-{% stylesheet %}
-  .maison-vessel__layout {
-    display: grid;
-    gap: 2rem;
-  }
-
-  .maison-vessel__eyebrow {
-    margin: 0 0 0.5rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    font-size: var(--mt-type-mono);
-  }
-
-  .maison-vessel__title,
-  .maison-vessel__lede {
-    margin: 0;
-  }
-
-  .maison-vessel__lede {
-    margin-top: 0.85rem;
-    max-width: 36rem;
-  }
-
-  .maison-vessel__stage {
-    display: grid;
-    gap: 0.85rem;
-  }
-
-  .maison-vessel__canvas {
-    position: relative;
-    height: min(68vh, 36rem);
-    min-height: 22rem;
-    background:
-      radial-gradient(ellipse at center 72%, rgb(197 139 67 / 0.2), transparent 58%),
-      #191613;
-  }
-
-  .maison-vessel__canvas canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-    touch-action: none;
-  }
-
-  .maison-vessel__fallback {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .maison-vessel__poster {
-    width: 100%;
-    max-height: 28rem;
-    object-fit: contain;
-    border-radius: 4px;
-    display: block;
-  }
-
-  .maison-vessel__fallback-caption {
-    margin-top: 0.75rem;
-    font-family: var(--mt-type-family-mono);
-    font-size: var(--mt-type-accent);
-    color: var(--color-foreground-muted);
-    text-align: center;
-  }
-
-  .maison-vessel__finishes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0;
-    padding: 0;
-    border: 0;
-  }
-
-  .maison-vessel__finish {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.45rem 0.75rem;
-    border: 1px solid rgb(var(--color-foreground-rgb) / 0.28);
-    cursor: pointer;
-  }
-
-  .maison-vessel__finish:has(:checked) {
-    border-color: #c58b43;
-  }
-
-  .maison-vessel__finish input {
-    accent-color: #c58b43;
-  }
-
-  .maison-vessel__controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .maison-vessel__controls button,
-  .maison-vessel__finish {
-    background: transparent;
-    color: inherit;
-    font: inherit;
-  }
-
-  .maison-vessel__controls button {
-    padding: 0.45rem 0.75rem;
-    border: 1px solid rgb(var(--color-foreground-rgb) / 0.28);
-    cursor: pointer;
-  }
-
-  .maison-vessel__finish:focus-within,
-  .maison-vessel__controls button:focus-visible {
-    outline: 2px solid currentColor;
-    outline-offset: 3px;
-  }
-
-  .maison-vessel__hint {
-    margin: 0;
-    max-width: 40rem;
-    font-size: var(--mt-type-nav);
-  }
-
-  @media (min-width: 990px) {
-    .maison-vessel__layout {
-      grid-template-columns: minmax(16rem, 0.72fr) 1.28fr;
-      align-items: end;
-    }
-  }
-{% endstylesheet %}
 
 {% schema %}
 {
@@ -231,7 +77,7 @@
   "tag": "section",
   "class": "section-wrapper",
   "enabled_on": {
-    "templates": ["product"]
+    "templates": ["product", "page", "index", "collection"]
   },
   "settings": [
     {
@@ -250,7 +96,7 @@
       "type": "textarea",
       "id": "lede",
       "label": "Introduction",
-      "default": "A study of mass and finish. Size, colour, and stock stay in the product form above — nothing here changes what you add to the bag."
+      "default": "A study of mass and finish. Size, colour, and stock stay in the product form above â€” nothing here changes what you add to the bag."
     },
     {
       "type": "text",

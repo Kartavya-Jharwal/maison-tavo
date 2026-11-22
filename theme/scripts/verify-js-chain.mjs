@@ -56,7 +56,7 @@ const declared = new Set([
   ...Object.keys(pkg.devDependencies ?? {}),
 ]);
 
-const sourceFiles = walk(SOURCE, (name) => /\.(js|ts|mjs)$/.test(name));
+const sourceFiles = walk(SOURCE, (name) => /\.(js|ts|tsx|jsx|mjs)$/.test(name));
 
 /** `gsap/ScrollTrigger` -> `gsap`, `@vgpu/wgsl/prepare` -> `@vgpu/wgsl` */
 function packageName(specifier) {
@@ -115,7 +115,7 @@ const RELATIVE_RE = /from\s*['"](\.[^'"]+)['"]/g;
 
 function resolveRelative(fromFile, specifier) {
   const base = resolve(dirname(fromFile), specifier);
-  const candidates = [base, `${base}.js`, `${base}.ts`, `${base}.mjs`, join(base, 'index.js'), join(base, 'index.ts')];
+  const candidates = [base, `${base}.js`, `${base}.ts`, `${base}.tsx`, `${base}.jsx`, `${base}.mjs`, join(base, 'index.js'), join(base, 'index.ts'), join(base, 'index.tsx')];
   return candidates.find(exists) ?? null;
 }
 
