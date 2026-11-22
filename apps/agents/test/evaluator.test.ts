@@ -1,6 +1,8 @@
 import {describe, expect, test} from 'bun:test';
 import {evaluateCatalog, scoreSkuForUseCases} from '../src/shopper';
-import {seedCatalog} from '@maison-tavo/catalog/src/seed';
+import {releasedSpecs} from '@maison-tavo/catalog/src/mock-release';
+
+const publishedCatalog = releasedSpecs();
 
 describe('evaluateCatalog — heat source filter', () => {
   test('induction filter returns only induction-compatible SKUs', () => {
@@ -29,7 +31,7 @@ describe('evaluateCatalog — heat source filter', () => {
   });
 
   test('SKUs with no heat_sources are excluded when heat sources are requested', () => {
-    const inductionSkus = seedCatalog.filter(
+    const inductionSkus = publishedCatalog.filter(
       (s) => s.heat_sources.length > 0 && s.induction_compatible,
     );
     const results = evaluateCatalog({
@@ -38,7 +40,8 @@ describe('evaluateCatalog — heat source filter', () => {
       heat_sources: ['induction'],
       use_cases: ['cooking'],
     });
-    expect(results.length).toBe(inductionSkus.length);
+    expect(results.length).toBe(Math.min(20, inductionSkus.length));
+    expect(results.every((item) => inductionSkus.some(candidate => candidate.sku === item.sku))).toBe(true);
   });
 });
 
@@ -92,17 +95,18 @@ describe('evaluateCatalog — use-case ranking', () => {
 
 describe('scoreSkuForUseCases', () => {
   test('returns 0 for no matching use cases', () => {
-    const sku = seedCatalog[0]!;
+    const sku = publishedCatalog[0]!;
     expect(scoreSkuForUseCases(sku, ['welding', 'aerospace'])).toBe(0);
   });
 
   test('returns positive score when use cases match agent_intents', () => {
-    const kulhad = seedCatalog.find((s) => s.handle === 'ardh-metal-lined-kulhad')!;
+    const kulhad = publishedCatalog.find((s) => s.handle === 'ardh-metal-lined-kulhad')!;
     expect(scoreSkuForUseCases(kulhad, ['chai service'])).toBeGreaterThan(0);
   });
 
   test('matching is case-insensitive', () => {
-    const kulhad = seedCatalog.find((s) => s.handle === 'ardh-metal-lined-kulhad')!;
+    const kulhad = publishedCatalog.find((s) => s.handle === 'ardh-metal-lined-kulhad')!;
     expect(scoreSkuForUseCases(kulhad, ['CHAI SERVICE'])).toBeGreaterThan(0);
   });
 });
+

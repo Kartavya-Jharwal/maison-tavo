@@ -95,9 +95,23 @@
               assign card_label = card_collection.title
             endif
 
-            assign fallbacks = 'maison-pan-stacked-showcase.webp,maison-dining-set-6pc.webp,maison-handles-grip-study.avif,maison-hero.webp' | split: ','
+            assign fallbacks = 'maison-pan-stacked-showcase.webp,maison-dining-set-6pc.webp,maison-range-maintenance.webp,maison-hero.webp' | split: ','
             assign fallback_index = forloop.index0 | modulo: fallbacks.size
             assign fallback_asset = fallbacks[fallback_index]
+            case fallback_index
+              when 0
+                assign fallback_width = 1080
+                assign fallback_height = 1350
+              when 1
+                assign fallback_width = 493
+                assign fallback_height = 493
+              when 2
+                assign fallback_width = 823
+                assign fallback_height = 823
+              else
+                assign fallback_width = 823
+                assign fallback_height = 823
+            endcase
           %}
           <li
             class="maison-carousel__slide"
@@ -130,8 +144,8 @@
                   <img
                     src="{{ fallback_asset | asset_url }}"
                     alt=""
-                    width="900"
-                    height="675"
+                    width="{{ fallback_width }}"
+                    height="{{ fallback_height }}"
                     loading="lazy"
                   >
                 {% endif %}

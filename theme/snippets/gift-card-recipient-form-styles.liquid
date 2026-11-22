@@ -100,9 +100,10 @@
     display: none;
   }
 
-  .field--send-on {
+  .recipient-fields .field {
     display: flex;
     flex-direction: column;
+    gap: var(--gap-xs);
   }
 
   .recipient-form__message {
@@ -114,9 +115,7 @@
   }
 
   .recipient-form-field-label {
-    position: absolute;
-    inset-inline-start: var(--padding-sm);
-    bottom: var(--padding-sm);
+    margin: 0;
     font-style: italic;
     color: var(--color-input-text);
   }
@@ -125,9 +124,6 @@
     min-height: 5.5rem;
     overflow-y: auto;
 
-    /* Space for the character count */
-    padding-bottom: calc(var(--padding-sm) * 3);
-    scroll-padding-bottom: calc(var(--padding-sm) * 3);
   }
 
   .recipient-fields__input {
@@ -145,8 +141,9 @@
       color: var(--color-input-text);
     }
 
-    &:is(:focus) {
-      outline-color: var(--color-input-background);
+    &:focus-visible {
+      outline: 2px solid var(--color-foreground);
+      outline-offset: 2px;
     }
   }
 

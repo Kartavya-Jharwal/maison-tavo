@@ -115,7 +115,7 @@ function renderToggle() {
   button.id = 'maison-sound-toggle';
   button.className = 'maison-sound-toggle';
   button.setAttribute('aria-pressed', 'false');
-  button.setAttribute('aria-label', 'Enable sound effects (off by default)');
+  button.setAttribute('aria-label', 'Sound effects');
   button.title = 'Sound effects — off until you turn them on';
 
   const paint = () => {
@@ -123,10 +123,6 @@ function renderToggle() {
     button.textContent = on ? 'Sound on' : 'Sound off';
     button.dataset.state = on ? 'on' : 'off';
     button.setAttribute('aria-pressed', String(on));
-    button.setAttribute(
-      'aria-label',
-      on ? 'Mute sound effects' : 'Enable sound effects (currently off)',
-    );
     button.title = on
       ? 'Sound effects on — click to mute'
       : 'Sound effects off — click to enable soft cues';
@@ -148,7 +144,7 @@ function renderToggle() {
   });
 
   paint();
-  document.body.appendChild(button);
+  (document.querySelector('[data-mt-sound-controls]') || document.body).appendChild(button);
 }
 
 document.addEventListener(CART_LINES_UPDATE, playAddToCartSound);

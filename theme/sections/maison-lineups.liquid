@@ -91,12 +91,20 @@
               assign lineup_key = block.settings.handle | append: ' ' | append: block.settings.label | downcase
               if lineup_key contains 'cookware' or lineup_key contains 'forge'
                 assign lineup_asset = 'maison-pan-stacked-showcase.webp'
+                assign lineup_width = 1080
+                assign lineup_height = 1350
               elsif lineup_key contains 'tableware' or lineup_key contains 'pottery' or lineup_key contains 'terre' or lineup_key contains 'clay'
                 assign lineup_asset = 'maison-dining-set-6pc.webp'
+                assign lineup_width = 493
+                assign lineup_height = 493
               elsif lineup_key contains 'care' or lineup_key contains 'set'
-                assign lineup_asset = 'maison-handles-grip-study.avif'
+                assign lineup_asset = 'maison-range-maintenance.webp'
+                assign lineup_width = 823
+                assign lineup_height = 823
               else
                 assign lineup_asset = 'maison-hero.webp'
+                assign lineup_width = 823
+                assign lineup_height = 823
               endif
             %}
             <div class="maison-lineups__media" aria-hidden="true">
@@ -105,8 +113,8 @@
                 src="{{ lineup_asset | asset_url }}"
                 alt=""
                 loading="lazy"
-                width="600"
-                height="450"
+                width="{{ lineup_width }}"
+                height="{{ lineup_height }}"
               >
             </div>
           {% if lineup_url != blank %}
@@ -365,7 +373,7 @@
           "type": "text",
           "id": "handle",
           "label": "t:settings.maison_collection_handle",
-          "default": "forge-hybrid",
+          "default": "forge",
           "info": "t:info.maison_collection_handle"
         },
         {
@@ -389,37 +397,28 @@
         {
           "type": "lineup",
           "settings": {
-            "kicker": "Skillets",
-            "label": "Forge Hybrid",
-            "text": "Carbon-steel cookline concepts. Modular mass for the pass — catalog still in draft.",
-            "handle": "forge-hybrid"
+            "kicker": "Cookware and sets",
+            "label": "Forge",
+            "text": "Stainless steel cookware in grouped sizes, with matched sets.",
+            "handle": "forge"
           }
         },
         {
           "type": "lineup",
           "settings": {
-            "kicker": "Clay",
-            "label": "Terre Clay",
-            "text": "Cast clay vessels and table forms. Grain and heat memory as design story, not a performance claim.",
-            "handle": "terre-clay"
+            "kicker": "Terracotta study",
+            "label": "Chulha",
+            "text": "Terracotta forms for flatbreads, chai and slow-cooked meals.",
+            "handle": "chulha"
           }
         },
         {
           "type": "lineup",
           "settings": {
-            "kicker": "Knives",
-            "label": "Kuro Strip",
-            "text": "Strip and hybrid-edge blade concepts. Edge geometry as craft language.",
-            "handle": "kuro-strip"
-          }
-        },
-        {
-          "type": "lineup",
-          "settings": {
-            "kicker": "Hybrids",
-            "label": "Forge × Terre",
-            "text": "Forge × Terre service sets and nested pieces for the shared kitchen spine.",
-            "handle": "forge-terre"
+            "kicker": "Care and parts",
+            "label": "Maintenance",
+            "text": "Care supplies and replacement parts selected by vessel and fit.",
+            "handle": "maintenance"
           }
         }
       ]

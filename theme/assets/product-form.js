@@ -5,9 +5,6 @@ import { morph } from '@theme/morph';
 import { CartLinesUpdateEvent, CartErrorEvent, ProductSelectEvent, StandardEvents } from '@shopify/events';
 import { resolveVariantId } from '@theme/variant-resolution';
 
-// Error message display duration - gives users time to read the message
-const ERROR_MESSAGE_DISPLAY_DURATION = 10000;
-
 // Button re-enable delay after error - prevents rapid repeat attempts
 const ERROR_BUTTON_REENABLE_DELAY = 1000;
 
@@ -206,9 +203,6 @@ class ProductFormComponent extends Component {
   requiredRefs = ['variantId', 'liveRegion'];
   #abortController = new AbortController();
 
-  /** @type {number | undefined} */
-  #timeout;
-
   /** @type {boolean} */
   #variantChangeInProgress = false;
 
@@ -360,7 +354,6 @@ class ProductFormComponent extends Component {
   #processAddToCart(overrideVariantId, overrideQuantity, event) {
     const { addToCartTextError } = this.refs;
 
-    if (this.#timeout) clearTimeout(this.#timeout);
 
     const allAddToCartContainers = /** @type {NodeListOf<AddToCartComponent>} */ (
       this.querySelectorAll('add-to-cart-component')
@@ -386,26 +379,7 @@ class ProductFormComponent extends Component {
 
         const errorTemplate = this.dataset.quantityErrorMax || '';
         const errorMessage = errorTemplate.replace('{{ maximum }}', validation.maxQuantity?.toString() || '');
-        if (addToCartTextError) {
-          addToCartTextError.classList.remove('hidden');
-
-          const textNode = addToCartTextError.childNodes[2];
-          if (textNode) {
-            textNode.textContent = errorMessage;
-          } else {
-            const newTextNode = document.createTextNode(errorMessage);
-            addToCartTextError.appendChild(newTextNode);
-          }
-
-          this.#setLiveRegionText(errorMessage);
-
-          if (this.#timeout) clearTimeout(this.#timeout);
-          this.#timeout = setTimeout(() => {
-            if (!addToCartTextError) return;
-            addToCartTextError.classList.add('hidden');
-            this.#clearLiveRegionText();
-          }, ERROR_MESSAGE_DISPLAY_DURATION);
-        }
+        this.#showCartError(errorMessage);
 
         setTimeout(() => {
           for (const container of allAddToCartContainers) {
@@ -492,28 +466,7 @@ class ProductFormComponent extends Component {
             )
             .catch(deferredEventPromise.reject);
 
-          if (!addToCartTextError) return;
-          addToCartTextError.classList.remove('hidden');
-
-          // Reuse the text node if the user is spam-clicking
-          const textNode = addToCartTextError.childNodes[2];
-          if (textNode) {
-            textNode.textContent = response.message;
-          } else {
-            const newTextNode = document.createTextNode(response.message);
-            addToCartTextError.appendChild(newTextNode);
-          }
-
-          // Create or get existing error live region for screen readers
-          this.#setLiveRegionText(response.message);
-
-          this.#timeout = setTimeout(() => {
-            if (!addToCartTextError) return;
-            addToCartTextError.classList.add('hidden');
-
-            // Clear the announcement
-            this.#clearLiveRegionText();
-          }, ERROR_MESSAGE_DISPLAY_DURATION);
+          this.#showCartError(response.description || response.message || this.dataset.cartError);
 
           return;
         } else {
@@ -567,6 +520,7 @@ class ProductFormComponent extends Component {
       })
       .catch((error) => {
         console.error(error);
+        this.#showCartError(this.dataset.cartError);
         deferredEventPromise.reject(error);
 
         this.dispatchEvent(
@@ -589,7 +543,6 @@ class ProductFormComponent extends Component {
 
     const { addToCartTextError } = this.refs;
 
-    if (this.#timeout) clearTimeout(this.#timeout);
 
     const cartItemsComponents = document.querySelectorAll('cart-items-component');
     const cartItemComponentsSectionIds = [];
@@ -660,20 +613,7 @@ class ProductFormComponent extends Component {
             )
             .catch(deferredEventPromise.reject);
 
-          if (!addToCartTextError) return;
-          addToCartTextError.classList.remove('hidden');
-          const textNode = addToCartTextError.childNodes[2];
-          if (textNode) {
-            textNode.textContent = response.message;
-          } else {
-            addToCartTextError.appendChild(document.createTextNode(response.message));
-          }
-          this.#setLiveRegionText(response.message);
-
-          this.#timeout = setTimeout(() => {
-            addToCartTextError.classList.add('hidden');
-            this.#clearLiveRegionText();
-          }, ERROR_MESSAGE_DISPLAY_DURATION);
+          this.#showCartError(response.description || response.message || this.dataset.cartError);
 
           return;
         }
@@ -711,6 +651,7 @@ class ProductFormComponent extends Component {
       })
       .catch((error) => {
         console.error(error);
+        this.#showCartError(this.dataset.cartError);
         deferredEventPromise.reject(error);
 
         this.dispatchEvent(
@@ -739,9 +680,19 @@ class ProductFormComponent extends Component {
     }
   }
 
-  /**
-   * @param {*} text
-   */
+  /** @param {string | undefined} message */
+  #showCartError(message) {
+    const error = this.refs.addToCartTextError;
+    const text = message || this.dataset.cartError || '';
+    if (error) {
+      const target = error.querySelector('[data-product-form-error-message]');
+      if (target) target.textContent = text;
+      error.classList.remove('hidden');
+    }
+    this.#setLiveRegionText(text);
+  }
+
+  /** @param {string} text */
   #setLiveRegionText(text) {
     const liveRegion = this.refs.liveRegion;
     liveRegion.textContent = text;
@@ -775,6 +726,8 @@ class ProductFormComponent extends Component {
     // Skip events from product-cards when this form is at the section level
     const sourceCard = /** @type {Element | null} */ (event.target)?.closest('product-card');
     if (sourceCard && !sourceCard.contains(this)) return;
+    if (event.target instanceof HTMLElement && event.target.dataset.productId &&
+        event.target.dataset.productId !== this.dataset.productId) return;
 
     // Track generation to prevent a stale (aborted) call from clearing the flag
     // while a newer variant selection is still pending.
@@ -783,9 +736,12 @@ class ProductFormComponent extends Component {
     // Hold the in-flight section-fetch promise so the queue drain can await it before reading the
     // resolved variant id.
     this.#pendingVariantChange = event.promise;
+    this.refs.addToCartButtonContainer?.disable();
+    this.refs.acceleratedCheckoutButtonContainer?.setAttribute('hidden', 'true');
 
     try {
       const { detail } = await event.promise;
+      if (generation !== this.#variantChangeGeneration) return;
       if (!detail?.html) return;
 
       const { html, newProduct, productId, resource } = detail;
@@ -854,7 +810,7 @@ class ProductFormComponent extends Component {
       );
 
       if (quantitySelector?.updateConstraints && newQuantityInput) {
-        quantitySelector.updateConstraints(newQuantityInput.min, newQuantityInput.max || null, newQuantityInput.step);
+        quantitySelector.updateConstraints(newQuantityInput.min, newQuantityInput.max || null, newQuantityInput.step, newQuantityInput.disabled);
         // Keep data-quantity-default attribute in sync with new variant's minimum quantity
         this.dataset.quantityDefault = newQuantityInput.min || '1';
       }
@@ -886,7 +842,8 @@ class ProductFormComponent extends Component {
             this.refs.quantitySelector.updateConstraints(
               newQuantityInputElement.min,
               newQuantityInputElement.max || null,
-              newQuantityInputElement.step
+              newQuantityInputElement.step,
+              newQuantityInputElement.disabled
             );
             // Keep data-quantity-default attribute in sync with new variant's minimum quantity
             this.dataset.quantityDefault = newQuantityInputElement.min || '1';
@@ -923,6 +880,14 @@ class ProductFormComponent extends Component {
 
       // Fetch and update cart quantity for the new variant
       this.#refreshCart().then((cart) => this.#updateCartQuantity(cart));
+    } catch (error) {
+      // A failed selection must never leave the previous variant available for purchase.
+      // A newer selection owns the form when this request has been superseded.
+      if (generation === this.#variantChangeGeneration && error?.name !== 'AbortError') {
+        this.refs.variantId.value = '';
+        this.refs.addToCartButtonContainer?.disable();
+        this.refs.acceleratedCheckoutButtonContainer?.setAttribute('hidden', 'true');
+      }
     } finally {
       // Only clear the flag if no newer variant selection has started
       if (generation === this.#variantChangeGeneration) {

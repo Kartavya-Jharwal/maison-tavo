@@ -22,19 +22,19 @@ const materials = Object.fromEntries(
   ),
 );
 
-const skillet = new LatheGeometry(
-  [
-    new Vector2(0.02, 0),
-    new Vector2(0.55, 0.02),
-    new Vector2(0.74, 0.06),
-    new Vector2(0.8, 0.16),
-    new Vector2(0.74, 0.21),
-    new Vector2(0.66, 0.12),
-    new Vector2(0.16, 0.09),
-    new Vector2(0.02, 0.12),
-  ],
-  56,
-);
+// Profiles adapted from the local Round Room demo's vessel studies. The
+// dimensions are illustrative; product specifications remain in Liquid.
+const PROFILES = {
+  pan: [[0.02, 0], [0.55, 0.02], [0.74, 0.06], [0.8, 0.16], [0.74, 0.21], [0.66, 0.12], [0.16, 0.09], [0.02, 0.12]],
+  kadai: [[0.02, 0], [0.48, 0.03], [0.7, 0.16], [0.84, 0.4], [0.9, 0.64], [0.84, 0.66], [0.77, 0.44], [0.62, 0.23], [0.02, 0.12]],
+  pot: [[0.02, 0], [0.55, 0], [0.66, 0.05], [0.7, 0.18], [0.7, 0.83], [0.64, 0.83], [0.63, 0.17], [0.53, 0.11], [0.02, 0.11]],
+  handi: [[0.02, 0], [0.45, 0.02], [0.7, 0.16], [0.83, 0.42], [0.78, 0.72], [0.62, 0.88], [0.57, 0.82], [0.71, 0.68], [0.75, 0.42], [0.62, 0.24], [0.02, 0.12]],
+};
+const geometries = Object.fromEntries(Object.entries(PROFILES).map(([kind, profile]) => [
+  kind,
+  new LatheGeometry(profile.map(([x, y]) => new Vector2(x, y)), 64),
+]));
+const kindsWithLongHandle = new Set(['pan']);
 
 const TILT_MIN = -0.2;
 const TILT_MAX = 0.82;
@@ -67,8 +67,10 @@ function Environment() {
   );
 }
 
-function Piece({ motion, finish }) {
+function Piece({ motion, finish, kind }) {
   const group = useRef(null);
+  const body = useRef(null);
+  const lid = useRef(null);
   const camera = useThree((state) => state.camera);
   useFrame((_, delta) => {
     if (!group.current || !motion.live) return;
@@ -77,6 +79,11 @@ function Piece({ motion, finish }) {
     motion.dolly += (motion.dollyTarget - motion.dolly) * 0.14;
     group.current.rotation.y = motion.yaw;
     group.current.rotation.x = motion.tilt;
+    if (body.current) body.current.position.y = motion.explode * 0.13;
+    if (lid.current) {
+      lid.current.visible = motion.lid;
+      lid.current.position.y = (kind === 'pot' || kind === 'handi' ? 0.89 : 0.69) + motion.explode * 0.38;
+    }
     camera.position.set(0.15, 1.25, Math.max(4.2, motion.dolly));
     camera.lookAt(-0.15, 0.02, 0);
     document.documentElement.dataset.mtDolly = `${camera.position.z.toFixed(2)}|${group.current.position.x.toFixed(2)}|${motion.yaw.toFixed(2)}`;
@@ -84,12 +91,15 @@ function Piece({ motion, finish }) {
   return h(
     'group',
     { ref: group, position: [-0.32, 0, 0] },
-    h('mesh', { geometry: skillet, material: materials[finish] || materials.bronze }),
-    h(
+    h('mesh', { ref: body, geometry: geometries[kind] || geometries.pan, material: materials[finish] || materials.bronze }),
+    kindsWithLongHandle.has(kind) ? h(
       'mesh',
       { material: materials[finish] || materials.bronze, position: [1.02, 0.15, 0], rotation: [0, 0, -0.55] },
       h('boxGeometry', { args: [0.56, 0.055, 0.13] }),
-    ),
+    ) : h('group', null,
+      h('mesh', { position: [-0.86, 0.55, 0], rotation: [0, Math.PI / 2, 0], material: materials[finish] || materials.bronze }, h('torusGeometry', { args: [0.14, 0.035, 10, 28] })),
+      h('mesh', { position: [0.86, 0.55, 0], rotation: [0, Math.PI / 2, 0], material: materials[finish] || materials.bronze }, h('torusGeometry', { args: [0.14, 0.035, 10, 28] }))),
+    h('mesh', { ref: lid, visible: false, material: materials[finish] || materials.bronze }, h('cylinderGeometry', { args: [kind === 'pan' ? 0.77 : 0.67, kind === 'pan' ? 0.77 : 0.67, 0.055, 64] })),
     h(
       'mesh',
       { rotation: [-Math.PI / 2, 0, 0], position: [0.1, -0.08, 0] },
@@ -99,7 +109,7 @@ function Piece({ motion, finish }) {
   );
 }
 
-function Stage({ motion, reduced }) {
+function Stage({ motion, reduced, kind }) {
   const [finish, setFinish] = useState(motion.finish);
   const [live, setLive] = useState(true);
   useEffect(() => {
@@ -126,7 +136,7 @@ function Stage({ motion, reduced }) {
       },
     },
     h(Environment),
-    h(Piece, { motion, finish }),
+    h(Piece, { motion, finish, kind }),
   );
 }
 
@@ -175,6 +185,8 @@ function mount(root) {
     held: false,
     live: true,
     reduced: reducedMotion(),
+    explode: 0,
+    lid: false,
     pump: false,
     onFinish: null,
     setLive: null,
@@ -182,7 +194,7 @@ function mount(root) {
   };
 
   const reactRoot = createRoot(host);
-  reactRoot.render(h(Stage, { motion, reduced: motion.reduced }));
+  reactRoot.render(h(Stage, { motion, reduced: motion.reduced, kind: root.dataset.vesselKind || 'pan' }));
 
   const observer = new IntersectionObserver(
     ([entry]) => {
@@ -256,12 +268,25 @@ function mount(root) {
   root.addEventListener(
     'click',
     (event) => {
-      const button = event.target instanceof Element ? event.target.closest('[data-mt-turn], [data-mt-dolly]') : null;
+      const button = event.target instanceof Element ? event.target.closest('[data-mt-turn], [data-mt-dolly], [data-mt-view], [data-mt-lid], [data-mt-explode]') : null;
       if (!button || !root.contains(button)) return;
       motion.auto = false;
       if (button.hasAttribute('data-mt-turn')) motion.yaw += Number(button.dataset.mtTurn) * 0.45;
       if (button.hasAttribute('data-mt-dolly')) {
-        motion.dollyTarget = Math.min(4.4, Math.max(2.15, motion.dollyTarget + Number(button.dataset.mtDolly) * 0.35));
+        motion.dollyTarget = Math.min(7.2, Math.max(4.2, motion.dollyTarget + Number(button.dataset.mtDolly) * 0.35));
+      }
+      if (button.hasAttribute('data-mt-view')) {
+        motion.tiltTarget = { hero: 0.38, overhead: 0.78, profile: 0.02 }[button.dataset.mtView] ?? 0.38;
+        motion.dollyTarget = DOLLY;
+        root.querySelectorAll('[data-mt-view]').forEach((control) => control.setAttribute('aria-pressed', String(control === button)));
+      }
+      if (button.hasAttribute('data-mt-lid')) {
+        motion.lid = !motion.lid;
+        button.setAttribute('aria-pressed', String(motion.lid));
+      }
+      if (button.hasAttribute('data-mt-explode')) {
+        motion.explode = motion.explode ? 0 : 1;
+        button.setAttribute('aria-pressed', String(Boolean(motion.explode)));
       }
       kick(motion);
     },

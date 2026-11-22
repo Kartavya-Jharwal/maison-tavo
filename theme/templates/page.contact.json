@@ -11,9 +11,9 @@
     "locations": {
       "type": "maison-room",
       "settings": {
-        "eyebrow": "House",
-        "heading": "Contact and locations",
-        "lede": "<p>Write to the house through the form. Care of a piece you already hold belongs on <a href=\"/pages/kansa\">Kansa</a>. Orders and addresses live under <a href=\"/account\">Account</a>.</p>",
+        "eyebrow": "",
+        "heading": "Contact Us",
+        "lede": "<p>Questions about the exhibition, an order reference, a return or a piece? Use the form below and tell us what you need. Do not include payment details. For care guidance, you can also <a href=\"/pages/kansa\">ask Kansa</a>.</p><p>Fitting out a kitchen? <a href=\"#trade\">Send a trade enquiry</a> with the pieces, quantities and first service date.</p>",
         "padding-block-start": 48,
         "padding-block-end": 8
       },
@@ -21,9 +21,9 @@
         "jaipur": {
           "type": "place",
           "settings": {
-            "heading": "Foundry",
+            "heading": "Material roots",
             "address": "Jaipur, Rajasthan, India",
-            "note": "City marker. The bench address is sent when a visit is arranged.",
+            "note": "Jaipur’s metalwork and pottery shaped the collection.",
             "latitude": "26.9124",
             "longitude": "75.7873"
           }
@@ -31,9 +31,9 @@
         "london": {
           "type": "place",
           "settings": {
-            "heading": "Kitchen workshop",
+            "heading": "UK enquiries",
             "address": "London, United Kingdom",
-            "note": "City marker. The workshop address is sent when a visit is arranged.",
+            "note": "For UK projects, include the location and the date you need the pieces.",
             "latitude": "51.5074",
             "longitude": "-0.1278"
           }
@@ -73,6 +73,7 @@
             "width_mobile": "custom",
             "custom_width_mobile": 100,
             "input_style": "default",
+            "trade_fields": true,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
@@ -83,7 +84,7 @@
               "type": "contact-form-submit-button",
               "static": true,
               "settings": {
-                "label": "Submit",
+                  "label": "Send enquiry",
                 "style_class": "button",
                 "width": "fit-content",
                 "custom_width": 100,

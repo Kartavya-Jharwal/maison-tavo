@@ -3,10 +3,7 @@
  * Brand mono + soot glass; no ambient autoplay chrome.
  */
 .maison-sound-toggle {
-  position: fixed;
-  inset-inline-start: max(12px, env(safe-area-inset-left, 0px));
-  inset-block-end: max(12px, env(safe-area-inset-bottom, 0px));
-  z-index: 100;
+  position: static;
   display: inline-flex;
   align-items: center;
   gap: 0.45em;

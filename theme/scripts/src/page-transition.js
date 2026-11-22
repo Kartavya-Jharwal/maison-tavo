@@ -65,14 +65,15 @@ function closeDrawers() {
 
 const adoptedStyles = new Set();
 
-function styleKey(text) {
-  return `${text.length}:${text.slice(0, 64)}:${text.slice(-64)}`;
+function styleKey(style) {
+  const text = style.textContent.trim();
+  return text && `${style.media}\n${text}`;
 }
 
 function rememberStyles(root) {
   root.querySelectorAll('style').forEach((style) => {
-    const text = style.textContent || '';
-    if (text.trim()) adoptedStyles.add(styleKey(text));
+    const key = styleKey(style);
+    if (key) adoptedStyles.add(key);
   });
 }
 
@@ -84,8 +85,17 @@ function srcPath(src) {
   }
 }
 
-async function adoptAssets(html) {
-  const doc = new DOMParser().parseFromString(html, 'text/html');
+function needsDocumentNavigation(container) {
+  if (!container || container.querySelector('[data-mt-document-navigation]')) return true;
+
+  return [...container.querySelectorAll('script')].some((script) => {
+    const type = script.type.trim().toLowerCase();
+    if (type === 'module') return !script.hasAttribute('src');
+    return !type || /^(?:text|application)\/(?:java|ecma)script$/.test(type);
+  });
+}
+
+async function adoptAssets(doc, incomingContainer) {
   const title = doc.querySelector('title')?.textContent;
   if (title) document.title = title;
 
@@ -94,12 +104,13 @@ async function adoptAssets(html) {
   if (canonical && currentCanonical) currentCanonical.href = canonical;
 
   const loads = [];
-  const present = new Set([...document.querySelectorAll('link[rel="stylesheet"]')].map((link) => link.href));
-  doc.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
-    if (!link.href || present.has(link.href)) return;
-    const node = document.createElement('link');
-    node.rel = 'stylesheet';
-    node.href = link.href;
+  const stylesheetKey = (link) => `${link.href} ${link.media}`;
+  const present = new Set([...document.querySelectorAll('link[rel="stylesheet"]')].map(stylesheetKey));
+  doc.head.querySelectorAll('link[rel="stylesheet"]').forEach((link) => {
+    const key = stylesheetKey(link);
+    if (!link.href || present.has(key)) return;
+    const node = document.importNode(link, false);
+    present.add(key);
     loads.push(
       new Promise((resolve) => {
         node.addEventListener('load', resolve, { once: true });
@@ -109,18 +120,20 @@ async function adoptAssets(html) {
     document.head.appendChild(node);
   });
 
-  doc.querySelectorAll('style').forEach((style) => {
-    const text = style.textContent || '';
-    if (!text.trim()) return;
-    const key = styleKey(text);
-    if (adoptedStyles.has(key)) return;
+  doc.head.querySelectorAll('style').forEach((style) => {
+    const key = styleKey(style);
+    if (!key || adoptedStyles.has(key)) return;
     adoptedStyles.add(key);
-    const node = document.createElement('style');
-    node.textContent = text;
-    document.head.appendChild(node);
+    document.head.appendChild(document.importNode(style, true));
   });
 
-  const loaded = new Set([...document.scripts].map((script) => srcPath(script.src)).filter(Boolean));
+  // Barba has already inserted the incoming container. Its parsed scripts are inert.
+  const loaded = new Set(
+    [...document.scripts]
+      .filter((script) => !incomingContainer.contains(script))
+      .map((script) => srcPath(script.src))
+      .filter(Boolean),
+  );
   doc.querySelectorAll('script[src][type="module"]').forEach((script) => {
     const path = srcPath(script.src);
     if (!path || loaded.has(path)) return;
@@ -140,7 +153,6 @@ async function adoptAssets(html) {
   });
 
   await Promise.race([Promise.all(loads), new Promise((resolve) => setTimeout(resolve, 1800))]);
-  return html;
 }
 
 function isPassword(html) {
@@ -241,7 +253,7 @@ export function initPageTransitions() {
   const veil = document.querySelector('[data-mt-veil]');
   if (!wrapper || !container || !veil) return;
   started = true;
-  rememberStyles(document);
+  rememberStyles(document.head);
 
   const release = (reason) => releaseTransition(veil, reason);
 
@@ -255,6 +267,7 @@ export function initPageTransitions() {
   );
 
   const status = document.querySelector('[data-mt-route-status]');
+  let navigatingDocument = false;
 
   try {
     barba.init({
@@ -292,12 +305,15 @@ export function initPageTransitions() {
             armWatchdog(release, ENTER_WATCHDOG_MS);
             try {
               const html = data.next.html || '';
-              if (isPassword(html)) {
-                release('password');
-                window.location.assign(data.next.url.href);
+              const doc = new DOMParser().parseFromString(html, 'text/html');
+              if (isPassword(html) || needsDocumentNavigation(data.next.container)) {
+                navigatingDocument = true;
+                release('ok');
+                // Barba has already updated history for this navigation.
+                window.location.replace(data.next.url.href);
                 return;
               }
-              await adoptAssets(html);
+              await adoptAssets(doc, data.next.container);
               if (data.next.url.hash) {
                 const target = document.querySelector(data.next.url.hash);
                 if (target) scrollHorizonTo(target, true);
@@ -343,6 +359,7 @@ export function initPageTransitions() {
   };
 
   barba.hooks.after(() => {
+    if (navigatingDocument) return;
     release('ok');
     const main = document.getElementById('MainContent');
     if (main) {

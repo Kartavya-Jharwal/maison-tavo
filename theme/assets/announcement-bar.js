@@ -1,128 +1,43 @@
 import { Component } from '@theme/component';
 
 /**
- * Announcement banner custom element that allows fading between content.
- * Based on the Slideshow component.
- *
- * @typedef {object} Refs
- * @property {HTMLElement} slideshowContainer
- * @property {HTMLElement[]} [slides]
- * @property {HTMLButtonElement} [previous]
- * @property {HTMLButtonElement} [next]
- *
- * @extends {Component<Refs>}
+ * A manually controlled announcement bar. Messages remain in place until the
+ * shopper chooses another one, and hidden messages cannot receive focus.
+ * @extends {Component<{slides?: HTMLElement[], announcementStatus?: HTMLElement}>}
  */
 export class AnnouncementBar extends Component {
   #current = 0;
 
-  /**
-   * The interval ID for automatic playback.
-   * @type {number|undefined}
-   */
-  #interval = undefined;
-
   connectedCallback() {
     super.connectedCallback();
-
-    this.addEventListener('mouseenter', this.suspend);
-    this.addEventListener('mouseleave', this.resume);
-    document.addEventListener('visibilitychange', this.#handleVisibilityChange);
-
-    this.play();
+    this.#showCurrent(false);
+    this.setAttribute('data-enhanced', '');
   }
 
   next() {
-    this.current += 1;
+    this.#current += 1;
+    this.#showCurrent(true);
   }
 
   previous() {
-    this.current -= 1;
+    this.#current -= 1;
+    this.#showCurrent(true);
   }
 
-  /**
-   * Starts automatic slide playback.
-   * @param {number} [interval] - The time interval in seconds between slides.
-   */
-  play(interval = this.autoplayInterval) {
-    if (!this.autoplay) return;
-
-    this.paused = false;
-
-    this.#interval = setInterval(() => {
-      if (this.matches(':hover') || document.hidden) return;
-
-      this.next();
-    }, interval);
-  }
-
-  /**
-   * Pauses automatic slide playback.
-   */
-  pause() {
-    this.paused = true;
-    this.suspend();
-  }
-
-  get paused() {
-    return this.hasAttribute('paused');
-  }
-
-  set paused(paused) {
-    this.toggleAttribute('paused', paused);
-  }
-
-  /**
-   * Suspends automatic slide playback.
-   */
-  suspend() {
-    clearInterval(this.#interval);
-    this.#interval = undefined;
-  }
-
-  /**
-   * Resumes automatic slide playback if autoplay is enabled.
-   */
-  resume() {
-    if (!this.autoplay || this.paused) return;
-
-    this.pause();
-    this.play();
-  }
-
-  get autoplay() {
-    return Boolean(this.autoplayInterval);
-  }
-
-  get autoplayInterval() {
-    const interval = this.getAttribute('autoplay');
-    const value = parseInt(`${interval}`, 10);
-
-    if (Number.isNaN(value)) return undefined;
-
-    return value * 1000;
-  }
-
-  get current() {
-    return this.#current;
-  }
-
-  set current(current) {
-    this.#current = current;
-
-    let relativeIndex = current % (this.refs.slides ?? []).length;
-    if (relativeIndex < 0) {
-      relativeIndex += (this.refs.slides ?? []).length;
-    }
-
-    this.refs.slides?.forEach((slide, index) => {
-      slide.setAttribute('aria-hidden', `${index !== relativeIndex}`);
+  /** @param {boolean} announce */
+  #showCurrent(announce) {
+    const slides = this.refs.slides ?? [];
+    if (!slides.length) return;
+    this.#current = ((this.#current % slides.length) + slides.length) % slides.length;
+    slides.forEach((slide, index) => {
+      const hidden = index !== this.#current;
+      slide.setAttribute('aria-hidden', String(hidden));
+      slide.inert = hidden;
     });
+    if (announce && this.refs.announcementStatus) {
+      this.refs.announcementStatus.textContent = slides[this.#current].querySelector('.announcement-bar__text')?.textContent?.trim() ?? '';
+    }
   }
-
-  /**
-   * Pause the slideshow when the page is hidden.
-   */
-  #handleVisibilityChange = () => (document.hidden ? this.pause() : this.resume());
 }
 
 if (!customElements.get('announcement-bar-component')) {

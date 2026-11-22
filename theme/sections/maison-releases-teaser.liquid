@@ -66,6 +66,8 @@
                     alt: image_alt,
                     loading: 'lazy'
                 }}
+              {% else %}
+                {% render 'maison-concept-image', product: product %}
               {% endif %}
               <span>{{ product.title | escape }}</span>
             </a>
@@ -88,6 +90,8 @@
                     alt: image_alt,
                     loading: 'lazy'
                 }}
+              {% else %}
+                {% render 'maison-concept-image', product: product %}
               {% endif %}
               <span>{{ product.title | escape }}</span>
             </a>

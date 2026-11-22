@@ -10,7 +10,7 @@
     <div class="mt-augo__eyebrow-row">
       <span class="mt-augo__badge">AUGO · AI UNIVERSAL GROUNDWORK</span>
     </div>
-    <h2 class="mt-augo__heading" aria-label="{{ section.settings.heading | escape }}">
+    <h2 class="mt-augo__heading">
       {{ section.settings.heading | default: 'What can an assistant find?' | escape }}
     </h2>
     <p class="mt-augo__lede">{{ section.settings.lede | default: 'Try a prompt and check which facts the assistant can source. Since this store is gated, it may only see public references.' | escape }}</p>
@@ -81,10 +81,9 @@
           target="_blank"
           rel="noopener noreferrer"
           class="mt-augo__open-btn"
-          aria-label="Open {{ system }} to ask about Maison Tavo"
           style="--ai-color: {{ color }};"
         >
-          Ask on {{ system }} →
+          Ask on {{ system }} <span aria-hidden="true">→</span> (opens in a new tab)
         </a>
       </article>
     {%- endfor -%}
@@ -99,15 +98,15 @@
         <div>
           <strong>llms.txt</strong>
           <p>A text overview of the catalogue and its agent-facing routes.</p>
-          <a href="{{ shop.url }}/pages/llms-txt" class="mt-augo__signal-link">View /llms.txt →</a>
+          <a href="/llms.txt" class="mt-augo__signal-link">View /llms.txt →</a>
         </div>
       </div>
       <div class="mt-augo__signal">
         <span class="mt-augo__signal-icon" aria-hidden="true">▸</span>
         <div>
-          <strong>UCP /.well-known</strong>
-          <p>A demonstration of how software could discover and interpret commerce capabilities.</p>
-          <a href="{{ shop.url }}/pages/ucp" class="mt-augo__signal-link">View UCP explorer →</a>
+          <strong>UCP business profile</strong>
+          <p>Shopify’s discovery document lists the commerce capabilities available to software.</p>
+          <a href="https://{{ shop.permanent_domain | escape }}/.well-known/ucp" class="mt-augo__signal-link">Open the business profile →</a>
         </div>
       </div>
       <div class="mt-augo__signal">
@@ -122,7 +121,7 @@
         <div>
           <strong>Open robots.txt</strong>
           <p>The storefront’s crawler rules. The password gate still applies.</p>
-          <a href="{{ shop.url }}/robots.txt" class="mt-augo__signal-link" target="_blank" rel="noopener">View robots.txt →</a>
+          <a href="{{ shop.url }}/robots.txt" class="mt-augo__signal-link" target="_blank" rel="noopener">View robots.txt <span aria-hidden="true">→</span> (opens in a new tab)</a>
         </div>
       </div>
     </div>
@@ -179,7 +178,7 @@
     text-transform: uppercase;
     padding: 0.3em 0.7em;
     border: 1px solid rgba(var(--color-foreground-rgb) / 0.25);
-    color: rgba(var(--color-foreground-rgb) / 0.65);
+    color: var(--color-foreground);
   }
 
   .mt-augo__heading {
@@ -196,7 +195,7 @@
     max-width: 44rem;
     font-size: var(--mt-type-lede);
     line-height: 1.6;
-    color: rgba(var(--color-foreground-rgb) / 0.78);
+    color: var(--color-foreground);
   }
 
   /* ── Grid ── */
@@ -262,7 +261,7 @@
     font-family: var(--mt-type-family-mono);
     font-size: var(--mt-type-mono);
     letter-spacing: 0.08em;
-    color: rgba(var(--color-foreground-rgb) / 0.5);
+    color: var(--color-foreground);
   }
 
   .mt-augo__prompt-wrap {
@@ -276,7 +275,7 @@
     font-size: var(--mt-type-accent);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: rgba(var(--color-foreground-rgb) / 0.5);
+    color: var(--color-foreground);
   }
 
   .mt-augo__prompt {
@@ -286,12 +285,12 @@
     border-inline-start: 2px solid rgba(var(--color-foreground-rgb) / 0.18);
     font-size: var(--mt-type-nav, 0.825rem);
     line-height: 1.55;
-    color: rgba(var(--color-foreground-rgb) / 0.82);
+    color: var(--color-foreground);
     font-style: normal;
   }
 
   .mt-augo__prompt-quote {
-    color: rgba(var(--color-foreground-rgb) / 0.4);
+    color: var(--color-foreground);
   }
 
   .mt-augo__open-btn {
@@ -303,7 +302,7 @@
     letter-spacing: 0.06em;
     text-decoration: none;
     border: 1px solid color-mix(in srgb, var(--ai-color, #888) 35%, transparent);
-    color: var(--ai-color, var(--color-foreground));
+    color: var(--color-foreground);
     background: color-mix(in srgb, var(--ai-color, #888) 6%, transparent);
     transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   }
@@ -330,7 +329,7 @@
     font-size: var(--mt-type-accent);
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(var(--color-foreground-rgb) / 0.6);
+    color: var(--color-foreground);
   }
 
   .mt-augo__signal-grid {
@@ -348,7 +347,7 @@
     flex-shrink: 0;
     font-size: 1rem;
     line-height: 1.4;
-    color: var(--bell, #b8893a);
+    color: var(--color-foreground);
   }
 
   .mt-augo__signal strong {
@@ -364,15 +363,16 @@
     margin: 0 0 0.5rem;
     font-size: var(--mt-type-nav, 0.825rem);
     line-height: 1.55;
-    color: rgba(var(--color-foreground-rgb) / 0.72);
+    color: var(--color-foreground);
   }
 
   .mt-augo__signal-link {
     font-family: var(--mt-type-family-mono);
     font-size: var(--mt-type-mono);
     letter-spacing: 0.06em;
-    color: var(--bell, #b8893a);
-    text-decoration: none;
+    color: var(--color-foreground);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 
   .mt-augo__signal-link:hover {

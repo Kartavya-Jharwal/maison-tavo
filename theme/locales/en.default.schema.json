@@ -263,7 +263,7 @@
     "media_type_info": "Features are populated from your menu links",
     "maison_journal_handle": "Must match the blog handle created in Admin (default: journal)",
     "maison_microapp_id": "Must match an id in theme/microapps/apps.json. Shopify assets are flat, so the file is assets/microapp-{id}.js. Optional page metafield: maison.microapp_id.",
-    "maison_collection_handle": "Used when no collection is picked. Catalog handles: forge-hybrid, terre-clay, kuro-strip, forge-terre.",
+    "maison_collection_handle": "Used when no collection is picked. Catalog handles: forge, chulha, maintenance.",
     "splash_duration": "Auto-dismiss after this many seconds. Set 0 to wait for Enter or backdrop click.",
     "splash_enable": "Set to Hide splash to turn the intro off. Existing themes ignore new checkbox defaults — use this select instead.",
     "font_awesome_kit_id": "From https://kit.fontawesome.com/KIT_ID.js — paste KIT_ID only (placeholder: REPLACE_WITH_FA_KIT_ID). Kit script loads from snippets/font-awesome.liquid via scripts.liquid."

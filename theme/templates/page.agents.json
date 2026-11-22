@@ -1,0 +1,42 @@
+{
+  "sections": {
+    "agents_story": {
+      "type": "maison-building",
+      "settings": {
+        "eyebrow": "The agent's room",
+        "heading": "Agents, sound and the art of exchange",
+        "lede": "A design and engineering case study for a cookware house that people can understand and machines can read. These are proposed experiences, not live shopping features.",
+        "padding-block-start": 56,
+        "padding-block-end": 80
+      },
+      "blocks": {
+        "bell": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Concept 01 · Sound",
+            "heading": "The Kansa Bell Resonance Ritual",
+            "text": "<p>An opening acoustic and visual study would use the Web Audio API to model the harmonic decay of high-tin bell bronze: 22% tin and 78% copper. Each fading overtone would cue a restrained typography reveal. Sound would begin only after a visitor chooses it, with a silent and reduced-motion path.</p><p>This is a proposed ritual. The current storefront sound control is a separate opt-in interaction; it is not a measured simulation of this alloy.</p>"
+          }
+        },
+        "molbhav": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Concept 02 · Agent exchange",
+            "heading": "Mol-Bhav: an algorithmic bazaar",
+            "text": "<p><em>Mol-bhav</em> is mutual negotiation, rooted in a relationship of respect between patron and maker. The proposed arena lets a visitor start a bounded exchange between a buyer agent and Kansa, then watch a deterministic rule engine evaluate inventory age, bundle terms and a first-sale-of-the-day <em>bohni</em> rule.</p><p>A proposal token would identify an expiring offer for server-side verification. A later authenticated endpoint could display redacted packets from an outside agent or LLM. No visitor-facing offer, outside-agent connection or cryptographic token is live on this page.</p>"
+          }
+        },
+        "boundary": {
+          "type": "entry",
+          "settings": {
+            "date_label": "What works today",
+            "heading": "A legible prototype, with clear limits",
+            "text": "<p>The current <a href=\"/pages/ucp\">UCP room</a> shows a labeled Mol-Bhav simulation, while <a href=\"/pages/kansa\">Kansa</a> answers prepared cookware questions. Neither is a live negotiation service. Product prices, stock and checkout remain with Shopify; any future proposal would be rechecked before purchase.</p><p>For the house and its craft context, read <a href=\"/pages/about\">About Maison Tavo</a>. For shopping questions, visit the <a href=\"/pages/faq\">FAQ</a>.</p>"
+          }
+        }
+      },
+      "block_order": ["bell", "molbhav", "boundary"]
+    }
+  },
+  "order": ["agents_story"]
+}

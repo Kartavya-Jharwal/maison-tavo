@@ -43,6 +43,7 @@
         | image_url: width: 3840
         | image_tag:
           width: 1100,
+          alt: '',
           widths: widths,
           sizes: sizes,
           loading: video_loading,
@@ -51,8 +52,8 @@
       <video
         playsinline
         muted
-        autoplay
         loop
+        aria-hidden="true"
         ref="videoElement"
       >
         {%- for sourceElement in background_video.sources -%}
@@ -63,6 +64,8 @@
           >
         {%- endfor -%}
       </video>
+      <button type="button" class="video-background__toggle" ref="videoToggle" hidden>Play background video</button>
+      <span class="visually-hidden" ref="videoStatus" role="status"></span>
     </video-background-component>
   {%- else -%}
     <div class="{{ video_classes }}">

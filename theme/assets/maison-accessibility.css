@@ -1,0 +1,134 @@
+/* Shared interaction requirements; inline prose links retain their inline target exception. */
+html {
+  scroll-padding-block: calc(var(--header-group-height, 5rem) + 1rem) 6rem;
+}
+
+.page-wrapper {
+  scroll-padding-block: calc(var(--header-group-height, 5rem) + 1rem) 6rem;
+}
+
+body :focus-visible {
+  outline: 3px solid #14110f !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 6px #f7f2e9 !important;
+  scroll-margin-block: calc(var(--header-group-height, 5rem) + 1rem) 6rem;
+}
+
+body [data-mt-scroll]:focus-within,
+body [data-mt-scroll]:focus-within * {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+body product-card .product-card__title-link {
+  display: block;
+  max-width: 100%;
+}
+
+body :is(button, summary, select, .button, .button-secondary, .pill, .header__icon, .slideshow-control) {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+body :is(input:not([type='checkbox']):not([type='radio']):not([type='hidden']), textarea) {
+  min-height: 44px;
+  font-size: max(1rem, 1em);
+}
+
+body :is(input, textarea)::placeholder {
+  color: var(--color-input-text);
+  opacity: 1;
+}
+
+body :is(.rte, .maison-legal__body, .contact-form) a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+body .maison-footer :is(a, button) {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  white-space: normal;
+}
+
+body .maison-footer :is(p, small, span, a, button) {
+  opacity: 1;
+}
+
+body .maison-footer :is(p, small, span, a:hover, button) {
+  color: var(--mt-color-bone);
+}
+
+body :is(.header__menu .menu-list__link:hover, .header__nav a:hover, .navigation-link:hover, .pill-light:hover) {
+  color: #61451c;
+}
+
+body .maison-carousel__dot {
+  width: 44px;
+  height: 44px;
+  background-clip: content-box;
+  padding: 16px;
+}
+
+dialog {
+  max-block-size: calc(100dvh - 2rem);
+  overflow-y: auto;
+}
+
+@media screen and (max-width: 30rem) {
+  #header-component .header__columns {
+    --header-template-columns: 44px 44px minmax(0, 1fr);
+    grid-template-areas: 'leftA leftB center' 'rightB rightB rightB';
+  }
+
+  #header-component .header__columns header-actions {
+    justify-content: flex-end;
+    min-width: 0;
+  }
+
+  #header-component .header-logo {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .mt-consent-bar:not([hidden]) {
+    position: relative;
+    inset: auto;
+    margin: 1rem;
+  }
+
+  .mt-consent-bar .mt-btn-sm {
+    min-height: 44px !important;
+    white-space: normal;
+  }
+}
+
+@media (forced-colors: active) {
+  body :focus-visible {
+    outline-color: Highlight !important;
+    box-shadow: none !important;
+  }
+  body :is(button, input, select, textarea, .button) {
+    border: 1px solid ButtonText;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:root { scroll-behavior: auto; }
+  body *, body *::before, body *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html[data-reduced-motion='true'] body *,
+html[data-reduced-motion='true'] body *::before,
+html[data-reduced-motion='true'] body *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

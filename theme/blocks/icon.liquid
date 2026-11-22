@@ -25,6 +25,7 @@
   <a
     href="{{ block_settings.link }}"
     class="text-inherit"
+    aria-label="{{ block_settings.link_label | default: block_settings.image_upload.alt | default: block_settings.link | escape }}{% if block_settings.open_in_new_tab %} — {{ 'accessibility.new_window' | t | escape }}{% endif %}"
     {% if block_settings.open_in_new_tab %}
       target="_blank" rel="noopener"
     {% endif %}
@@ -314,6 +315,12 @@
       "type": "url",
       "id": "link",
       "label": "t:settings.link"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Accessible link name",
+      "info": "Describe where the icon link goes."
     },
     {
       "type": "checkbox",

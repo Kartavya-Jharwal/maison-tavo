@@ -106,6 +106,8 @@ Groundwork. Cheap, fast, and de-risks everything downstream.
 - [x] **Motion spike:** anime.js + Motion (vanilla ESM builds) vendored into `theme/assets/`,
       one demo animation running on the dev theme, `theme:check` clean. No build step — Horizon
       serves theme assets only. Notes: [spikes-m0.md](spikes-m0.md).
+      *Retired in the P1 motion pass: both libraries were replaced by the GSAP bundle already
+      shipping in `maison-runtime.js`, so the storefront carries one animation engine.*
 - [x] **Sound spike:** Howler.js vendored, one interaction sound behind an explicit opt-in
       toggle, silent by default. Notes: [spikes-m0.md](spikes-m0.md).
 - [x] **Font spike:** one self-hosted variable WOFF2 with a unicode-range subset loading via
@@ -205,12 +207,13 @@ Storefront content (P0) and the experience engineering (P1) land together, in th
 - [x] Product JSON-LD enriched beyond stock `structured_data`: `additionalProperty` for spec
       fields, GTIN — the storefront half of the machine-readability claim.
 - [ ] Collections and navigation hierarchy built (Skillets / Tagines / Knives / Sets).
-- [ ] **Motion pass (P1):** vendored anime.js / Motion microanimations — hero reveal, spec-table
-      stagger, cart feedback — respecting `prefers-reduced-motion`, no layout shift.
-      *(Hero reveal from M0 + spec-table CSS stagger shipped; cart-feedback pulse added to
-      `maison-runtime.js` via `shopify:cart:lines-update` event listener.)*
-- [ ] **Sound design v0 (P1):** Howler soundscape — interaction feedback on add-to-cart and
+- [x] **Motion pass (P1):** GSAP microanimations — hero reveal, card and spec-table stagger,
+      cart feedback — respecting `prefers-reduced-motion`, no layout shift. Lives in
+      `theme/assets/maison-motion.js` and runs on the runtime's `window.gsap`, so the page carries
+      one animation engine. The M0 anime.js / Motion vendored copies were retired.
+- [x] **Sound design v0 (P1):** Howler soundscape — interaction feedback on add-to-cart and
       configurator actions — opt-in toggle, silent by default, persisted preference (D10).
+      `theme/assets/maison-sound.js`, loaded from `snippets/scripts.liquid`.
 - [x] **Kansa page v0 (P1):** `/pages/kansa` template created (`theme/templates/page.kansa.json`),
       `kansa-app.liquid` section, `theme/scripts/src/kansa.js` microapp (Zustand + Motion,
       scripted intents, thermal calculator, QR onboarding) built to `assets/microapp-kansa.js`.
@@ -318,11 +321,13 @@ lists its file-level targets in this repo.
 
 ### WS5 — Experience engineering (M0 spikes, M4 build)
 
-The design-engineering showcase layer. All of it vendored ESM in `theme/assets/` (Horizon has
-no build step; `assets/package.json` stays `{ "type": "module" }`).
+The design-engineering showcase layer. Most of it is bundled from `theme/scripts/src/` into
+`theme/assets/` by `bun run theme:build` (`assets/package.json` stays `{ "type": "module" }`).
 
-- **Motion:** anime.js + Motion (vanilla builds) for microanimations — reveals, staggers, cart
-  and configurator feedback. `prefers-reduced-motion` respected everywhere.
+- **Motion:** GSAP (ScrollTrigger, SplitText, Lenis) plus Embla Carousel for rails. The single
+  animation and stagger engine for reveals, spec-table staggering, cart and configurator
+  feedback. `prefers-reduced-motion` respected everywhere. The old vendored `anime.esm.js` /
+  `motion.esm.js` copies are retired — one engine, not three.
 - **Sound:** Howler.js soundscape — interaction feedback, opt-in and silent by default,
   persisted preference.
 - **State:** Zustand (`zustand/vanilla` + `persist` middleware) for session state and
@@ -355,7 +360,8 @@ no build step; `assets/package.json` stays `{ "type": "module" }`).
 
 | Concern | Choice | Where | Constraint |
 | --- | --- | --- | --- |
-| Microanimation | anime.js + Motion (vanilla ESM) | `theme/assets/` | Vendored, no build step; reduced-motion aware |
+| Microanimation | GSAP + Embla (bundled from `scripts/src`) | `theme/assets/` | Built by `bun run theme:build`; reduced-motion aware |
+| Carousel | Embla Carousel | `scripts/src/carousel.js` | Native scroll fallback before hydration |
 | React animation (later) | Motion (`motion/react`) | standalone Kansa PWA | Post-delivery branch-off only |
 | Sound design | Howler.js | `theme/assets/` | Opt-in, silent default, persisted preference |
 | Session state | Zustand `vanilla` + `persist` | Kansa page, interactive surfaces | localStorage; no server state |

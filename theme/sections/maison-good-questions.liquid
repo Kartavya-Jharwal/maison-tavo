@@ -36,20 +36,31 @@
   </maison-good-questions>
 </div>
 
+{%- if template.suffix == 'faq' -%}
+  {%- assign faq_items = '' -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'question' and block.settings.question != blank -%}
+      {%- assign faq_answer = block.settings.answer | strip_html | strip -%}
+      {%- capture faq_item -%}{"@type":"Question","name":{{ block.settings.question | json }},"acceptedAnswer":{"@type":"Answer","text":{{ faq_answer | json }}}}{%- endcapture -%}
+      {%- if faq_items != '' -%}{%- assign faq_items = faq_items | append: ',' -%}{%- endif -%}
+      {%- assign faq_items = faq_items | append: faq_item -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if faq_items != '' -%}
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{ faq_items }}]}</script>
+  {%- endif -%}
+{%- endif -%}
+
 {% stylesheet %}
   .maison-gq {
     display: grid;
     gap: var(--maison-reading-gap);
+    max-inline-size: var(--maison-reading-measure);
+    margin-inline: auto;
     margin-block: var(--mt-space-section);
     padding: var(--mt-space-gutter);
     border: 1px solid var(--color-border);
     border-radius: var(--style-border-radius-lg);
-  }
-
-  @media (min-width: 56rem) {
-    .maison-gq {
-      grid-template-columns: minmax(0, 2fr) minmax(0, 5fr);
-    }
   }
 
   .maison-gq__questions {
@@ -59,6 +70,7 @@
   .maison-gq .maison-editorial__header {
     align-content: start;
     margin: 0;
+    text-align: center;
   }
 
   .maison-gq__item {

@@ -5,12 +5,15 @@
       "settings": {
         "document": "terms",
         "eyebrow": "Legal",
-        "heading": "Exhibition terms",
+        "heading": "Terms & Conditions",
         "show_native_policy": true,
         "padding-block-start": 48,
-        "padding-block-end": 80
+        "padding-block-end": 80,
+        "summary": "<p>Maison Tavo is a gated cookware concept exhibition. Catalogue prices, availability, delivery examples and demonstrations are for evaluation. Only use checkout with test details supplied by the project team. The full terms explain the status of the exhibition, product information and the optional house joke.</p>"
       }
     }
   },
-  "order": ["legal"]
+  "order": [
+    "legal"
+  ]
 }

@@ -1,0 +1,565 @@
+{
+  "store": "maison-tavo-9pyrkr0c.myshopify.com",
+  "publication": "gid://shopify/Publication/369593221489",
+  "mock": true,
+  "verified_at": "2026-11-19T14:31:02.501Z",
+  "collections": [
+    {
+      "handle": "forge",
+      "id": "gid://shopify/Collection/715376361841"
+    },
+    {
+      "handle": "chulha",
+      "id": "gid://shopify/Collection/715311350129"
+    },
+    {
+      "handle": "maintenance",
+      "id": "gid://shopify/Collection/715379081585"
+    }
+  ],
+  "products": [
+    {
+      "handle": "forge-tawa",
+      "id": "gid://shopify/Product/16172680511857",
+      "variants": [
+        {
+          "sku": "MT-FOR-TAV-26",
+          "id": "gid://shopify/ProductVariant/68877078167921",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874669318513",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-FOR-TAV-30",
+          "id": "gid://shopify/ProductVariant/68877078200689",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874669351281",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-kadhai",
+      "id": "gid://shopify/Product/16172680642929",
+      "variants": [
+        {
+          "sku": "MT-FOR-KAD-24",
+          "id": "gid://shopify/ProductVariant/68877083148657",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874674299249",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-FOR-KAD-28",
+          "id": "gid://shopify/ProductVariant/68877083181425",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874674332017",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-FOR-KAD-32",
+          "id": "gid://shopify/ProductVariant/68877083214193",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874674364785",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-saucepan",
+      "id": "gid://shopify/Product/16172680741233",
+      "variants": [
+        {
+          "sku": "MT-FOR-SPN-16",
+          "id": "gid://shopify/ProductVariant/68877088031089",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874676822385",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-FOR-SAU-20",
+          "id": "gid://shopify/ProductVariant/68877088063857",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874676855153",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-frying-pan",
+      "id": "gid://shopify/Product/16172680872305",
+      "variants": [
+        {
+          "sku": "MT-FOR-FRY-20",
+          "id": "gid://shopify/ProductVariant/68877090586993",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874681737585",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-FOR-FRY-24",
+          "id": "gid://shopify/ProductVariant/68877090619761",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874681770353",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-FOR-FRY-28",
+          "id": "gid://shopify/ProductVariant/68877090652529",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874681803121",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-saucier",
+      "id": "gid://shopify/Product/16172681265521",
+      "variants": [
+        {
+          "sku": "MT-FOR-SCR-20",
+          "id": "gid://shopify/ProductVariant/68877095862641",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874687013233",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-FOR-SCR-22",
+          "id": "gid://shopify/ProductVariant/68877095895409",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874687046001",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-FOR-SCR-24",
+          "id": "gid://shopify/ProductVariant/68877095928177",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874687078769",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-FOR-SCR-26",
+          "id": "gid://shopify/ProductVariant/68877095960945",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874687111537",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-saute",
+      "id": "gid://shopify/Product/16172684050801",
+      "variants": [
+        {
+          "sku": "MT-FOR-STE-24",
+          "id": "gid://shopify/ProductVariant/68877103497585",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874694648177",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-FOR-STE-28",
+          "id": "gid://shopify/ProductVariant/68877103530353",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874694680945",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-stockpot",
+      "id": "gid://shopify/Product/16172684706161",
+      "variants": [
+        {
+          "sku": "MT-FOR-STK-20",
+          "id": "gid://shopify/ProductVariant/68877108937073",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874700087665",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-FOR-STK-24",
+          "id": "gid://shopify/ProductVariant/68877108969841",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874700120433",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-FOR-STK-28",
+          "id": "gid://shopify/ProductVariant/68877109002609",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874700153201",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-set-solo-couple-grouped-preview",
+      "id": "gid://shopify/Product/16172695945585",
+      "variants": [
+        {
+          "sku": "MT-FOR-SET-SOLO",
+          "id": "gid://shopify/ProductVariant/68877228736881",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874819887473",
+          "available": 18,
+          "component_inventory": true
+        }
+      ]
+    },
+    {
+      "handle": "forge-set-family-standard-grouped-preview",
+      "id": "gid://shopify/Product/16172698042737",
+      "variants": [
+        {
+          "sku": "MT-FOR-SET-FAM",
+          "id": "gid://shopify/ProductVariant/68877247316337",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874838466929",
+          "available": 18,
+          "component_inventory": true
+        }
+      ]
+    },
+    {
+      "handle": "forge-set-entertainer-grouped-preview",
+      "id": "gid://shopify/Product/16172698272113",
+      "variants": [
+        {
+          "sku": "MT-FOR-SET-ENT",
+          "id": "gid://shopify/ProductVariant/68877259309425",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874850460017",
+          "available": 18,
+          "component_inventory": true
+        }
+      ]
+    },
+    {
+      "handle": "forge-set-european-grouped-preview",
+      "id": "gid://shopify/Product/16172698567025",
+      "variants": [
+        {
+          "sku": "MT-FOR-SET-EUR",
+          "id": "gid://shopify/ProductVariant/68877271236977",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874862354801",
+          "available": 18,
+          "component_inventory": true
+        }
+      ]
+    },
+    {
+      "handle": "forge-set-asian-grouped-preview",
+      "id": "gid://shopify/Product/16172700238193",
+      "variants": [
+        {
+          "sku": "MT-FOR-SET-ASN",
+          "id": "gid://shopify/ProductVariant/68877284508017",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874875658609",
+          "available": 18,
+          "component_inventory": true
+        }
+      ]
+    },
+    {
+      "handle": "forge-set-everyday-grouped-preview",
+      "id": "gid://shopify/Product/16172700533105",
+      "variants": [
+        {
+          "sku": "MT-FOR-SET-DAY",
+          "id": "gid://shopify/ProductVariant/68877296501105",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874887651697",
+          "available": 18,
+          "component_inventory": true
+        }
+      ]
+    },
+    {
+      "handle": "forge-set-full-house-grouped-preview",
+      "id": "gid://shopify/Product/16172700762481",
+      "variants": [
+        {
+          "sku": "MT-FOR-SET-FUL",
+          "id": "gid://shopify/ProductVariant/68877306265969",
+          "inventory_item_id": "gid://shopify/InventoryItem/70874897416561",
+          "available": 18,
+          "component_inventory": true
+        }
+      ]
+    },
+    {
+      "handle": "chulha-tawa",
+      "id": "gid://shopify/Product/16172845924721",
+      "variants": [
+        {
+          "sku": "MT-CHU-TAW-26",
+          "id": "gid://shopify/ProductVariant/68879895888241",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877534257521",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-CHU-TAW-30",
+          "id": "gid://shopify/ProductVariant/68879895921009",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877534290289",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "chulha-artisanal-matka",
+      "id": "gid://shopify/Product/16172845957489",
+      "variants": [
+        {
+          "sku": "MT-CHU-MAT-2P5",
+          "id": "gid://shopify/ProductVariant/68879896379761",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877534749041",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-CHU-MAT-4",
+          "id": "gid://shopify/ProductVariant/68879896412529",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877534781809",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "chulha-pressure-cooker",
+      "id": "gid://shopify/Product/16172846743921",
+      "variants": [
+        {
+          "sku": "MT-CHU-PRS-3",
+          "id": "gid://shopify/ProductVariant/68879897100657",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877535469937",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-CHU-PRS-5",
+          "id": "gid://shopify/ProductVariant/68879897133425",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877535502705",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "chulha-heavy-kadhai",
+      "id": "gid://shopify/Product/16172848349553",
+      "variants": [
+        {
+          "sku": "MT-CHU-KAD-24",
+          "id": "gid://shopify/ProductVariant/68879898870129",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877537173873",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-CHU-KAD-28",
+          "id": "gid://shopify/ProductVariant/68879898902897",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877537206641",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-CHU-KAD-32",
+          "id": "gid://shopify/ProductVariant/68879898935665",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877537239409",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "chulha-chai-saucier",
+      "id": "gid://shopify/Product/16172848808305",
+      "variants": [
+        {
+          "sku": "MT-CHU-SCR-1",
+          "id": "gid://shopify/ProductVariant/68879899394417",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877537763697",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-CHU-SCR-1P75",
+          "id": "gid://shopify/ProductVariant/68879899427185",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877537796465",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "chulha-biryani-handi",
+      "id": "gid://shopify/Product/16172848873841",
+      "variants": [
+        {
+          "sku": "MT-CHU-HND-2P5",
+          "id": "gid://shopify/ProductVariant/68879899492721",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877537862001",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-CHU-HND-4",
+          "id": "gid://shopify/ProductVariant/68879899525489",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877537894769",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "chulha-stockpot",
+      "id": "gid://shopify/Product/16172848906609",
+      "variants": [
+        {
+          "sku": "MT-CHU-STK-4",
+          "id": "gid://shopify/ProductVariant/68879899558257",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877537927537",
+          "available": 18,
+          "component_inventory": false
+        },
+        {
+          "sku": "MT-CHU-STK-6",
+          "id": "gid://shopify/ProductVariant/68879899591025",
+          "inventory_item_id": "gid://shopify/InventoryItem/70877537960305",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-care-ritual-kit",
+      "id": "gid://shopify/Product/16139896029553",
+      "variants": [
+        {
+          "sku": "MT-FOR-KIT-C01",
+          "id": "gid://shopify/ProductVariant/68283396194673",
+          "inventory_item_id": "gid://shopify/InventoryItem/70278511952241",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-seasoning-oil",
+      "id": "gid://shopify/Product/16139895964017",
+      "variants": [
+        {
+          "sku": "MT-FOR-OIL-250",
+          "id": "gid://shopify/ProductVariant/68283395703153",
+          "inventory_item_id": "gid://shopify/InventoryItem/70278511460721",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-stainless-steel-maintenance-kit",
+      "id": "gid://shopify/Product/16172170215793",
+      "variants": [
+        {
+          "sku": "MT-FOR-KIT-SS1",
+          "id": "gid://shopify/ProductVariant/68871036338545",
+          "inventory_item_id": "gid://shopify/InventoryItem/70868588724593",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-universal-lid-16",
+      "id": "gid://shopify/Product/16172169757041",
+      "variants": [
+        {
+          "sku": "MT-FOR-LID-16",
+          "id": "gid://shopify/ProductVariant/68871026278769",
+          "inventory_item_id": "gid://shopify/InventoryItem/70868578664817",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-universal-lid-20",
+      "id": "gid://shopify/Product/16172167561585",
+      "variants": [
+        {
+          "sku": "MT-FOR-LID-20",
+          "id": "gid://shopify/ProductVariant/68871003046257",
+          "inventory_item_id": "gid://shopify/InventoryItem/70868555432305",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-universal-lid-24",
+      "id": "gid://shopify/Product/16172167659889",
+      "variants": [
+        {
+          "sku": "MT-FOR-LID-24",
+          "id": "gid://shopify/ProductVariant/68871003144561",
+          "inventory_item_id": "gid://shopify/InventoryItem/70868555530609",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-relay-lid-26",
+      "id": "gid://shopify/Product/16139896095089",
+      "variants": [
+        {
+          "sku": "MT-FOR-LID-26",
+          "id": "gid://shopify/ProductVariant/68283396686193",
+          "inventory_item_id": "gid://shopify/InventoryItem/70278512443761",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-universal-lid-28",
+      "id": "gid://shopify/Product/16172167725425",
+      "variants": [
+        {
+          "sku": "MT-FOR-LID-28",
+          "id": "gid://shopify/ProductVariant/68871003210097",
+          "inventory_item_id": "gid://shopify/InventoryItem/70868555596145",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-relay-lid-30",
+      "id": "gid://shopify/Product/16139896160625",
+      "variants": [
+        {
+          "sku": "MT-FOR-LID-30",
+          "id": "gid://shopify/ProductVariant/68283397177713",
+          "inventory_item_id": "gid://shopify/InventoryItem/70278512935281",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    },
+    {
+      "handle": "forge-universal-lid-32",
+      "id": "gid://shopify/Product/16172170084721",
+      "variants": [
+        {
+          "sku": "MT-FOR-LID-32",
+          "id": "gid://shopify/ProductVariant/68871031259505",
+          "inventory_item_id": "gid://shopify/InventoryItem/70868583645553",
+          "available": 18,
+          "component_inventory": false
+        }
+      ]
+    }
+  ]
+}

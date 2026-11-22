@@ -13,6 +13,13 @@
   fetchpriority="low"
 ></script>
 
+{% liquid
+  assign recipient_has_errors = false
+  if form.errors contains 'email' or form.errors contains 'name' or form.errors contains 'message' or form.errors contains 'send_on'
+    assign recipient_has_errors = true
+  endif
+%}
+
 <gift-card-recipient-form
   class="recipient-form"
   style="
@@ -42,8 +49,8 @@
         ref="myEmailButton"
         on:change="/toggleRecipientForm/self"
         value="self"
-        checked
-        aria-controls="recipient-fields"
+        {% unless recipient_has_errors %}checked{% endunless %}
+        aria-controls="recipient-fields-{{ block.id }}"
       >
       <span>{{- 'content.recipient_form_email_label_my_email' | t -}}</span>
     </label>
@@ -55,18 +62,21 @@
         ref="recipientEmailButton"
         on:change="/toggleRecipientForm/recipient_form"
         value="recipient_form"
-        aria-controls="recipient-fields"
+        {% if recipient_has_errors %}checked{% endif %}
+        aria-controls="recipient-fields-{{ block.id }}"
       >
       <span>{{ 'content.recipient_form_email_label' | t }}</span>
     </label>
   </fieldset>
   <div
     ref="recipientFields"
+    id="recipient-fields-{{ block.id }}"
     class="recipient-fields"
-    hidden
+    {% unless recipient_has_errors %}hidden{% endunless %}
   >
     <div>
       <div class="field">
+        <label for="Recipient-email-{{ block.id }}">{{ 'content.recipient_form_email_address' | t }} (required)</label>
         <input
           ref="recipientEmail"
           class="recipient-fields__input"
@@ -77,8 +87,8 @@
           autocorrect="off"
           autocapitalize="off"
           autocomplete="email"
-          pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
-          value="{{ form.email }}"
+          value="{{ form.email | escape }}"
+          {% unless recipient_has_errors %}disabled{% else %}required{% endunless %}
           {% if form.errors contains 'email' %}
             aria-invalid="true"
             aria-describedby="RecipientForm-email-error-{{ block.id }}"
@@ -88,6 +98,7 @@
 
       <div
         ref="emailError"
+        id="RecipientForm-email-error-{{ block.id }}"
         class="recipient-form__message{% unless form.errors contains 'email' %} hidden{% endunless %}"
       >
         {{- 'icon-error.svg' | inline_asset_content -}}
@@ -101,6 +112,7 @@
 
     <div>
       <div class="field">
+        <label for="Recipient-name-{{ block.id }}">{{ 'content.recipient_form_name_label' | t }}</label>
         <input
           ref="recipientName"
           class="recipient-fields__input"
@@ -109,7 +121,8 @@
           id="Recipient-name-{{ block.id }}"
           name="properties[Recipient name]"
           placeholder="{{ 'content.recipient_form_name_label' | t }}"
-          value="{{ form.name }}"
+          value="{{ form.name | escape }}"
+          {% unless recipient_has_errors %}disabled{% endunless %}
           maxlength="100"
           {% if form.errors contains 'name' %}
             aria-invalid="true"
@@ -120,6 +133,7 @@
 
       <div
         ref="nameError"
+        id="RecipientForm-name-error-{{ block.id }}"
         class="recipient-form__message{% unless form.errors contains 'name' %} hidden{% endunless %}"
       >
         {{- 'icon-error.svg' | inline_asset_content -}}
@@ -139,6 +153,7 @@
       -%}
       {%- assign message_label_rendered = 'content.recipient_form_message' | t -%}
       <div class="field">
+        <label for="Recipient-message-{{ block.id }}">{{ message_label_rendered }}</label>
         <textarea
           ref="recipientMessage"
           rows="10"
@@ -146,16 +161,17 @@
           class="recipient-fields__input recipient-fields__textarea"
           name="properties[Message]"
           maxlength="{{ max_chars_message }}"
+          data-description-id="RecipientForm-count-{{ block.id }}"
           placeholder="{{ 'content.recipient_form_message' | t }}"
-          aria-label="{{ message_label_rendered }} {{ max_chars_message_rendered }}"
+          {% unless recipient_has_errors %}disabled{% endunless %}
+          aria-describedby="RecipientForm-count-{{ block.id }}{% if form.errors contains 'message' %} RecipientForm-message-error-{{ block.id }}{% endif %}"
           {% if form.errors contains 'message' %}
             aria-invalid="true"
-            aria-describedby="RecipientForm-message-error-{{ block.id }}"
           {% endif %}
-        >{{ form.message }}</textarea>
+        >{{ form.message | escape }}</textarea>
 
-        <label
-          for="Recipient-message-{{ block.id }}"
+        <p
+          id="RecipientForm-count-{{ block.id }}"
           class="recipient-form-field-label"
         >
           <span
@@ -165,11 +181,12 @@
           >
             {{- max_chars_message_rendered -}}
           </span>
-        </label>
+        </p>
       </div>
 
       <div
         ref="messageError"
+        id="RecipientForm-message-error-{{ block.id }}"
         class="recipient-form__message{% unless form.errors contains 'message' %} hidden{% endunless %}"
       >
         {{- 'icon-error.svg' | inline_asset_content -}}
@@ -183,27 +200,30 @@
 
     <div>
       <div class="field field--send-on">
-        <div for="Recipient-send-on-{{ block.id }}">
+        <label for="Recipient-send-on-{{ block.id }}">
           {{ 'content.recipient_form_send_on_label' | t }}
-        </div>
+        </label>
         <input
           ref="recipientSendOn"
           class="recipient-fields__input"
-          autocomplete="send_on"
           type="date"
           id="Recipient-send-on-{{ block.id }}"
           name="properties[Send on]"
+          data-description-id="RecipientForm-date-hint-{{ block.id }}"
           placeholder="{{ 'content.recipient_form_send_on_label' | t }}"
           pattern="\d{4}-\d{2}-\d{2}"
-          value="{{ form.send_on }}"
+          value="{{ form.send_on | escape }}"
+          {% unless recipient_has_errors %}disabled{% endunless %}
+          aria-describedby="RecipientForm-date-hint-{{ block.id }}{% if form.errors contains 'send_on' %} RecipientForm-send_on-error-{{ block.id }}{% endif %}"
           {% if form.errors contains 'send_on' %}
             aria-invalid="true"
-            aria-describedby="RecipientForm-send_on-error-{{ block.id }}"
           {% endif %}
         >
+        <p id="RecipientForm-date-hint-{{ block.id }}">Choose today or a date within the next 90 days.</p>
       </div>
       <div
         ref="sendOnError"
+        id="RecipientForm-send_on-error-{{ block.id }}"
         class="recipient-form__message{% unless form.errors contains 'send_on' %} hidden{% endunless %}"
       >
         {{- 'icon-error.svg' | inline_asset_content -}}
@@ -215,6 +235,9 @@
       </div>
     </div>
   </div>
+  {% if recipient_has_errors %}
+    <input type="hidden" name="properties[__shopify_send_gift_card_to_recipient]" value="on">
+  {% endif %}
   <input
     ref="timezoneOffset"
     type="hidden"

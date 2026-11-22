@@ -127,7 +127,7 @@ change the answer.
 
 ### D8 — Experience engineering is vendored ESM in the theme, no build step
 
-- **Status:** **Decided** (26 Sep 2026).
+- **Status:** **Superseded** by D13 (26 Oct 2026). Retained for history.
 - **Decision:** anime.js, Motion (vanilla), Howler.js, and Zustand (`vanilla` + `persist`) are
   vendored into `theme/assets/` as ES modules. No bundler is introduced into `theme/`.
 - **Rationale:** Horizon serves theme assets only and its JS is already module-based
@@ -214,7 +214,9 @@ documentation.
 - **Status:** **Decided** (16 Nov 2026).
 - **Decision:** GSAP, Lenis, Barba.js, Use-Gesture, and Three.js / R3F ship as Bun-bundled
   theme assets (`maison-runtime.js`, `maison-vessel.js`). They enhance the Horizon multipage
-  rooms; they do not replace Shopify navigation, checkout, or customer accounts.
+  rooms; they do not replace Shopify navigation, checkout, or customer accounts. Embla Carousel
+  joined the same bundle set for `sections/maison-carousel.liquid`. `scripts/verify-js-chain.mjs`
+  (run by `bun run theme:verify`) guards the package → bundle → Liquid → init → push chain.
 - **Rationale:** SOTY jury wants an interactive digital flagship, but Jakob’s Law and Lighthouse
   still own the score. Barba swaps only `#MainContent`. The R3F vessel is a lazy PDP material
   study and never owns variant selection or add-to-bag. Gestures stop at drawers and lookbook

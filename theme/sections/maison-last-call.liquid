@@ -4,13 +4,12 @@
   and waitlist pre-order field for upcoming foundry heats.
 {% endcomment %}
 
-<div class="maison-last-call section" data-section-id="{{ section.id }}" data-mt-chapter>
+<div class="maison-last-call section" data-section-id="{{ section.id }}" data-mt-chapter data-mt-document-navigation>
   <div class="maison-last-call__inner section--page-width">
     <!-- Bell Icon Strike Trigger -->
     <div class="maison-last-call__bell-wrap" data-mt-scroll="beat">
-      <button class="maison-last-call__bell-btn" id="last-call-bell" aria-label="Strike the Temple Bell at Last Call" data-strike>
-        <span class="bell-glyph"><i class="fa-solid fa-bell" aria-hidden="true"></i></span>
-        <span class="bell-ring-pulse"></span>
+      <button type="button" class="maison-last-call__bell-btn" aria-label="Strike the Temple Bell at Last Call" data-strike>
+        <span class="bell-glyph" aria-hidden="true">&#9834;</span>
       </button>
       <span class="maison-last-call__devanagari">अंतिम पुकार · The Pass is Called</span>
     </div>
@@ -18,31 +17,39 @@
     <div class="maison-last-call__content" data-mt-scroll="chapter">
       <h2 class="maison-last-call__heading" data-mt-scroll="kinetic">The next heat opens soon.</h2>
       <p class="maison-last-call__copy">
-        Limited craft heats between Jaipur and London. Register once — we signal the next drop.
+        Subscribe for care notes and release updates.
       </p>
 
       <!-- Pre-order / Waitlist Form -->
-      <form class="maison-last-call__form" id="last-call-waitlist-form" data-mt-scroll="beat">
+      {%- assign signup_id = 'LastCallSignup-' | append: section.id -%}
+      {%- form 'customer', id: signup_id, class: 'maison-last-call__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="maison-last-call__label" for="LastCallEmail-{{ section.id }}">Email address</label>
         <div class="maison-last-call__input-row">
           <input
             type="email"
+            id="LastCallEmail-{{ section.id }}"
+            name="contact[email]"
             class="maison-last-call__email"
-            placeholder="Enter your email for the next furnace allocation…"
+            autocomplete="email"
+            value="{{ form.email | escape }}"
             required
-            aria-label="Email address for allocation"
+            {% if form.errors contains 'email' %}aria-invalid="true" aria-describedby="LastCallError-{{ section.id }}"{% endif %}
+            {% if form.errors %}autofocus{% endif %}
           />
           <button type="submit" class="maison-last-call__submit-btn" data-strike>
-            Reserve Allocation
+            Subscribe
           </button>
         </div>
         <p class="maison-last-call__note">
-          No marketing spam. Only single batch announcements with verified metallurgy reports.
+          We will send care notes and release updates. Unsubscribe anytime.
         </p>
-      </form>
-
-      <div class="maison-last-call__success" id="last-call-success" style="display: none;">
-        <i class="fa-solid fa-check" aria-hidden="true"></i> Your seat at the pass is recorded. We will signal when the next heat is struck.
-      </div>
+        {%- if form.posted_successfully? -%}
+          <p class="maison-last-call__success" data-mt-newsletter-success role="status" tabindex="-1" autofocus>You're on the list.</p>
+        {%- elsif form.errors -%}
+          <div class="maison-last-call__success" id="LastCallError-{{ section.id }}" role="alert">{{ form.errors | default_errors }}</div>
+        {%- endif -%}
+      {%- endform -%}
     </div>
   </div>
 </div>
@@ -70,35 +77,13 @@
     pointer-events: none;
   }
 
-  .maison-last-call .bell-ring-pulse {
-    position: absolute;
-    inset: -8px;
-    border-radius: 50%;
-    border: 1px solid rgba(184, 137, 58, 0.35);
-    opacity: 0;
-    pointer-events: none;
-    animation: mt-bell-pulse 2.8s ease-out infinite;
-  }
-
-  @keyframes mt-bell-pulse {
-    0% { transform: scale(0.85); opacity: 0.35; }
-    70% { transform: scale(1.35); opacity: 0; }
-    100% { transform: scale(1.35); opacity: 0; }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .maison-last-call .bell-ring-pulse { animation: none; }
-
     .maison-last-call [data-mt-scroll],
     .maison-last-call [data-mt-chapter] {
       opacity: 1 !important;
       transform: none !important;
       visibility: visible !important;
     }
-  }
-
-  html[data-reduced-motion='true'] .maison-last-call .bell-ring-pulse {
-    animation: none !important;
   }
 
   html[data-reduced-motion='true'] .maison-last-call [data-mt-scroll],
@@ -131,7 +116,7 @@
     border-radius: 50%;
     background: #1f1b18;
     border: 1.5px solid var(--bell, #B8893A);
-    color: var(--bell, #B8893A);
+    color: #f7f2e9;
     font-size: var(--mt-type-title);
     cursor: pointer;
     display: flex;
@@ -153,7 +138,7 @@
     font-size: var(--mt-type-accent);
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--bell, #B8893A);
+    color: #f7f2e9;
   }
 
   .maison-last-call__content {
@@ -176,13 +161,19 @@
     margin-inline: auto;
     font-size: var(--mt-type-body);
     line-height: 1.5;
-    color: color-mix(in srgb, var(--bone, #F7F2E9) 68%, transparent);
+    color: #f7f2e9;
   }
 
   /* Form */
   .maison-last-call__form {
     max-width: 34rem;
     margin-inline: auto;
+  }
+
+  .maison-last-call__label {
+    display: block;
+    text-align: start;
+    margin-block-end: 0.5rem;
   }
 
   .maison-last-call__input-row {
@@ -199,7 +190,7 @@
 
   .maison-last-call__email {
     flex: 1;
-    min-width: 240px;
+    min-width: min(15rem, 100%);
     background: var(--glass-surface-dark, rgba(20, 17, 15, 0.75));
     backdrop-filter: var(--glass-blur, blur(14px));
     -webkit-backdrop-filter: var(--glass-blur, blur(14px));
@@ -229,7 +220,7 @@
   }
 
   .maison-last-call__submit-btn {
-    background: var(--ember, #E2552B);
+    background: #73321c;
     color: #fff;
     border: none;
     font-weight: 600;
@@ -241,7 +232,7 @@
   }
 
   .maison-last-call__submit-btn:hover {
-    background: #ff6838;
+    background: #4d291d;
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(226, 85, 43, 0.35);
   }
@@ -249,7 +240,7 @@
   .maison-last-call__note {
     margin-block-start: 0.75rem;
     font-size: var(--mt-type-accent);
-    color: color-mix(in srgb, var(--bone, #F7F2E9) 58%, transparent);
+    color: #f7f2e9;
   }
 
   .maison-last-call__success {
@@ -261,32 +252,13 @@
     font-size: var(--mt-type-body);
     border-radius: 4px;
   }
+
+  .maison-last-call__success[role='alert'] {
+    background: #3d1610;
+    border-color: #f7f2e9;
+    color: #f7f2e9;
+  }
 {% endstylesheet %}
-
-{% javascript %}
-  document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('last-call-waitlist-form');
-    const success = document.getElementById('last-call-success');
-
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        form.style.display = 'none';
-        if (success) success.style.display = 'block';
-        document.dispatchEvent(new CustomEvent('maison:mail-primary-convert'));
-        document.dispatchEvent(
-          new CustomEvent('maison:toast', {
-            detail: {
-              type: 'success',
-              icon: 'mail',
-              message: 'You are on the list for the next heat.',
-            },
-          }),
-        );
-      });
-    }
-  });
-{% endjavascript %}
 
 {% schema %}
 {

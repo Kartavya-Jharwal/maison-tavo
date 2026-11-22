@@ -18,12 +18,26 @@ class HeaderDrawer extends Component {
     super.connectedCallback();
 
     this.addEventListener('keyup', this.#onKeyUp);
+    this.addEventListener('toggle', this.#onDetailsToggle, true);
+    this.querySelectorAll('details').forEach((details) => this.#syncSummary(details));
     this.#setupAnimatedElementListeners();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('keyup', this.#onKeyUp);
+    this.removeEventListener('toggle', this.#onDetailsToggle, true);
+  }
+
+  /** @param {Event} event */
+  #onDetailsToggle = (event) => {
+    if (event.target instanceof HTMLDetailsElement) this.#syncSummary(event.target);
+  };
+
+  /** @param {HTMLDetailsElement} details */
+  #syncSummary(details) {
+    const summary = details.querySelector(':scope > summary[role="button"]');
+    summary?.setAttribute('aria-expanded', String(details.open));
   }
 
   /**

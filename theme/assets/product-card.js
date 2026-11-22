@@ -195,6 +195,17 @@ export class ProductCard extends ProductCardLink {
     const link = this.refs.productCardLink;
     if (!(link instanceof HTMLAnchorElement)) throw new Error('Product card link not found');
 
+    // The title is the keyboard link when the merchant includes a title block.
+    // Keep the overlay and gallery links for pointer navigation and cards with
+    // no title, but avoid multiple identical stops for a single product.
+    const titleLink = this.refs.productTitleLink;
+    if (titleLink instanceof HTMLAnchorElement && titleLink.hasAttribute('href')) {
+      link.tabIndex = -1;
+      link.setAttribute('aria-hidden', 'true');
+      const galleryLink = this.refs.cardGalleryLink;
+      if (galleryLink instanceof HTMLAnchorElement) galleryLink.tabIndex = -1;
+    }
+
     this.#handleQuickAdd();
 
     this.addEventListener(StandardEvents.productSelect, this.#handleProductSelect);

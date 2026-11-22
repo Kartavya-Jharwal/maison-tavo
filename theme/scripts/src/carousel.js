@@ -228,6 +228,7 @@ function mount(host) {
   next?.addEventListener('click', goNext);
 
   const onKeydown = (event) => {
+    if (event.defaultPrevented || event.target !== viewport) return;
     if (event.key === 'ArrowLeft') {
       event.preventDefault();
       goPrev();

@@ -45,6 +45,7 @@
     <a
       href="{{ settings.link }}"
       class="group-block__link"
+      aria-label="{{ settings.link_label | default: settings.link | escape }}{% if settings.open_in_new_tab %} — {{ 'accessibility.new_window' | t | escape }}{% endif %}"
       {% if settings.open_in_new_tab %}
         target="_blank" rel="noopener"
       {% endif %}

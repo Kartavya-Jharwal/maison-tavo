@@ -42,6 +42,9 @@
       endif
     -%}
 
+    <label for="EmailInput-{{ block.id }}" class="email-signup__label">
+      {{ 'blocks.email_signup.label' | t }}
+    </label>
     <div
       class="{{ input_group_classes }}"
       style="
@@ -50,12 +53,6 @@
         {% if is_custom_input %}{% render 'input-custom-styles', block_settings: block_settings %}{% endif %}
       "
     >
-      <label
-        for="EmailInput-{{ block.id }}"
-        class="visually-hidden"
-      >
-        {{ 'blocks.email_signup.label' | t }}
-      </label>
       <input
         id="EmailInput-{{ block.id }}"
         class="email-signup__input email-signup__input--{{ block_settings.border_style }} {% if is_custom_input %}{{ block_settings.input_type_preset }}{% else %}{{ settings.type_preset }}{% endif %} {{ block_settings.border_variation }}"
@@ -64,9 +61,10 @@
         autocorrect="off"
         autocapitalize="off"
         autocomplete="email"
+        value="{{ form.email | escape }}"
         placeholder="{{ 'blocks.email_signup.placeholder' | t }}"
         required
-        {% if form.errors and form.id == blank %}
+        {% if form.errors contains 'email' and form.id == blank %}
           autofocus
           aria-invalid="true"
           aria-describedby="Email-signup__message-error-{{ block.id }}"
@@ -100,7 +98,9 @@
       <div
         id="Email-signup__message-error-{{ block.id }}"
         class="email-signup__message"
+        role="alert"
         tabindex="-1"
+        {% unless form.errors contains 'email' %}autofocus{% endunless %}
       >
         <svg
           viewBox="0 0 20 20"
@@ -111,8 +111,7 @@
         >
           {%- render 'icon', icon: 'error'  -%}
         </svg>
-        {{- form.errors.translated_fields.email | capitalize }}
-        {{ form.errors.messages.email -}}
+        {{- form.errors | default_errors -}}
       </div>
     {%- endif -%}
 
@@ -120,7 +119,9 @@
       <div
         id="Email-signup__message-success-{{ block.id }}"
         class="email-signup__message"
+        role="status"
         tabindex="-1"
+        autofocus
       >
         <span class="svg-wrapper icon-success">
           {{ 'icon-checkmark.svg' | inline_asset_content }}
@@ -139,7 +140,7 @@
     --arrow-icon-size: 32px;
     --arrow-icon-size-small: 24px;
 
-    min-width: fit-content;
+    min-width: 0;
 
     @media screen and (max-width: 749px) {
       width: 100%;
@@ -155,6 +156,10 @@
   .email-signup__form {
     display: flex;
     flex-direction: column;
+  }
+
+  .email-signup__label {
+    margin-block-end: var(--gap-xs);
   }
 
   .email-signup__input-group {

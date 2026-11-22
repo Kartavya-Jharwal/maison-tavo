@@ -49,13 +49,14 @@ Use the Shopify CLI for store linking, environment pulls, and deploys. Platform 
 **Working dev loop (push-based preview):**
 
 ```bash
-# from theme/ — storefront password is required (store is password-protected)
-$env:SHOPIFY_FLAG_STORE_PASSWORD = "<storefront password>"
-shopify theme push --development --nodelete   # re-run after edits
+# From the repo root. Re-run after theme edits.
+bun run --cwd theme push:unpublished
 ```
 
-Preview at `https://maison-tavo.myshopify.com/?preview_theme_id=<id>` (printed after each
-push). No hot reload until the CLI bug is fixed upstream — re-push on change. Do not "fix" the
+Open the preview URL printed by Shopify CLI and enter the storefront password. The command
+rebuilds the JavaScript bundles, verifies their Liquid references, and preserves remote files
+during the development upload. Run `bun run theme:build` first when refreshing the generated
+Kansa catalog. No hot reload until the CLI bug is fixed upstream - re-push on change. Do not "fix" the
 `color_palette` defaults to satisfy the dev server; they are valid per the platform docs and
 match the live theme.
 

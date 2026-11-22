@@ -1,5 +1,20 @@
 {
   "sections": {
+    "foundry": {
+      "type": "maison-foundry",
+      "blocks": {
+        "frying_pan": { "type": "piece", "settings": { "product": "forge-frying-pan", "use": "Sloped sides so the spatula can get under a fillet." } },
+        "tawa": { "type": "piece", "settings": { "product": "forge-tawa", "use": "A low edge for spreading dosa and lifting roti." } },
+        "saucepan": { "type": "piece", "settings": { "product": "forge-saucepan", "use": "High sides for chai, which waits for you to look away." } },
+        "kadhai": { "type": "piece", "settings": { "product": "forge-kadhai", "use": "A deep bowl with room to toss the onions and spices." } }
+      },
+      "block_order": ["frying_pan", "tawa", "saucepan", "kadhai"],
+      "settings": {
+        "heading": "Build your set",
+        "lede": "Choose your pieces and sizes. The subtotal updates as you go. There’s room for a gift note.",
+        "guide": "<p><strong>Start with last Tuesday.</strong> Remember what you cooked. A pan for the fish, a saucepan for what went over it. If you made dosa, start with the tawa.</p><p><strong>Measure the hob.</strong> Check the base and handle clearance. For a lid, match the model and the inner rim.</p><p><strong>Giving it away?</strong> Ask what hob they have. Leave them a first dish to cook.</p>"
+      }
+    },
     "maison_collection": {
       "type": "product-list",
       "settings": {
@@ -187,5 +202,5 @@
       "block_order": []
     }
   },
-  "order": ["maison_collection"]
+  "order": ["maison_collection", "foundry"]
 }

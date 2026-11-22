@@ -216,8 +216,8 @@
     --input-disabled-background-color: rgb(var(--color-foreground-rgb) / var(--opacity-10));
     --input-disabled-border-color: rgb(var(--color-foreground-rgb) / var(--opacity-5-15));
     --input-disabled-text-color: rgb(var(--color-foreground-rgb) / var(--opacity-50));
-    --color-foreground-muted: rgb(var(--color-rgb, var(--color-foreground-rgb)) / var(--opacity-muted-text));
-    --color-foreground-subdued: rgb(var(--color-rgb, var(--color-foreground-rgb)) / var(--opacity-subdued-text));
+    --color-foreground-muted: rgb(var(--color-rgb, var(--color-foreground-rgb)) / 0.85);
+    --color-foreground-subdued: rgb(var(--color-rgb, var(--color-foreground-rgb)) / 0.85);
     --color-drawer-shadow-rgb: {{ settings.drawer_shadow_color.rgb }};
     --color-popover-shadow-rgb: {{ settings.popover_shadow_color.rgb }};
 
@@ -305,10 +305,10 @@
     --color-border: var(--mt-color-soot);
     --color-border-rgb: var(--mt-color-soot-rgb);
     --color-shadow-rgb: var(--mt-color-soot-rgb);
-    --color-error: var(--mt-color-ember);
-    --color-error-rgb: var(--mt-color-ember-rgb);
-    --color-success: var(--mt-color-verdigris);
-    --color-success-rgb: var(--mt-color-verdigris-rgb);
+    --color-error: #842b19;
+    --color-error-rgb: 132, 43, 25;
+    --color-success: #285245;
+    --color-success-rgb: 40, 82, 69;
     --color-white: var(--mt-color-bone);
     --color-white-rgb: var(--mt-color-bone-rgb);
     --color-instock: var(--mt-color-verdigris);
@@ -328,21 +328,21 @@
     --color-primary-button-text: var(--mt-color-bone);
     --color-primary-button-border: var(--mt-color-bell);
     --color-primary-button-focus-outline: var(--mt-color-bell);
-    --color-primary-button-hover-background: var(--mt-color-ember);
+    --color-primary-button-hover-background: #71351f;
     --color-primary-button-hover-text: #ffffff;
-    --color-primary-button-hover-border: var(--mt-color-ember);
+    --color-primary-button-hover-border: #71351f;
 
     --color-secondary-button-text: var(--mt-color-soot);
     --color-secondary-button-background: transparent;
     --color-secondary-button-border: var(--mt-color-bell);
-    --color-secondary-button-hover-text: var(--mt-color-bell);
+    --color-secondary-button-hover-text: #61451c;
     --color-secondary-button-hover-background: transparent;
     --color-secondary-button-hover-border: var(--mt-color-bell);
 
     --color-input-background: var(--mt-color-bone);
     --color-input-text: var(--mt-color-soot);
     --color-input-text-rgb: var(--mt-color-soot-rgb);
-    --color-input-border: rgb(var(--mt-color-soot-rgb) / 0.2);
+    --color-input-border: #746c62;
   }
 
   /* Rem root + Bai Jamjuree body — cascade after base.css, no !important */

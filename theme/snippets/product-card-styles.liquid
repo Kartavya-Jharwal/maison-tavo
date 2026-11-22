@@ -51,14 +51,9 @@
     letter-spacing: 0.01em;
   }
 
-  /* Product card title truncation - applied on mobile regardless of view */
   @media screen and (max-width: 749px) {
     :is(.product-card, .product-grid__card) :is(h2, h3, h4, .h2, .h3, .h4) {
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      -webkit-line-clamp: 2;
+      overflow-wrap: anywhere;
       font-size: clamp(0.9375rem, 0.88rem + 0.35vw, 1.0625rem);
     }
   }

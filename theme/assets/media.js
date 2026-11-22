@@ -83,10 +83,23 @@ class DeferredMedia extends Component {
     this.appendChild(content);
 
     if (focus && content instanceof HTMLElement) {
+      // A video element without an explicit tabindex is not consistently
+      // focusable across browsers, even when it exposes native controls.
+      if (content instanceof HTMLVideoElement && !content.hasAttribute('tabindex')) content.tabIndex = -1;
       content.focus();
+      if (this.contains(document.activeElement) && this.refs.deferredMediaPlayButton?.contains(document.activeElement)) {
+        this.tabIndex = -1;
+        this.focus();
+      }
     }
 
-    this.refs.deferredMediaPlayButton?.classList.add('deferred-media__playing');
+    const poster = this.refs.deferredMediaPlayButton;
+    if (poster) {
+      poster.classList.add('deferred-media__playing');
+      // Keep its layout box, but remove the now-invisible play button and its
+      // descendants from keyboard navigation and the accessibility tree.
+      poster.inert = true;
+    }
 
     if (content instanceof HTMLVideoElement && content.hasAttribute('autoplay')) {
       // Force playback for browsers that do not reliably start template-cloned videos from the autoplay attribute alone.

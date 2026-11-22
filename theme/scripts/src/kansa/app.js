@@ -63,7 +63,7 @@ export class KansaApp {
       this.selectedPiece = this.byHandle[session.handle];
     } else {
       this.selectedPiece =
-        this.byHandle['forge-relay-dual-mass-skillet'] || this.list[0] || null;
+        this.byHandle['forge-tawa'] || this.list[0] || null;
       if (this.selectedPiece) kansaStore.getState().setHandle(this.selectedPiece.handle);
     }
 
@@ -159,6 +159,11 @@ export class KansaApp {
 
   selectPiece(handle) {
     if (!this.byHandle[handle]) return;
+    if (this.abortTalk) {
+      clearTimeout(this.abortTalk);
+      this.abortTalk = null;
+    }
+    this.announce('');
     this.selectedPiece = this.byHandle[handle];
     this.unknownHandle = null;
     this.messages = [];
@@ -203,6 +208,7 @@ export class KansaApp {
     const meta = activityFor(intentId === 'default' ? 'default' : intentId);
     this.activity = meta.activity;
     this.render();
+    this.announce(this.activity);
 
     const fixture = buildFixtureAnswer(
       this.selectedPiece,
@@ -212,24 +218,44 @@ export class KansaApp {
     this.abortTalk = window.setTimeout(() => {
       this.activity = null;
       this.pushAssistant(fixture);
+      const focusedMode = document.activeElement?.closest?.('.kansa-mode-btn')?.dataset.tab;
+      const inputWasFocused = document.activeElement === this.root.querySelector('#kansa-text-field');
+      const draft = inputWasFocused ? document.activeElement.value : '';
 
       if (fixture.tools?.includes('check_heat') && intentId === 'heat_check') {
         /* keep chat; tool card embeds thermal */
       }
-      if (fixture.tools?.includes('open_ar') && intentId === 'ar_place') this.activeTab = 'ar';
-      if (fixture.tools?.includes('cv_triage') && intentId === 'cv_triage') this.activeTab = 'look';
+      if (this.activeTab === 'chat' && !draft) {
+        if (fixture.tools?.includes('open_ar') && intentId === 'ar_place') this.activeTab = 'ar';
+        if (fixture.tools?.includes('cv_triage') && intentId === 'cv_triage') this.activeTab = 'look';
+      }
       if (fixture.tools?.includes('open_triage') && intentId === 'triage') {
         /* stay in chat with triage tool card */
       }
 
       this.persist();
       this.render();
+      if (inputWasFocused && this.activeTab === 'chat') {
+        const input = this.root.querySelector('#kansa-text-field');
+        if (input) {
+          input.value = draft;
+          input.focus();
+        }
+      } else if (inputWasFocused || focusedMode) {
+        this.root.querySelector(`.kansa-mode-btn[data-tab="${this.activeTab}"]`)?.focus();
+      }
+      this.announce(fixture.text);
       this.animateAnswer();
       if (soundEnabled() && !preferReducedMotion()) {
         this.speechOut.speak(fixture.text);
       }
       this.abortTalk = null;
     }, preferReducedMotion() ? 0 : 280);
+  }
+
+  announce(message) {
+    const status = document.querySelector('#kansa-announcement');
+    if (status) status.textContent = message || '';
   }
 
   /**
@@ -455,12 +481,14 @@ export class KansaApp {
   jobsForPiece() {
     const p = this.selectedPiece;
     const isClay = p?.materialCategory === 'clay';
+    const surface = String(p?.lining_material || p?.primary_material || '').toLowerCase();
+    const seasonsWithOil = /carbon steel|cast iron|seasoned iron/.test(surface) && !/stainless/.test(surface);
     return [
       {
         id: 'care_season',
-        label: isClay ? 'Water cure' : 'Season',
-        lede: isClay ? 'Hydrate the clay before heat.' : 'Build the dark glass patina.',
-        q: isClay ? 'How do I water cure this clay vessel?' : 'How do I season this pan?',
+        label: 'First use',
+        lede: isClay ? 'Check whether this clay needs curing.' : seasonsWithOil ? 'Check the seasoning routine.' : 'Check the surface care routine.',
+        q: isClay ? 'Does this clay vessel need curing before use?' : 'Does this pan need seasoning?',
       },
       {
         id: 'heat_check',
@@ -532,7 +560,7 @@ export class KansaApp {
           </label>
         </header>
 
-        <nav class="kansa-mode-nav" role="tablist" aria-label="Kansa modes">
+        <div class="kansa-mode-nav" role="group" aria-label="Kansa modes">
           ${[
             ['chat', 'Ask'],
             ['thermal', 'Heat'],
@@ -543,12 +571,12 @@ export class KansaApp {
           ]
             .map(
               ([id, label]) => `
-            <button type="button" role="tab" class="kansa-mode-btn ${
+            <button type="button" class="kansa-mode-btn ${
               this.activeTab === id ? 'is-active' : ''
-            }" data-tab="${id}" aria-selected="${this.activeTab === id}">${label}</button>`,
+            }" data-tab="${id}" aria-pressed="${this.activeTab === id}">${label}</button>`,
             )
             .join('')}
-        </nav>
+        </div>
 
         <div class="kansa-stage">
           ${this.activeTab === 'chat' ? this.renderChat(jobs) : ''}
@@ -598,7 +626,7 @@ export class KansaApp {
             </div>
           </div>`
             : `
-          <div class="kansa-thread" id="kansa-thread" aria-live="polite">
+          <div class="kansa-thread" id="kansa-thread">
             ${this.messages
               .map((m) => {
                 if (m.role === 'user') {
@@ -614,7 +642,7 @@ export class KansaApp {
               .join('')}
             ${
               this.activity
-                ? `<div class="kansa-activity" role="status">${escapeHtml(this.activity)}</div>`
+                ? `<div class="kansa-activity">${escapeHtml(this.activity)}</div>`
                 : ''
             }
           </div>
@@ -656,6 +684,7 @@ export class KansaApp {
             <span class="kansa-mic-text">${this.listening ? 'Listening' : 'Voice'}</span>
           </button>
           <form class="kansa-input-form" id="kansa-form">
+            <label class="visually-hidden" for="kansa-text-field">Ask Kansa</label>
             <input type="text" class="kansa-text-input" id="kansa-text-field" placeholder="Ask Kansa…" autocomplete="off" value="${escapeHtml(
               this.composerDraft,
             )}" />
@@ -862,7 +891,7 @@ export class KansaApp {
                       (c) => `
                     <button type="button" class="kansa-chip ${
                       this.cvSuggestion.key === c.key ? 'is-active' : ''
-                    }" data-cv-key="${escapeHtml(c.key)}">${escapeHtml(c.label)}</button>`,
+                    }" data-cv-key="${escapeHtml(c.key)}" aria-pressed="${this.cvSuggestion.key === c.key}">${escapeHtml(c.label)}</button>`,
                     )
                     .join('')}
                 </div>
@@ -886,13 +915,17 @@ export class KansaApp {
   bindEvents() {
     const select = this.root.querySelector('#kansa-piece-select');
     if (select) {
-      select.addEventListener('change', () => this.selectPiece(select.value));
+      select.addEventListener('change', () => {
+        this.selectPiece(select.value);
+        this.root.querySelector('#kansa-piece-select')?.focus();
+      });
     }
     this.root.querySelectorAll('.kansa-mode-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
         this.activeTab = btn.dataset.tab;
         this.persist();
         this.render();
+        this.root.querySelector(`.kansa-mode-btn[data-tab="${btn.dataset.tab}"]`)?.focus();
         this.revealStage();
         if (window.MaisonRuntime?.initInViewReveals) {
           window.MaisonRuntime.initInViewReveals(this.root);
@@ -910,8 +943,10 @@ export class KansaApp {
         e.preventDefault();
         const input = this.root.querySelector('#kansa-text-field');
         if (input?.value.trim()) {
-          this.processQuery(input.value.trim());
+          const query = input.value.trim();
           input.value = '';
+          this.processQuery(query);
+          this.root.querySelector('#kansa-text-field')?.focus();
         }
       });
     }
@@ -929,6 +964,7 @@ export class KansaApp {
         if (!this.cvSuggestion) return;
         this.cvSuggestion = { ...this.cvSuggestion, key: el.dataset.cvKey };
         this.render();
+        this.root.querySelector(`.kansa-chip[data-cv-key="${CSS.escape(el.dataset.cvKey)}"]`)?.focus();
       });
     });
 

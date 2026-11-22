@@ -4,10 +4,11 @@
       "type": "maison-room",
       "settings": {
         "eyebrow": "Legal",
-        "heading": "Cookies and browser storage",
-        "lede": "<p>See what the exhibition remembers on this browser and how to clear it.</p>",
+        "heading": "Cookie Policy",
+        "lede": "<p>How this exhibition uses browser storage and where to manage it.</p>",
         "padding-block-start": 48,
-        "padding-block-end": 64
+        "padding-block-end": 64,
+        "summary": "<p>Shopify may use cookies for entry, cart, accounts and checkout. Maison Tavo also stores optional kitchen preferences, Kansa history and display choices in this browser. The footer reset clears this storefront’s local and session storage; use your browser or available Shopify privacy controls for cookies.</p>"
       },
       "blocks": {
         "shopify": {
@@ -48,8 +49,16 @@
           }
         }
       },
-      "block_order": ["shopify", "local", "choice", "privacy", "terms"]
+      "block_order": [
+        "shopify",
+        "local",
+        "choice",
+        "privacy",
+        "terms"
+      ]
     }
   },
-  "order": ["room"]
+  "order": [
+    "room"
+  ]
 }

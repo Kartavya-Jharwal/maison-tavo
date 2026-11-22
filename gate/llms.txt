@@ -1,70 +1,17 @@
-# Maison Tavo · Autonomous Agent & LLM Manifest (llms.txt)
-> High-craft culinary metallurgy, ancestral 78:22 bell bronze (Kansa), dual-mass carbon steel, and refractory cast clay cookware engineered to French brigade standards. All 25 heirloom SKUs expose deterministic physical specifications and Universal Commerce Protocol (UCP 2026) APIs for autonomous procurement and kitchen assistance agents.
+# Maison Tavo catalogue and care
 
-## Canonical Resources
-- Storefront: https://maison-tavo.myshopify.com
-- Scene 0 Exhibition Gateway: https://maison-tavo.myshopify.com (passcode: maison2026)
-- UCP Agent Endpoint: https://maison-tavo.myshopify.com/pages/ucp
-- Care & Seasoning Companion: https://maison-tavo.myshopify.com/pages/kansa
-- About & Provenance: https://maison-tavo.myshopify.com/pages/about
+Maison Tavo is a cookware concept rooted in Indian kitchens. Forge explores stainless steel vessels and sets. Chulha explores terracotta forms for everyday cooking. Read each product record for the current dimensions, availability, and claim status.
 
-## Metallurgy & Material Architecture
-1. **Ancestral Bell Bronze (78:22 Kansa)**:
-   - Composition: 78% pure copper (Cu), 22% tin (Sn).
-   - Crucible Melt Point: 1,400°C.
-   - Acoustic Fundamental Resonance: 880 Hz (Harmonic: 1320 Hz).
-   - Biochemical Property: Ayurvedic non-reactive surface, alkaline food balancing.
-   - Provenance: Sand-cast & hand-hammered in Rajasthan foundries.
+## Storefront
+- About Maison Tavo: https://maison-tavo.myshopify.com/pages/about
+- Catalogue: https://maison-tavo.myshopify.com/collections
+- Kansa care companion: https://maison-tavo.myshopify.com/pages/kansa
+- Protocol explorer: https://maison-tavo.myshopify.com/pages/ucp
 
-2. **Forge Hybrid (Dual-Mass Carbon Steel)**:
-   - Core: High-thermal-mass carbon steel core with rapid eddy current coupling on induction.
-   - Thermal Conductivity: ~54 W/m·K.
-   - Surface: Natural polymerized lipid patina (flaxseed / grapeseed oil curing).
+## Agent discovery
+- Agent manifest: https://maison-tavo.myshopify.com/agents.md
+- Catalogue guide: https://maison-tavo.myshopify.com/llms.txt
+- Shopify business profile (GET): https://maison-tavo-9pyrkr0c.myshopify.com/.well-known/ucp
+- Shopify Storefront Catalog MCP (POST): https://maison-tavo-9pyrkr0c.myshopify.com/api/ucp/mcp
 
-3. **Terre Clay (Refractory Cast Ceramic)**:
-   - Matrix: Porous, thermal shock-resistant earthen refractory clay.
-   - Heat Retention: High thermal inertia for slow braising and tagine steam circulation.
-   - Requirement: Gentle pre-heat, heat diffusers on high-power gas, first-soak water cure.
-
-## 25-SKU Reconciled Assortment
-
-### 1. Cookware (10 SKUs)
-- `MT-CK-01` — 78:22 Kansa Kadai (28cm, 2.4kg, Hand-hammered bronze, Gas/Hearth)
-- `MT-CK-02` — Forge Hybrid Tava (30cm, 1.8kg, Dual-mass carbon steel, Induction/Gas)
-- `MT-CK-03` — Forge Hybrid Skillet (26cm, 1.6kg, Dual-mass carbon steel, Induction/Gas)
-- `MT-CK-04` — Terre Clay Dutch Oven (4.5L, Refractory cast ceramic, Gas/Oven)
-- `MT-CK-05` — Forge Hybrid Sauté Pan (28cm, 2.1kg, Dual-mass carbon steel, Induction/Gas)
-- `MT-CK-06` — Hand-Hammered Carbon Steel Wok (34cm, 1.7kg, Gas/Hearth)
-- `MT-CK-07` — 78:22 Kansa Saucepan (18cm, 1.2kg, Bell bronze, Gas)
-- `MT-CK-08` — Stainless Tri-Ply Stockpot (8.0L, 2.9kg, Induction/All)
-- `MT-CK-09` — Enameled Cast Iron Roasting Pan (38cm, 3.8kg, All heat sources)
-- `MT-CK-10` — Terre Clay Braiser (3.2L, Refractory ceramic with lid, Gas/Oven)
-
-### 2. Tableware & Pottery (8 SKUs)
-- `MT-TB-01` — 78:22 Kansa Dining Thali Set (6-Piece, 1.9kg, Dining service)
-- `MT-TB-02` — 78:22 Kansa Katori Bowls (Set of 4, 0.6kg, Dining service)
-- `MT-TB-03` — 78:22 Kansa Water Tumbler Set (Set of 2, 0.5kg, Dining service)
-- `MT-TB-04` — Hand-Beaten Bell Bronze Water Jug (1.5L, 1.1kg)
-- `MT-TB-05` — Refractory Clay Donabe (2.0L, Ceramic rice & hot-pot vessel)
-- `MT-TB-06` — Terre Clay Tagine (28cm conical lid, Slow steam circulation)
-- `MT-TB-07` — Unglazed Refractory Handi (1.8L, Traditional slow braising)
-- `MT-TB-08` — Ceramic & Bronze Teapot (800ml, Tea service)
-
-### 3. Care & Sets (7 SKUs)
-- `MT-CR-01` — The Heirloom Starter Trio (Kadai + Tava + Care Kit, 4.6kg)
-- `MT-CR-02` — Artisanal Patina Care Kit (Beeswax balm + Tamarind paste + Scrubber)
-- `MT-CR-03` — Organic Cold-Pressed Oil Curing Balm (250ml, Food-grade seasoning blend)
-- `MT-CR-04` — Solid Copper Chainmail Scrubber (Gentle fond removal without stripping patina)
-- `MT-CR-05` — Heavyweight Waxed Canvas Cookware Roll (Travel & brigade transport)
-- `MT-CR-06` — Kuro Hand-Forged Utility Knife (150mm, Japanese laminated carbon steel)
-- `MT-CR-07` — Kuro Gyuto Chef Knife (210mm, Sanjo laminated carbon steel)
-
-## Machine & AI Interaction Protocol (UCP 2026)
-Maison Tavo implements the Universal Commerce Protocol. Machine clients can query:
-- `POST /agents/shopper/query`: Autonomous culinary assistant semantic discovery by heat source, technique, and cooktop induction frequency.
-- `POST /agents/shopper/lookup`: Batch resolution of deterministic product schemas.
-- `POST /agents/checkout`: Direct checkout initialization with verified cryptographic guarantees.
-
-## Care Ceremony Rites
-- **Metal Track**: 6 rites: 1. संस्कार Season · 2. तप Pre-heat · 3. कर्म Cook · 4. शुद्धि Clean · 5. अग्नि Dry · 6. स्नेह Oil & Store.
-- **Clay Track**: 6 rites: 1. जल संस्कार First Soak · 2. धीरे-धीरे Slow Heat · 3. पकाना Convection Braise · 4. ठंडा होना Room-Temp Cool · 5. धोना Soft Wash · 6. भंडारण Lid Ajar Storage.
+Use the business profile to confirm which capabilities Shopify advertises. Catalog calls need a reachable UCP agent profile. Kansa and Mol-Bhav examples in the explorer are simulations.

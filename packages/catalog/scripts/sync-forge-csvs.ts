@@ -12,9 +12,12 @@ import {writeFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {
   ALL_FORGE_LAUNCH_SKUS,
+  bambooSteamerDetail,
   FORGE_SPECIALTY_UPDATES,
   type ForgeSkuDef,
 } from '../src/forge-matrix';
+
+import publication from '../../../data/online-store-publication.json';
 
 const DATA_DIR = new URL('../../../data/', import.meta.url);
 
@@ -114,7 +117,7 @@ function shopifyRowFromForge(def: ForgeSkuDef): Record<string, string> {
     'Unit price base measure': '',
     'Unit price base measure unit': '',
     'Inventory tracker': 'shopify',
-    'Inventory quantity': '0',
+    'Inventory quantity': '',
     'Continue selling when out of stock': 'DENY',
     'Weight value (grams)': '',
     'Weight unit for display': '',
@@ -213,6 +216,15 @@ for (const patch of FORGE_SPECIALTY_UPDATES) {
 
 const shopifyRows = [...shopifyBySku.values()];
 const specsRows = [...specsBySku.values()];
+const published = new Set(publication.published_skus);
+for (const row of shopifyRows) {
+  const active = published.has(row.SKU!);
+  row.Status = active ? 'active' : 'draft';
+  row['Published on online store'] = active ? 'TRUE' : 'FALSE';
+  row['Google Shopping / Custom label 4'] = active ? 'Active' : 'Draft';
+  // Stock belongs to Shopify locations; this product seed never supplies a count.
+  row['Inventory quantity'] = '';
+}
 
 // Rebuild image brief: keep non-Forge rows as single-hero legacy; replace Forge matrix SKUs with 6-shot plans.
 const imageHeader = [
@@ -235,7 +247,7 @@ const specialtySkuSet = new Set(FORGE_SPECIALTY_UPDATES.map((s) => s.sku));
 
 const retainedImages: Record<string, string>[] = [];
 for (const row of images.rows) {
-  if (forgeSkuSet.has(row.SKU!)) continue;
+  if (forgeSkuSet.has(row.SKU!) || specialtySkuSet.has(row.SKU!) || row.SKU === bambooSteamerDetail.sku) continue;
   retainedImages.push({
     SKU: row.SKU ?? '',
     'URL handle': row['URL handle'] ?? '',
@@ -253,6 +265,17 @@ for (const row of images.rows) {
 }
 
 const forgeImages = ALL_FORGE_LAUNCH_SKUS.flatMap(imageRowsFromForge);
+
+const bamboo = shopifyBySku.get(bambooSteamerDetail.sku);
+if (bamboo) {
+  bambooSteamerDetail.media_plan.forEach((shot, index) => {
+    forgeImages.push({SKU:bambooSteamerDetail.sku, 'URL handle':bamboo['URL handle']!, Title:bamboo.Title!,
+      Lineup:'Terre Clay', Category:'Cookware', 'Asset status':'MISSING - PRODUCTION REQUIRED',
+      Mode:shot.mode, 'Shot index':String(index + 1), 'Hero shot brief':shot.shot,
+      'Required delivery':'Owned or licensed master with square and portrait crops.',
+      'Approved image URL':'', 'Alt text':shot.shot});
+  });
+}
 
 // Specialty retained Forge lids / plancha / relay: ensure at least a 6-shot stub if missing from matrix.
 for (const patch of FORGE_SPECIALTY_UPDATES) {
@@ -279,6 +302,15 @@ for (const patch of FORGE_SPECIALTY_UPDATES) {
       'Alt text': `${title} — ${mode} mode shot ${index + 1} (production pending)`,
     });
   });
+}
+
+const approved = new Map(images.rows.filter(row => row['Approved image URL'])
+  .map(row => [[row.SKU,row.Mode,row['Shot index']].join('/'),row]));
+for (const shot of forgeImages) {
+  const previous = approved.get([shot.SKU,shot.Mode,shot['Shot index']].join('/'));
+  if (previous) {
+    for (const key of ['Approved image URL','Asset status','Alt text']) shot[key] = previous[key]!;
+  }
 }
 
 writeCsv(new URL('maison-tavo-new-listings-shopify.csv', DATA_DIR), shopify.header, shopifyRows);

@@ -34,12 +34,40 @@
           {% if block.settings.date_label != blank %}
             <p class="maison-editorial__eyebrow maison-building__meta">{{ block.settings.date_label | escape }}</p>
           {% endif %}
-          <div class="maison-building__body">
-            {% if block.settings.heading != blank %}
-              <h2 class="maison-editorial__card-title">{{ block.settings.heading | escape }}</h2>
-            {% endif %}
-            {% if block.settings.text != blank %}
-              <div class="maison-editorial__rte rte">{{ block.settings.text }}</div>
+          {% liquid
+            assign editorial_asset = blank
+            assign editorial_alt = blank
+            case block.settings.editorial_asset
+              when 'craft'
+                assign editorial_asset = 'maison-clay-potter-craft.webp'
+                assign editorial_alt = 'Hands shaping a clay vessel on a potter’s wheel'
+                assign editorial_width = 3072
+                assign editorial_height = 4096
+              when 'handle'
+                assign editorial_asset = 'maison-handle-engineering.webp'
+                assign editorial_alt = 'Close view of a metal cookware handle'
+                assign editorial_width = 493
+                assign editorial_height = 493
+              when 'pans'
+                assign editorial_asset = 'maison-pan-stacked-showcase.webp'
+                assign editorial_alt = 'Well-used pans stacked beside a kitchen stove'
+                assign editorial_width = 1080
+                assign editorial_height = 1350
+            endcase
+          %}
+          <div class="maison-building__main{% if editorial_asset != blank %} maison-building__main--illustrated{% endif %}">
+            <div class="maison-building__body">
+              {% if block.settings.heading != blank %}
+                <h2 class="maison-editorial__card-title">{{ block.settings.heading | escape }}</h2>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <div class="maison-editorial__rte rte">{{ block.settings.text }}</div>
+              {% endif %}
+            </div>
+            {% if editorial_asset != blank %}
+              <figure class="maison-building__image-wrap">
+                <img src="{{ editorial_asset | asset_url }}" alt="{{ editorial_alt | escape }}" width="{{ editorial_width }}" height="{{ editorial_height }}" loading="lazy" decoding="async">
+              </figure>
             {% endif %}
           </div>
         </article>
@@ -53,12 +81,12 @@
       {% form 'customer', id: 'MaisonBuildingSignup', class: 'maison-building__signup' %}
         <input type="hidden" name="contact[tags]" value="newsletter">
         <label for="MaisonBuildingEmail">Email for future care notes and release updates</label>
-        <input type="email" name="contact[email]" id="MaisonBuildingEmail" autocomplete="email" required>
+        <input type="email" name="contact[email]" id="MaisonBuildingEmail" autocomplete="email" value="{{ form.email | escape }}" required {% if form.errors contains 'email' %}aria-invalid="true" aria-describedby="MaisonBuildingError"{% endif %} {% if form.errors %}autofocus{% endif %}>
         <button type="submit" class="button">Subscribe</button>
         {% if form.posted_successfully? %}
-          <p data-mt-newsletter-success role="status">You’re on the list.</p>
+          <p data-mt-newsletter-success role="status" tabindex="-1" autofocus>You're on the list.</p>
         {% elsif form.errors %}
-          <p role="alert">{{ form.errors | default_errors }}</p>
+          <div id="MaisonBuildingError" role="alert">{{ form.errors | default_errors }}</div>
         {% endif %}
       {% endform %}
     </aside>
@@ -101,6 +129,27 @@
     border-block-end: 1px solid var(--color-border);
   }
 
+  .maison-building__main--illustrated {
+    display: grid;
+    gap: clamp(1rem, 3vw, 2.5rem);
+  }
+
+  .maison-building__image-wrap { margin: 0; }
+  .maison-building__image-wrap img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 28rem;
+    object-fit: cover;
+  }
+
+  @media (min-width: 48rem) {
+    .maison-building__main--illustrated {
+      grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.72fr);
+      align-items: start;
+    }
+  }
+
   @media (min-width: 56rem) {
     .maison-building__entry {
       grid-template-columns: minmax(7rem, 1fr) minmax(0, 4fr);
@@ -111,7 +160,7 @@
       padding-block-start: 0.38rem;
     }
 
-    .maison-building__body {
+    .maison-building__main {
       grid-column: 2;
     }
   }
@@ -197,6 +246,18 @@
           "id": "text",
           "label": "t:settings.content",
           "default": "<p>At Savi, rooms only held after corporate MICE banquets ran morning to evening and walk-in family lunches shared the same kitchen and service spine. Mixed revenue, not a single hero dish.</p>"
+        },
+        {
+          "type": "select",
+          "id": "editorial_asset",
+          "label": "Editorial image from theme assets",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "craft", "label": "Clay craft" },
+            { "value": "handle", "label": "Handle detail" },
+            { "value": "pans", "label": "Working kitchen pans" }
+          ],
+          "default": "none"
         }
       ]
     }

@@ -8,8 +8,10 @@
   @param {number} [line_index] - the index of the forloop representing the line on which the quantity selector is rendered
   @param {string} [class] - custom class for the quantity selector, optional
   @param {boolean} [can_update_quantity] - whether the quantity can be updated, defaults to true
+  @param {boolean} [existing_cart_line] - whether this selector edits a line already in the cart
   @param {number} [min] - override the minimum quantity (e.g., 0 for quick order list)
   @param {block} [block] - The block object, used for Shopify editor attributes.
+  @param {string} [item_title] - The cart line title for accessible quantity labels.
   @param {string} [wrapper_class] - Extra class for the wrapper, used to scope block-level CSS variable overrides so surface-level styles (e.g. quick-add modal) can override them.
 {%- enddoc -%}
 
@@ -28,6 +30,20 @@
     assign min_quantity = min
   else
     assign min_quantity = variant.quantity_rule.min | default: 1
+  endif
+
+  assign quantity_disabled = false
+  if can_update_quantity == false
+    assign quantity_disabled = true
+  elsif variant.available == false and existing_cart_line != true
+    assign quantity_disabled = true
+  endif
+
+  assign max_quantity = variant.quantity_rule.max
+  if existing_cart_line and variant.available == false
+    if max_quantity == blank or in_cart_quantity < max_quantity
+      assign max_quantity = in_cart_quantity
+    endif
   endif
 %}
 
@@ -51,7 +67,7 @@
       name="minus"
       on:click="/decreaseQuantity"
       ref="minusButton"
-      {% if can_update_quantity == false %}
+      {% if quantity_disabled %}
         disabled
       {% endif %}
     >
@@ -71,15 +87,15 @@
       on:focus="/selectInputValue"
       ref="quantityInput"
       aria-live="polite"
-      aria-label="{{ 'accessibility.quantity' | t }}"
+      aria-label="{% if item_title != blank %}{{ 'accessibility.item_quantity' | t: title: item_title | escape }}{% else %}{{ 'accessibility.quantity' | t }}{% endif %}"
       {% if line_index %}
         data-cart-line="{{ line_index | plus: 1 }}"
       {% endif %}
-      {% if variant.quantity_rule.max %}
-        max="{{ variant.quantity_rule.max }}"
+      {% if max_quantity != blank %}
+        max="{{ max_quantity }}"
       {% endif %}
       step="{{ variant.quantity_rule.increment | default: 1 }}"
-      {% if can_update_quantity == false or variant.available == false %}
+      {% if quantity_disabled %}
         disabled
       {% endif %}
     >
@@ -89,7 +105,7 @@
       name="plus"
       on:click="/increaseQuantity"
       ref="plusButton"
-      {% if can_update_quantity == false %}
+      {% if quantity_disabled %}
         disabled
       {% endif %}
     >

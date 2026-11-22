@@ -1,0 +1,56 @@
+{% doc %}
+  Renders a local concept photograph when a product has no Shopify media.
+  The mapping follows vessel shape, not an assertion that the pictured item is the product.
+
+  @param {product} product - Product needing an illustrative image
+  @param {string} [class_name] - Optional image class
+{% enddoc %}
+{% liquid
+  assign concept_key = product.handle | append: ' ' | append: product.title | downcase
+  assign concept_asset = blank
+  assign concept_width = 1600
+  assign concept_height = 1600
+
+  if concept_key contains 'care kit' or concept_key contains 'maintenance kit' or concept_key contains 'seasoning oil'
+    assign concept_asset = 'maison-concept-care-kit.jpg'
+    assign concept_width = 447
+    assign concept_height = 447
+  elsif concept_key contains 'grill' or concept_key contains 'plancha' or concept_key contains 'tawa'
+    assign concept_asset = 'maison-concept-noir-grill.webp'
+  elsif concept_key contains 'wok' or concept_key contains 'kadhai' or concept_key contains 'kadai'
+    assign concept_asset = 'maison-concept-steel-wok.webp'
+  elsif concept_key contains 'saucier'
+    assign concept_asset = 'maison-concept-steel-saucier.webp'
+  elsif concept_key contains 'sauteuse' or concept_key contains 'sauté'
+    assign concept_asset = 'maison-concept-steel-sauteuse.webp'
+  elsif concept_key contains 'cocotte' or concept_key contains 'handi' or concept_key contains 'matka'
+    assign concept_asset = 'maison-concept-noir-cocotte.webp'
+  elsif concept_key contains 'rondeau' or concept_key contains 'roaster'
+    assign concept_asset = 'maison-concept-copper-rondeau.webp'
+  elsif concept_key contains 'stockpot' or concept_key contains 'high pot'
+    assign concept_asset = 'maison-concept-copper-stockpot.webp'
+  elsif concept_key contains 'saucepan' or concept_key contains 'sauce pot'
+    assign concept_asset = 'maison-concept-copper-saucepan.webp'
+  elsif concept_key contains 'skillet' or concept_key contains 'frying pan' or concept_key contains 'fry pan'
+    assign concept_asset = 'maison-concept-copper-skillet.webp'
+  elsif concept_key contains 'set' or concept_key contains 'collection'
+    assign concept_asset = 'maison-concept-tavo-collection.webp'
+  elsif concept_key contains 'cup' or concept_key contains 'kulhad' or concept_key contains 'chai' or concept_key contains 'bowl' or concept_key contains 'clay' or concept_key contains 'terre'
+    assign concept_asset = 'maison-clay-openpot.webp'
+    assign concept_width = 2323
+    assign concept_height = 2323
+  else
+    assign concept_asset = 'maison-concept-tavo-collection.webp'
+  endif
+%}
+{% if concept_asset != blank %}
+  <img
+    class="{{ class_name | escape }}"
+    src="{{ concept_asset | asset_url }}"
+    alt="Illustrative concept photograph for {{ product.title | escape }}; the pictured item may differ"
+    width="{{ concept_width }}"
+    height="{{ concept_height }}"
+    loading="lazy"
+    decoding="async"
+  >
+{% endif %}

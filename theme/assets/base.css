@@ -2521,3 +2521,24 @@ header-drawer,
     display: none !important;
   }
 }
+[id='PageTop'] {
+  scroll-margin-block-start: 0;
+}
+
+.maison-back-to-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block: 0 1.5rem;
+  margin-inline: 1.5rem 0;
+  padding: 0.75rem 1rem;
+  color: var(--color-foreground);
+  background: var(--color-background);
+  border: 1px solid currentColor;
+  text-decoration: none;
+}
+
+.maison-back-to-top:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}

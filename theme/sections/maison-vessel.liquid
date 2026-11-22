@@ -2,6 +2,17 @@
   Spatial material study. React Three Fiber mounts into the canvas from
   assets/maison-vessel.js. It does not select a variant or add to the bag.
 {% endcomment %}
+{% liquid
+  assign vessel_name = product.title | downcase
+  assign vessel_kind = 'pan'
+  if vessel_name contains 'kadai' or vessel_name contains 'kadhai' or vessel_name contains 'wok'
+    assign vessel_kind = 'kadai'
+  elsif vessel_name contains 'handi' or vessel_name contains 'matka'
+    assign vessel_kind = 'handi'
+  elsif vessel_name contains 'pot' or vessel_name contains 'saucier' or vessel_name contains 'cocotte'
+    assign vessel_kind = 'pot'
+  endif
+%}
 
 <div
   class="section section--page-width spacing-style maison-vessel"
@@ -9,6 +20,7 @@
   data-mt-vessel
   data-finish="bronze"
   data-finish-group="mt-finish-{{ section.id }}"
+  data-vessel-kind="{{ vessel_kind }}"
 >
   <div class="maison-vessel__layout" data-mt-scroll="chapter">
     <div class="maison-vessel__copy">
@@ -30,14 +42,17 @@
     >
       <div class="maison-vessel__canvas" data-mt-canvas></div>
       <div class="maison-vessel__fallback" data-mt-fallback hidden>
-        <img
-          class="maison-vessel__poster"
-          src="{{ 'maison-flagship-kadai.webp' | asset_url }}"
-          alt="{{ section.settings.heading | escape }}"
-          width="1200"
-          height="900"
-          loading="lazy"
-        >
+        {% if product.featured_image != blank %}
+          {{ product.featured_image | image_url: width: 1200 | image_tag: class: 'maison-vessel__poster', loading: 'lazy', widths: '600, 900, 1200', sizes: '(min-width: 990px) 56vw, 100vw' }}
+        {% else %}
+          {% capture concept_poster %}{% render 'maison-concept-image', product: product, class_name: 'maison-vessel__poster' %}{% endcapture %}
+          {% assign concept_poster = concept_poster | strip %}
+          {% if concept_poster != blank %}
+            {{ concept_poster }}
+          {% else %}
+            <img class="maison-vessel__poster" src="{{ 'maison-flagship-kadai.webp' | asset_url }}" alt="Illustrative cookware study" width="823" height="823" loading="lazy">
+          {% endif %}
+        {% endif %}
         <p class="maison-vessel__fallback-caption">
           This browser cannot draw the interactive 3D study. The finishes below describe the surface metallurgy.
         </p>
@@ -60,13 +75,18 @@
       </fieldset>
 
       <div class="maison-vessel__controls">
+        <button type="button" data-mt-view="hero" aria-pressed="true">Hero view</button>
+        <button type="button" data-mt-view="overhead" aria-pressed="false">Overhead</button>
+        <button type="button" data-mt-view="profile" aria-pressed="false">Profile</button>
+        <button type="button" data-mt-lid aria-pressed="false">Seat lid</button>
+        <button type="button" data-mt-explode aria-pressed="false">Separate layers</button>
         <button type="button" data-mt-turn="-1">Turn left</button>
         <button type="button" data-mt-turn="1">Turn right</button>
         <button type="button" data-mt-dolly="-1">Closer</button>
         <button type="button" data-mt-dolly="1">Further</button>
       </div>
       <p class="maison-vessel__hint" id="MaisonVesselHint-{{ section.id }}">
-        Drag to turn the vessel. Pinch, or use the buttons, to come closer. This study does not change the piece selected above.
+        Drag to turn the vessel. Pinch, or use the buttons, to inspect the form. This illustrative study does not change the piece selected above.
       </p>
       <p class="visually-hidden" data-mt-finish-status aria-live="polite"></p>
     </div>

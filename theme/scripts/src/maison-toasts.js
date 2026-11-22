@@ -5,14 +5,14 @@ const CART_ERROR = 'shopify:cart:error';
 const TOAST_EVENT = 'maison:toast';
 
 const LS_SUBSCRIBED = 'mt-mail-subscribed';
-const TOAST_DEFAULT_MS = 4200;
-const TOAST_ERROR_MS = 5600;
 
 /** @type {HTMLElement | null} */
 let host = null;
 /** @type {number} */
 let toastSeq = 0;
 let started = false;
+/** @type {Element | null} */
+let focusBeforeNotifications = null;
 
 function motionReduced() {
   const flag = document.documentElement.dataset.reducedMotion;
@@ -54,7 +54,6 @@ function iconHtml(name) {
  *   message: string,
  *   href?: string,
  *   label?: string,
- *   duration?: number,
  *   icon?: string,
  *   id?: string,
  *   onDismiss?: () => void,
@@ -66,7 +65,6 @@ export function showToast(opts) {
     message,
     href,
     label,
-    duration = type === 'error' ? TOAST_ERROR_MS : TOAST_DEFAULT_MS,
     icon,
     id,
     onDismiss,
@@ -74,6 +72,7 @@ export function showToast(opts) {
   if (!message) return null;
 
   const root = ensureHost();
+  if (!root.contains(document.activeElement)) focusBeforeNotifications = document.activeElement;
   const el = document.createElement('div');
   const toastId = id || `mt-toast-${++toastSeq}`;
   el.id = toastId;
@@ -98,7 +97,7 @@ export function showToast(opts) {
       ${action}
     </span>
     <button type="button" class="mt-toast__dismiss" aria-label="Dismiss notification" data-mt-toast-dismiss>
-      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="2"/></svg>
     </button>
   `;
 
@@ -107,7 +106,13 @@ export function showToast(opts) {
   }
 
   const dismiss = () => {
-    if (!el.isConnected) return;
+    if (!el.isConnected || el.dataset.leaving === 'true') return;
+    if (el.contains(document.activeElement)) {
+      const nextDismiss = Array.from(root.querySelectorAll('[data-mt-toast]:not([data-leaving="true"]) [data-mt-toast-dismiss]'))
+        .find((button) => !el.contains(button));
+      if (nextDismiss instanceof HTMLElement) nextDismiss.focus();
+      else if (focusBeforeNotifications instanceof HTMLElement && focusBeforeNotifications.isConnected) focusBeforeNotifications.focus();
+    }
     el.dataset.leaving = 'true';
     const remove = () => {
       el.remove();
@@ -126,10 +131,6 @@ export function showToast(opts) {
   });
 
   root.appendChild(el);
-
-  if (duration > 0) {
-    window.setTimeout(dismiss, duration);
-  }
 
   return { id: toastId, dismiss, el };
 }

@@ -1,0 +1,239 @@
+{% assign forge_url = collections.forge.url | default: routes.collections_url %}
+{% capture cards %}
+  {% for block in section.blocks %}
+    {% assign piece = block.settings.product %}
+    {% if piece != blank %}
+      {% capture options %}
+        {% for variant in piece.variants %}
+          {% if variant.available and variant.quantity_rule.min == 1 and variant.requires_selling_plan == false %}
+            <option value="{{ variant.id }}" data-price="{{ variant.price }}">
+              {{ variant.title | escape }} · {{ variant.price | money_with_currency | strip_html | escape }}
+            </option>
+          {% endif %}
+        {% endfor %}
+      {% endcapture %}
+      {% assign options = options | strip %}
+      <li class="maison-foundry__piece" {{ block.shopify_attributes }}>
+        {% if piece.featured_image != blank %}
+          {{ piece.featured_image | image_url: width: 640 | image_tag: class: 'maison-foundry__image', loading: 'lazy', widths: '220, 360, 480, 640', sizes: '(min-width: 64rem) 23vw, (min-width: 38rem) 44vw, 90vw' }}
+        {% else %}
+          {% render 'maison-concept-image', product: piece, class_name: 'maison-foundry__image' %}
+        {% endif %}
+        <div class="maison-foundry__detail">
+          <h3 class="maison-editorial__card-title"><a href="{{ piece.url }}">{{ piece.title | escape }}</a></h3>
+          {% if block.settings.use != blank %}
+            <p>{{ block.settings.use | escape }}</p>
+          {% endif %}
+          {% if options != blank %}
+            <label class="visually-hidden" for="Foundry-{{ block.id }}">Choose an option for {{ piece.title | escape }}</label>
+            <select id="Foundry-{{ block.id }}" data-foundry-variant>
+              <option value="">Skip this piece</option>
+              {{ options }}
+            </select>
+          {% else %}
+            <p>Currently unavailable for this set</p>
+          {% endif %}
+        </div>
+      </li>
+    {% endif %}
+  {% endfor %}
+{% endcapture %}
+{% assign cards = cards | strip %}
+
+<div id="the-foundry" class="section section--page-width spacing-style maison-reading maison-foundry" style="{% render 'spacing-style', settings: section.settings %}">
+  <header class="maison-editorial__header">
+    <p class="maison-editorial__eyebrow">The Foundry</p>
+    <h2 class="maison-editorial__title">{{ section.settings.heading | escape }}</h2>
+    <p class="maison-editorial__lede">{{ section.settings.lede | escape }}</p>
+    {% if section.settings.guide != blank %}
+      <details class="maison-foundry__guide">
+        <summary>How to choose your pieces</summary>
+        <div class="maison-editorial__rte rte">{{ section.settings.guide }}</div>
+      </details>
+    {% endif %}
+  </header>
+
+  {% if cards != blank %}
+    <maison-foundry
+      data-add-url="{{ routes.cart_add_url | append: '.js' }}"
+      data-cart-url="{{ routes.cart_url }}"
+      data-currency="{{ cart.currency.iso_code | default: localization.country.currency.iso_code | default: shop.currency }}"
+    >
+      <form>
+        <ul class="maison-foundry__pieces" role="list">{{ cards }}</ul>
+        <div class="maison-foundry__actions" hidden>
+          <details class="maison-foundry__gift">
+            <summary>Add a gift message</summary>
+            <label class="visually-hidden" for="FoundryGift-{{ section.id }}">Gift message for the set</label>
+            <textarea id="FoundryGift-{{ section.id }}" data-foundry-gift rows="2" maxlength="160" placeholder="Write up to 160 characters"></textarea>
+          </details>
+          <div class="maison-foundry__checkout">
+            <output aria-live="polite" data-foundry-total></output>
+            <button type="submit" class="button" disabled>Add set to bag</button>
+          </div>
+          <p class="maison-foundry__status" role="status" data-foundry-status></p>
+          <a href="{{ routes.cart_url }}" data-foundry-cart hidden>Check your bag</a>
+        </div>
+      </form>
+    </maison-foundry>
+    <script type="module" src="{{ 'maison-foundry.js' | asset_url }}"></script>
+  {% else %}
+    <p>The set builder is waiting for available pieces.</p>
+  {% endif %}
+
+  <p class="maison-foundry__browse"><a href="{{ forge_url }}">Browse Forge</a></p>
+</div>
+
+{% stylesheet %}
+  .maison-foundry {
+    scroll-margin-block-start: calc(var(--header-group-height, 4rem) + 1rem);
+  }
+
+  .maison-foundry__pieces {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .maison-foundry__guide {
+    max-inline-size: var(--maison-reading-measure);
+    margin-block-start: 1rem;
+  }
+
+  .maison-foundry__guide summary {
+    cursor: pointer;
+  }
+
+  .maison-foundry__guide[open] summary {
+    margin-block-end: 0.75rem;
+  }
+
+  .maison-foundry__piece {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border);
+  }
+
+  .maison-foundry__image {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+    background-color: rgb(var(--color-foreground-rgb) / 0.04);
+  }
+
+  .maison-foundry__detail {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .maison-foundry__detail :is(h3, p),
+  .maison-foundry__status {
+    margin: 0;
+  }
+
+  .maison-foundry__detail a,
+  .maison-foundry__browse a {
+    color: inherit;
+    text-decoration-color: currentColor;
+  }
+
+  .maison-foundry__detail select,
+  .maison-foundry__gift textarea {
+    max-inline-size: 100%;
+    inline-size: 100%;
+    min-block-size: 2.75rem;
+    padding: 0.5rem;
+    border: 1px solid var(--color-input-border);
+    background: var(--color-input-background);
+    color: var(--color-input-text);
+    font: inherit;
+  }
+
+  .maison-foundry__detail select {
+    margin-block-start: auto;
+  }
+
+  maison-foundry:not(:defined) [data-foundry-variant] {
+    display: none;
+  }
+
+  .maison-foundry__actions {
+    margin-block-start: 1.25rem;
+    padding-block: 1.25rem;
+    border-block: 1px solid var(--color-border);
+  }
+
+  .maison-foundry__gift {
+    max-inline-size: 30rem;
+    margin-block-end: 1rem;
+  }
+
+  .maison-foundry__gift summary {
+    cursor: pointer;
+  }
+
+  .maison-foundry__gift textarea {
+    display: block;
+    margin-block-start: 0.5rem;
+    resize: vertical;
+  }
+
+  .maison-foundry__checkout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .maison-foundry__status:not(:empty) {
+    margin-block-start: 0.75rem;
+  }
+
+  .maison-foundry__browse {
+    margin-block: 1rem 0;
+  }
+
+  @media (min-width: 38rem) {
+    .maison-foundry__pieces { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 64rem) {
+    .maison-foundry__pieces { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "The Foundry set builder",
+  "limit": 1,
+  "tag": "section",
+  "class": "section-wrapper",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Build your cookware set" },
+    { "type": "textarea", "id": "lede", "label": "Introduction", "default": "Choose the pieces and sizes you’ll use. Add a message if it’s a gift." },
+    { "type": "richtext", "id": "guide", "label": "Advice for choosing a set" },
+    { "type": "range", "id": "padding-block-start", "label": "Top spacing", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom spacing", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 56 }
+  ],
+  "blocks": [{
+    "type": "piece",
+    "name": "Piece",
+    "settings": [
+      { "type": "product", "id": "product", "label": "Product" },
+      { "type": "text", "id": "use", "label": "Cooking use" }
+    ]
+  }],
+  "presets": [{ "name": "The Foundry set builder" }]
+}
+{% endschema %}

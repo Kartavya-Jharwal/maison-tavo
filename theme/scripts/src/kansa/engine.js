@@ -212,6 +212,9 @@ export function buildFixtureAnswer(piece, intentId) {
   const title = piece.title;
   const isClay = piece.materialCategory === 'clay';
   const isBlade = piece.materialCategory === 'blade';
+  const cookingSurface = String(piece.lining_material || piece.primary_material || '').toLowerCase();
+  const seasonsWithOil = /carbon steel|cast iron|seasoned iron/.test(cookingSurface) && !/stainless/.test(cookingSurface);
+  const conceptNote = piece.claim_status === 'CONCEPT_SPEC' ? ' This is a design target; check the finished piece’s verified instructions before cooking.' : '';
   const heatList = (piece.heat_sources || []).join(', ') || 'none listed';
 
   /** @type {{ tag: string, text: string, tools: string[], followUps: string[] }} */
@@ -221,8 +224,8 @@ export function buildFixtureAnswer(piece, intentId) {
     case 'care_season':
       if (isClay) {
         out = {
-          tag: 'CLAY WATER CURE',
-          text: `${title}: do not season with oil. Perform the Water Cure — submerge in cold water for 15 minutes before the first five uses so the clay matrix buffers heat. ${piece.care_hypothesis || piece.care_instructions || ''}`,
+          tag: 'CLAY FIRST USE',
+          text: `${title}: check the finished vessel’s first-use guide. Some clay cookware calls for soaking or curing; a fifteen-minute full soak has not been verified for this piece.${conceptNote}`,
           tools: ['open_care_ritual'],
           followUps: ['Can I use this on gas or induction?', 'How to clean clay without cracking?'],
         };
@@ -233,12 +236,19 @@ export function buildFixtureAnswer(piece, intentId) {
           tools: ['link_product'],
           followUps: ['Can I cut lemons?', 'How should I sharpen this?'],
         };
-      } else {
+      } else if (seasonsWithOil) {
         out = {
           tag: 'CARBON STEEL SEASONING',
-          text: `To season ${title}: wash warm, dry over medium heat 60 seconds, buff a half-teaspoon of high-smoke oil until bone dry, heat to light smoke, hold 60 seconds, cool. Repeat twice for a dark glass patina. ${piece.care_hypothesis || ''}`,
+          text: `${title} has a seasoning-capable surface in the catalogue. Use a thin film of suitable cooking oil and follow the maker’s verified heat and cleaning instructions for the finished model. Avoid fixed time or temperature recipes until those instructions are confirmed.${conceptNote}`,
           tools: ['open_care_ritual', 'link_product'],
           followUps: ['Can I use soap?', 'What about tomatoes and wine?'],
+        };
+      } else {
+        out = {
+          tag: 'METAL CARE',
+          text: `${title}: the listed cooking surface does not call for carbon steel seasoning. Stainless steel does not need an oil patina. Check the exact model’s care guide for cleaning and heat limits.${conceptNote}`,
+          tools: ['open_care_ritual', 'link_product'],
+          followUps: ['How should I wash it?', 'What about tomatoes and wine?'],
         };
       }
       break;
@@ -256,23 +266,30 @@ export function buildFixtureAnswer(piece, intentId) {
       if (isClay) {
         out = {
           tag: 'ACID · CLAY',
-          text: `${title}: vitrified / designed food-contact surfaces are generally acid-tolerant for tomato, wine, and citrus braises. ${piece.food_contact_suitability || ''}`,
+          text: `${title}: acid resistance depends on the tested food-contact surface. Do not assume an unglazed terracotta concept is acid-safe. Check the finished vessel’s specification before cooking tomato, wine or citrus.${conceptNote}`,
           tools: ['lookup_piece'],
-          followUps: ['How do I water cure?', 'Heat diffuser rules?'],
+          followUps: ['First-use guidance?', 'Heat source guidance?'],
         };
       } else if (isBlade) {
         out = {
           tag: 'ACID · BLADE',
-          text: `${title}: you may cut citrus and tomato — wipe the blade immediately so acid does not etch the relief.`,
+          text: `${title}: check the knife’s finished care guide and clean and dry it after cutting acidic foods.`,
           tools: ['link_product'],
-          followUps: ['Sharpening angle?', 'Dishwasher?'],
+          followUps: ['Sharpening guidance?', 'Dishwasher?'],
+        };
+      } else if (seasonsWithOil) {
+        out = {
+          tag: 'ACID · METAL',
+          text: `${title}: long acidic reductions can affect a young carbon steel seasoning layer. Check the model’s verified guide for its cooking surface and suitable foods.${conceptNote}`,
+          tools: ['open_care_ritual'],
+          followUps: ['How do I season?', 'Rust appeared - what now?'],
         };
       } else {
         out = {
           tag: 'ACID · METAL',
-          text: `${title}: avoid heavy acidic reductions during early seasoning cycles until the patina polymerizes. ${piece.food_contact_suitability || piece.care_hypothesis || ''}`,
-          tools: ['open_care_ritual'],
-          followUps: ['How do I season?', 'Rust appeared — what now?'],
+          text: `${title}: stainless steel does not rely on a seasoning layer. Check the exact model’s food-contact and care specification before a long acidic cook.${conceptNote}`,
+          tools: ['lookup_piece', 'link_product'],
+          followUps: ['How should I wash it?', 'Heat sources?'],
         };
       }
       break;

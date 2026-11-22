@@ -1,61 +1,17 @@
 {
   "sections": {
     "story": {
-      "type": "maison-story",
-      "blocks": {
-        "grandmother": {
-          "type": "chapter",
-          "settings": {
-            "kicker": "",
-            "heading": "What we learn at the stove",
-            "text": "<p>A grandmother teaches you to turn a flatbread by standing beside you. She can tell from a change in the sound or the way the dough lifts.</p><p>She also knows how to dry the pan and when its surface needs attention. Those habits are part of what she passes on. We started with that picture of an heirloom you know how to live with.</p>"
-          }
-        },
-        "moving": {
-          "type": "chapter",
-          "settings": {
-            "kicker": "",
-            "heading": "The pan in the moving box",
-            "text": "<p>After moving, Kartavya Jharwal unpacked a pan and couldn’t tell whether it would work on the new hob. Changing kitchens had separated the tool from the knowledge that made it useful.</p><p>What would the pan need to carry into its next kitchen? That question became Maison Tavo.</p>"
-          }
-        },
-        "commission": {
-          "type": "chapter",
-          "settings": {
-            "kicker": "",
-            "heading": "One kitchen, many tables",
-            "text": "<p>In Jaipur, Kartavya managed a leased Savi property where one kitchen fed conferences, banquets and families walking in for lunch. He worked with head chefs on the standards that kept the kitchen running. A pan earned its place by being ready for the next service.</p>"
-          }
-        },
-        "atelier": {
-          "type": "chapter",
-          "settings": {
-            "kicker": "",
-            "heading": "The work behind the menu",
-            "text": "<p>At Siya, Kartavya digitised two years of handwritten kitchen registers and compared how often dishes sold with what it cost to serve them. That work informs how we think about cookware: the shape, the care routine and the parts needed for the next service all matter.</p>"
-          }
-        },
-        "invitation": {
-          "type": "chapter",
-          "settings": {
-            "kicker": "",
-            "heading": "The house",
-            "text": "<p>Maison Tavo brings the care learned at home together with the demands of a working kitchen. The piece should feel familiar in the hand. The information that comes with it should be clear enough for the cook who picks it up next.</p><p><a href=\"/pages/building\">See how we’re building Maison Tavo</a></p>"
-          }
-        }
-      },
-      "block_order": ["grandmother", "moving", "commission", "atelier", "invitation"],
+      "type": "maison-room",
       "settings": {
-        "eyebrow": "Maison Tavo",
-        "heading": "Our story",
-        "lede": "A grandmother’s tava, a pan in a moving box and the work of keeping one kitchen ready to feed a room.",
-        "place_1_label": "",
-        "place_2_label": "",
-        "place_3_label": "",
+        "eyebrow": "",
+        "heading": "When the pan moves with you",
+        "lede": "<p>New address. Same pan. Kartavya Jharwal unpacked it and wondered if it would work on the new hob. Somewhere in the move, the answer had gone missing.</p><p>That’s where we began. A pan should come with enough knowledge to get dinner on the table in the next kitchen.</p><p><a href=\"/pages/about\">Meet Maison Tavo</a> · <a href=\"/pages/about#heirloom\">Read the Dhanteras story</a></p>",
         "padding-block-start": 56,
-        "padding-block-end": 96
+        "padding-block-end": 80
       }
     }
   },
-  "order": ["story"]
+  "order": [
+    "story"
+  ]
 }

@@ -31,4 +31,7 @@
   {{ block.shopify_attributes }}
 >
   {{ block_settings.label }}
+  {%- if block_settings.open_in_new_tab and link != blank %}
+    <span> ({{ 'accessibility.new_window' | t }})</span>
+  {%- endif %}
 </a>

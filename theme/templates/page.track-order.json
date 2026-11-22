@@ -1,0 +1,40 @@
+{
+  "sections": {
+    "room": {
+      "type": "maison-room",
+      "settings": {
+        "eyebrow": "Support",
+        "heading": "Track Order",
+        "lede": "<p>Find the status of an order or an exhibition test journey.</p>",
+        "notice": "The current storefront is a gated exhibition. Checkout and order details may be examples.",
+        "padding-block-start": 48,
+        "padding-block-end": 64
+      },
+      "blocks": {
+        "confirmation": {
+          "type": "clause",
+          "settings": {
+            "heading": "Use the order email",
+            "text": "<p>Open the order confirmation or shipping email for the order status link and any tracking number. A carrier link appears only when tracking has been added to that order.</p>"
+          }
+        },
+        "account": {
+          "type": "clause",
+          "settings": {
+            "heading": "Check your account",
+            "text": "<p>If you used a customer account, sign in to <a href=\"/account\">Account</a> and open the order. The order status page shows the latest information available to the store.</p>"
+          }
+        },
+        "help": {
+          "type": "clause",
+          "settings": {
+            "heading": "Need help finding it?",
+            "text": "<p><a href=\"/pages/contact\">Contact us</a> with the order reference and email used for the order. Do not send payment card details. For an exhibition test order, mention that it is a test.</p>"
+          }
+        }
+      },
+      "block_order": ["confirmation", "account", "help"]
+    }
+  },
+  "order": ["room"]
+}

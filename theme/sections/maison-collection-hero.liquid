@@ -39,7 +39,7 @@
   {% endif %}
 
   {%- comment -%} Content {%- endcomment -%}
-  <div class="maison-collection-hero__content section--page-width">
+  <div class="maison-collection-hero__content">
 
     {% if section.settings.kicker != blank %}
       <p class="maison-collection-hero__kicker">{{ section.settings.kicker | escape }}</p>
@@ -69,11 +69,16 @@
         {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}
       >
         {{ section.settings.cta_label | escape }}
+        {% if section.settings.cta_new_tab %}<span> ({{ 'accessibility.new_window' | t }})</span>{% endif %}
       </a>
     {% endif %}
 
   </div>
 </div>
+
+{% if section.settings.show_buying_guide and collection != blank %}
+  {% render 'maison-range-notes', collection: collection %}
+{% endif %}
 
 {% stylesheet %}
   /* ── Root ────────────────────────────────────────────────────────────────── */
@@ -82,7 +87,6 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    min-height: 22rem;
     overflow: hidden;
     background: var(--color-background);
     color: var(--color-foreground);
@@ -125,13 +129,15 @@
     z-index: 1;
     display: grid;
     gap: 0.75rem;
-    padding-block-start: 3rem;
-    padding-block-end: 2.5rem;
+    inline-size: min(calc(100% - 2 * var(--page-margin, 1rem)), calc(var(--page-width, 80rem) - 2 * var(--page-margin, 1rem)));
+    margin-inline: auto;
+    padding-block: clamp(2rem, 4vw, 4rem) clamp(1rem, 3vw, 2rem);
   }
 
   .maison-collection-hero--has-image .maison-collection-hero__content {
-    padding-block-start: 2rem;
-    padding-block-end: 3rem;
+    padding: clamp(1rem, 3vw, 2rem);
+    background: #171717;
+    color: #fff;
   }
 
   /* ── Typography ─────────────────────────────────────────────────────────── */
@@ -145,7 +151,7 @@
   }
 
   .maison-collection-hero--has-image .maison-collection-hero__kicker {
-    color: rgb(255 255 255 / 0.65);
+    color: #fff;
   }
 
   .maison-collection-hero__title {
@@ -167,7 +173,7 @@
   }
 
   .maison-collection-hero--has-image .maison-collection-hero__description {
-    color: rgb(255 255 255 / 0.75);
+    color: #fff;
   }
 
   .maison-collection-hero__cta {
@@ -199,8 +205,7 @@
       "type": "text",
       "id": "kicker",
       "label": "Kicker",
-      "info": "Small uppercase label above the title. Auto-fills from collection if blank.",
-      "default": "The room"
+      "info": "Optional label above the title."
     },
     {
       "type": "text",
@@ -248,6 +253,12 @@
       "default": false
     },
     {
+      "type": "checkbox",
+      "id": "show_buying_guide",
+      "label": "Show material buying guide",
+      "default": false
+    },
+    {
       "type": "header",
       "content": "Spacing"
     },
@@ -277,7 +288,6 @@
       "name": "Collection hero",
       "category": "Maison Tavo",
       "settings": {
-        "kicker": "The room",
         "overlay_enabled": true
       }
     }

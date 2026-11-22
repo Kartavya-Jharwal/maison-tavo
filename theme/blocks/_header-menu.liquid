@@ -8,6 +8,7 @@
 
 {% liquid
   assign block_settings = block.settings
+  assign drawer_linklist = block_settings.drawer_menu | default: block_settings.menu
   assign effective_submenu_color = block_settings.background_color | default: settings.page_background_color
 %}
 
@@ -20,7 +21,7 @@
       {{ block.shopify_attributes }}
     >
       {% render 'header-drawer',
-        linklist: block_settings.menu,
+        linklist: drawer_linklist,
         data_header_drawer_type: 'mobile-drawer',
         block: block,
         section: section
@@ -826,6 +827,12 @@
       "id": "menu",
       "label": "t:settings.menu",
       "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "drawer_menu",
+      "label": "Hamburger menu",
+      "info": "Uses the desktop menu when left empty."
     },
     {
       "type": "header",

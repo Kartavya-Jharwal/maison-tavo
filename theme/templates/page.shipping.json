@@ -4,11 +4,12 @@
       "type": "maison-room",
       "settings": {
         "eyebrow": "Support",
-        "heading": "Delivery and returns",
-        "lede": "<p>The gated exhibition lets you see how the delivery and returns journey would work.</p>",
+        "heading": "Refund and Returns Policy",
+        "lede": "<p>How delivery, returns and refund questions work in this gated exhibition.</p>",
         "notice": "For checkout evaluation, use only test details supplied by the project team.",
         "padding-block-start": 48,
-        "padding-block-end": 64
+        "padding-block-end": 64,
+        "summary": "<p>Catalogue orders and delivery details are examples for evaluation. Test orders need no parcel returned. If you were invited to test checkout and need help with a test reference, <a href=\"/pages/start-a-return\">start a return enquiry</a> or <a href=\"/pages/contact\">contact us</a>. No live refund window or shipping promise is offered by this exhibition.</p>"
       },
       "blocks": {
         "window": {
@@ -28,8 +29,8 @@
         "steps": {
           "type": "clause",
           "settings": {
-            "heading": "Returns in the demonstration",
-            "text": "<p>Send any feedback about a test order through Contact. Include its test reference where available and omit payment information. Test orders need no parcel sent back.</p>"
+            "heading": "Returns and refunds in the demonstration",
+            "text": "<p>No physical return or refund is processed for an exhibition test order. Do not send a parcel. If you need a test order reviewed, use <a href=\"/pages/start-a-return\">Start a Return</a> and include its reference; do not include payment details.</p>"
           }
         },
         "checkout": {
@@ -56,8 +57,17 @@
           }
         }
       },
-      "block_order": ["window", "rates", "steps", "checkout", "contact", "faq"]
+      "block_order": [
+        "window",
+        "rates",
+        "steps",
+        "checkout",
+        "contact",
+        "faq"
+      ]
     }
   },
-  "order": ["room"]
+  "order": [
+    "room"
+  ]
 }

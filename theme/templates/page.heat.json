@@ -5,8 +5,8 @@
       "settings": {
         "eyebrow": "",
         "heading": "Heat, made visible",
-        "lede": "<p>Choose a stovetop profile to set where heat enters the base. Then try a different heat map mode to model a ring, dead spots or uneven hotspots. Compare how the warmer areas spread on the two plates.</p>",
-        "notice": "Educational simulation. The numbers describe the model. Check the piece’s specifications for actual hob compatibility.",
+        "lede": "<p>A dosa will tell you where the pan runs cold. Pick a burner and a heat pattern. Watch where the warmth goes on each base.</p>",
+        "notice": "This is a model. Check the piece’s specifications for temperatures and hob fit.",
         "padding-block-start": 48,
         "padding-block-end": 8
       },
@@ -27,7 +27,7 @@
       "settings": {
         "kicker": "",
         "heading": "Compare the two bases",
-        "lede": "Start with the same heat input on both plates. The spread indicator summarises the gap between each model’s hottest and coolest points on a relative scale."
+        "lede": "Use the same heat input on both plates. The spread indicator shows the relative gap between the hottest and coolest points."
       }
     }
   },

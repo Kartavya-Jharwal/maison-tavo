@@ -3,142 +3,41 @@
     "intro": {
       "type": "maison-room",
       "settings": {
-        "eyebrow": "Assortment",
-        "heading": "Department & system",
-        "lede": "<p>Shop by working-kitchen department and material system. Categories hold the culinary task; lineups hold the alloy and craft route.</p>",
+        "eyebrow": "",
+        "heading": "From the hob to the table",
+        "lede": "<p>A griddle for the bread. A bowl that can go round the table. A lid that belongs to the pan.</p>",
         "padding-block-start": 48,
         "padding-block-end": 8
       },
       "blocks": {
-        "kitchen": {
-          "type": "pathway",
-          "settings": {
-            "label": "Working kitchen",
-            "url": "/pages/kitchen",
-            "text": "The live assortment grid."
-          }
-        },
-        "catalog": {
-          "type": "pathway",
-          "settings": {
-            "label": "All collections",
-            "url": "/collections",
-            "text": "Category index and material lineups."
-          }
-        }
+        "kitchen": {"type": "pathway", "settings": {"label": "Working kitchen", "url": "/pages/kitchen", "text": "Browse the pieces and build a Forge set."}},
+        "catalog": {"type": "pathway", "settings": {"label": "All collections", "url": "/collections", "text": "Browse the catalogue by range, task or care need."}}
       },
       "block_order": ["kitchen", "catalog"]
     },
     "maison_categories": {
       "type": "maison-lineups",
       "blocks": {
-        "cookware": {
-          "type": "lineup",
-          "settings": {
-            "kicker": "Category 01 · Kitchen & Pass",
-            "label": "Cookware",
-            "text": "Skillets, planchas, tavas, kadais, saucepots, roasters, tagines, knives, and service tongs engineered by culinary task.",
-            "handle": "cookware"
-          }
-        },
-        "tableware_pottery": {
-          "type": "lineup",
-          "settings": {
-            "kicker": "Category 02 · Tabletop & Chai",
-            "label": "Tableware & Pottery",
-            "text": "Modular Ardh kulhads, laser-marked Rekhā platters, dinner plates, condiment katoris, and shared serving bowls.",
-            "handle": "tableware-pottery"
-          }
-        },
-        "care_sets": {
-          "type": "lineup",
-          "settings": {
-            "kicker": "Category 03 · Ritual & Parts",
-            "label": "Care & Sets",
-            "text": "High-smoke seasoning oil, four-piece care ritual kits, stepped replacement lids, and ceramic-docked bamboo steamers.",
-            "handle": "care-sets"
-          }
-        },
-        "forge_terre": {
-          "type": "lineup",
-          "settings": {
-            "kicker": "Range 04 · Metal × Clay",
-            "label": "Forge × Terre",
-            "text": "Hybrid metal–clay systems separating active induction cooking from tactile earthenware table service.",
-            "handle": "forge-terre"
-          }
-        },
-        "kansa_room": {
-          "type": "lineup",
-          "settings": {
-            "kicker": "Room · Companion",
-            "label": "Kansa",
-            "text": "A page of its own. Ask the bell-bronze companion about heat, care, and the piece in your hand.",
-            "handle": "",
-            "link": "/pages/kansa"
-          }
-        }
+        "forge": {"type": "lineup", "settings": {"kicker": "On the hob", "label": "Forge", "text": "Stainless steel cookware in grouped sizes, with matched sets.", "handle": "forge"}},
+        "chulha": {"type": "lineup", "settings": {"kicker": "At the table", "label": "Chulha", "text": "Terracotta forms for flatbreads, chai and slow-cooked meals; current specifications are design targets.", "handle": "chulha"}},
+        "maintenance": {"type": "lineup", "settings": {"kicker": "After the meal", "label": "Maintenance", "text": "Care supplies and replacement parts selected by vessel and fit.", "handle": "maintenance"}},
+        "kansa_room": {"type": "lineup", "settings": {"kicker": "Care companion", "label": "Kansa", "text": "Ask about the hob, the finish or what to do at the sink.", "handle": "", "link": "/pages/kansa"}}
       },
-      "block_order": [
-        "cookware",
-        "tableware_pottery",
-        "care_sets",
-        "forge_terre",
-        "kansa_room"
-      ],
-      "settings": {
-        "eyebrow": "Assortment Architecture",
-        "heading": "Shop by Department & System",
-        "lede": "25 specifications across Cookware, Tableware & Pottery, Care & Sets, and our four material lineups.",
-        "padding-block-start": 24,
-        "padding-block-end": 64
-      }
+      "block_order": ["forge", "chulha", "maintenance", "kansa_room"],
+      "settings": {"eyebrow": "", "heading": "Shop by task", "lede": "", "padding-block-start": 24, "padding-block-end": 64}
     },
     "room_rail": {
       "type": "maison-carousel",
       "blocks": {
-        "cookware": {
-          "type": "room",
-          "settings": {
-            "collection": "cookware",
-            "kicker": "Category 01 · Kitchen & Pass",
-            "text": "Skillets, planchas, tavas, kadais, saucepots, roasters, tagines, knives, and service tongs.",
-            "link_label": "Enter the kitchen"
-          }
-        },
-        "tableware": {
-          "type": "room",
-          "settings": {
-            "collection": "tableware-pottery",
-            "kicker": "Category 02 · Tabletop & Chai",
-            "text": "Modular kulhads, laser-marked platters, dinner plates, katoris, and shared serving bowls.",
-            "link_label": "Enter the table"
-          }
-        },
-        "care": {
-          "type": "room",
-          "settings": {
-            "collection": "care-sets",
-            "kicker": "Category 03 · Ritual & Parts",
-            "text": "Seasoning oil, care ritual kits, stepped replacement lids, and ceramic-docked steamers.",
-            "link_label": "Enter the ritual"
-          }
-        },
-        "forge_terre": {
-          "type": "room",
-          "settings": {
-            "collection": "forge-terre",
-            "kicker": "Range 04 · Metal × Clay",
-            "text": "Hybrid metal–clay systems separating active induction cooking from tactile table service.",
-            "link_label": "Enter the range"
-          }
-        }
+        "forge": {"type": "room", "settings": {"collection": "forge", "kicker": "Range 01 · Cookware", "text": "Stainless steel vessels and matched sets.", "link_label": "Enter Forge"}},
+        "chulha": {"type": "room", "settings": {"collection": "chulha", "kicker": "Range 02 · Terracotta", "text": "Forms for flatbreads, chai and slow-cooked meals.", "link_label": "Enter Chulha"}},
+        "maintenance": {"type": "room", "settings": {"collection": "maintenance", "kicker": "Range 03 · Care & parts", "text": "Keep the right piece in use with care supplies and tested fit.", "link_label": "Explore maintenance"}}
       },
-      "block_order": ["cookware", "tableware", "care", "forge_terre"],
+      "block_order": ["forge", "chulha", "maintenance"],
       "settings": {
-        "eyebrow": "Across the house",
-        "heading": "Move between the rooms",
-        "lede": "Slide sideways instead of scanning a grid. Every card is a real department, not a campaign tile.",
+        "eyebrow": "",
+        "heading": "Browse the collections",
+        "lede": "",
         "per_view": 3,
         "gap": 20,
         "align": "start",

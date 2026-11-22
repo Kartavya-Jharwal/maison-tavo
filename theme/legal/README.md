@@ -11,7 +11,10 @@ The password-gated exhibition shows how the store might work. Treat the terms as
 | `/pages/intellectual-property` | [Intellectual property](ipr.md) and the legal copy snippet |
 | `/pages/cookie-policy` | [Browser storage template](../templates/page.cookies.json) |
 | `/pages/delivery-returns` | [Delivery and returns template](../templates/page.shipping.json) |
-| `/pages/faq` | [FAQ template](../templates/page.faq.json) |
+| `/pages/refund-returns-policy` | [Refund and Returns Policy template](../templates/page.refund-returns-policy.json) |
+| `/pages/track-order` | [Track Order template](../templates/page.track-order.json) |
+| `/pages/start-a-return` | [Start a Return template](../templates/page.start-a-return.json) |
+| `/pages/faq` | [Merged interactive FAQ template](../templates/page.faq.json) |
 
 The three Markdown documents mirror the default Liquid copy for review. Update both sources together. A rich-text body saved in the Shopify theme editor overrides the corresponding Liquid default. Shopify’s Admin policies are separate records with their own routes and can appear at checkout. When previewing, verify the page-template assignments and merchant overrides.
 

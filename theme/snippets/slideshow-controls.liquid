@@ -83,19 +83,14 @@
     {% if autoplay %}
       <button
         type="button"
-        class="slideshow-control button-secondary button-unstyled icon-pause"
+        class="slideshow-control button-secondary button-unstyled slideshow-autoplay-toggle"
         aria-label="{{ 'accessibility.slideshow_pause' | t }}"
-        on:click="/pause"
+        data-play-label="{{ 'accessibility.slideshow_play' | t | escape }}"
+        data-pause-label="{{ 'accessibility.slideshow_pause' | t | escape }}"
+        on:click="/toggleAutoplay"
       >
-        {{- 'icon-pause.svg' | inline_asset_content -}}
-      </button>
-      <button
-        type="button"
-        class="slideshow-control button-secondary button-unstyled icon-play"
-        aria-label="{{ 'accessibility.slideshow_play' | t }}"
-        on:click="/play"
-      >
-        {{- 'icon-play.svg' | inline_asset_content -}}
+        <span class="icon-pause" aria-hidden="true">{{- 'icon-pause.svg' | inline_asset_content -}}</span>
+        <span class="icon-play" aria-hidden="true">{{- 'icon-play.svg' | inline_asset_content -}}</span>
       </button>
     {% endif %}
 
@@ -108,13 +103,14 @@
           <div class="slideshow-controls__thumbnails">
             {% for media in thumbnails %}
               <button
+                type="button"
                 class="slideshow-control button button-unstyled slideshow-controls__thumbnail"
                 aria-label="{{ 'accessibility.slide_status' | t: index: forloop.index, length: forloop.length }}"
                 on:click="/select/{{ forloop.index0 }}"
                 style="--aspect-ratio: {% if aspect_ratio == 'adapt' %}{{ media.preview_image.aspect_ratio | default: 1.0 }}{% else %}{{ aspect_ratio }}{% endif %};"
                 ref="thumbnails[]"
                 {% if forloop.first %}
-                  aria-selected="true"
+                  aria-current="true"
                 {% endif %}
               >
                 {% liquid
@@ -127,7 +123,6 @@
                   media.preview_image
                   | image_url: width: 144
                   | image_tag: loading: 'lazy', alt: media.alt, style: focal_point_style
-                  | escape
                 }}
 
                 {% if media.media_type == 'video' or media.media_type == 'external_video' %}
@@ -161,13 +156,14 @@
           {% for i in (1..item_count) %}
             <li>
               <button
+                type="button"
                 class="slideshow-control button button-unstyled"
                 style="animation-timeline: --slide-{{ forloop.index0 }}"
                 aria-label="{{ 'accessibility.slide_status' | t: index: forloop.index, length: forloop.length }}"
                 on:click="/select/{{ forloop.index0 }}"
                 ref="dots[]"
                 {% if forloop.first %}
-                  aria-selected="true"
+                  aria-current="true"
                 {% endif %}
               >
                 {{ forloop.index }}
@@ -386,7 +382,7 @@
         box-shadow: inset 0 0 0 1.5px hsl(0 0% 0% / 0.15);
 
         @supports not (view-timeline-axis: inline) {
-          &[aria-selected='true'] {
+          &[aria-current='true'] {
             --color: var(--color-active);
           }
         }
@@ -396,7 +392,7 @@
         }
       }
 
-      &[aria-selected='true'] {
+      &[aria-current='true'] {
         --color: var(--color-active);
 
         &::after {
@@ -465,7 +461,7 @@
         border-radius: var(--thumbnail-radius, var(--media-radius));
       }
 
-      &:is([aria-selected='true']) {
+      &:is([aria-current='true']) {
         outline: var(--focus-outline-width) solid currentcolor;
         outline-offset: calc(var(--focus-outline-offset) / 2);
         border: var(--style-border-width) solid rgb(var(--color-border-rgb) / var(--media-border-opacity));
@@ -499,27 +495,27 @@
   }
 
   /* Slideshow Play/Pause */
-  .slideshow-control:is(.icon-pause, .icon-play) {
+  .slideshow-autoplay-toggle {
     color: var(--color-active);
 
     &:hover {
       color: var(--color-hover);
     }
 
-    svg {
+    :is(.icon-pause, .icon-play) {
       display: none;
     }
   }
 
   slideshow-component:is([autoplay]) {
     &:is([paused]) {
-      .icon-play > svg {
+      .slideshow-autoplay-toggle .icon-play {
         display: block;
       }
     }
 
     &:not([paused]) {
-      .icon-pause > svg {
+      .slideshow-autoplay-toggle .icon-pause {
         display: block;
       }
     }

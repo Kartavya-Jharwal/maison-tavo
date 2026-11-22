@@ -12,39 +12,34 @@
     <h2 class="h3">{{- 'blogs.comment_form.heading' | t -}}</h2>
 
     {%- if form.errors -%}
-      <p
-        class="blog-post-comments__form-message"
-        role="alert"
-      >
+      <div role="alert" tabindex="-1" autofocus>
+      <p class="blog-post-comments__form-message">
         {{- 'icon-error.svg' | inline_asset_content -}}
 
         {{- 'blogs.comment_form.error' | t -}}
       </p>
 
-      <ul class="">
+      <ul>
         {%- for field in form.errors -%}
-          <li>
-            {%- if form.errors.translated_fields[field] contains 'author' -%}
-              <span id="blog-post-comment-author-error">
+          <li id="{{ section_id }}-blog-post-comment-{{ field | handleize }}-error">
+            {%- if field == 'author' -%}
                 {{- 'blogs.comment_form.name' | t -}}
-              </span>
-            {%- elsif form.errors.translated_fields[field] contains 'body' -%}
-              <span id="blog-post-comment-body-error">
+            {%- elsif field == 'body' -%}
                 {{- 'blogs.comment_form.message' | t -}}
-              </span>
             {%- else -%}
-              <span id="{{ form.errors.translated_fields[field] | handleize }}-error">
-                {{- form.errors.translated_fields[field] | capitalize -}}
-              </span>
+                {{- form.errors.translated_fields[field] | capitalize | escape -}}
             {%- endif -%}
-            {{ form.errors.messages[field] }}
+            : {{ form.errors.messages[field] | escape }}
           </li>
         {%- endfor -%}
       </ul>
+      </div>
     {%- elsif form.posted_successfully? -%}
       <p
         class="blog-post-comments__form-message"
-        role="alert"
+        role="status"
+        tabindex="-1"
+        autofocus
       >
         {{- 'icon-checkmark.svg' | inline_asset_content -}}
 
@@ -62,7 +57,7 @@
     <div class="blog-post-comments__form">
       <div class="field">
         <label
-          class="visually-hidden"
+          class="blog-post-comments__form-label"
           for="{{ section_id }}-blog-post-comment-author"
         >
           {{ 'blogs.comment_form.name' | t }}
@@ -74,20 +69,20 @@
           id="{{ section_id }}-blog-post-comment-author"
           class="blog-post-comments__form-input field__input"
           autocomplete="name"
-          value="{{- form.author -}}"
+          value="{{ form.author | escape }}"
           aria-required="true"
           placeholder="{{ 'blogs.comment_form.name' | t }}"
           required
           {% if form.errors contains 'author' %}
             aria-invalid="true"
-            aria-describedby="blog-post-comment-author-error"
+            aria-describedby="{{ section_id }}-blog-post-comment-author-error"
           {% endif %}
         >
       </div>
 
       <div class="field">
         <label
-          class="visually-hidden"
+          class="blog-post-comments__form-label"
           for="{{ section_id }}-blog-post-comment-email"
         >
           {{ 'blogs.comment_form.email' | t }}
@@ -99,7 +94,7 @@
           id="{{ section_id }}-blog-post-comment-email"
           autocomplete="email"
           class="blog-post-comments__form-input field__input"
-          value="{{ form.email }}"
+          value="{{ form.email | escape }}"
           autocorrect="off"
           autocapitalize="off"
           aria-required="true"
@@ -107,14 +102,14 @@
           required
           {% if form.errors contains 'email' %}
             aria-invalid="true"
-            aria-describedby="blog-post-comment-email-error"
+            aria-describedby="{{ section_id }}-blog-post-comment-email-error"
           {% endif %}
         >
       </div>
 
       <div class="field blog-post-comments__form-body">
         <label
-          class="visually-hidden"
+          class="blog-post-comments__form-label"
           for="{{ section_id }}-blog-post-comment-body"
         >
           {{ 'blogs.comment_form.message' | t }}
@@ -130,10 +125,10 @@
           required
           {% if form.errors contains 'body' %}
             aria-invalid="true"
-            aria-describedby="blog-post-comment-body-error"
+            aria-describedby="{{ section_id }}-blog-post-comment-body-error"
           {% endif %}
         >
-          {{- form.body -}}
+          {{- form.body | escape -}}
         </textarea>
       </div>
     </div>
@@ -175,6 +170,11 @@
   .blog-post-comments__form-input {
     padding: var(--padding-lg) var(--padding-xl);
     border: var(--style-border-width-inputs) solid var(--color-input-border);
+  }
+
+  .blog-post-comments__form .field {
+    flex-direction: column;
+    gap: var(--gap-xs);
   }
 
   .blog-post-comments__form-input--textarea {

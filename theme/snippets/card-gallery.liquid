@@ -209,6 +209,14 @@
       {%- endif -%}
     </a>
   {% elsif product != blank and product.media.size == 0 %}
+    {% capture concept_image %}{% render 'maison-concept-image', product: product, class_name: 'maison-concept-card__image' %}{% endcapture %}
+    {% assign concept_image = concept_image | strip %}
+    {% if concept_image != blank %}
+      <a class="maison-concept-card" ref="cardGalleryLink" href="{{ product.url }}">
+        {{ concept_image }}
+        <span class="maison-concept-card__label">Illustrative concept image</span>
+      </a>
+    {% else %}
     {% liquid
       assign p_specs = product.metafields.specs
       assign p_lineup = p_specs.lineup.value | default: product.vendor
@@ -238,6 +246,7 @@
         </div>
       </a>
     </div>
+    {% endif %}
   {% elsif product == blank %}
     {% liquid
       capture placeholder_image
@@ -261,6 +270,31 @@
 {% render 'product-media-container-styles' %}
 
 {% stylesheet %}
+  .maison-concept-card {
+    display: block;
+    position: relative;
+    width: 100%;
+    color: inherit;
+  }
+
+  .maison-concept-card__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  .maison-concept-card__label {
+    position: absolute;
+    inset-inline-start: 0.75rem;
+    inset-block-end: 0.75rem;
+    padding: 0.3rem 0.45rem;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--mt-type-family-mono);
+    font-size: var(--mt-type-mono);
+  }
   .card-gallery {
     position: relative;
     overflow: hidden;

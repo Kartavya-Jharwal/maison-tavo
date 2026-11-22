@@ -1,4 +1,3 @@
-import { animate } from 'motion';
 import { createStore } from 'zustand/vanilla';
 import { DragGesture } from '@use-gesture/vanilla';
 
@@ -9,7 +8,7 @@ if (root) {
     {
       id: 'raw-copper',
       name: 'Raw Copper',
-      cloth: '#C4784A',
+      cloth: '#E0AA85',
       ink: '#1A1714',
       role: 'Accent · CTA · Evidence',
       note: 'The working metal — raw, warm, and present at every heat source.',
@@ -17,7 +16,7 @@ if (root) {
     {
       id: 'aged-bronze',
       name: 'Aged Bronze',
-      cloth: '#6E5A3D',
+      cloth: '#493B29',
       ink: '#E8DFD4',
       role: 'Depth · Anchor · History',
       note: 'Oxidised heritage. The colour of a pan that has earned its seasoning.',
@@ -48,31 +47,25 @@ if (root) {
     },
   ];
 
-  // --- Four lineup rooms ---
+  // --- Current catalogue ranges ---
   const lineups = [
     {
-      id: 'forge-hybrid',
-      name: 'Forge Hybrid',
-      line: 'Carbon-steel cookline concepts. Modular mass for the pass.',
-      href: '/collections/forge-hybrid',
+      id: 'forge',
+      name: 'Forge',
+      line: 'Stainless steel cookware in grouped sizes, with matched sets.',
+      href: '/collections/forge',
     },
     {
-      id: 'terre-clay',
-      name: 'Terre Clay',
-      line: 'Cast clay vessels and table forms. Grain and heat memory as design story.',
-      href: '/collections/terre-clay',
+      id: 'chulha',
+      name: 'Chulha',
+      line: 'Terracotta forms for flatbreads, chai and slow-cooked meals.',
+      href: '/collections/chulha',
     },
     {
-      id: 'kuro-strip',
-      name: 'Kuro Strip',
-      line: 'Strip and hybrid-edge blade concepts. Edge geometry as craft language.',
-      href: '/collections/kuro-strip',
-    },
-    {
-      id: 'forge-terre',
-      name: 'Forge \u00d7 Terre',
-      line: 'Service sets and nested pieces for the shared kitchen spine.',
-      href: '/collections/forge-terre',
+      id: 'maintenance',
+      name: 'Maintenance',
+      line: 'Care supplies and replacement parts selected by vessel and fit.',
+      href: '/collections/maintenance',
     },
   ];
 
@@ -83,7 +76,6 @@ if (root) {
     setLineup: (id) => set({ lineup: id }),
   }));
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const style = document.createElement('style');
   style.textContent =
@@ -92,19 +84,20 @@ if (root) {
     + '.mt-demo__banner{margin:0 0 1.25rem;padding:.65rem .85rem;border:1px dashed #9A9B9E;font-family:system-ui,sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:#6E5A3D}'
     + '.mt-demo__stage{display:grid;gap:1.25rem}'
     + '@media(min-width:720px){.mt-demo__stage{grid-template-columns:minmax(0,1fr) 14rem}}'
-    + '.mt-demo__figure{min-height:18rem;padding:1.5rem;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid currentColor;transition:background .3s,color .3s}'
-    + '.mt-demo__kicker{margin:0;font-family:system-ui,sans-serif;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;opacity:.8}'
+    + '.mt-demo__figure{min-height:18rem;padding:1.5rem;display:flex;flex-direction:column;justify-content:flex-end;border:1px solid currentColor}'
+    + '.mt-demo__kicker{margin:0;font-family:system-ui,sans-serif;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase}'
     + '.mt-demo__title{margin:.35rem 0 .25rem;font-size:1.55rem;letter-spacing:.04em}'
-    + '.mt-demo__role{margin:0 0 .5rem;font-size:.8rem;letter-spacing:.08em;opacity:.75}'
+    + '.mt-demo__role{margin:0 0 .5rem;font-size:.8rem;letter-spacing:.08em}'
     + '.mt-demo__line{margin:0;max-width:28rem;line-height:1.5;font-size:.95rem}'
     + '.mt-demo__sets{display:grid;gap:1.25rem}'
     + '.mt-demo__legend{margin:0 0 .5rem;font-family:system-ui,sans-serif;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:#6E5A3D}'
     + '.mt-demo__chips{display:flex;flex-wrap:wrap;gap:.5rem}'
-    + '.mt-demo__chip{appearance:none;margin:0;padding:.45rem .7rem;border:1px solid currentColor;background:transparent;color:inherit;font:inherit;font-size:.85rem;cursor:pointer;transition:background .15s}'
+    + '.mt-demo__chip{appearance:none;margin:0;padding:.45rem .7rem;border:1px solid currentColor;background:transparent;color:inherit;font:inherit;font-size:.85rem;min-height:44px;min-width:44px;cursor:pointer}'
     + '.mt-demo__chip[aria-pressed="true"]{font-weight:700}'
     + '.mt-demo__swatch{display:inline-block;width:.7rem;height:.7rem;margin-right:.4rem;border:1px solid rgba(0,0,0,.15);vertical-align:middle}'
-    + '.mt-demo__lineup-link{display:block;margin-top:.5rem;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:#C4784A;text-decoration:none}'
+    + '.mt-demo__lineup-link{display:block;margin-top:.5rem;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:inherit;text-decoration:underline}'
     + '.mt-demo__lineup-link:hover{text-decoration:underline}'
+    + '.mt-demo :focus-visible{outline:3px solid #14110f;outline-offset:3px;box-shadow:0 0 0 6px #f7f2e9}'
     + '.mt-demo__note{margin:1rem 0 0;font-size:.9rem;line-height:1.5;font-style:italic;color:#6E5A3D}';
   document.head.appendChild(style);
 
@@ -164,7 +157,7 @@ if (root) {
       + '</p>'
       + '<a class="mt-demo__lineup-link" href="'
       + lineup.href
-      + '">Explore '
+      + '" target="_top">Explore '
       + lineup.name
       + ' \u2192</a>'
       + '</figure>'
@@ -182,16 +175,15 @@ if (root) {
       + '</div>';
   }
 
-  function pulseFigure() {
-    if (reduceMotion) return;
-    const figure = root.querySelector('.mt-demo__figure');
-    if (!figure) return;
-    animate(figure, {opacity: [0.72, 1]}, {duration: 0.3});
-  }
-
   store.subscribe((state) => {
+    const focused = document.activeElement;
+    const kind = focused instanceof HTMLElement ? focused.dataset.kind : null;
+    const id = focused instanceof HTMLElement ? focused.dataset.id : null;
     render(state);
-    pulseFigure();
+    if (kind && id) {
+      [...root.querySelectorAll('[data-kind]')]
+        .find((button) => button.dataset.kind === kind && button.dataset.id === id)?.focus();
+    }
   });
 
   root.addEventListener('click', (e) => {

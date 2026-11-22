@@ -121,9 +121,19 @@ export class Slideshow extends Component {
   }
 
   requiredRefs = ['scroller'];
+  #motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  #handleMotionPreference = (event) => {
+    if (this.autoplay && (event.matches === true || event.detail?.reduced === true)) this.pause();
+  };
 
   async connectedCallback() {
     super.connectedCallback();
+    document.addEventListener('maison:reduced-motion', this.#handleMotionPreference);
+    this.#motionQuery.addEventListener('change', this.#handleMotionPreference);
+    this.addEventListener('focusout', this.#handleFocusOut);
+    for (const slide of this.refs.slides ?? []) {
+      if (slide.getAttribute('aria-hidden') === 'true' && !slide.contains(document.activeElement)) slide.inert = true;
+    }
 
     // Register with shared viewport observer for lazy scroll enablement.
     // This prevents iOS Safari crashes caused by too many compositor layers.
@@ -142,6 +152,9 @@ export class Slideshow extends Component {
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    document.removeEventListener('maison:reduced-motion', this.#handleMotionPreference);
+    this.#motionQuery.removeEventListener('change', this.#handleMotionPreference);
+    this.removeEventListener('focusout', this.#handleFocusOut);
 
     // Unregister from shared viewport observer
     SlideshowViewportObserver.getInstance().unobserve(this);
@@ -292,6 +305,7 @@ export class Slideshow extends Component {
 
     const previousIndex = this.current;
 
+    slide.inert = false;
     slide.setAttribute('aria-hidden', 'false');
 
     if (this.#scroll) {
@@ -338,15 +352,17 @@ export class Slideshow extends Component {
 
   /**
    * Starts automatic slide playback.
-   * @param {number} [interval] - The time interval in seconds between slides.
+   * @param {number | Event} [interval] - The interval in milliseconds, or a delegated click event.
    */
   play(interval = this.autoplayInterval) {
     if (this.#interval) return;
+    if (typeof interval !== 'number' || !Number.isFinite(interval) || interval <= 0) interval = this.autoplayInterval;
+    if (!interval) return;
 
     this.paused = false;
 
     this.#interval = setInterval(() => {
-      if (this.matches(':hover') || document.hidden) return;
+      if (this.matches(':hover, :focus-within') || document.hidden) return;
 
       this.next();
     }, interval);
@@ -360,6 +376,11 @@ export class Slideshow extends Component {
     this.suspend();
   }
 
+  toggleAutoplay() {
+    if (this.paused) this.play();
+    else this.pause();
+  }
+
   get paused() {
     return this.hasAttribute('paused');
   }
@@ -369,6 +390,10 @@ export class Slideshow extends Component {
       this.setAttribute('paused', '');
     } else {
       this.removeAttribute('paused');
+    }
+    for (const button of this.querySelectorAll('[data-play-label][data-pause-label]')) {
+      const label = value ? button.dataset.playLabel : button.dataset.pauseLabel;
+      if (label) button.setAttribute('aria-label', label);
     }
   }
 
@@ -425,7 +450,7 @@ export class Slideshow extends Component {
     if (current) current.textContent = `${value + 1}`;
 
     for (const controls of [thumbnails, dots]) {
-      controls?.forEach((el, i) => el.setAttribute('aria-selected', `${i === value}`));
+      controls?.forEach((el, i) => el.setAttribute('aria-current', `${i === value}`));
     }
 
     if (previous) previous.disabled = Boolean(!this.infinite && value === 0);
@@ -532,6 +557,7 @@ export class Slideshow extends Component {
     }
 
     if (this.refs.slides?.[0]) {
+      this.refs.slides[0].inert = false;
       this.refs.slides[0].setAttribute('aria-hidden', 'false');
     }
   }
@@ -562,7 +588,8 @@ export class Slideshow extends Component {
 
     this.disabled = this.isNested || this.disabled;
 
-    this.resume();
+    if (this.autoplay && (prefersReducedMotion() || document.documentElement.dataset.reducedMotion === 'true')) this.pause();
+    else this.resume();
 
     this.current = this.initialSlideIndex;
 
@@ -934,13 +961,22 @@ export class Slideshow extends Component {
     scheduler.schedule(() => {
       // Update aria-hidden based on visibility
       slides.forEach((slide) => {
-        const isVisible = visibleSlides.includes(slide);
+        // Do not make the control a shopper is using inert while a scroll or
+        // layout change moves its slide out of view. Reconcile after focus leaves.
+        const isVisible = visibleSlides.includes(slide) || slide.contains(document.activeElement);
+        slide.inert = !isVisible;
         slide.setAttribute('aria-hidden', `${!isVisible}`);
       });
     });
 
     return visibleSlides.length;
   }
+
+  #handleFocusOut = () => {
+    queueMicrotask(() => {
+      if (this.isConnected) this.#updateVisibleSlides();
+    });
+  };
 }
 
 if (!customElements.get('slideshow-component')) {

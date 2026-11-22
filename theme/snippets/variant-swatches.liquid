@@ -91,6 +91,7 @@
   data-product-title="{{ product_resource.title | escape }}"
   ref="swatchesVariantPicker"
 >
+  <p role="alert" data-variant-update-error data-message="{{ 'accessibility.variant_update_retry' | t | escape }}"></p>
   <form>
     {% comment %}
       Find the first product option that has swatches.
@@ -115,6 +116,7 @@
       -%}
 
       <fieldset class="variant-option variant-option--buttons variant-option--swatches">
+        <legend class="visually-hidden">{{ product_option.name | escape }}</legend>
         {% capture children %}
           {%- for product_option_value in product_option.values -%}
             {% liquid
@@ -185,7 +187,7 @@
                   type="radio"
                   name="{{ product_option.name | escape }}-{{ product_resource.id }}-swatch"
                   value="{{ product_option_value | escape }}"
-                  aria-label="{{ product_option_value.name }}"
+                  aria-label="{{ product_option_value.name | escape }}{% if product_option_value.available == false %} — {{ 'content.unavailable' | t | escape }}{% endif %}"
                   data-input-id="{{ product_option.position }}-{{ forloop.index0 }}"
                   data-option-name="{{ product_option.name | escape }}"
                   data-option-media-id="{{ featured_media.id }}"

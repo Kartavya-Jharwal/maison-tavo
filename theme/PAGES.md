@@ -36,17 +36,17 @@ No hard-coded SKUs. Leave blank until catalogue pieces exist.
 
 ## Header and footer menus
 
-The storefront is a multi-page shop. Header links come from the `main-menu`
-navigation. The footer prints Shop, House, Support, and Legal from the theme
-when those menu settings are empty, so the map is visible before a menu sync.
+The storefront is a multi-page shop. The flat desktop header uses `main-menu`;
+the hamburger uses the grouped `drawer-menu` (falling back to `main-menu` until
+the drawer menu exists). The footer prints Support and Legal links, with
+configurable columns and built-in fallbacks.
 
-`bun scripts/sync-navigation.ts --apply` writes header/footer items including:
+`bun scripts/sync-navigation.ts` previews the menu plan. Its `--apply` mode writes
+the desktop, drawer and footer menus from the verified three-collection release:
 
-- Category collections (Cookware, Tableware & Pottery, Care & Sets)
-- **Department** (`/pages/department`), **Kitchen** (`/pages/kitchen`)
-- **Heat** (`/pages/heat`), **Finder** (`/pages/finder`)
-- **Releases** (`/pages/releases`), **Journal** (`/pages/journal`), **Mail** (`/pages/mail`)
-- About, Contact
+- Desktop: Shop, Forge, Chulha, Maintenance, About.
+- Drawer: Shop, Explore, The house and Help, each with relevant child links.
+- Footer: the three ranges plus editorial and support links.
 
 Checkout and the customer account are Shopify-hosted. The bag links to checkout.
 Do not rebuild either flow in the theme.
@@ -57,8 +57,9 @@ Do not remove the footer **Policy links** block. It lists Shopify-hosted policie
 
 | Admin title | Handle (URL) | Theme template | Primary section(s) |
 | --- | --- | --- | --- |
-| About us | `about` | `page.about` | `maison-about` (+ story/stats as configured) |
-| Our story | `our-story` | `page.story` | `maison-story` |
+| About us | `about` | `page.about` | `maison-story` + `maison-about` |
+| Agents | `agents` | `page.agents` | Editorial concepts for bell resonance and Mol-Bhav; explicitly labeled as proposed |
+| Our story | `our-story` | `page.story` | Legacy landing page linking to About |
 | Building of | `building` | `page.building` | `maison-building` |
 | Department | `department` | `page.department` | `maison-room` + `maison-lineups` |
 | Kitchen | `kitchen` | `page.kitchen` | `product-list` (Working Kitchen) |
@@ -67,19 +68,25 @@ Do not remove the footer **Policy links** block. It lists Shopify-hosted policie
 | Journal | `journal` | `page.journal` | `maison-journal-intro` + `maison-building` entries |
 | Mail | `mail` | `page.mail` | `maison-room` + Horizon `email-signup` block |
 | Releases | `releases` | `page.releases` | `maison-releases` (timed cycles; sibling to arrivals) |
-| Contact | `contact` | `page.contact` | `maison-room` + contact form |
+| Contact Us | `contact` | `page.contact` | `maison-room` + contact form |
 | New arrivals | `new-arrivals` | `page.arrivals` | Legacy alias of Releases; prefer `releases` |
 | Delivery and returns | `delivery-returns` | `page.shipping` | `maison-room` |
-| Frequently asked questions | `faq` | `page.faq` | `maison-room` |
+| Refund and Returns Policy | `refund-returns-policy` | `page.refund-returns-policy` | `maison-room` with short summary |
+| Track Order | `track-order` | `page.track-order` | `maison-room` |
+| Start a Return | `start-a-return` | `page.start-a-return` | `maison-room` |
+| FAQs | `faq` | `page.faq` | `maison-good-questions` with merged questions and interactive answers |
+| Good questions (legacy URL) | `good-questions` | `page.good-questions` | Same merged FAQ content |
 | Reviews | `reviews` | `page.reviews` | `maison-room` |
 | Cookie Policy | `cookie-policy` | `page.cookies` | `maison-room` |
 | Care | `care` | `page.care` | care ritual |
 | Kansa | `kansa` | `page.kansa` | `kansa-app` |
 | Privacy Policy | `privacy-policy` | `page.privacy` | `maison-legal` |
-| Terms of Service | `terms-of-service` | `page.terms` | `maison-legal` |
+| Terms & Conditions | `terms-of-service` | `page.terms` | `maison-legal` |
 | Intellectual property | `intellectual-property` | `page.ipr` | `maison-legal` |
 | Colour story explorer | `lookbook` | `page.microapp` | `maison-microapp` |
-| UCP Protocol | `ucp` | `page.ucp` | `maison-ucp-viewer` |
+| UCP Protocol | `ucp` | `page.ucp` | `maison-ucp-tui` |
+| Ask AI | `ask-ai` | `page.ask-ai` | `maison-ask-ai` |
+| Agent manifest | `llms-txt` | `page.llms-txt` | Legacy alias. Use Shopify’s root `/llms.txt` for new links. |
 
 Steps per page: **Online Store → Pages → Add page** → set title → handle → **Theme template** dropdown → save. Or run `ensure-pages.ts --apply` when Admin API access is available (ACCESS_DENIED still leaves templates shippable).
 

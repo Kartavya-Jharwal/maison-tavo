@@ -5,12 +5,15 @@
       "settings": {
         "document": "privacy",
         "eyebrow": "Legal",
-        "heading": "Exhibition privacy notice",
+        "heading": "Privacy Policy",
         "show_native_policy": true,
         "padding-block-start": 48,
-        "padding-block-end": 80
+        "padding-block-end": 80,
+        "summary": "<p>This exhibition uses Shopify for store, account and checkout services. Optional kitchen preferences and Kansa history stay in this browser; contact and newsletter forms send what you enter to Shopify. Use <strong>[ Reset Session &amp; Storage ]</strong> in the footer to clear this storefront’s local data. See the full notice below for what that reset does not erase.</p>"
       }
     }
   },
-  "order": ["legal"]
+  "order": [
+    "legal"
+  ]
 }

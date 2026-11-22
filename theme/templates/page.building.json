@@ -8,7 +8,7 @@
           "settings": {
             "date_label": "The catalogue",
             "heading": "Three ways to read a pan",
-            "text": "<p>Open a catalogue card and use the Human, Engineer and Machine controls. Human shows the piece. Engineer opens the construction view. Machine shows a structured record a software agent could read. All three describe the same pan, so the finish that drew you in and the dimensions that determine fit stay attached to the same piece.</p><p><a href=\"/collections\">Explore the catalogue</a></p>"
+            "text": "<p>One pan, three views. Human shows the finish. Engineer shows the construction. Machine opens the structured record. Design targets carry their status across the catalogue.</p><p><a href=\"/collections\">Explore the catalogue</a> · <a href=\"/pages/ucp\">See the agent-facing demo</a></p>"
           }
         },
         "heat": {
@@ -16,15 +16,25 @@
           "settings": {
             "date_label": "The heat study",
             "heading": "Change the hob. Watch the heat spread.",
-            "text": "<p>Choose induction, gas, coil, ceramic or charcoal, then change the heat map to model a ring, dead spots or uneven hotspots. The side-by-side views show how heat spreads through two modelled bases. Use the demo to explore conduction. Use the piece’s own specifications for hob compatibility.</p><p><a href=\"/pages/heat\">Try the heat demo</a> · <a href=\"/pages/finder\">Find a piece for your hob</a></p>"
+            "text": "<p>Give both modelled bases the same burner. Change the heat pattern and watch what happens to the cold spots. Use the piece’s own specifications to check hob fit.</p><p><a href=\"/pages/heat\">Try the heat demo</a> · <a href=\"/pages/finder\">Find a piece for your hob</a></p>"
           }
         },
         "lineage": {
           "type": "entry",
           "settings": {
             "date_label": "Material design",
+            "editorial_asset": "craft",
             "heading": "Chulha starts with what’s cooking",
-            "text": "<p>A shallow tawa makes room to turn a paratha. A saucier gives chai somewhere to pour from. A broad handi gives a cook room to layer rice. For Chulha, our terracotta design study, we start with the cooking gesture and ask what shaping, firing and finishing can do for it. The draft concepts carry design targets while compatibility and material testing remain open.</p><p>We want local potters to help set those design choices, receive visible credit for their techniques and agree the price and terms of participation. A maker should be able to tell the story of a vessel wherever they sell it.</p>"
+            "text": "<p>Turn the paratha. Pour the chai. Layer the rice. Chulha starts with those gestures and asks what clay can do for each one.</p><p>Testing is still open. We want potters to help shape the designs, agree the terms and receive credit wherever the pieces are shown.</p>"
+          }
+        },
+        "forge": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Forge material study",
+            "editorial_asset": "handle",
+            "heading": "Measure the pan twice",
+            "text": "<p>The rim tells you how much room there is for the dosa. The base and the handle tell you how much room the pan needs on the hob.</p><p>Forge starts with clad steel. Laser etching is a design study. Layer counts, dimensions and heat ratings carry their evidence status in the record.</p><p><a href=\"/collections/forge\">See the Forge catalogue</a></p>"
           }
         },
         "companion": {
@@ -32,7 +42,16 @@
           "settings": {
             "date_label": "After purchase",
             "heading": "A way back from the pan",
-            "text": "<p>Choose a piece in <a href=\"/pages/kansa\">Kansa</a> and ask a question about its surface, heat or care. The prototype looks up prepared guidance from the concept catalogue. The proposed next step is a durable identifier on each vessel or its care card. Scanning it or entering its short code would take you to the right piece’s record, ready for a question or a handover to the next owner.</p><p>A 3D explorer is under consideration. With accurate models, a supported device could show how a pan would sit on a hob or how far the handle would reach.</p>"
+            "text": "<p><a href=\"/pages/kansa\">Kansa</a> draws on prepared guidance. We’re exploring a code to take the next owner from the pan to its record. A proposed 3D view could show how far the handle reaches across a hob.</p>"
+          }
+        },
+        "sets": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Retail and trade",
+            "editorial_asset": "pans",
+            "heading": "Help people choose before they commit",
+            "text": "<p>One tawa at home. A row of matching pans for service. The Foundry gives shoppers the available sizes, a running subtotal and room for a gift note. Trade enquiries start with pieces, quantities and a date.</p><p><a href=\"/pages/kitchen#the-foundry\">Open the set builder</a> · <a href=\"/pages/contact#trade\">Make a trade enquiry</a></p>"
           }
         },
         "economics": {
@@ -40,7 +59,7 @@
           "settings": {
             "date_label": "Platform economics",
             "heading": "Make participation worthwhile on both sides",
-            "text": "<p>Cooks gain access to more techniques and useful forms. Makers gain customers who can find and understand their work. Who pays for discovery and support matters as much as the fee itself.</p><p>We would test how price-sensitive cooks and makers are, what each group brings to the other and what changes when makers sell elsewhere. This is the pricing question we take from <a href=\"https://doi.org/10.1162/154247603322493212\">Rochet and Tirole (2003)</a>.</p>"
+            "text": "<p>A shop has to work for the person buying and the person making. We’d test who pays for discovery and support, and what changes when makers sell elsewhere. That pricing question comes from <a href=\"https://doi.org/10.1162/154247603322493212\">Rochet and Tirole (2003)</a>.</p>"
           }
         },
         "governance": {
@@ -48,15 +67,23 @@
           "settings": {
             "date_label": "Platform power",
             "heading": "Who keeps hold of the record?",
-            "text": "<p>What happens when the intermediary controls the infrastructure and collects the data? The question comes from <a href=\"https://www.wiley.com/en-us/Platform%2BCapitalism-p-9781509504879\">Nick Srnicek (2017)</a>.</p><p>Our response is to credit the maker, give makers records they can take with them and make care instructions accessible without a sign-in. Before asking a shopper for data, we ask whether the service needs it.</p>"
+            "text": "<p>Our aim is to credit the maker, give them a record they can take elsewhere and let the cook read care instructions without a sign-in. The question of who keeps the record comes from <a href=\"https://www.wiley.com/en-us/Platform%2BCapitalism-p-9781509504879\">Nick Srnicek (2017)</a>.</p>"
+          }
+        },
+        "references": {
+          "type": "entry",
+          "settings": {
+            "date_label": "Design engineering case study",
+            "heading": "One catalogue for the shop, the cook and the agent",
+            "text": "<p>The brief scoped an $85,000 concept engagement for retail and trade, with a target order value of $150–$2,200. One catalogue serves the storefront, care prototype and agent demo.</p><p>HexClad and Made In were references for material and merchandising. Healf, Our Place, Caraway and Material Kitchen informed the page and photographs. Great Jones and Smithey offered references for recipes, finish and care.</p><p>The test is simple. Can a cook tell if the pan fits? Can the next cook find the care instructions?</p>"
           }
         }
       },
-      "block_order": ["lenses", "heat", "lineage", "companion", "economics", "governance"],
+      "block_order": ["lenses", "heat", "lineage", "forge", "sets", "companion", "economics", "governance", "references"],
       "settings": {
         "eyebrow": "The project",
         "heading": "Building Maison Tavo",
-        "lede": "What will an online shop need to do when people find things through a feed, ask for them by voice and compare them with an assistant? This proof of concept follows one piece of cookware from discovery to use, care and handover.",
+        "lede": "One question about a hob became a shop, a material study and a record that can follow the pan home.",
         "padding-block-start": 56,
         "padding-block-end": 96
       }

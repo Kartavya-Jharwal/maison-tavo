@@ -32,7 +32,7 @@
       layoutsubtree
       aria-hidden="true"
     >
-      <div class="mt-fx-stage__content" data-mt-fx-content id="mt-heat-flame-content-{{ section.id }}">
+      <div class="mt-fx-stage__content" data-mt-fx-content aria-hidden="true" id="mt-heat-flame-content-{{ section.id }}">
         <article class="maison-thermal__flame-card">
           <p class="maison-thermal__flame-kicker">Comparative map</p>
           <h3 class="maison-thermal__flame-title">Heat on the base</h3>
@@ -42,7 +42,7 @@
         </article>
       </div>
     </canvas>
-    <div class="mt-fx-stage__poster" aria-hidden="true">
+    <div class="mt-fx-stage__poster">
       <article class="maison-thermal__flame-card">
         <p class="maison-thermal__flame-kicker">Comparative map</p>
         <h3 class="maison-thermal__flame-title">Heat on the base</h3>
@@ -191,7 +191,7 @@
       layoutsubtree
       aria-hidden="true"
     >
-      <div class="mt-fx-stage__content" data-mt-fx-content id="mt-heat-blaze-content-{{ section.id }}">
+      <div class="mt-fx-stage__content" data-mt-fx-content aria-hidden="true" id="mt-heat-blaze-content-{{ section.id }}">
         <div class="maison-thermal__blaze-copy">
           <p class="maison-thermal__flame-kicker">Profile · bottom heat</p>
           <h3 class="maison-thermal__flame-title">Mass spreads. Thin steel concentrates.</h3>
@@ -201,7 +201,7 @@
         </div>
       </div>
     </canvas>
-    <div class="mt-fx-stage__poster" aria-hidden="true">
+    <div class="mt-fx-stage__poster">
       <div class="maison-thermal__blaze-copy">
         <p class="maison-thermal__flame-kicker">Profile · bottom heat</p>
         <h3 class="maison-thermal__flame-title">Mass spreads. Thin steel concentrates.</h3>
@@ -652,6 +652,7 @@
             this.setSource(this.sourceKind, this.mapMode);
           };
           this.motionQuery.addEventListener?.('change', this.onMotionChange);
+          document.addEventListener('maison:reduced-motion', this.onMotionChange);
 
           this.observer = new IntersectionObserver(([entry]) => {
             this.visible = entry.isIntersecting;
@@ -667,6 +668,7 @@
         disconnectedCallback() {
           this.observer?.disconnect();
           this.motionQuery?.removeEventListener?.('change', this.onMotionChange);
+          document.removeEventListener('maison:reduced-motion', this.onMotionChange);
           document.removeEventListener('maison:page-leave', this.onPageLeave);
           this.stop();
         }

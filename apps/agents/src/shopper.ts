@@ -10,15 +10,28 @@ import {
   type Product,
 } from '@maison-tavo/ucp';
 import {ShopifyIdMap, type ShopifyIdMap as ShopifyIdMapType} from '@maison-tavo/catalog';
-import {seedCatalog} from '@maison-tavo/catalog/src/seed';
+import {readMockRelease, releasedSpecs} from '@maison-tavo/catalog/src/mock-release';
 import {type HeatSource, type ProductSpec} from '@maison-tavo/catalog/src/schema';
+
+const publishedCatalog = releasedSpecs();
+const catalogCountry = readMockRelease() ? 'IN' : 'US';
 
 const ID_MAP_URL = new URL('../../../data/shopify-id-map.json', import.meta.url);
 
 function loadRetainedIds(): ShopifyIdMapType | undefined {
   try {
     if (!existsSync(ID_MAP_URL)) return undefined;
-    return ShopifyIdMap.parse(JSON.parse(readFileSync(ID_MAP_URL, 'utf8')));
+    const map = ShopifyIdMap.parse(JSON.parse(readFileSync(ID_MAP_URL, 'utf8')));
+    for (const product of readMockRelease()?.products ?? []) {
+      for (const variant of product.variants) {
+        map.products_by_sku[variant.sku] = {
+          sku: variant.sku, handle: product.handle, product_id: product.id,
+          variant_id: variant.id, inventory_item_id: variant.inventory_item_id,
+          category_id: map.products_by_sku[variant.sku]?.category_id ?? null,
+        };
+      }
+    }
+    return map;
   } catch {
     return undefined;
   }
@@ -37,11 +50,14 @@ export interface QueryParams {
 }
 
 export function scoreSkuForUseCases(
-  sku: (typeof seedCatalog)[number],
+  sku: (typeof publishedCatalog)[number],
   useCases: string[],
 ): number {
   const haystack = [
     ...sku.agent_intents,
+    sku.title,
+    sku.suggested_use_case,
+    ...sku.tags,
     sku.concept_thesis,
     sku.primary_material,
     sku.lining_material,
@@ -56,8 +72,8 @@ export function scoreSkuForUseCases(
   }, 0);
 }
 
-export function evaluateCatalog(params: QueryParams): (typeof seedCatalog)[number][] {
-  const compatible = seedCatalog.filter((sku) => {
+export function evaluateCatalog(params: QueryParams): (typeof publishedCatalog)[number][] {
+  const compatible = publishedCatalog.filter((sku) => {
     if (sku.heat_sources.length === 0 && params.heat_sources.length > 0) return false;
     const heatOk = params.heat_sources.every((hs) => sku.heat_sources.includes(hs));
     const inductionOk =
@@ -101,6 +117,9 @@ function specProperties(match: ProductSpec) {
   if (match.dimensions.capacity_ml !== undefined) {
     props.push({name: 'capacity_ml', value: match.dimensions.capacity_ml});
   }
+  if (match.size_family) props.push({name: 'size_family', value: match.size_family});
+  if (match.included_lids?.length) props.push({name: 'included_lids', value: match.included_lids.join(', ')});
+  if (match.lineup_copy) props.push({name: 'lineup_copy', value: match.lineup_copy});
   if (match.quick_summary) props.push({name: 'quick_summary', value: match.quick_summary});
   if (match.suggested_use_case) {
     props.push({name: 'suggested_use_case', value: match.suggested_use_case});
@@ -132,11 +151,12 @@ function specProperties(match: ProductSpec) {
 
 function matchProductToSeed(product: Product, idMap?: ShopifyIdMapType): ProductSpec | undefined {
   if (idMap) {
-    const byGid = Object.values(idMap.products_by_sku).find(
-      (entry) => entry.product_id === product.id,
-    );
+    const matching = Object.values(idMap.products_by_sku).filter(entry => entry.product_id === product.id);
+    const byGid = matching.length === 1 ? matching[0]
+      : matching.find(entry => product.variants.length === 1 && entry.variant_id === product.variants[0]?.id);
+    if (matching.length > 1 && !byGid) return undefined;
     if (byGid) {
-      const found = seedCatalog.find((s) => s.sku === byGid.sku);
+      const found = publishedCatalog.find((s) => s.sku === byGid.sku);
       if (found) return found;
     }
   }
@@ -144,14 +164,14 @@ function matchProductToSeed(product: Product, idMap?: ShopifyIdMapType): Product
     try {
       const handle = new URL(product.url).pathname.split('/products/')[1]?.split('/')[0];
       if (handle) {
-        const byHandle = seedCatalog.find((s) => s.handle === handle);
+        const byHandle = publishedCatalog.find((s) => s.handle === handle);
         if (byHandle) return byHandle;
       }
     } catch {
       // ignore invalid URL
     }
   }
-  return seedCatalog.find(
+  return publishedCatalog.find(
     (sku) => sku.title.toLowerCase() === (product.title ?? '').toLowerCase(),
   );
 }
@@ -268,7 +288,7 @@ export class ShopperAgent {
           const chunk = productIdsToLookup.slice(i, i + STOREFRONT_LOOKUP_MAX_IDS);
           const lookedUp = await client.lookupCatalog({
             ids: chunk.map((c) => c.productId),
-            context: {address_country: 'US'},
+            context: {address_country: catalogCountry},
           });
           for (const entry of chunk) {
             const prod = lookedUp.products.find((p) => p.id === entry.productId);
@@ -327,6 +347,6 @@ export class ShopperAgent {
       }),
     );
 
-    return this.createCart(lineItems);
+    return this.createCart(lineItems, {address_country: catalogCountry});
   }
 }

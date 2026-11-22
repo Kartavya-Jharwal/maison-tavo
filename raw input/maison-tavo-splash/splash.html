@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maison Tavo — From the Fires of a Chulha</title>
+<meta name="description" content="Maison Tavo: a chulha-inspired field of warmth and fire, seen through fluted glass.">
+<meta name="theme-color" content="#C62828">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/favicon.png" sizes="180x180" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<!-- Fire and fluted glass are generated on the GPU. Optional placeholder.jpg is the fallback. -->
+<link rel="preload" as="image" href="placeholder.jpg">
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #C62828;   /* first paint is already on-palette */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#imgContainer {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;              /* follows the URL bar instead of jumping */
+    overflow: hidden;
+    background: radial-gradient(ellipse at 45% 65%, #FB6C00 0%, #E73F1E 38%, #C62828 85%);
+    touch-action: none;          /* the whole surface is the instrument */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+/* z order, back to front: placeholder, fire and glass (the canvas), content.
+   The placeholder paints instantly and stays under the canvas until the
+   first GPU frame is up, then the canvas fades in over it. */
+#placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;           /* full bleed at any window shape */
+    display: block;
+    z-index: 0;
+}
+
+canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    opacity: 0;
+    transition: opacity .45s ease;
+    z-index: 1;
+}
+canvas.on { opacity: 1; }
+
+/* page text goes in here, above the frosted glass. It lets pointer events
+   through to the container, so the cursor keeps stirring the fire over text. */
+#content {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    canvas { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="imgContainer">
+  <img id="placeholder" src="placeholder.jpg" alt="" draggable="false">
+  <canvas id="gl"></canvas>
+  <!-- Shopify / Liquid will populate this transparent layer with the logo,
+       "Concept Store" subtitle, and chulha byline using local fonts. -->
+  <div id="content"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -50,7 +50,7 @@
     {{ content_for_header }}
   </head>
 
-  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
+  <body id="PageTop" class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
     {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
     {% render 'splash-intro' %}
 
@@ -170,6 +170,7 @@
 
       <main
         id="MainContent"
+        tabindex="-1"
         class="content-for-layout"
         role="main"
         data-barba="container"
@@ -183,6 +184,7 @@
 
       <footer>
         {% sections 'footer-group' %}
+        <a class="maison-back-to-top" href="#PageTop">Back to top <span aria-hidden="true">↑</span></a>
       </footer>
     </div>
 

@@ -3,8 +3,8 @@
     "maison_hero": {
       "type": "maison-hero",
       "settings": {
-        "headline": "Live with cookware that outlasts you.",
-        "tagline": "Know what fits your hob, how it was made and how to keep it."
+        "headline": "The pan stays.",
+        "tagline": "Steel and clay cookware, shaped by Indian kitchens."
       }
     },
     "maison_story_brief": {
@@ -14,34 +14,39 @@
           "type": "highlight",
           "settings": {
             "kicker": "",
-            "heading": "Know it fits",
-            "text": "Check the hob, size and cooking task before you choose a piece."
+            "heading": "Find a piece for your hob",
+            "text": "Your hob. Your usual dinner. Start there.",
+            "icon": "fire",
+            "link": "/pages/finder"
           }
         },
         "service": {
           "type": "highlight",
           "settings": {
             "kicker": "",
-            "heading": "See the work in it",
-            "text": "Explore the materials and the techniques that give each vessel its shape."
+            "heading": "Build a set",
+            "text": "Choose the pans you reach for. Add a note if the set is a gift.",
+            "icon": "box",
+            "link": "/pages/kitchen#the-foundry"
           }
         },
         "specs": {
           "type": "highlight",
           "settings": {
             "kicker": "",
-            "heading": "Keep it in use",
-            "text": "Choose a piece whose care suits your kitchen, and keep the instructions with it."
+            "heading": "Trade enquiries",
+            "text": "Tell us what’s on the menu and when service starts.",
+            "icon": "serving_dish",
+            "link": "/pages/contact#trade"
           }
         }
       },
       "block_order": ["heat", "service", "specs"],
       "settings": {
-        "eyebrow": "The house",
-        "heading": "For the kitchens you’ll live in",
-        "lede": "A cookware concept for people who cook often, whether you’re unpacking in a new flat or keeping a small restaurant running.",
-        "cta_label": "About Maison Tavo",
-        "cta_link": "/pages/about",
+        "eyebrow": "",
+        "heading": "Start at the stove",
+        "lede": "",
+        "cta_label": "",
         "padding-block-start": 48,
         "padding-block-end": 40
       }
@@ -49,22 +54,31 @@
     "maison_featured_trio": {
       "type": "maison-featured-trio",
       "settings": {
-        "eyebrow": "Three for the pass",
-        "heading": "Featured pieces",
-        "lede": "A flagship pan, the care kit that keeps it honest, and one secondary piece from another pod. Choose them in this section’s settings.",
-        "label_1": "Flagship pan",
-        "label_2": "Service & maintenance",
-        "label_3": "Secondary pod",
+        "eyebrow": "",
+        "heading": "Shop by material and use",
+        "lede": "",
+        "label_1": "Clad steel",
+        "label_2": "Terracotta",
+        "label_3": "Care and replacement parts",
         "padding-block-start": 40,
         "padding-block-end": 48
+      }
+    },
+    "maison_heirloom": {
+      "type": "maison-heirloom",
+      "settings": {
+        "heading": "The one everyone asks for",
+        "text": "<p>On Dhanteras, the new pot gets all the light. Years later, someone asks who’s taking the blackened tawa.</p>",
+        "link_label": "Read the Dhanteras story",
+        "link": "/pages/about#heirloom"
       }
     },
     "maison_releases_teaser": {
       "type": "maison-releases-teaser",
       "settings": {
-        "eyebrow": "Release cycle",
-        "heading": "Inventory opens in heats",
-        "lede": "Maison does not keep a perpetual new-arrivals rail. Pieces enter through timed release cycles — then the window closes.",
+        "eyebrow": "",
+        "heading": "The current release",
+        "lede": "",
         "cycle_name": "Current heat",
         "cycle_window": "Allocation open while stock lasts",
         "releases_url": "/pages/releases",
@@ -81,9 +95,9 @@
         "heat": {
           "type": "pathway",
           "settings": {
-            "kicker": "Thermal",
+            "kicker": "",
             "label": "Heat",
-            "text": "Change the burner profile and see how heat spreads in two modelled pan bases.",
+            "text": "Change the burner. Watch the heat spread.",
             "url": "/pages/heat",
             "emphasis": "heat"
           }
@@ -91,9 +105,9 @@
         "finder": {
           "type": "pathway",
           "settings": {
-            "kicker": "Ceremony",
+            "kicker": "",
             "label": "Finder",
-            "text": "Five questions. One piece that fits your pass.",
+            "text": "Five questions about the way you cook.",
             "url": "/pages/finder",
             "emphasis": "none"
           }
@@ -101,29 +115,29 @@
         "department": {
           "type": "pathway",
           "settings": {
-            "kicker": "System",
-            "label": "Department",
-            "text": "Shop by department and material system.",
+            "kicker": "",
+            "label": "Explore the ranges",
+            "text": "Forge steel, Chulha terracotta and replacement parts.",
             "url": "/pages/department",
             "emphasis": "none"
           }
         },
-        "kitchen": {
+        "kansa": {
           "type": "pathway",
           "settings": {
-            "kicker": "Catalogue",
-            "label": "Kitchen",
-            "text": "The working kitchen — the live assortment on the pass.",
-            "url": "/pages/kitchen",
+            "kicker": "Care companion",
+            "label": "Kansa",
+            "text": "Ask about the piece in your hand.",
+            "url": "/pages/kansa",
             "emphasis": "none"
           }
         },
         "releases": {
           "type": "pathway",
           "settings": {
-            "kicker": "Campaign",
+            "kicker": "",
             "label": "Releases",
-            "text": "Timed inventory cycles — not a perpetual new-arrivals rail.",
+            "text": "Browse current pieces and upcoming releases.",
             "url": "/pages/releases",
             "emphasis": "releases"
           }
@@ -131,19 +145,19 @@
         "mail": {
           "type": "pathway",
           "settings": {
-            "kicker": "Signal",
+            "kicker": "",
             "label": "Mail",
-            "text": "Join the next heat with Shopify native email signup.",
+            "text": "Get release announcements by email.",
             "url": "/pages/mail",
             "emphasis": "none"
           }
         }
       },
-      "block_order": ["heat", "finder", "department", "kitchen", "releases", "mail"],
+      "block_order": ["heat", "finder", "department", "kansa", "releases", "mail"],
       "settings": {
-        "eyebrow": "Deeper rooms",
-        "heading": "Continue through the house",
-        "lede": "Heat, Finder, Department, Kitchen, Releases, and Mail each keep their own page — the homepage only points the way.",
+        "eyebrow": "",
+        "heading": "Explore Maison Tavo",
+        "lede": "",
         "padding-block-start": 32,
         "padding-block-end": 64
       }
@@ -153,6 +167,7 @@
     "maison_hero",
     "maison_story_brief",
     "maison_featured_trio",
+    "maison_heirloom",
     "maison_releases_teaser",
     "maison_pathways"
   ]

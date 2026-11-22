@@ -1,6 +1,6 @@
 /**
- * Synchronize Maison Tavo's Online Store Navigation (`main-menu` & `footer`)
- * with the 3-category primary hierarchy + nested 4 material lineups + house pages.
+ * Synchronize Maison Tavo's Online Store Navigation (`main-menu`, `drawer-menu`, `footer`)
+ * with a short desktop menu, a grouped drawer menu, and footer links.
  *
  * Usage:
  *   bun scripts/sync-navigation.ts          # dry-run menu inspection
@@ -14,12 +14,11 @@ import {spawnSync} from 'node:child_process';
 import {readFileSync, unlinkSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {ShopifyIdMap} from '../packages/catalog/src/index.ts';
 
 const STORE_DOMAIN = process.env.SHOPIFY_STORE_EXECUTE_DOMAIN ?? 'maison-tavo-9pyrkr0c.myshopify.com';
 const API_VERSION = '2026-04';
 const APPLY = process.argv.includes('--apply');
-const ID_MAP_PATH = join(import.meta.dir, '..', 'data', 'shopify-id-map.json');
+const RELEASE_PATH = join(import.meta.dir, '..', 'data', 'mock-release.json');
 
 function cliGraphql<T>(query: string, variables?: Record<string, unknown>, mutate = false): T {
   const stamp = `${process.pid}-${Date.now()}`;
@@ -74,8 +73,18 @@ function cliGraphql<T>(query: string, variables?: Record<string, unknown>, mutat
   }
 }
 
-const idMap = ShopifyIdMap.parse(JSON.parse(readFileSync(ID_MAP_PATH, 'utf8')));
-const colId = (handle: string) => idMap.collections_by_handle[handle]?.collection_id;
+const release = JSON.parse(readFileSync(RELEASE_PATH, 'utf8')) as {
+  store: string;
+  collections: {handle: string; id: string}[];
+};
+if (release.store !== STORE_DOMAIN) {
+  throw new Error(`Collection snapshot belongs to ${release.store}, not ${STORE_DOMAIN}`);
+}
+const collectionId = (handle: string) => {
+  const id = release.collections.find(row => row.handle === handle)?.id;
+  if (!id) throw new Error(`Missing canonical collection ${handle} in ${RELEASE_PATH}`);
+  return id;
+};
 
 const item = (
   title: string,
@@ -86,33 +95,46 @@ const item = (
 ) => ({title, type, url, resourceId, items});
 
 const MAIN_MENU_ITEMS = [
-  item('Cookware', 'COLLECTION', '/collections/cookware', colId('cookware'), [
-    item('Forge Hybrid', 'COLLECTION', '/collections/forge-hybrid', colId('forge-hybrid')),
-    item('Kuro Strip', 'COLLECTION', '/collections/kuro-strip', colId('kuro-strip')),
-    item('Forge × Terre', 'COLLECTION', '/collections/forge-terre', colId('forge-terre')),
-  ]),
-  item('Tableware & Pottery', 'COLLECTION', '/collections/tableware-pottery', colId('tableware-pottery'), [
-    item('Terre Clay', 'COLLECTION', '/collections/terre-clay', colId('terre-clay')),
-    item('Forge × Terre', 'COLLECTION', '/collections/forge-terre', colId('forge-terre')),
-  ]),
-  item('Care & Sets', 'COLLECTION', '/collections/care-sets', colId('care-sets')),
-  item('Catalog', 'COLLECTIONS', '/collections'),
-  item('Department', 'HTTP', '/pages/department'),
-  item('Kitchen', 'HTTP', '/pages/kitchen'),
-  item('Heat', 'HTTP', '/pages/heat'),
-  item('Finder', 'HTTP', '/pages/finder'),
-  item('Releases', 'HTTP', '/pages/releases'),
-  item('Journal', 'HTTP', '/pages/journal'),
-  item('Mail', 'HTTP', '/pages/mail'),
+  item('Shop', 'COLLECTIONS', '/collections'),
+  item('Forge', 'COLLECTION', '/collections/forge', collectionId('forge')),
+  item('Chulha', 'COLLECTION', '/collections/chulha', collectionId('chulha')),
+  item('Maintenance', 'COLLECTION', '/collections/maintenance', collectionId('maintenance')),
   item('About', 'HTTP', '/pages/about'),
-  item('Contact', 'HTTP', '/pages/contact'),
+];
+
+const DRAWER_MENU_ITEMS = [
+  item('Shop', 'COLLECTIONS', '/collections', undefined, [
+    item('Forge', 'COLLECTION', '/collections/forge', collectionId('forge')),
+    item('Chulha', 'COLLECTION', '/collections/chulha', collectionId('chulha')),
+    item('Maintenance', 'COLLECTION', '/collections/maintenance', collectionId('maintenance')),
+    item('All collections', 'COLLECTIONS', '/collections'),
+  ]),
+  item('Explore', 'HTTP', '/pages/department', undefined, [
+    item('Department', 'HTTP', '/pages/department'),
+    item('Kitchen', 'HTTP', '/pages/kitchen'),
+    item('Heat', 'HTTP', '/pages/heat'),
+    item('Finder', 'HTTP', '/pages/finder'),
+    item('Releases', 'HTTP', '/pages/releases'),
+  ]),
+  item('The house', 'HTTP', '/pages/about', undefined, [
+    item('About', 'HTTP', '/pages/about'),
+    item('Journal', 'HTTP', '/pages/journal'),
+    item('Agents', 'HTTP', '/pages/agents'),
+    item('Kansa', 'HTTP', '/pages/kansa'),
+  ]),
+  item('Help', 'HTTP', '/pages/faq', undefined, [
+    item('FAQ', 'HTTP', '/pages/faq'),
+    item('Contact', 'HTTP', '/pages/contact'),
+    item('Delivery & returns', 'HTTP', '/pages/delivery-returns'),
+    item('Care', 'HTTP', '/pages/care'),
+  ]),
 ];
 
 const FOOTER_MENU_ITEMS = [
-  item('Catalog', 'COLLECTIONS', '/collections'),
-  item('Cookware', 'COLLECTION', '/collections/cookware', colId('cookware')),
-  item('Tableware & Pottery', 'COLLECTION', '/collections/tableware-pottery', colId('tableware-pottery')),
-  item('Care & Sets', 'COLLECTION', '/collections/care-sets', colId('care-sets')),
+  item('Shop all', 'COLLECTIONS', '/collections'),
+  item('Forge', 'COLLECTION', '/collections/forge', collectionId('forge')),
+  item('Chulha', 'COLLECTION', '/collections/chulha', collectionId('chulha')),
+  item('Maintenance', 'COLLECTION', '/collections/maintenance', collectionId('maintenance')),
   item('Department', 'HTTP', '/pages/department'),
   item('Kitchen', 'HTTP', '/pages/kitchen'),
   item('Heat', 'HTTP', '/pages/heat'),
@@ -121,6 +143,7 @@ const FOOTER_MENU_ITEMS = [
   item('Journal', 'HTTP', '/pages/journal'),
   item('Mail', 'HTTP', '/pages/mail'),
   item('About', 'HTTP', '/pages/about'),
+  item('Agents', 'HTTP', '/pages/agents'),
   item('Contact', 'HTTP', '/pages/contact'),
   item('Privacy Policy', 'HTTP', '/pages/privacy-policy'),
   item('Terms of Service', 'HTTP', '/pages/terms-of-service'),
@@ -136,7 +159,28 @@ for (const top of MAIN_MENU_ITEMS) {
   }
 }
 
+console.log('Target drawer-menu structure:');
+for (const top of DRAWER_MENU_ITEMS) {
+  console.log(`  - ${top.title} (${top.url})`);
+  for (const sub of top.items) console.log(`    - ${sub.title} (${sub.url})`);
+}
+
 if (APPLY) {
+  const expectedCollections = release.collections.filter(row =>
+    ['forge', 'chulha', 'maintenance'].includes(row.handle),
+  );
+  const currentCollections = cliGraphql<{nodes: Array<{id: string; handle: string} | null>}>(
+    `query VerifyNavigationCollections($ids: [ID!]!) {
+      nodes(ids: $ids) { ... on Collection { id handle } }
+    }`,
+    {ids: expectedCollections.map(row => row.id)},
+  );
+  for (const expected of expectedCollections) {
+    if (!currentCollections.nodes.some(row => row?.id === expected.id && row.handle === expected.handle)) {
+      throw new Error(`Collection ${expected.handle} no longer matches the release snapshot; refresh it before applying menus.`);
+    }
+  }
+
   const menusData = cliGraphql<{menus: {nodes: Array<{id: string; handle: string; title: string}>}}>(
     `query GetMenus { menus(first: 20) { nodes { id handle title } } }`,
   );
@@ -167,6 +211,34 @@ if (APPLY) {
     throw new Error(updateRes.menuUpdate.userErrors.map((e) => e.message).join('; '));
   }
   console.log(`\n✓ Updated ${mainMenu.handle} (${mainMenu.id}).`);
+
+  const drawerMenu = menusData.menus.nodes.find((m) => m.handle === 'drawer-menu');
+  const drawerRes = drawerMenu
+    ? cliGraphql<{menuUpdate: {userErrors: Array<{message: string}>}}>(
+        `mutation SyncDrawerMenu($id: ID!, $title: String!, $handle: String!, $items: [MenuItemUpdateInput!]!) {
+          menuUpdate(id: $id, title: $title, handle: $handle, items: $items) {
+            userErrors { message }
+          }
+        }`,
+        {id: drawerMenu.id, title: drawerMenu.title, handle: drawerMenu.handle, items: DRAWER_MENU_ITEMS},
+        true,
+      )
+    : cliGraphql<{menuCreate: {userErrors: Array<{message: string}>}}>(
+        `mutation CreateDrawerMenu($title: String!, $handle: String!, $items: [MenuItemCreateInput!]!) {
+          menuCreate(title: $title, handle: $handle, items: $items) {
+            userErrors { message }
+          }
+        }`,
+        {title: 'Drawer', handle: 'drawer-menu', items: DRAWER_MENU_ITEMS},
+        true,
+      );
+  const drawerErrors = drawerMenu
+    ? (drawerRes as {menuUpdate: {userErrors: Array<{message: string}>}}).menuUpdate.userErrors
+    : (drawerRes as {menuCreate: {userErrors: Array<{message: string}>}}).menuCreate.userErrors;
+  if (drawerErrors.length) {
+    throw new Error(drawerErrors.map((e) => e.message).join('; '));
+  }
+  console.log('Updated drawer menu.');
 
   const footerMenu = menusData.menus.nodes.find((m) => m.handle === 'footer');
   const footerRes = footerMenu

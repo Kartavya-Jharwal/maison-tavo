@@ -190,7 +190,7 @@ function bindRise(el) {
   markBound(el);
   const tween = {
     y: scroller ? 28 : 14,
-    autoAlpha: 0,
+    opacity: 0,
     duration: 0.82,
     ease: 'power3.out',
     immediateRender: false,
@@ -217,10 +217,10 @@ function bindChapter(el) {
   const play = () => {
     gsap.fromTo(
       parts,
-      { y: 18, autoAlpha: 0 },
+      { y: 18, opacity: 0 },
       {
         y: 0,
-        autoAlpha: 1,
+        opacity: 1,
         duration: 0.72,
         ease: 'power3.out',
         stagger: 0.11,
@@ -234,7 +234,7 @@ function bindChapter(el) {
     return;
   }
 
-  gsap.set(parts, { autoAlpha: 0, y: 18 });
+  gsap.set(parts, { opacity: 0, y: 18 });
   ScrollTrigger.create({
     ...revealStart(el, 'top 86%'),
     onEnter: play,
@@ -252,10 +252,10 @@ function bindStagger(el) {
   const play = () => {
     gsap.fromTo(
       items,
-      { y: scroller ? 22 : 12, autoAlpha: 0 },
+      { y: scroller ? 22 : 12, opacity: 0 },
       {
         y: 0,
-        autoAlpha: 1,
+        opacity: 1,
         duration: 0.7,
         ease: 'power3.out',
         stagger: 0.08,
@@ -269,7 +269,7 @@ function bindStagger(el) {
     return;
   }
 
-  gsap.set(items, { autoAlpha: 0, y: scroller ? 22 : 12 });
+  gsap.set(items, { opacity: 0, y: scroller ? 22 : 12 });
   ScrollTrigger.create({
     ...revealStart(el, 'top 90%'),
     onEnter: play,
@@ -278,12 +278,12 @@ function bindStagger(el) {
 
 function bindKinetic(el) {
   markBound(el);
-  gsap.set(el, { autoAlpha: 0 });
+  gsap.set(el, { opacity: 0 });
 
   const play = () => {
     if (el.dataset.mtKineticDone === 'true') return;
     el.dataset.mtKineticDone = 'true';
-    gsap.set(el, { autoAlpha: 1 });
+    gsap.set(el, { opacity: 1 });
 
     const split = SplitText.create(el, {
       type: 'words',
@@ -296,7 +296,7 @@ function bindKinetic(el) {
 
     gsap.from(split.words, {
       yPercent: 110,
-      autoAlpha: 0,
+      opacity: 0,
       duration: 0.92,
       ease: 'power3.out',
       stagger: 0.05,
@@ -318,7 +318,7 @@ function bindKinetic(el) {
 function bindCoda(el) {
   markBound(el);
   gsap.from(el, {
-    autoAlpha: 0,
+    opacity: 0,
     scale: 0.96,
     y: 12,
     duration: 1.05,
@@ -334,7 +334,7 @@ function bindImage(el) {
   const media = el.querySelector('img, .maison-hero__img, [data-mt-media]') || el;
   const tween = {
     scale: 1.06,
-    autoAlpha: 0.35,
+    opacity: 0.35,
     duration: 1.05,
     ease: 'power2.out',
     immediateRender: false,
@@ -358,10 +358,10 @@ function bindBeat(el) {
   const play = () => {
     gsap.fromTo(
       targets,
-      { y: 14, autoAlpha: 0, scale: 0.985 },
+      { y: 14, opacity: 0, scale: 0.985 },
       {
         y: 0,
-        autoAlpha: 1,
+        opacity: 1,
         scale: 1,
         duration: 0.62,
         ease: 'power3.out',
@@ -374,7 +374,7 @@ function bindBeat(el) {
     play();
     return;
   }
-  gsap.set(targets, { autoAlpha: 0, y: 14, scale: 0.985 });
+  gsap.set(targets, { opacity: 0, y: 14, scale: 0.985 });
   ScrollTrigger.create({
     ...revealStart(el, 'top 90%'),
     onEnter: play,
@@ -462,9 +462,9 @@ function bindChapterBeats(root = document) {
     markBound(el);
     gsap.fromTo(
       el,
-      { autoAlpha: 0.55, y: 10 },
+      { opacity: 0.55, y: 10 },
       {
-        autoAlpha: 1,
+        opacity: 1,
         y: 0,
         ease: 'none',
         scrollTrigger: {
@@ -616,6 +616,7 @@ export function initHorizonScroll() {
 
   desktop.addEventListener('change', applyScrollSystem);
   fine.addEventListener('change', applyScrollSystem);
+  window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', applyScrollSystem);
 
   // Still register listeners when reduced-motion starts ON so the footer
   // toggle can re-enable Lenis + chapter reveals without a full reload.

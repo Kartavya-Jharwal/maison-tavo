@@ -268,8 +268,7 @@ function initProfiler() {
       readProfile() || sessionStorage.getItem(PROFILER_LATER_KEY) || !canOffer()) return;
     profilerShown = true;
     sessionStorage.setItem(PROFILER_LATER_KEY, '1');
-    profiler.showModal();
-    showStep(profiler, 0);
+    document.querySelector('[data-mt-profile-open]')?.setAttribute('data-profile-suggested', '');
   }
 
   function onScroll() {
@@ -317,14 +316,10 @@ function initProfiler() {
     }
   }
 
-  document.addEventListener('mouseout', (event) => {
-    if (event.relatedTarget || event.clientY > 0 || !matchMedia('(hover: hover) and (pointer: fine)').matches ||
-      pageStarted === null || performance.now() - pageStarted < 10000 || (deepest < 0.3 && pageViews < 2) ||
-      mailShown || readProfile()?.email || localStorage.getItem(NEWSLETTER) === '1' || !canOffer()) return;
-    mailShown = true;
-    sessionStorage.setItem(MAIL_SEEN, '1');
-    mail.showModal();
-    showStep(mail, 0);
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('[data-mt-profile-open]')) return;
+    profiler.showModal();
+    showStep(profiler, 0);
   });
 }
 
@@ -390,8 +385,8 @@ function initAboutScreens() {
 }
 
 function initReducedMotionPreference() {
-  const toggleBtn = document.querySelector('[data-mt-reduced-motion-toggle]');
-  const label = document.querySelector('[data-mt-motion-label]');
+  const toggleButtons = document.querySelectorAll('[data-mt-reduced-motion-toggle]');
+  const labels = document.querySelectorAll('[data-mt-motion-label]');
 
   let saved = null;
   try {
@@ -403,10 +398,13 @@ function initReducedMotionPreference() {
     saved === 'true' || (saved === null && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   document.documentElement.dataset.reducedMotion = String(isReduced);
-  if (toggleBtn) toggleBtn.setAttribute('aria-pressed', String(isReduced));
-  if (label) label.textContent = isReduced ? 'ON' : 'OFF';
+  const paint = (reduced) => {
+    toggleButtons.forEach((button) => button.setAttribute('aria-pressed', String(reduced)));
+    labels.forEach((label) => { label.textContent = reduced ? 'ON' : 'OFF'; });
+  };
+  paint(isReduced);
 
-  if (toggleBtn) {
+  toggleButtons.forEach((toggleBtn) => {
     toggleBtn.addEventListener('click', () => {
       const next = document.documentElement.dataset.reducedMotion !== 'true';
       document.documentElement.dataset.reducedMotion = String(next);
@@ -415,12 +413,11 @@ function initReducedMotionPreference() {
       } catch {
         /* private mode */
       }
-      toggleBtn.setAttribute('aria-pressed', String(next));
-      if (label) label.textContent = next ? 'ON' : 'OFF';
+      paint(next);
       announceMotionPreference(next);
       if (next) MaisonRuntime.initInViewReveals?.();
     });
-  }
+  });
 }
 
 function initConsentBar() {
@@ -669,6 +666,12 @@ if (typeof document !== 'undefined') {
   }
 
   globalThis.MaisonToast = MaisonToast;
+
+  document.addEventListener('toggle', (event) => {
+    const details = event.target;
+    if (!(details instanceof HTMLDetailsElement) || !details.classList.contains('facets__panel')) return;
+    details.querySelector(':scope > summary')?.setAttribute('aria-expanded', String(details.open));
+  }, true);
 
   const boot = () => {
     initReducedMotionPreference();

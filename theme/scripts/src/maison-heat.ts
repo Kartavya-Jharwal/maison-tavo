@@ -47,6 +47,8 @@ function mountFlameWrap(root: HTMLElement): FlameWrapInstance | null {
   }
 
   const hasCapture = supportsHtmlInCanvas();
+  output.style.removeProperty('display');
+  if (hasCapture) source.style.removeProperty('display');
   if (!hasCapture) {
     showHtmlFallback(source, content, null);
   }
@@ -76,7 +78,7 @@ function mountFlameWrap(root: HTMLElement): FlameWrapInstance | null {
 
   // Reveal GPU overlay after a short paint window so the poster never blanks.
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => markReady(root, hasCapture));
+    requestAnimationFrame(() => { if (root.dataset.mtFxMounted === '1' && !prefersReduced()) markReady(root, hasCapture); });
   });
 
   return flame;
@@ -95,6 +97,8 @@ function mountBlazeProfile(root: HTMLElement): BlazeInstance | null {
   }
 
   const hasCapture = supportsHtmlInCanvas();
+  output.style.removeProperty('display');
+  if (hasCapture) source.style.removeProperty('display');
   if (!hasCapture) {
     showHtmlFallback(source, content, null);
   }
@@ -123,7 +127,7 @@ function mountBlazeProfile(root: HTMLElement): BlazeInstance | null {
   }
 
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => markReady(root, hasCapture));
+    requestAnimationFrame(() => { if (root.dataset.mtFxMounted === '1' && !prefersReduced()) markReady(root, hasCapture); });
   });
 
   return blaze;
@@ -157,12 +161,14 @@ function destroyAll() {
   document.querySelectorAll<HTMLElement>('[data-mt-fx-mounted]').forEach((el) => {
     delete el.dataset.mtFxMounted;
     delete el.dataset.mtFxReady;
+    delete el.dataset.mtHtmlCaptured;
     el.classList.remove('is-fx-ready');
   });
   // also clear mount flags
   document.querySelectorAll<HTMLElement>('[data-mt-flame-wrap], [data-mt-blaze-profile]').forEach((el) => {
     delete el.dataset.mtFxMounted;
     delete el.dataset.mtFxReady;
+    delete el.dataset.mtHtmlCaptured;
     el.classList.remove('is-fx-ready');
   });
 }
@@ -175,6 +181,10 @@ function boot() {
 }
 
 document.addEventListener('maison:page-leave', destroyAll);
+document.addEventListener('maison:reduced-motion', () => {
+  destroyAll();
+  boot();
+});
 document.addEventListener('maison:page-enter', () => {
   destroyAll();
   boot();

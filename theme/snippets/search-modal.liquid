@@ -49,6 +49,8 @@
       style="--product-corner-radius: {{ settings.product_corner_radius | default: 8 | append: 'px' }}; --card-corner-radius: {{ settings.card_corner_radius | default: 8 | append: 'px' }};{% if settings.card_title_case == 'uppercase' %} --title-case: uppercase;{% endif %}"
       data-section-id="predictive-search"
       data-testid="{{ 'search-component--modal' }}"
+      data-search-error="{{ 'accessibility.search_suggestions_error' | t | escape }}"
+      data-recently-viewed-cleared="{{ 'accessibility.recently_viewed_cleared' | t | escape }}"
       role="search"
       aria-label="{{ 'content.search_input_label' | t }}"
     >
@@ -58,7 +60,6 @@
         role="search"
         class="predictive-search-form"
         ref="form"
-        on:keydown="/onSearchKeyDown"
       >
         <div
           class="predictive-search-form__header"
@@ -75,17 +76,10 @@
               id="{{ 'cmdk-input' | default: 'Search' }}"
               type="search"
               name="q"
-              role="combobox"
-              aria-expanded="false"
-              aria-owns="predictive-search-results"
-              aria-controls="predictive-search-results"
-              aria-haspopup="listbox"
-              aria-autocomplete="list"
               autocomplete="off"
               placeholder="{{ 'content.search_input_placeholder' | t }}"
               ref="searchInput"
               on:input="/search"
-              on:keydown="/onSearchKeyDown"
             >
             <input
               name="options[prefix]"
@@ -119,10 +113,10 @@
         </div>
 
         <div class="predictive-search-form__content-wrapper">
+          <p class="visually-hidden" role="status" aria-atomic="true" ref="searchStatus"></p>
           <div
             class="predictive-search-form__content"
             ref="predictiveSearchResults"
-            on:click="/handleModalClick"
           >
             {% render 'predictive-search-empty-state',
               load_empty_state: true,

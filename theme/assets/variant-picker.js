@@ -311,6 +311,9 @@ export default class VariantPicker extends Component {
     // We use this to abort the previous fetch request if it's still pending.
     this.#abortController?.abort();
     this.#abortController = new AbortController();
+    const signal = this.#abortController.signal;
+    const errorMessage = this.querySelector('[data-variant-update-error]');
+    if (errorMessage) errorMessage.textContent = '';
 
     const deferredEventPromise = ProductSelectEvent.createPromise();
     const selectedOptions = this.getAllSelectedOptions();
@@ -332,9 +335,13 @@ export default class VariantPicker extends Component {
       })
     );
 
-    fetch(requestUrl, { signal: this.#abortController.signal })
-      .then((response) => response.text())
+    fetch(requestUrl, { signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Variant update failed (${response.status})`);
+        return response.text();
+      })
       .then((responseText) => {
+        if (signal.aborted) throw new DOMException('Variant update superseded', 'AbortError');
         this.#pendingRequestUrl = undefined;
         const html = new DOMParser().parseFromString(responseText, 'text/html');
         // Defer is only useful for the initial rendering of the page. Remove it here.
@@ -420,6 +427,9 @@ export default class VariantPicker extends Component {
         if (error.name === 'AbortError') {
           console.warn('Fetch aborted by user');
         } else {
+          if (!signal.aborted && errorMessage instanceof HTMLElement) {
+            errorMessage.textContent = errorMessage.dataset.message ?? '';
+          }
           console.error(error);
         }
       });

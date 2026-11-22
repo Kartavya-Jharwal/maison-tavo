@@ -1,0 +1,73 @@
+{
+  "sections": {
+    "room": {
+      "type": "maison-room",
+      "settings": {
+        "eyebrow": "Support",
+        "heading": "Refund and Returns Policy",
+        "lede": "<p>How delivery, returns and refund questions work in this gated exhibition.</p>",
+        "notice": "For checkout evaluation, use only test details supplied by the project team.",
+        "padding-block-start": 48,
+        "padding-block-end": 64,
+        "summary": "<p>Catalogue orders and delivery details are examples for evaluation. Test orders need no parcel returned. If you were invited to test checkout and need help with a test reference, <a href=\"/pages/start-a-return\">start a return enquiry</a> or <a href=\"/pages/contact\">contact us</a>. No live refund window or shipping promise is offered by this exhibition.</p>"
+      },
+      "blocks": {
+        "window": {
+          "type": "clause",
+          "settings": {
+            "heading": "Delivery for a future release",
+            "text": "<p>A release page would tell you what is ready to dispatch, what is made to order and when a piece is expected to arrive. Use the exhibition dates and stock as examples.</p>"
+          }
+        },
+        "rates": {
+          "type": "clause",
+          "settings": {
+            "heading": "Delivery charges",
+            "text": "<p>In the test journey, the delivery step shows the available methods and charges for the test address and selected pieces before the final review.</p>"
+          }
+        },
+        "steps": {
+          "type": "clause",
+          "settings": {
+            "heading": "Returns and refunds in the demonstration",
+            "text": "<p>No physical return or refund is processed for an exhibition test order. Do not send a parcel. If you need a test order reviewed, use <a href=\"/pages/start-a-return\">Start a Return</a> and include its reference; do not include payment details.</p>"
+          }
+        },
+        "checkout": {
+          "type": "clause",
+          "settings": {
+            "heading": "The bag and checkout",
+            "text": "<p>Try changing the size or quantity in the bag. If you have been invited to test checkout, follow Shopify’s delivery and payment steps with the test details supplied for that session.</p>"
+          }
+        },
+        "contact": {
+          "type": "pathway",
+          "settings": {
+            "label": "Contact and locations",
+            "url": "/pages/contact",
+            "text": "Send feedback or ask about the exhibition."
+          }
+        },
+        "faq": {
+          "type": "pathway",
+          "settings": {
+            "label": "FAQ",
+            "url": "/pages/faq",
+            "text": "Find the right size, heat source and care guide."
+          }
+        }
+      },
+      "block_order": [
+        "window",
+        "rates",
+        "steps",
+        "checkout",
+        "contact",
+        "faq"
+      ]
+    }
+  },
+  "order": [
+    "room"
+  ]
+}

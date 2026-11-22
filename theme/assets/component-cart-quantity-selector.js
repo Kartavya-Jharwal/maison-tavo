@@ -23,13 +23,13 @@ export class CartQuantitySelectorComponent extends QuantitySelectorComponent {
    * Cart buttons are always managed client-side, never server-disabled
    */
   updateButtonStates() {
-    const { minusButton, plusButton } = this.refs;
+    const { minusButton, plusButton, quantityInput } = this.refs;
     const { min, value } = this.getCurrentValues();
     const effectiveMax = this.getEffectiveMax();
 
     // Cart buttons are always dynamically managed
-    minusButton.disabled = value <= min;
-    plusButton.disabled = effectiveMax !== null && value >= effectiveMax;
+    minusButton.disabled = quantityInput.disabled || value <= min;
+    plusButton.disabled = quantityInput.disabled || (effectiveMax !== null && value >= effectiveMax);
   }
 }
 

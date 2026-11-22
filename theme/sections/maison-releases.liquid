@@ -90,6 +90,8 @@
                             alt: image_alt,
                             loading: 'lazy'
                         }}
+                      {% else %}
+                        {% render 'maison-concept-image', product: product %}
                       {% endif %}
                       <span class="maison-releases__name">{{ product.title | escape }}</span>
                       <span class="maison-releases__price">{{ product.price | money }}</span>
@@ -113,6 +115,8 @@
                             alt: image_alt,
                             loading: 'lazy'
                         }}
+                      {% else %}
+                        {% render 'maison-concept-image', product: product %}
                       {% endif %}
                       <span class="maison-releases__name">{{ product.title | escape }}</span>
                       <span class="maison-releases__price">{{ product.price | money }}</span>
@@ -124,7 +128,7 @@
               <ul class="maison-releases__grid" role="list">
                 {% if status == 'open' %}
                   <li>
-                    <a class="maison-releases__card" href="/collections/cookware">
+                    <a class="maison-releases__card" href="/collections/forge">
                       <img
                         src="{{ 'maison-flagship-kadai.webp' | asset_url }}"
                         alt="The Flagship Kadhai"
@@ -137,7 +141,7 @@
                     </a>
                   </li>
                   <li>
-                    <a class="maison-releases__card" href="/collections/cookware">
+                    <a class="maison-releases__card" href="/collections/forge">
                       <img
                         src="{{ 'maison-pan-set.jpg' | asset_url }}"
                         alt="Forge Relay Pan Set"
@@ -150,7 +154,7 @@
                     </a>
                   </li>
                   <li>
-                    <a class="maison-releases__card" href="/collections/cookware">
+                    <a class="maison-releases__card" href="/collections/forge">
                       <img
                         src="{{ 'maison-highpot-set.webp' | asset_url }}"
                         alt="The Foundry High Pot"
@@ -163,7 +167,7 @@
                     </a>
                   </li>
                   <li>
-                    <a class="maison-releases__card" href="/collections/cookware">
+                    <a class="maison-releases__card" href="/collections/forge">
                       <img
                         src="{{ 'maison-saucier-lid.jpg' | asset_url }}"
                         alt="Spun Bronze Saucier"
@@ -177,7 +181,7 @@
                   </li>
                 {% else %}
                   <li>
-                    <a class="maison-releases__card" href="/collections/tableware-pottery">
+                    <a class="maison-releases__card" href="/collections/chulha">
                       <img
                         src="{{ 'maison-clay-openpot.webp' | asset_url }}"
                         alt="Terre Refractory Open Vessel"
@@ -190,7 +194,7 @@
                     </a>
                   </li>
                   <li>
-                    <a class="maison-releases__card" href="/collections/tableware-pottery">
+                    <a class="maison-releases__card" href="/collections/chulha">
                       <img
                         src="{{ 'maison-dining-set-6pc.webp' | asset_url }}"
                         alt="Full Kansa Dining Service"
@@ -203,7 +207,7 @@
                     </a>
                   </li>
                   <li>
-                    <a class="maison-releases__card" href="/collections/cookware">
+                    <a class="maison-releases__card" href="/collections/forge">
                       <img
                         src="{{ 'maison-saucepot.webp' | asset_url }}"
                         alt="Hand-Turned Sauce Pot"
@@ -216,7 +220,7 @@
                     </a>
                   </li>
                   <li>
-                    <a class="maison-releases__card" href="/collections/cookware">
+                    <a class="maison-releases__card" href="/collections/forge">
                       <img
                         src="{{ 'maison-pan-stacked-showcase.webp' | asset_url }}"
                         alt="The Atelier Nesting Suite"

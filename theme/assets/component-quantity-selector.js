@@ -21,22 +21,10 @@ import { parseIntOrDefault } from '@theme/utilities';
  */
 export class QuantitySelectorComponent extends Component {
   requiredRefs = ['quantityInput', 'minusButton', 'plusButton'];
-  serverDisabledMinus = false;
-  serverDisabledPlus = false;
   initialized = false;
 
   connectedCallback() {
     super.connectedCallback();
-
-    // Capture server-disabled state on first load
-    const { minusButton, plusButton } = this.refs;
-
-    if (minusButton.disabled) {
-      this.serverDisabledMinus = true;
-    }
-    if (plusButton.disabled) {
-      this.serverDisabledPlus = true;
-    }
 
     this.initialized = true;
     this.updateButtonStates();
@@ -93,9 +81,11 @@ export class QuantitySelectorComponent extends Component {
    * @param {string} min - Minimum value
    * @param {string|null} max - Maximum value (null if no max)
    * @param {string} step - Step increment
+   * @param {boolean} [disabled] - Whether the selected variant permits quantity changes.
    */
-  updateConstraints(min, max, step) {
+  updateConstraints(min, max, step, disabled) {
     const { quantityInput } = this.refs;
+    if (disabled !== undefined) quantityInput.disabled = disabled;
     const currentValue = parseInt(quantityInput.value) || 0;
 
     quantityInput.min = min;
@@ -160,18 +150,12 @@ export class QuantitySelectorComponent extends Component {
    * Updates button states based on current value and limits
    */
   updateButtonStates() {
-    const { minusButton, plusButton } = this.refs;
+    const { minusButton, plusButton, quantityInput } = this.refs;
     const { min, value } = this.getCurrentValues();
     const effectiveMax = this.getEffectiveMax();
 
-    // Only manage buttons that weren't server-disabled
-    if (!this.serverDisabledMinus) {
-      minusButton.disabled = value <= min;
-    }
-
-    if (!this.serverDisabledPlus) {
-      plusButton.disabled = effectiveMax !== null && value >= effectiveMax;
-    }
+    minusButton.disabled = quantityInput.disabled || value <= min;
+    plusButton.disabled = quantityInput.disabled || (effectiveMax !== null && value >= effectiveMax);
   }
 
   /**
@@ -180,6 +164,7 @@ export class QuantitySelectorComponent extends Component {
    */
   updateQuantity(stepMultiplier) {
     const { quantityInput } = this.refs;
+    if (quantityInput.disabled) return;
     const { min, step, value } = this.getCurrentValues();
     const effectiveMax = this.getEffectiveMax();
 

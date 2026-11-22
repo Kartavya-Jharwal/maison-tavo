@@ -4,7 +4,7 @@
       "type": "kansa-app",
       "settings": {
         "heading": "Kansa",
-        "subheading": "Choose a piece, then ask how to use it or look after it. Try “Will this work on induction?” or “How do I season it?”"
+        "subheading": "Pick the pan in your hand. Type a question, or use the microphone where supported."
       }
     },
     "guide": {
@@ -13,22 +13,22 @@
         "start": {
           "type": "pillar",
           "settings": {
-            "heading": "Ask about the piece you have",
-            "text": "<p>Select a piece and type a question about its surface, hob or care. You can also use the microphone where your browser supports it. Kansa is named for bell metal and built around the habit of looking after the tools we cook with.</p>"
+            "heading": "Ask what’s on your mind",
+            "text": "<p>Will it work on induction? Does it need seasoning? How do I clean it? Start with the model and ask in your own words.</p>"
           }
         },
         "scope": {
           "type": "pillar",
           "settings": {
-            "heading": "How the demo answers",
-            "text": "<p>Kansa matches your question to prepared answers and the prototype catalogue. Its results reflect the information in that record, including concept specifications. Use the <a href=\"/pages/care\">written care guide</a> to read the instructions at your own pace.</p>"
+            "heading": "Where the answer comes from",
+            "text": "<p>Kansa, named for bell metal, is a prototype. It uses prepared guidance and the catalogue. Check the status of any design target. You can also use the <a href=\"/pages/care\">written care guide</a>.</p>"
           }
         },
         "handover": {
           "type": "pillar",
           "settings": {
             "heading": "Designed to travel with the pan",
-            "text": "<p>We’re exploring a scannable identifier and a typed code for each piece. The identifier would take you straight to the relevant model record so you could check the hob, revisit the care routine or pass the instructions on.</p><p><a href=\"/pages/building\">Read about the prototype</a></p>"
+            "text": "<p>Boxes go missing. Pans turn up years later. We’re exploring a code on the vessel or care card to help the next cook find its record.</p><p><a href=\"/pages/building\">Read about the prototype</a></p>"
           }
         }
       },

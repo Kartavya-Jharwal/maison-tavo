@@ -21,6 +21,7 @@
     view-event-trigger="dialog"
   {% endif %}
   data-section-id="{{ section_id }}"
+  data-cart-update-error="{{ 'accessibility.cart_update_retry' | t | escape }}"
   view-event-payload="{{ cart | standard_event_data: 'view' | escape  }}"
 >
   {{ children }}

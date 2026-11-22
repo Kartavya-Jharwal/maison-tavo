@@ -1,6 +1,6 @@
 {
   "store": "maison-tavo.myshopify.com",
-  "updated_at": "2026-11-11T14:25:06.498Z",
+  "updated_at": "2026-11-18T13:21:22.756Z",
   "products_by_sku": {
     "MT-TER-KUL-140": {
       "sku": "MT-TER-KUL-140",
@@ -201,6 +201,230 @@
       "variant_id": "gid://shopify/ProductVariant/68283397669233",
       "inventory_item_id": "gid://shopify/InventoryItem/70278513426801",
       "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-5-4"
+    },
+    "MT-FOR-FRY-20": {
+      "sku": "MT-FOR-FRY-20",
+      "handle": "forge-frying-pan-20",
+      "product_id": "gid://shopify/Product/16172162941297",
+      "variant_id": "gid://shopify/ProductVariant/68870998360433",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868550746481",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-13-1"
+    },
+    "MT-FOR-FRY-24": {
+      "sku": "MT-FOR-FRY-24",
+      "handle": "forge-frying-pan-24",
+      "product_id": "gid://shopify/Product/16172163072369",
+      "variant_id": "gid://shopify/ProductVariant/68870998491505",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868550877553",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-13-1"
+    },
+    "MT-FOR-FRY-28": {
+      "sku": "MT-FOR-FRY-28",
+      "handle": "forge-frying-pan-28",
+      "product_id": "gid://shopify/Product/16172163596657",
+      "variant_id": "gid://shopify/ProductVariant/68870999015793",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868551401841",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-13-1"
+    },
+    "MT-FOR-SCR-20": {
+      "sku": "MT-FOR-SCR-20",
+      "handle": "forge-saucier-20",
+      "product_id": "gid://shopify/Product/16172163924337",
+      "variant_id": "gid://shopify/ProductVariant/68870999343473",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868551729521",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-11"
+    },
+    "MT-FOR-SCR-24": {
+      "sku": "MT-FOR-SCR-24",
+      "handle": "forge-saucier-24",
+      "product_id": "gid://shopify/Product/16172164219249",
+      "variant_id": "gid://shopify/ProductVariant/68870999736689",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868552122737",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-11"
+    },
+    "MT-FOR-STE-24": {
+      "sku": "MT-FOR-STE-24",
+      "handle": "forge-saute-24",
+      "product_id": "gid://shopify/Product/16172164645233",
+      "variant_id": "gid://shopify/ProductVariant/68871000064369",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868552450417",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-12"
+    },
+    "MT-FOR-STE-28": {
+      "sku": "MT-FOR-STE-28",
+      "handle": "forge-saute-28",
+      "product_id": "gid://shopify/Product/16172164809073",
+      "variant_id": "gid://shopify/ProductVariant/68871000228209",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868552614257",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-12"
+    },
+    "MT-FOR-SPN-16": {
+      "sku": "MT-FOR-SPN-16",
+      "handle": "forge-saucepan-16",
+      "product_id": "gid://shopify/Product/16172164841841",
+      "variant_id": "gid://shopify/ProductVariant/68871000260977",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868552647025",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-11"
+    },
+    "MT-FOR-STK-24": {
+      "sku": "MT-FOR-STK-24",
+      "handle": "forge-stockpot-24",
+      "product_id": "gid://shopify/Product/16172164874609",
+      "variant_id": "gid://shopify/ProductVariant/68871000293745",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868552679793",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-14"
+    },
+    "MT-FOR-STK-28": {
+      "sku": "MT-FOR-STK-28",
+      "handle": "forge-stockpot-28",
+      "product_id": "gid://shopify/Product/16172167463281",
+      "variant_id": "gid://shopify/ProductVariant/68871002882417",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868555268465",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-14"
+    },
+    "MT-FOR-KAD-28": {
+      "sku": "MT-FOR-KAD-28",
+      "handle": "forge-kadhai-28",
+      "product_id": "gid://shopify/Product/16172167496049",
+      "variant_id": "gid://shopify/ProductVariant/68871002915185",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868555301233",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-17"
+    },
+    "MT-FOR-LID-20": {
+      "sku": "MT-FOR-LID-20",
+      "handle": "forge-universal-lid-20",
+      "product_id": "gid://shopify/Product/16172167561585",
+      "variant_id": "gid://shopify/ProductVariant/68871003046257",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868555432305",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-5-2"
+    },
+    "MT-FOR-LID-24": {
+      "sku": "MT-FOR-LID-24",
+      "handle": "forge-universal-lid-24",
+      "product_id": "gid://shopify/Product/16172167659889",
+      "variant_id": "gid://shopify/ProductVariant/68871003144561",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868555530609",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-5-2"
+    },
+    "MT-FOR-LID-28": {
+      "sku": "MT-FOR-LID-28",
+      "handle": "forge-universal-lid-28",
+      "product_id": "gid://shopify/Product/16172167725425",
+      "variant_id": "gid://shopify/ProductVariant/68871003210097",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868555596145",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-5-2"
+    },
+    "MT-FOR-SCR-22": {
+      "sku": "MT-FOR-SCR-22",
+      "handle": "forge-saucier-22",
+      "product_id": "gid://shopify/Product/16172167823729",
+      "variant_id": "gid://shopify/ProductVariant/68871007961457",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868560347505",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-11"
+    },
+    "MT-FOR-SCR-26": {
+      "sku": "MT-FOR-SCR-26",
+      "handle": "forge-saucier-26",
+      "product_id": "gid://shopify/Product/16172167954801",
+      "variant_id": "gid://shopify/ProductVariant/68871012974961",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868565361009",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-11"
+    },
+    "MT-FOR-STK-20": {
+      "sku": "MT-FOR-STK-20",
+      "handle": "forge-stockpot-20",
+      "product_id": "gid://shopify/Product/16172168839537",
+      "variant_id": "gid://shopify/ProductVariant/68871015989617",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868568375665",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-14"
+    },
+    "MT-FOR-KAD-32": {
+      "sku": "MT-FOR-KAD-32",
+      "handle": "forge-kadhai-32",
+      "product_id": "gid://shopify/Product/16172169298289",
+      "variant_id": "gid://shopify/ProductVariant/68871021232497",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868573618545",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-17"
+    },
+    "MT-FOR-LID-16": {
+      "sku": "MT-FOR-LID-16",
+      "handle": "forge-universal-lid-16",
+      "product_id": "gid://shopify/Product/16172169757041",
+      "variant_id": "gid://shopify/ProductVariant/68871026278769",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868578664817",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-5-2"
+    },
+    "MT-FOR-LID-32": {
+      "sku": "MT-FOR-LID-32",
+      "handle": "forge-universal-lid-32",
+      "product_id": "gid://shopify/Product/16172170084721",
+      "variant_id": "gid://shopify/ProductVariant/68871031259505",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868583645553",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-5-2"
+    },
+    "MT-FOR-KIT-SS1": {
+      "sku": "MT-FOR-KIT-SS1",
+      "handle": "forge-stainless-steel-maintenance-kit",
+      "product_id": "gid://shopify/Product/16172170215793",
+      "variant_id": "gid://shopify/ProductVariant/68871036338545",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868588724593",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-5"
+    },
+    "MT-FOR-SET-SOLO": {
+      "sku": "MT-FOR-SET-SOLO",
+      "handle": "forge-set-solo-couple",
+      "product_id": "gid://shopify/Product/16172170543473",
+      "variant_id": "gid://shopify/ProductVariant/68871041089905",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868593475953",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-2"
+    },
+    "MT-FOR-SET-FAM": {
+      "sku": "MT-FOR-SET-FAM",
+      "handle": "forge-set-family-standard",
+      "product_id": "gid://shopify/Product/16172190368113",
+      "variant_id": "gid://shopify/ProductVariant/68871291240817",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868849131889",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-2"
+    },
+    "MT-FOR-SET-ENT": {
+      "sku": "MT-FOR-SET-ENT",
+      "handle": "forge-set-entertainer",
+      "product_id": "gid://shopify/Product/16172191875441",
+      "variant_id": "gid://shopify/ProductVariant/68871304413553",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868862304625",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-2"
+    },
+    "MT-FOR-SET-EUR": {
+      "sku": "MT-FOR-SET-EUR",
+      "handle": "forge-set-european",
+      "product_id": "gid://shopify/Product/16172192498033",
+      "variant_id": "gid://shopify/ProductVariant/68871314473329",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868872364401",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-2"
+    },
+    "MT-FOR-SET-ASN": {
+      "sku": "MT-FOR-SET-ASN",
+      "handle": "forge-set-asian",
+      "product_id": "gid://shopify/Product/16172192760177",
+      "variant_id": "gid://shopify/ProductVariant/68871326433649",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868884324721",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-2"
+    },
+    "MT-FOR-SET-DAY": {
+      "sku": "MT-FOR-SET-DAY",
+      "handle": "forge-set-everyday",
+      "product_id": "gid://shopify/Product/16172195217777",
+      "variant_id": "gid://shopify/ProductVariant/68871340622193",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868898513265",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-2"
+    },
+    "MT-FOR-SET-FUL": {
+      "sku": "MT-FOR-SET-FUL",
+      "handle": "forge-set-full-house",
+      "product_id": "gid://shopify/Product/16172196462961",
+      "variant_id": "gid://shopify/ProductVariant/68871355826545",
+      "inventory_item_id": "gid://shopify/InventoryItem/70868913717617",
+      "category_id": "gid://shopify/TaxonomyCategory/hg-11-2-3-2"
     }
   },
   "collections_by_handle": {
@@ -238,6 +462,11 @@
       "handle": "care-sets",
       "title": "Care & Sets",
       "collection_id": "gid://shopify/Collection/714717200753"
+    },
+    "forge-sets": {
+      "handle": "forge-sets",
+      "title": "Forge Sets",
+      "collection_id": "gid://shopify/Collection/715304239473"
     }
   }
 }

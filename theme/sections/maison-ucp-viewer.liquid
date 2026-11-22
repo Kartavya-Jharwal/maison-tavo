@@ -4,12 +4,12 @@
   paired with embedded machine-readable JSON metadata for AI agents.
 {% endcomment %}
 
-<div class="maison-ucp section section--page-width" id="ucp" data-section-id="{{ section.id }}">
+<div class="maison-ucp section section--page-width" id="ucp" data-section-id="{{ section.id }}" data-mt-document-navigation>
   <header class="maison-ucp__header">
     <div class="maison-ucp__eyebrow-row">
       <span class="maison-ucp__badge">UCP SPEC 2026-08-25</span>
       <span class="maison-ucp__badge maison-ucp__badge--a2a">A2A AGENT PROTOCOL</span>
-      <span class="maison-ucp__status">● ACTIVE PROTOCOL ENDPOINT</span>
+      <span class="maison-ucp__status">Protocol examples</span>
     </div>
     <h1 class="maison-ucp__title">Agentic Commerce &amp; Machine-Readable Spec Layer</h1>
     <p class="maison-ucp__lede">
@@ -22,7 +22,7 @@
     <div class="maison-ucp__console-bar">
       <div class="maison-ucp__status-indicator">
         <span class="status-dot"></span>
-        <span class="status-text">UCP 2026 MACHINE ENDPOINT</span>
+        <span class="status-text">UCP 2026</span>
       </div>
       <div class="maison-ucp__tabs" role="tablist">
         <button class="maison-ucp__tab is-active" data-tab="tab-wellknown" role="tab" aria-selected="true">
@@ -32,10 +32,10 @@
           /catalog/agent-spec.json
         </button>
         <button class="maison-ucp__tab" data-tab="tab-a2a" role="tab" aria-selected="false">
-          /a2a/kansa-dispatch.json
+          Kansa simulation
         </button>
         <button class="maison-ucp__tab" data-tab="tab-molbhav" role="tab" aria-selected="false">
-          /a2a/mol-bhav-trace.json
+          Mol-Bhav simulation
         </button>
       </div>
       <button class="maison-ucp__copy-btn" id="ucp-copy-btn" title="Copy active JSON to clipboard">
@@ -172,7 +172,7 @@
 }</code></pre>
     </div>
 
-    <!-- TAB 3: /a2a/kansa-dispatch.json -->
+    <!-- TAB 3: Kansa simulation -->
     <div class="maison-ucp__panel" id="tab-a2a" role="tabpanel">
       <div class="maison-ucp__panel-meta">
         <span class="maison-ucp__url-pill">AGENT-TO-AGENT (A2A) DISPATCH</span>
@@ -180,7 +180,7 @@
       </div>
       <pre class="maison-ucp__code"><code id="code-a2a">{
   "protocol": "A2A/1.0",
-  "endpoint": "https://maison-tavo.myshopify.com/a2a/agent-broker",
+  "mode": "simulation",
   "agent_id": "urn:maison-tavo:kansa-voice-companion",
   "capabilities": [
     "culinary.pan_maintenance_inference",
@@ -211,7 +211,7 @@
 }</code></pre>
     </div>
 
-    <!-- TAB 4: /a2a/mol-bhav-trace.json -->
+    <!-- TAB 4: Mol-Bhav simulation -->
     <div class="maison-ucp__panel" id="tab-molbhav" role="tabpanel">
       <div class="maison-ucp__panel-meta">
         <span class="maison-ucp__url-pill" style="background: var(--bell, #B8893A); color: #14110F; font-weight: 700;">MOL-BHAV · 7-AGENT BAZAAR PROTOCOL</span>

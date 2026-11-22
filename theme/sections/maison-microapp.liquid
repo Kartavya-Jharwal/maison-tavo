@@ -56,7 +56,7 @@
     <iframe
       class="maison-microapp__frame"
       title="{{ frame_title | escape }}"
-      sandbox="allow-scripts"
+      sandbox="allow-scripts allow-top-navigation-by-user-activation"
       referrerpolicy="no-referrer"
       srcdoc="<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><style>html,body{margin:0;min-height:100%;background:transparent;color:inherit;font-family:system-ui,sans-serif}</style></head><body><div id='maison-microapp-root' data-microapp-id='{{ app_id | escape }}'></div><script src='{{ script_url }}'></script></body></html>"
     ></iframe>

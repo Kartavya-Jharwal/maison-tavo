@@ -1,0 +1,103 @@
+{% doc %}
+  Renders a buying guide for the current material or maintenance collection.
+
+  @param {object} collection - The current Shopify collection.
+{% enddoc %}
+
+{% capture notes %}
+  {% case collection.handle %}
+    {% when 'forge' %}
+      {% assign guide_label = 'Choosing a Forge pan' %}
+      {% assign guide_image = 'maison-range-forge.webp' %}
+      {% assign guide_alt = 'Stainless steel pans nested on a working stove' %}
+      {% assign guide_width = 720 %}
+      {% assign guide_height = 900 %}
+      <h2>Start with the dish</h2>
+      <p>Sloped sides to lift a fillet. Straight sides to hold a braise. A low edge when all you want is to get under the dosa.</p>
+      <h3>Measure the hob</h3>
+      <p>Check the base dimensions where listed and leave room for the handle. For a lid, match the model as well as the rim diameter.</p>
+      {% if pages.kitchen != blank %}
+        <p><a href="{{ pages.kitchen.url | escape }}#the-foundry">Build a Forge set</a></p>
+      {% endif %}
+    {% when 'chulha' %}
+      {% assign guide_label = 'Inside the Chulha clay study' %}
+      {% assign guide_image = 'maison-range-chulha.webp' %}
+      {% assign guide_alt = 'Hands holding an unglazed terracotta vessel' %}
+      {% assign guide_width = 900 %}
+      {% assign guide_height = 900 %}
+      <h2>Clay takes the shape of dinner</h2>
+      <p>A wide handi for the layers of rice. A little room at the lip for the last pour of chai. A shallow tawa for the paratha.</p>
+      <h3>In development</h3>
+      <p>Capacity, food-contact suitability and hob fit still need testing for each vessel. Check the status in its record.</p>
+      {% if pages.building != blank %}
+        <p><a href="{{ pages.building.url | escape }}">Read about the material study</a></p>
+      {% endif %}
+    {% when 'maintenance' %}
+      {% assign guide_label = 'Finding the right care kit or part' %}
+      {% assign guide_image = 'maison-range-maintenance.webp' %}
+      {% assign guide_alt = 'A close view of a cookware lid seated on its rim' %}
+      {% assign guide_width = 823 %}
+      {% assign guide_height = 823 %}
+      <h2>A cupboard full of lids</h2>
+      <p>Somewhere in there is the one that fits. For a replacement, check the model and inner rim diameter. For a handle, send the model and a photo of where it attaches.</p>
+      <h3>Care by surface</h3>
+      <p>Check the finish before you buy a brush, cloth or seasoning oil.</p>
+      {% if pages.care != blank %}
+        <p><a href="{{ pages.care.url | escape }}">Explore cookware care</a></p>
+      {% endif %}
+  {% endcase %}
+{% endcapture %}
+
+{% if guide_label != blank %}
+  <div class="section section--page-width maison-reading">
+    <details class="maison-range-notes">
+      <summary>{{ guide_label | escape }}</summary>
+      <div class="maison-range-notes__inner">
+        <img
+          src="{{ guide_image | asset_url }}"
+          alt="{{ guide_alt | escape }}"
+          width="{{ guide_width }}"
+          height="{{ guide_height }}"
+          loading="lazy"
+          decoding="async"
+        >
+        <div class="maison-editorial__rte rte">{{ notes }}</div>
+      </div>
+    </details>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .maison-range-notes {
+    border-block: 1px solid var(--color-border);
+  }
+
+  .maison-range-notes summary {
+    cursor: pointer;
+    padding-block: 0.9rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--maison-reading-subtitle);
+    line-height: 1.2;
+  }
+
+  .maison-range-notes__inner {
+    display: grid;
+    align-items: start;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding-block: 0.5rem 1.5rem;
+  }
+
+  .maison-range-notes__inner img {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  @media (min-width: 48rem) {
+    .maison-range-notes__inner {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    }
+  }
+{% endstylesheet %}

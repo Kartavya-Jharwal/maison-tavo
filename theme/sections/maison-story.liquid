@@ -81,16 +81,29 @@
           </div>
           {% liquid
             assign chapter_image = block.settings.image
+            assign fallback_alt = ''
             if chapter_image == blank
               case forloop.index
                 when 1
                   assign fallback_asset = 'maison-about-provenance.webp'
+                  assign fallback_alt = 'Copper vessels stacked and hung in a cookware shop'
+                  assign fallback_width = 435
+                  assign fallback_height = 660
                 when 2
-                  assign fallback_asset = 'maison-clay-potter-craft.webp'
+                  assign fallback_asset = 'maison-editorial-pottery-courtney-cook.avif'
+                  assign fallback_alt = 'Hands shaping a clay pot on a pottery wheel'
+                  assign fallback_width = 687
+                  assign fallback_height = 1030
                 when 3
                   assign fallback_asset = 'maison-about-artisan-heritage.webp'
+                  assign fallback_alt = 'A woman seated with terracotta pots'
+                  assign fallback_width = 1080
+                  assign fallback_height = 1350
                 else
-                  assign fallback_asset = 'maison-handles-grip-study.avif'
+                  assign fallback_asset = 'maison-handle-engineering.webp'
+                  assign fallback_alt = 'Close view of a metal cookware handle'
+                  assign fallback_width = 493
+                  assign fallback_height = 493
               endcase
             endif
           %}
@@ -101,10 +114,10 @@
               <img
                 class="maison-story__chapter-img"
                 src="{{ fallback_asset | asset_url }}"
-                alt="{{ block.settings.heading | escape }}"
+                alt="{{ fallback_alt | escape }}"
                 loading="lazy"
-                width="800"
-                height="600"
+                width="{{ fallback_width }}"
+                height="{{ fallback_height }}"
               >
             {% endif %}
           </div>
@@ -234,7 +247,7 @@
       "type": "textarea",
       "id": "lede",
       "label": "t:settings.maison_lede",
-      "default": "Maison Tavo is Kartavya Jharwal's food house. The public record begins in Jaipur hospitality: a leased hotel, a property restaurant, and the work of feeding rooms, banquets, and walk-in tables from one kitchen."
+      "default": "Maison Tavo is a cookware concept rooted in Indian kitchens, from the flat tava to the terracotta handi."
     },
     {
       "type": "header",
@@ -328,13 +341,13 @@
           "type": "text",
           "id": "heading",
           "label": "t:settings.heading",
-          "default": "The hotel"
+          "default": "A house named for a griddle"
         },
         {
           "type": "richtext",
           "id": "text",
           "label": "t:settings.content",
-          "default": "<p>Savi Hotels &amp; Resorts, Operational Lead, Jaipur, January 2021 to July 2026. Kartavya took entrepreneurship-through-acquisition control of a leased Savi property within SRBS Group — from handover and F&amp;B inventory through meeting rooms, banquet spaces, MICE catering, and walk-in lunches. He partnered with head chefs on kitchen standards and does not claim a formal line-cook title.</p>"
+          "default": "<p>Maison means house. Tavo takes its name from the tava, a flat griddle familiar to Indian kitchens.</p>"
         },
         {
           "type": "image_picker",

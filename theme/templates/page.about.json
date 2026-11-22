@@ -7,24 +7,27 @@
           "type": "chapter",
           "settings": {
             "kicker": "",
-            "heading": "From her kitchen to the next",
-            "text": "<p>In a grandmother’s kitchen, a tava is always within reach. She knows when to turn the flatbread by the way its edge lifts. Someone learns by watching. In time, the pan goes with them, and the knowledge is harder to pack.</p><p>After a move, our founder Kartavya Jharwal unpacked a pan and couldn’t tell if it would work on the new hob. Maison Tavo began with that question. A good tool should carry enough knowledge to be useful in the next kitchen.</p>"
+            "heading": "A house named for a griddle",
+            "text": "<p><em>Maison</em> is house. <em>Tavo</em> takes its name from the flat griddle of Marwar. In a <em>gharana</em>, a way of doing things passes from teacher to pupil. In a kitchen it can be as small as a hand showing you when to turn the bread.</p>"
           }
         },
         "chapter_name": {
           "type": "chapter",
           "settings": {
             "kicker": "",
-            "heading": "A house named for a griddle",
-            "text": "<p>Maison is the house. Tavo takes its name from the tava, a flat griddle familiar to Indian kitchens.</p><p>We design for people who cook often. We show how a vessel is built, which hob it suits and what keeping it will ask of you.</p><p><a href=\"/pages/our-story\">Read our story</a></p>"
+            "heading": "A shape for the work",
+            "text": "<p>A low lip for the dosa. Deep sides for the stock. <a href=\"/collections/forge\">Forge</a> draws those shapes in clad steel. Jaipur’s hammered bronze informs the material work. <a href=\"/collections/chulha\">Chulha</a> goes back to the potter’s wheel, with a pot for chai and a wide handi for biryani. Its finishes, capacities and hob fit are still design targets.</p>"
           }
         }
       },
-      "block_order": ["chapter_origin", "chapter_name"],
+      "block_order": [
+        "chapter_origin",
+        "chapter_name"
+      ],
       "settings": {
-        "eyebrow": "About Maison Tavo",
-        "heading": "Live with cookware that outlasts you.",
-        "lede": "Cookware shaped by Indian kitchens, with the knowledge to use it, look after it and pass it on.",
+        "eyebrow": "",
+        "heading": "About Maison Tavo",
+        "lede": "Kartavya Jharwal moved house. The old pan came out of the box. Would it work on the new hob? A small question, usually asked with the onions already cut.",
         "place_1_label": "",
         "place_2_label": "",
         "place_3_label": "",
@@ -32,125 +35,58 @@
         "padding-block-end": 24
       }
     },
+    "heirloom": {
+      "type": "maison-heirloom",
+      "settings": {
+        "text": "<p>On Dhanteras, a new metal vessel comes home. It shines on the shelf. The old tawa is already on the fire.</p><p>Your grandmother watches the edge of the roti. You watch her hand. Years later, in a kitchen she never saw, you wait for the same little lift.</p>",
+        "link_label": "Explore cookware care",
+        "link": "/pages/care"
+      }
+    },
     "promises": {
       "type": "maison-about",
       "settings": {
         "secondary_heading": true,
         "eyebrow": "",
-        "heading": "What comes with the piece",
+        "heading": "What goes with the pan",
         "lede": "",
-        "closing": "",
-        "padding-block-start": 32,
-        "padding-block-end": 24
-      },
-      "blocks": {
-        "fit": {
-          "type": "pillar",
-          "settings": {
-            "heading": "Know it fits",
-            "text": "<p>Compare the hob, dimensions and care routine before you choose. Where compatibility is still a design target, it belongs on the page as such.</p>"
-          }
-        },
-        "craft": {
-          "type": "pillar",
-          "settings": {
-            "heading": "See the work in it",
-            "text": "<p>See which technique shaped the vessel and what it contributes. Chulha begins with forms made for flatbread, chai and layered rice, with a proposed role for local potters in their development.</p>"
-          }
-        },
-        "care": {
-          "type": "pillar",
-          "settings": {
-            "heading": "Keep it in use",
-            "text": "<p>Find care guidance for the surface you own. We’re designing a way for each piece to carry those instructions into its next kitchen.</p>"
-          }
-        }
-      },
-      "block_order": ["fit", "craft", "care"]
-    },
-    "customers": {
-      "type": "maison-about",
-      "settings": {
-        "secondary_heading": true,
-        "eyebrow": "",
-        "heading": "Three kitchens we’re designing for",
-        "lede": "Fictional testimonials written for this proof of concept.",
-        "closing": "",
-        "padding-block-start": 32,
-        "padding-block-end": 24
-      },
-      "blocks": {
-        "mover": {
-          "type": "testimonial",
-          "settings": {
-            "attribution": "Jane Doe · The home cook switching to induction",
-            "quote": "I moved into a flat with an induction hob and half my kit stayed in the box. Tell me what fits the small ring and what I can sear in it. I’ll buy the pan I can use on Tuesday."
-          }
-        },
-        "gifter": {
-          "type": "testimonial",
-          "settings": {
-            "attribution": "John Doe · The heirloom gift buyer",
-            "quote": "I want to give my sister a handi for her wedding. Show me how it was made and what she’ll need to do before her first biryani. I want her to cook with it the week she opens it."
-          }
-        },
-        "operator": {
-          "type": "testimonial",
-          "settings": {
-            "attribution": "Alex Doe · The small-kitchen operator",
-            "quote": "I run a six-table kitchen. Before I put three pans on the pass, I need the weight, the usable diameter and a way to replace a lid halfway through the season."
-          }
-        }
-      },
-      "block_order": ["mover", "gifter", "operator"]
-    },
-    "wireframe_screens": {
-      "type": "maison-wireframe-screens",
-      "settings": {
-        "eyebrow": "Explore the prototype",
-        "heading": "Four ways into Maison Tavo",
-        "lede": "Browse the cookware, inspect the commerce demo, ask Kansa or explore the release notes."
-      }
-    },
-    "diagnostic_audit": {
-      "type": "maison-about",
-      "settings": {
-        "secondary_heading": true,
-        "eyebrow": "",
-        "heading": "The pan has to explain itself",
-        "lede": "A pan can look right in a video, sound right in a voice answer and still fail to work on the hob. An AI shopping agent comparing pans needs enough information to rule out the wrong ones. When someone discovers us away from the store, the facts that determine fit need to travel with the piece.",
         "closing": "",
         "padding-block-start": 32,
         "padding-block-end": 56
       },
       "blocks": {
-        "claim_observed": {
+        "fit": {
           "type": "pillar",
           "settings": {
-            "evidence_tier": "observed",
-            "heading": "Where the answer gets lost",
-            "text": "<p>In our September 2026 review of seven cookware brands, three exposed agent checkout capabilities. Across the surfaces we could inspect, the material, dimensions and hob-compatibility details were often in prose or missing from the structured fields. Checkout could move faster while the cook’s first question still went unanswered.</p>"
+            "heading": "Fit it to your hob",
+            "text": "<p>Check the base against the hob. Leave room for the handle. The piece’s record gives you the dimensions and intended heat sources.</p><p><a href=\"/pages/finder\">Find a piece</a> · <a href=\"/pages/heat\">Explore the heat study</a></p>"
           }
         },
-        "voice": {
+        "construction": {
           "type": "pillar",
           "settings": {
-            "evidence_tier": "hypothesis",
-            "heading": "Give an assistant the facts",
-            "text": "<p>Someone asking aloud for a 24 cm induction pan should hear the size, fit and any relevant caveat in one answer. The product page and its machine-readable fields are designed to carry the same information. <a href=\"/pages/kansa\">Try Kansa</a> to see how a companion can draw on piece-specific care guidance.</p>"
+            "heading": "Get a closer look",
+            "text": "<p>See the finish in Human, the construction in Engineer and the product record in Machine. Design targets carry a label.</p><p><a href=\"/pages/building\">See how the catalogue works</a></p>"
           }
         },
-        "social": {
+        "care": {
           "type": "pillar",
           "settings": {
-            "evidence_tier": "hypothesis",
-            "heading": "Give a shared clip somewhere to land",
-            "text": "<p>A clip can show a potter finishing the rim or a cook lifting a lid. The link should take you straight to the piece, with the technique, care and evidence in reach. We’re testing whether that gives people enough confidence to choose a piece that fits.</p><p><a href=\"/pages/building\">See how the store works</a></p>"
+            "heading": "Keep the care with it",
+            "text": "<p>The box goes first. Keep the model name. Kansa uses it to find guidance on heat, cleaning and seasoning.</p><p><a href=\"/pages/kansa\">Try the Kansa prototype</a></p>"
           }
         }
       },
-      "block_order": ["claim_observed", "voice", "social"]
+      "block_order": [
+        "fit",
+        "construction",
+        "care"
+      ]
     }
   },
-  "order": ["story_hero", "promises", "customers", "wireframe_screens", "diagnostic_audit"]
+  "order": [
+    "story_hero",
+    "heirloom",
+    "promises"
+  ]
 }

@@ -94,9 +94,9 @@ An intuitive 3-way toggle button directly on product cards in the collection car
 *   **Curated Acoustic Experience**: High-fidelity sourced recordings of traditional bell metal resonance and quiet foundry chants.
 *   **Opt-In & Discreet**: Off by default, with an elegant floating sound toggle in the corner. Persists user preference cleanly.
 
-### 4. The Agent Mol-Bhav (Bazaar Negotiation) Proof
-*   Rather than attempting a fragile live model in the browser, the groundbreaking autonomous agent negotiation (*Mol-Bhav*—conducted externally with GrokBot and autonomous agent scripts) is integrated as an **editorial video artifact / case-study viewport**.
-*   Visitors and judges can watch the real protocol exchange: how autonomous agents discover the catalog, negotiate within margin limits, and construct an order payload.
+### 4. The Agent Mol-Bhav (Bazaar Negotiation) Concept
+*   The proposed open-air algorithmic bazaar is described on the Agents page as editorial case-study copy. It is not a live negotiation feature of the storefront.
+*   The existing UCP room contains a labeled simulation. A future connected arena would need a verifiable proposal service, authenticated outside-agent endpoint, current Shopify stock and price checks, and a clearly labeled packet trace.
 
 ---
 
@@ -140,6 +140,6 @@ Shopify development stores force an unthemeable system password gate. Do **not**
 
 1. **Phase 1: Foundation & Gate**: Scene 0 static meta-landing (`gate/index.html`), fluid Utopia clamp tokens, footer storage wiper.
 2. **Phase 2: The 3-Mode Panopticon**: Segmented Human/Engineer/Machine button in product cards with SVG stratigraphy and ASCII preview.
-3. **Phase 3: Thermal Simulation & Sound**: Embedded 2D heat-diffusion canvas, opt-in bell audio controller, and Agent Mol-Bhav case-study video showcase.
+3. **Phase 3: Thermal Simulation & Sound**: Embedded 2D heat-diffusion canvas and opt-in sound control. The Kansa Bell Resonance Ritual and Agent Mol-Bhav arena remain editorial concepts on the Agents page.
 4. **Phase 4: Client Profiler & Exploration Modal**: 45% scroll observer, `localStorage` preference tagging, contextual product chips.
 5. **Phase 5: Audits & Submission**: 100/100 Lighthouse sweeps, `robots.txt` + `llms.txt` verification, 4K video recording, and Awwwards submission.

@@ -47,7 +47,7 @@
       open
     {% endif %}
   >
-    <summary class="facets__summary">
+    <summary class="facets__summary" role="button" aria-expanded="{% if filter_style == 'vertical' %}true{% else %}false{% endif %}">
       <span class="facets__label">{{ filter.label }}</span>
 
       <div class="facets__status-wrapper">

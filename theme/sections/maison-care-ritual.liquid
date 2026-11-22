@@ -9,54 +9,61 @@
   Fully brand-token CSS — no hardcoded hex that conflicts with STYLEGUIDE.
 {% endcomment %}
 
+{% liquid
+  assign care_heading_tag = 'h2'
+  if template.suffix == 'care'
+    assign care_heading_tag = 'h1'
+  endif
+%}
+
 <section
   class="maison-ritual-v7 section section--page-width"
   data-section-id="{{ section.id }}"
   id="care-ritual"
-  aria-label="Care Ritual — Material Ceremonies"
+  aria-labelledby="CareTitle-{{ section.id }}"
 >
 
   {%- comment -%} ── Header ──────────────────────────────────────────── {%- endcomment -%}
   <header class="maison-ritual-v7__header">
-    <div class="maison-ritual-v7__kicker-row">
-      <span class="maison-ritual-v7__badge">LIFETIME DISCIPLINE</span>
-      <span class="maison-ritual-v7__kicker">KANSA CARE PROTOCOLS · MATERIAL CEREMONIES</span>
-    </div>
-    <h2 class="maison-ritual-v7__title">
-      {{ section.settings.heading | default: 'Covenant of the Kitchen' }}
-    </h2>
+    <{{ care_heading_tag }} id="CareTitle-{{ section.id }}" class="maison-ritual-v7__title">
+      {{ section.settings.heading | default: 'Cookware care' | escape }}
+    </{{ care_heading_tag }}>
     <p class="maison-ritual-v7__lede">
-      {{ section.settings.lede | default: 'Two materials. Two disciplines. One covenant that outlasts a generation of cooking. Choose your surface and follow the rites that keep it alive.' }}
+      {{ section.settings.lede | default: 'Choose the material that touches the food, then check what the maker recommends for that surface.' | escape }}
     </p>
   </header>
 
   {%- comment -%} ── Material Tab Switcher ────────────────────────────── {%- endcomment -%}
-  <div class="maison-ritual-v7__tabs" role="tablist" aria-label="Material track">
+  <div class="maison-ritual-v7__tabs" role="tablist" aria-label="Material track" hidden>
     <button
       class="maison-ritual-v7__tab is-active"
+      type="button"
       role="tab"
       aria-selected="true"
-      aria-controls="ritual-track-metal"
-      id="ritual-tab-metal"
+      aria-controls="ritual-track-metal-{{ section.id }}"
+      id="ritual-tab-metal-{{ section.id }}"
+      tabindex="0"
       data-track="metal"
       data-strike
     >
       <span class="tab-icon"><i class="fa-solid fa-hammer" aria-hidden="true"></i></span>
       <span class="tab-label">Metal</span>
-      <span class="tab-sub">Carbon Steel · Bell Bronze · Damascus Blade</span>
+      <span class="tab-sub">Stainless steel · Seasoned surfaces · Blades</span>
     </button>
     <button
       class="maison-ritual-v7__tab"
+      type="button"
       role="tab"
       aria-selected="false"
-      aria-controls="ritual-track-clay"
-      id="ritual-tab-clay"
+      aria-controls="ritual-track-clay-{{ section.id }}"
+      id="ritual-tab-clay-{{ section.id }}"
+      tabindex="-1"
       data-track="clay"
       data-strike
     >
       <span class="tab-icon"><i class="fa-solid fa-circle-dot" aria-hidden="true"></i></span>
       <span class="tab-label">Clay</span>
-      <span class="tab-sub">Terre Fired Stoneware · Refractory Vessel</span>
+      <span class="tab-sub">Terracotta · Glazed clay</span>
     </button>
   </div>
 
@@ -65,11 +72,37 @@
   ═══════════════════════════════════════════════════════ {%- endcomment -%}
   <div
     class="maison-ritual-v7__track is-active"
-    id="ritual-track-metal"
+    id="ritual-track-metal-{{ section.id }}"
+    data-ritual-panel="metal"
     role="tabpanel"
-    aria-labelledby="ritual-tab-metal"
+    aria-labelledby="ritual-tab-metal-{{ section.id }}"
+    tabindex="0"
   >
-
+    <h2 class="maison-ritual-v7__fallback-heading">Metal care</h2>
+    {% if section.blocks.size > 0 %}
+      <div class="maison-ritual-v7__track-intro">
+        <p class="track-intro__meta"><span class="mono">FORGE · METAL</span><br>Care depends on the cooking surface of the exact model. The current Forge range is a stainless steel concept; season only a surface whose verified guide calls for it.</p>
+      </div>
+      <div class="maison-ritual-v7__rites" data-ritual-track="metal">
+        {% for block in section.blocks %}
+          {% if block.type == 'rite' and block.settings.track == 'metal' %}
+            <article class="ritual-rite" {{ block.shopify_attributes }}>
+              <div class="ritual-rite__num-col"><span class="ritual-rite__numeral">{{ block.settings.number | escape }}</span><div class="ritual-rite__connector" aria-hidden="true"></div></div>
+              <div class="ritual-rite__body">
+                <p class="ritual-rite__eyebrow"><span class="ritual-rite__devanagari" lang="hi">{{ block.settings.word | escape }}</span><span class="ritual-rite__dot" aria-hidden="true">·</span><span class="ritual-rite__rite-name-en">{{ block.settings.step | escape }}</span></p>
+                <h3 class="ritual-rite__title">{{ block.settings.title | escape }}</h3>
+                <p class="ritual-rite__desc">{{ block.settings.description | escape }}</p>
+              </div>
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% elsif section.settings.metal_guide != blank %}
+      <div class="maison-care-guide maison-reading">
+        <img src="{{ 'maison-concept-care-kit.jpg' | asset_url }}" alt="Illustrative care kit with balm, brush, cloth and scraper" width="447" height="447" loading="lazy" decoding="async">
+        <div class="maison-editorial__rte rte">{{ section.settings.metal_guide }}</div>
+      </div>
+    {% else %}
     <div class="maison-ritual-v7__track-intro">
       <div class="track-intro__lineups">
         <span class="lineup-chip lineup-chip--forge">FORGE HYBRID</span>
@@ -377,6 +410,7 @@
       </article>
 
     </div>{%- comment -%} /rites metal {%- endcomment -%}
+    {% endif %}
   </div>{%- comment -%} /track metal {%- endcomment -%}
 
 
@@ -385,12 +419,37 @@
   ═══════════════════════════════════════════════════════ {%- endcomment -%}
   <div
     class="maison-ritual-v7__track"
-    id="ritual-track-clay"
+    id="ritual-track-clay-{{ section.id }}"
+    data-ritual-panel="clay"
     role="tabpanel"
-    aria-labelledby="ritual-tab-clay"
-    hidden
+    aria-labelledby="ritual-tab-clay-{{ section.id }}"
+    tabindex="0"
   >
-
+    <h2 class="maison-ritual-v7__fallback-heading">Clay care</h2>
+    {% if section.blocks.size > 0 %}
+      <div class="maison-ritual-v7__track-intro">
+        <p class="track-intro__meta"><span class="mono">CHULHA · CLAY</span><br>These terracotta vessels are design studies. First-use, heat, food-contact and washing instructions need validation for each finished piece before cooking.</p>
+      </div>
+      <div class="maison-ritual-v7__rites" data-ritual-track="clay">
+        {% for block in section.blocks %}
+          {% if block.type == 'rite' and block.settings.track == 'clay' %}
+            <article class="ritual-rite ritual-rite--clay" {{ block.shopify_attributes }}>
+              <div class="ritual-rite__num-col"><span class="ritual-rite__numeral">{{ block.settings.number | escape }}</span><div class="ritual-rite__connector" aria-hidden="true"></div></div>
+              <div class="ritual-rite__body">
+                <p class="ritual-rite__eyebrow"><span class="ritual-rite__devanagari" lang="hi">{{ block.settings.word | escape }}</span><span class="ritual-rite__dot" aria-hidden="true">·</span><span class="ritual-rite__rite-name-en">{{ block.settings.step | escape }}</span></p>
+                <h3 class="ritual-rite__title">{{ block.settings.title | escape }}</h3>
+                <p class="ritual-rite__desc">{{ block.settings.description | escape }}</p>
+              </div>
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% elsif section.settings.clay_guide != blank %}
+      <div class="maison-care-guide maison-reading">
+        <img src="{{ 'maison-range-chulha.webp' | asset_url }}" alt="Hands holding a terracotta cooking vessel" width="900" height="900" loading="lazy" decoding="async">
+        <div class="maison-editorial__rte rte">{{ section.settings.clay_guide }}</div>
+      </div>
+    {% else %}
     <div class="maison-ritual-v7__track-intro">
       <div class="track-intro__lineups">
         <span class="lineup-chip lineup-chip--terre">TERRE CLAY</span>
@@ -681,19 +740,20 @@
       </article>
 
     </div>{%- comment -%} /rites clay {%- endcomment -%}
+    {% endif %}
   </div>{%- comment -%} /track clay {%- endcomment -%}
 
   {%- comment -%} ── Closing covenant footer ───────────────────────── {%- endcomment -%}
   <footer class="maison-ritual-v7__covenant">
     <div class="covenant__rule" aria-hidden="true"></div>
     <p class="covenant__copy">
-      Maison Tavo cookware carries no synthetic coatings and no disposable lifecycle.
-      Every rite in this protocol is a practice, not a burden — the vessel improves with every cook.
-      <strong>Care is the product.</strong>
+      Keep the care instructions with the pan.
     </p>
     <div class="covenant__links">
-      <a href="#finder" class="covenant-link" data-strike>Find your material →</a>
-      <a href="{{ section.settings.kansa_url | default: '/pages/kansa' }}" class="covenant-link" data-strike>Ask Kansa a care question →</a>
+      {% if pages.finder != blank %}
+        <a href="{{ pages.finder.url }}" class="covenant-link" data-strike>Find your cookware</a>
+      {% endif %}
+      <a href="{{ section.settings.kansa_url | default: '/pages/kansa' }}" class="covenant-link" data-strike>Ask Kansa a care question</a>
     </div>
   </footer>
 
@@ -707,7 +767,11 @@
 
   var tabs = section.querySelectorAll('.maison-ritual-v7__tab');
   var tracks = section.querySelectorAll('.maison-ritual-v7__track');
-  var rites = section.querySelectorAll('.ritual-rite');
+
+  // Keep both guides readable until the tab interaction is ready.
+  tracks.forEach(function (track) { track.hidden = track.dataset.ritualPanel !== 'metal'; });
+  section.classList.add('is-enhanced');
+  section.querySelector('.maison-ritual-v7__tabs').hidden = false;
 
   // --- Tab switch ---
   tabs.forEach(function (tab) {
@@ -717,51 +781,35 @@
       tabs.forEach(function (t) {
         t.classList.remove('is-active');
         t.setAttribute('aria-selected', 'false');
+        t.tabIndex = -1;
       });
       tab.classList.add('is-active');
       tab.setAttribute('aria-selected', 'true');
+      tab.tabIndex = 0;
 
       tracks.forEach(function (track) {
-        if (track.id === 'ritual-track-' + target) {
+        if (track.dataset.ritualPanel === target) {
           track.classList.add('is-active');
           track.removeAttribute('hidden');
-          // Stagger-animate rites in view
-          if (window.MaisonRuntime && window.MaisonRuntime.animate) {
-            var activeRites = track.querySelectorAll('.ritual-rite');
-            activeRites.forEach(function (rite, i) {
-              rite.style.opacity = '0';
-              rite.style.transform = 'translateY(1.2rem)';
-              window.setTimeout(function () {
-                window.MaisonRuntime.animate(
-                  rite,
-                  { opacity: [0, 1], transform: ['translateY(1.2rem)', 'none'] },
-                  { duration: 0.4, easing: [0.16, 1, 0.3, 1] }
-                );
-              }, i * 60);
-            });
-          }
         } else {
           track.classList.remove('is-active');
           track.setAttribute('hidden', '');
         }
       });
     });
+    tab.addEventListener('keydown', function (event) {
+      var index = Array.prototype.indexOf.call(tabs, tab);
+      var next = index;
+      if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+      else if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = tabs.length - 1;
+      else return;
+      event.preventDefault();
+      tabs[next].focus();
+      tabs[next].click();
+    });
   });
-
-  // --- inView stagger on page load ---
-  if (window.MaisonRuntime && window.MaisonRuntime.inView) {
-    window.MaisonRuntime.inView(
-      '[data-ritual-track="metal"] .ritual-rite',
-      function (el) {
-        window.MaisonRuntime.animate(
-          el,
-          { opacity: [0, 1], transform: ['translateX(-1rem)', 'none'] },
-          { duration: 0.5, easing: [0.16, 1, 0.3, 1] }
-        );
-      },
-      { amount: 0.15 }
-    );
-  }
 
   // Activate track from ?track=metal|clay (Kansa handoff)
   try {
@@ -778,6 +826,30 @@
 </script>
 
 {% stylesheet %}
+  .maison-care-guide {
+    display: grid;
+    align-items: start;
+    gap: clamp(1.25rem, 3vw, 3rem);
+  }
+
+  .maison-care-guide img {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .maison-care-guide h2:first-child {
+    margin-block-start: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .maison-care-guide {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    }
+  }
+
   /* ── Root overrides ─────────────────────────────────── */
   .maison-ritual-v7 {
     padding-block: clamp(4rem, 7vw, 7rem) clamp(5rem, 9vw, 9rem);
@@ -793,33 +865,6 @@
   .maison-ritual-v7__header {
     max-width: 54rem;
     margin-block-end: 3rem;
-  }
-
-  .maison-ritual-v7__kicker-row {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-block-end: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .maison-ritual-v7__badge {
-    font-family: var(--mt-type-family-mono);
-    font-size: var(--mt-type-mono);
-    letter-spacing: 0.14em;
-    padding: 0.22rem 0.6rem;
-    background: var(--ritual-metal-accent);
-    color: var(--ritual-canvas);
-    font-weight: 700;
-    border-radius: 2px;
-  }
-
-  .maison-ritual-v7__kicker {
-    font-family: var(--mt-type-family-mono);
-    font-size: var(--mt-type-mono);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--ritual-silver);
   }
 
   .maison-ritual-v7__title {
@@ -848,6 +893,20 @@
     border-bottom: 2px solid var(--color-border, rgba(26,23,20,0.12));
   }
 
+  .maison-ritual-v7__tabs[hidden],
+  .maison-ritual-v7__track[hidden] {
+    display: none;
+  }
+
+  .maison-ritual-v7.is-enhanced .maison-ritual-v7__fallback-heading {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
   .maison-ritual-v7__tab {
     display: flex;
     flex-direction: column;
@@ -859,18 +918,18 @@
     border-bottom: 2px solid transparent;
     margin-bottom: -2px;
     cursor: pointer;
-    color: var(--color-foreground-muted, rgba(26,23,20,0.5));
+    color: var(--color-foreground);
     transition: color 0.25s ease, border-color 0.25s ease;
     text-align: left;
   }
 
   .maison-ritual-v7__tab.is-active {
     color: var(--color-foreground);
-    border-bottom-color: var(--ritual-metal-accent);
+    border-bottom-color: currentColor;
   }
 
   .maison-ritual-v7__tab[data-track="clay"].is-active {
-    border-bottom-color: var(--ritual-clay-accent);
+    border-bottom-color: currentColor;
   }
 
   .tab-icon {
@@ -892,7 +951,6 @@
     font-size: var(--mt-type-mono);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    opacity: 0.7;
   }
 
   /* ── Track intro ─────────────────────────────────────── */
@@ -921,7 +979,7 @@
 
   .lineup-chip--forge {
     background: var(--ritual-ink);
-    color: var(--ritual-metal-accent);
+    color: #f7f2e9;
   }
 
   .lineup-chip--kuro {
@@ -930,8 +988,8 @@
   }
 
   .lineup-chip--terre {
-    background: var(--ritual-clay-accent, #6E5A3D);
-    color: var(--ritual-canvas, #E8DFD4);
+    background: var(--ritual-ink);
+    color: #f7f2e9;
   }
 
   .track-intro__meta {
@@ -950,7 +1008,7 @@
   .maison-ritual-v7__intro-media {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
     gap: var(--mt-space-4);
     margin-top: var(--mt-space-4);
   }
@@ -999,9 +1057,6 @@
     border-bottom: 1px solid var(--color-border, rgba(26,23,20,0.08));
     border-radius: var(--radius-card-sm, 0.875rem);
     transition: background 0.3s ease, transform var(--dur-mid, 420ms) var(--ease-strike, cubic-bezier(.2, .8, .2, 1)), box-shadow 0.3s ease;
-    opacity: 0;
-    transform: translateX(-1rem);
-    animation: ritual-rite-in 0.5s var(--brand-motion-easing, cubic-bezier(0.16, 1, 0.3, 1)) both;
   }
 
   .ritual-rite:hover {
@@ -1009,26 +1064,6 @@
     backdrop-filter: var(--glass-blur-sm, blur(8px));
     -webkit-backdrop-filter: var(--glass-blur-sm, blur(8px));
     box-shadow: var(--glass-shadow, 0 10px 35px rgba(20, 17, 15, 0.08));
-  }
-
-  /* Stagger each rite */
-  .ritual-rite[data-rite="1"] { animation-delay: 0.05s; }
-  .ritual-rite[data-rite="2"] { animation-delay: 0.12s; }
-  .ritual-rite[data-rite="3"] { animation-delay: 0.19s; }
-  .ritual-rite[data-rite="4"] { animation-delay: 0.26s; }
-  .ritual-rite[data-rite="5"] { animation-delay: 0.33s; }
-  .ritual-rite[data-rite="6"] { animation-delay: 0.40s; }
-
-  @keyframes ritual-rite-in {
-    to { opacity: 1; transform: none; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .ritual-rite {
-      animation: none;
-      opacity: 1;
-      transform: none;
-    }
   }
 
   .ritual-rite:last-child {
@@ -1049,13 +1084,12 @@
     font-size: var(--mt-type-display-lg);
     font-weight: 300;
     line-height: 0.9;
-    color: var(--ritual-metal-accent);
-    opacity: 0.75;
+    color: var(--color-foreground);
     display: block;
   }
 
   .ritual-rite--clay .ritual-rite__numeral {
-    color: var(--ritual-clay-accent);
+    color: var(--color-foreground);
   }
 
   .ritual-rite__connector {
@@ -1082,16 +1116,16 @@
   .ritual-rite__devanagari {
     font-family: var(--mt-type-family-body);
     font-size: var(--mt-type-body);
-    color: var(--ritual-metal-accent);
+    color: var(--color-foreground);
     letter-spacing: 0.02em;
   }
 
   .ritual-rite--clay .ritual-rite__devanagari {
-    color: var(--ritual-clay-accent);
+    color: var(--color-foreground);
   }
 
   .ritual-rite__dot {
-    color: var(--ritual-silver);
+    color: var(--color-foreground);
     font-size: var(--mt-type-accent);
   }
 
@@ -1100,7 +1134,7 @@
     font-size: var(--mt-type-accent);
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--ritual-silver);
+    color: var(--color-foreground);
   }
 
   .ritual-rite__title {
@@ -1127,7 +1161,7 @@
     gap: 0.35rem;
     margin: 0 0 1.25rem;
     padding: 1.1rem 1.35rem;
-    background: var(--glass-surface-light, rgba(247, 242, 233, 0.72));
+    background: #f7f2e9;
     backdrop-filter: var(--glass-blur-sm, blur(8px));
     -webkit-backdrop-filter: var(--glass-blur-sm, blur(8px));
     border: 1px solid var(--glass-border-light-subtle, rgba(20, 17, 15, 0.08));
@@ -1154,18 +1188,18 @@
     font-size: var(--mt-type-mono);
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--ritual-metal-accent);
+    color: #14110f;
     padding-top: 0.1rem;
     white-space: nowrap;
   }
 
   .ritual-rite--clay .spec-dl__row dt {
-    color: var(--ritual-clay-accent);
+    color: #14110f;
   }
 
   .spec-dl__row dd {
     margin: 0;
-    color: var(--color-foreground-muted, rgba(26,23,20,0.75));
+    color: #14110f;
   }
 
   /* ── Tags ────────────────────────────────────────────── */
@@ -1182,8 +1216,8 @@
     letter-spacing: 0.1em;
     padding: 0.28rem 0.65rem;
     border: 1px solid var(--ritual-metal-accent);
-    color: var(--ritual-metal-accent);
-    background: var(--glass-surface-light, rgba(247, 242, 233, 0.72));
+    color: #14110f;
+    background: #f7f2e9;
     border-radius: var(--radius-pill, 62.5rem);
     text-transform: uppercase;
     transition: transform 0.2s ease;
@@ -1195,7 +1229,7 @@
 
   .ritual-tag--clay {
     border-color: var(--ritual-clay-accent);
-    color: var(--ritual-clay-accent);
+    color: #14110f;
   }
 
   /* ── Kuro Strip cross-note ───────────────────────────── */
@@ -1265,8 +1299,8 @@
     font-size: var(--mt-type-accent);
     letter-spacing: var(--mt-type-tracking-accent);
     text-transform: uppercase;
-    color: var(--ritual-metal-accent);
-    text-decoration: none;
+    color: var(--color-foreground);
+    text-decoration: underline;
     border-bottom: 1px solid transparent;
     transition: border-color 0.2s ease;
   }
@@ -1341,6 +1375,22 @@
       "type": "url",
       "id": "kansa_url",
       "label": "Link for 'Ask Kansa' (falls back to /pages/kansa)"
+    },
+    { "type": "richtext", "id": "metal_guide", "label": "Metal care guide", "default": "<p>Check the exact cooking surface and follow its verified care instructions. Stainless steel does not need seasoning.</p>" },
+    { "type": "richtext", "id": "clay_guide", "label": "Clay care guide", "default": "<p>Chulha is a terracotta concept. Check the finished vessel’s food-contact, heat and care instructions before use.</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "rite",
+      "name": "Material care step",
+      "settings": [
+        { "type": "select", "id": "track", "label": "Track", "options": [{ "value": "metal", "label": "Metal" }, { "value": "clay", "label": "Clay" }], "default": "metal" },
+        { "type": "text", "id": "number", "label": "Number" },
+        { "type": "text", "id": "word", "label": "Hindi word" },
+        { "type": "text", "id": "step", "label": "Step" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "description", "label": "Guidance" }
+      ]
     }
   ],
   "presets": [

@@ -1,4 +1,4 @@
-# PRs: Theme Check only.
+# PRs: Build and verify theme assets, then run Theme Check.
 # Pushes to main: Theme Check, then an unpublished development theme push if
 # SHOPIFY_CLI_THEME_TOKEN is set. Live publish is never automatic —
 # use `bun run --cwd theme push` (production env, allow-live).
@@ -10,6 +10,8 @@ on:
     branches: [main]
     paths:
       - "theme/**"
+      - "package.json"
+      - "bun.lock"
       - ".github/workflows/theme.yml"
 
 permissions:
@@ -28,6 +30,9 @@ jobs:
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Build and verify theme assets
+        run: bun run --cwd theme prepare:upload
 
       - name: Theme Check
         run: bun run theme:check
@@ -49,8 +54,6 @@ jobs:
       - name: Push unpublished theme
         env:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
-          SHOPIFY_FLAG_STORE: maison-tavo.myshopify.com
-          SHOPIFY_FLAG_FORCE: "1"
         working-directory: theme
         run: |
           if [ -z "$SHOPIFY_CLI_THEME_TOKEN" ]; then

@@ -92,16 +92,23 @@ class GiftCardRecipientForm extends Component {
   }
 
   /**
-   * Initialize form with default state, self delivery is selected by default
+   * Preserve recipient fields and server errors when the recipient option is selected.
    */
   #initializeForm() {
-    this.#updateButtonStates(GiftCardRecipientForm.DeliveryMode.SELF);
-
-    this.refs.recipientFields.hidden = true;
-
-    this.#clearRecipientFields();
-    this.#disableRecipientFields();
-    this.#setDateConstraints();
+    if (this.refs.recipientEmailButton.checked) {
+      this.#currentMode = GiftCardRecipientForm.DeliveryMode.RECIPIENT;
+      this.#updateButtonStates(this.#currentMode);
+      this.refs.recipientFields.hidden = false;
+      this.#enableRecipientFields();
+      this.#updateCharacterCount();
+    } else {
+      this.#currentMode = GiftCardRecipientForm.DeliveryMode.SELF;
+      this.#updateButtonStates(this.#currentMode);
+      this.refs.recipientFields.hidden = true;
+      this.#clearRecipientFields();
+      this.#disableRecipientFields();
+      this.#setDateConstraints();
+    }
   }
 
   /**
@@ -147,10 +154,7 @@ class GiftCardRecipientForm extends Component {
           Theme.translations?.recipient_form_fields_visible || 'Recipient form fields are now visible';
       }
 
-      // Focus first field for accessibility
-      this.refs.recipientEmail.focus();
     } else {
-      this.#clearRecipientFields();
       this.#disableRecipientFields();
 
       // Announce to screen readers
@@ -313,6 +317,7 @@ class GiftCardRecipientForm extends Component {
    */
   #displayCartError(event) {
     const { error, code, detail } = event;
+    if (event.target !== this.closest('product-form-component') || this.#currentMode !== GiftCardRecipientForm.DeliveryMode.RECIPIENT) return;
 
     // Only handle API validation errors
     if (code !== 'INVALID') return;
@@ -364,8 +369,10 @@ class GiftCardRecipientForm extends Component {
         if (inputElement && inputElement instanceof HTMLElement) {
           // Set ARIA attributes for accessibility
           inputElement.setAttribute('aria-invalid', 'true');
-          const errorId = `RecipientForm-${field}-error-${this.dataset.sectionId || 'default'}`;
-          inputElement.setAttribute('aria-describedby', errorId);
+          const descriptions = [];
+          if (inputElement.dataset.descriptionId) descriptions.push(inputElement.dataset.descriptionId);
+          if (errorContainer?.id) descriptions.push(errorContainer.id);
+          if (descriptions.length) inputElement.setAttribute('aria-describedby', descriptions.join(' '));
         }
       }
     }
@@ -399,6 +406,7 @@ class GiftCardRecipientForm extends Component {
     for (const field of this.#inputFields) {
       field.removeAttribute('aria-invalid');
       field.removeAttribute('aria-describedby');
+      if (field.dataset.descriptionId) field.setAttribute('aria-describedby', field.dataset.descriptionId);
     }
 
     // Clear live region announcement
@@ -411,6 +419,7 @@ class GiftCardRecipientForm extends Component {
    * @param {CartLinesUpdateEvent} event
    */
   #handleCartAdd(event) {
+    if (event.target !== this.closest('product-form-component')) return;
     if (event.action !== 'add') return;
     event.promise?.then(() => this.#clearErrorMessages()).catch(() => {});
   }

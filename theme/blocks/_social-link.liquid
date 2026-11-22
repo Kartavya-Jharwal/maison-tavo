@@ -39,7 +39,7 @@
       href="{{ block_settings.link }}"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="{{ platform | capitalize }}"
+      aria-label="{{ platform | capitalize | escape }} — {{ 'accessibility.new_window' | t | escape }}"
       {% unless has_profile %}
         {% if request.design_mode %}
           onclick="return false;"

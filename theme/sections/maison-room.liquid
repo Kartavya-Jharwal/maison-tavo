@@ -7,22 +7,40 @@
   class="section section--page-width spacing-style maison-reading maison-room"
   style="{% render 'spacing-style', settings: section.settings %}"
 >
-  <header class="maison-editorial__header" data-mt-scroll="chapter">
-    {% if section.settings.eyebrow != blank %}
-      <p class="maison-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+  <div class="maison-room__opening{% if template.suffix == 'story' %} maison-room__opening--story{% endif %}">
+    <header class="maison-editorial__header" data-mt-scroll="chapter">
+      {% if section.settings.eyebrow != blank %}
+        <p class="maison-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h1 class="maison-editorial__title">{{ section.settings.heading | escape }}</h1>
+      {% elsif page != blank %}
+        <h1 class="maison-editorial__title">{{ page.title | escape }}</h1>
+      {% endif %}
+      {% if section.settings.lede != blank %}
+        <div class="maison-editorial__lede rte">{{ section.settings.lede }}</div>
+      {% endif %}
+    </header>
+    {% if template.suffix == 'story' or section.settings.editorial_image != blank %}
+      <figure class="maison-room__editorial" data-mt-scroll>
+        {% if section.settings.editorial_image != blank %}
+          {{ section.settings.editorial_image | image_url: width: 1400 | image_tag: class: 'maison-room__editorial-image', loading: 'lazy', widths: '600, 900, 1400', sizes: '(min-width: 60rem) 42vw, 100vw' }}
+        {% else %}
+          <img class="maison-room__editorial-image" src="{{ 'maison-pan-stacked-showcase.webp' | asset_url }}" alt="Well-used pans stacked beside a kitchen stove" width="1080" height="1350" loading="lazy" decoding="async">
+        {% endif %}
+      </figure>
     {% endif %}
-    {% if section.settings.heading != blank %}
-      <h1 class="maison-editorial__title">{{ section.settings.heading | escape }}</h1>
-    {% elsif page != blank %}
-      <h1 class="maison-editorial__title">{{ page.title | escape }}</h1>
-    {% endif %}
-    {% if section.settings.lede != blank %}
-      <div class="maison-editorial__lede rte">{{ section.settings.lede }}</div>
-    {% endif %}
-  </header>
+  </div>
 
   {% if section.settings.notice != blank %}
     <p class="maison-room__notice" role="note">{{ section.settings.notice | escape }}</p>
+  {% endif %}
+
+  {% if section.settings.summary != blank %}
+    <aside class="maison-room__summary" aria-label="The short version">
+      <h2>The short version</h2>
+      <div class="rte">{{ section.settings.summary }}</div>
+    </aside>
   {% endif %}
 
   <div class="maison-room__body">
@@ -82,7 +100,7 @@
                   href="https://www.openstreetmap.org/?mlat={{ lat }}&mlon={{ lng }}#map=12/{{ lat }}/{{ lng }}"
                   target="_blank"
                   rel="noopener noreferrer"
-                >Open the city map</a>
+                >Open the city map (opens in a new tab)</a>
               </p>
             {% endif %}
           </article>
@@ -116,9 +134,69 @@
 {%- endif -%}
 
 {% stylesheet %}
+  .maison-room__opening--story {
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: center;
+    margin-block-end: var(--maison-reading-gap);
+  }
+
+  .maison-room__editorial {
+    margin: 0 auto var(--maison-reading-gap);
+    width: min(100%, 42rem);
+  }
+
+  .maison-room__editorial-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 34rem;
+    object-fit: cover;
+  }
+
+  @media (min-width: 60rem) {
+    .maison-room__opening--story {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+    }
+
+    .maison-room__opening--story > .maison-editorial__header {
+      text-align: start;
+    }
+
+    .maison-room__opening--story .maison-room__editorial {
+      margin: 0;
+    }
+  }
+
+  .maison-room__opening > .maison-editorial__header,
   .maison-room__body,
-  .maison-room__notice {
+  .maison-room__notice,
+  .maison-room__summary {
     max-inline-size: var(--maison-reading-measure);
+    margin-inline: auto;
+  }
+
+  .maison-room__opening > .maison-editorial__header {
+    text-align: center;
+  }
+
+  .maison-room__summary {
+    margin-block: var(--maison-reading-gap) calc(var(--maison-reading-gap) * 1.5);
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid var(--color-border);
+    border-radius: var(--style-border-radius-lg);
+    background: var(--color-background);
+    line-height: var(--mt-type-leading-body);
+  }
+
+  .maison-room__summary h2 {
+    margin-block: 0 0 0.75rem;
+    font-family: var(--mt-type-family-heading);
+    font-size: var(--maison-reading-body);
+  }
+
+  .maison-room__summary .rte > :last-child {
+    margin-block-end: 0;
   }
 
   .maison-room__notice {
@@ -197,9 +275,19 @@
       "label": "Introduction"
     },
     {
+      "type": "image_picker",
+      "id": "editorial_image",
+      "label": "Editorial image"
+    },
+    {
       "type": "text",
       "id": "notice",
       "label": "Notice"
+    },
+    {
+      "type": "richtext",
+      "id": "summary",
+      "label": "The short version"
     },
     {
       "type": "header",

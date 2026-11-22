@@ -1,84 +1,182 @@
 {
   "sections": {
-    "room": {
-      "type": "maison-room",
+    "questions": {
+      "type": "maison-good-questions",
       "settings": {
-        "eyebrow": "Support",
-        "heading": "Frequently asked questions",
-        "lede": "<p>Shipping, size, heat, and payment. Care of a piece you already hold lives with <a href=\"/pages/kansa\">Kansa</a>.</p><p>Try a question in the <a href=\"/pages/good-questions\">interactive FAQ</a>.</p>",
-        "notice": "The catalogue and checkout are part of a gated exhibition.",
-        "padding-block-start": 48,
-        "padding-block-end": 64
+        "heading": "FAQs",
+        "intro": "Answers about the exhibition, orders, returns, materials and care. Open a question or ask below.",
+        "prompt": "Ask a question",
+        "button": "Ask",
+        "hint": "Try delivery, returns, size, heat, Kansa or handmade. The question field matches words to prepared answers.",
+        "fallback": "<p>There is no prepared answer for that question. Browse the questions above or <a href=\"/pages/contact\">contact us</a>.</p>"
       },
       "blocks": {
-        "delivery": {
-          "type": "clause",
+        "exhibition": {
+          "type": "question",
           "settings": {
-            "heading": "How long does delivery take?",
-            "text": "<p>Delivery dates in the exhibition are examples. A future release would show when its pieces are ready to dispatch and the expected delivery window before payment.</p>"
+            "question": "What is Maison Tavo?",
+            "answer": "<p>Maison Tavo is a cookware concept and a gated exhibition. It explores how a piece can carry the knowledge you need to choose it, cook with it and pass it on. <a href=\"/pages/about\">About Maison Tavo</a></p>"
           }
         },
-        "rates": {
-          "type": "clause",
+        "hob": {
+          "type": "question",
           "settings": {
-            "heading": "How are shipping rates calculated?",
-            "text": "<p>In the test journey, Shopify uses the test address and your selected pieces to show example delivery options and charges.</p>"
+            "question": "How do I know if a pan fits my hob?",
+            "answer": "<p>Check the heat sources and size listed for the exact piece. The heat demo illustrates how heat might spread through different bases. The piece’s specifications tell you which hob it suits. <a href=\"/pages/heat\">Explore the heat demo</a></p>"
           }
         },
-        "returns": {
-          "type": "clause",
+        "care": {
+          "type": "question",
           "settings": {
-            "heading": "How do I return a piece?",
-            "text": "<p>Test orders need no parcel sent back. If you are evaluating the returns journey, share your test reference through Contact. See <a href=\"/pages/delivery-returns\">Delivery and returns</a> for the exhibition flow.</p>"
+            "question": "Where can I find care instructions?",
+            "answer": "<p>Start with the care guide for your piece’s cooking surface, or choose a piece in Kansa and ask about seasoning, heat or cleaning. <a href=\"/pages/care\">Read the care guide</a></p>"
           }
         },
-        "size": {
-          "type": "clause",
+        "refund": {
+          "type": "sample",
           "settings": {
-            "heading": "How do I choose a size?",
-            "text": "<p>Diameters are in centimetres on the piece page, next to the material and the heat sources. The title carries the nominal size, such as 26 cm or 28 cm. If two sizes share a form, choose from the selector on that page.</p>"
-          }
-        },
-        "heat": {
-          "type": "clause",
-          "settings": {
-            "heading": "Which heat sources can I use?",
-            "text": "<p>Each piece lists its heat sources. Induction, gas, and oven are not implied by the metal. Read the specification before the first firing. Kansa can talk through heat and care for a piece you already own.</p>"
+            "keywords": "refund,refunds,return,returns",
+            "answer": "<p>This is a gated exhibition. Test orders need no parcel sent back. Read the <a href=\"/pages/refund-returns-policy\">Refund and Returns Policy</a> or <a href=\"/pages/start-a-return\">start a return enquiry</a>.</p>"
           }
         },
         "kansa": {
-          "type": "clause",
+          "type": "sample",
           "settings": {
-            "heading": "What is the Kansa page?",
-            "text": "<p>Kansa is its own room, not a collection. It is the companion for bell bronze and the wider care questions: seasoning, soap, acid, and heat. Open it at <a href=\"/pages/kansa\">/pages/kansa</a>.</p>"
+            "keywords": "kansa",
+            "answer": "<p>Kansa is Maison Tavo’s cookware companion. Its name comes from kansa, an Indian term for bell metal. The name connects the companion to a kitchen habit we care about: getting to know the tools you use every day, then passing that knowledge on with the piece.</p><p>A pan can outlast several kitchens, but its care instructions can disappear after the first one. Kansa explores how to keep that guidance with the piece.</p><p>In the demo, choose a cookware piece and ask about heat, seasoning or care. You might ask whether the selected pan works on induction, what to do before its first use or where to find the care routine for its surface. You can type your question, or use the microphone if your browser supports it. Kansa matches the question to prepared guidance using the prototype catalogue. The piece you select gives the answer its context.</p><p>The longer-term idea is that a piece could carry a code that takes its next owner straight to the correct record. That would give a cook somewhere to turn years after the box or receipt has gone. For now, you can choose a piece in the exhibition and see how that conversation would begin. <a href=\"/pages/kansa\">Try Kansa</a></p>"
           }
         },
-        "payment": {
-          "type": "clause",
+        "authentic": {
+          "type": "sample",
           "settings": {
-            "heading": "How do I try checkout?",
-            "text": "<p>If the project team has invited you to test checkout, use the test details they supplied. Shopify takes you through delivery, test payment and review.</p>"
+            "keywords": "authentic,authenticity,genuine,original",
+            "answer": "<p>Maison Tavo takes its name from the tava, a flat griddle familiar to Indian kitchens. The range explores forms shaped by everyday cooking. Our product pages distinguish design targets from established facts. <a href=\"/pages/about\">Read the story behind Maison Tavo</a></p>"
           }
         },
-        "orders": {
-          "type": "clause",
+        "handmade": {
+          "type": "sample",
           "settings": {
-            "heading": "Where is my order history?",
-            "text": "<p>Use <a href=\"/account\">Account</a> in the header for orders, addresses, and profile. The bag is only the active selection.</p>"
+            "keywords": "handmade,handcrafted,chulha,chulah,artisan,artisans",
+            "answer": "<p>Chulha is our terracotta design study. It starts with gestures cooks know well, like turning a paratha on a tawa, pouring chai or layering rice in a handi. We’re exploring how local potters could shape the vessels and receive credit for their techniques. The range is a set of concepts in development. <a href=\"/pages/building\">Read about the Chulha study</a></p>"
+          }
+        },
+        "faq_delivery": {
+          "type": "question",
+          "settings": {
+            "question": "How long does delivery take?",
+            "answer": "<p>Delivery dates in the exhibition are examples. A future release would show when its pieces are ready to dispatch and the expected delivery window before payment.</p>"
+          }
+        },
+        "faq_rates": {
+          "type": "question",
+          "settings": {
+            "question": "How are shipping rates calculated?",
+            "answer": "<p>In the test journey, Shopify uses the test address and your selected pieces to show example delivery options and charges.</p>"
+          }
+        },
+        "faq_returns": {
+          "type": "question",
+          "settings": {
+            "question": "How do I return a piece?",
+            "answer": "<p>Test orders need no parcel sent back. If you are evaluating the returns journey, share your test reference through Contact. See <a href=\"/pages/refund-returns-policy\">Delivery and returns</a> for the exhibition flow.</p>"
+          }
+        },
+        "faq_size": {
+          "type": "question",
+          "settings": {
+            "question": "How do I choose a size?",
+            "answer": "<p>Diameters are in centimetres on the piece page, next to the material and the heat sources. The title carries the nominal size, such as 26 cm or 28 cm. If two sizes share a form, choose from the selector on that page.</p>"
+          }
+        },
+        "faq_heat": {
+          "type": "question",
+          "settings": {
+            "question": "Which heat sources can I use?",
+            "answer": "<p>Each piece lists its heat sources. Induction, gas, and oven are not implied by the metal. Read the specification before the first firing. Kansa can talk through heat and care for a piece you already own.</p>"
+          }
+        },
+        "faq_kansa": {
+          "type": "question",
+          "settings": {
+            "question": "What is the Kansa page?",
+            "answer": "<p>Kansa is its own room, not a collection. It is the companion for bell bronze and the wider care questions: seasoning, soap, acid, and heat. Open it at <a href=\"/pages/kansa\">/pages/kansa</a>.</p>"
+          }
+        },
+        "faq_payment": {
+          "type": "question",
+          "settings": {
+            "question": "How do I try checkout?",
+            "answer": "<p>If the project team has invited you to test checkout, use the test details they supplied. Shopify takes you through delivery, test payment and review.</p>"
+          }
+        },
+        "faq_orders": {
+          "type": "question",
+          "settings": {
+            "question": "Where is my order history?",
+            "answer": "<p>Use <a href=\"/account\">Account</a> in the header for orders, addresses, and profile. The bag is only the active selection.</p>"
+          }
+        },
+        "sample_delivery": {
+          "type": "sample",
+          "settings": {
+            "keywords": "delivery,shipping,dispatch,arrive,arrival",
+            "answer": "<p>Delivery dates and charges in the gated exhibition are examples. In the test checkout, Shopify shows the available delivery options before review. <a href=\"/pages/refund-returns-policy\">Read the delivery and returns information</a>.</p>"
+          }
+        },
+        "sample_size": {
+          "type": "sample",
+          "settings": {
+            "keywords": "size,sizes,diameter,cm",
+            "answer": "<p>Check the exact piece page for its diameter in centimetres, variant selector and material specification. <a href=\"/pages/faq\">Browse the size question above</a>.</p>"
+          }
+        },
+        "sample_heat": {
+          "type": "sample",
+          "settings": {
+            "keywords": "heat,induction,gas,oven,hob",
+            "answer": "<p>Use the heat-source specification on the exact piece page. Do not infer compatibility from the metal alone. <a href=\"/pages/heat\">Explore the heat study</a>.</p>"
+          }
+        },
+        "sample_order": {
+          "type": "sample",
+          "settings": {
+            "keywords": "order,orders,tracking,track,account",
+            "answer": "<p>Open the order status link in your confirmation email, or sign in to <a href=\"/account\">Account</a>. <a href=\"/pages/track-order\">Track Order</a> explains the steps.</p>"
+          }
+        },
+        "sample_payment": {
+          "type": "sample",
+          "settings": {
+            "keywords": "payment,checkout,pay",
+            "answer": "<p>Checkout is part of the gated exhibition. Only use test details supplied by the project team if invited to evaluate it.</p>"
           }
         }
       },
       "block_order": [
-        "delivery",
-        "rates",
-        "returns",
-        "size",
-        "heat",
+        "faq_delivery",
+        "faq_rates",
+        "faq_returns",
+        "faq_size",
+        "faq_heat",
+        "faq_kansa",
+        "faq_payment",
+        "faq_orders",
+        "exhibition",
+        "hob",
+        "care",
+        "refund",
         "kansa",
-        "payment",
-        "orders"
+        "authentic",
+        "handmade",
+        "sample_delivery",
+        "sample_size",
+        "sample_heat",
+        "sample_order",
+        "sample_payment"
       ]
     }
   },
-  "order": ["room"]
+  "order": [
+    "questions"
+  ]
 }

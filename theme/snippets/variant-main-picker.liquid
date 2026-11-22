@@ -52,6 +52,7 @@
       data-shopify-visual-preview
     {% endif %}
   >
+    <p role="alert" data-variant-update-error data-message="{{ 'accessibility.variant_update_retry' | t | escape }}"></p>
     <form class="variant-picker__form">
       {%- for product_option in product_resource.options_with_values -%}
         {%- liquid
@@ -83,7 +84,7 @@
               class="variant-option__swatch-value"
               data-testid="variant-option-single-value"
             >
-              {{- product_option.selected_value -}}
+              {{- product_option.selected_value | escape -}}
             </span>
           </div>
         {%- elsif variant_style == 'swatch' or block_settings.variant_style == 'buttons' -%}
@@ -110,10 +111,7 @@
                   type="radio"
                   name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
                   value="{{ product_option_value | escape }}"
-                  aria-label="{{ product_option_value.name | escape }}{% if product_option_value.available == false %} - {{ 'products.product.sold_out' | t }}{% endif %}"
-                  {% if product_option_value.available == false %}
-                    aria-disabled="true"
-                  {% endif %}
+                  aria-label="{{ product_option_value.name | escape }}{% if product_option_value.available == false %} — {{ 'content.unavailable' | t | escape }}{% endif %}"
                   data-previous-checked="false"
                   data-fieldset-index="{{ fieldset_index }}"
                   data-input-index="{{ forloop.index0 }}"

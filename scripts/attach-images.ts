@@ -5,7 +5,7 @@
  *
  * Usage:
  *   bun scripts/attach-images.ts          # read-only media audit against Shopify Admin
- *   bun scripts/attach-images.ts --apply  # upload & verify media attachment
+ *   bun scripts/attach-images.ts --apply --legacy-catalog  # explicit older-catalog media upload
  */
 
 import {homedir} from 'node:os';
@@ -16,6 +16,9 @@ import {seedCatalog} from '../packages/catalog/src/index.ts';
 const STORE = process.env.SHOPIFY_FLAG_STORE ?? 'maison-tavo.myshopify.com';
 const API_VERSION = '2026-04';
 const APPLY = process.argv.includes('--apply');
+if (APPLY && !process.argv.includes('--legacy-catalog')) {
+  throw new Error('This image map targets the older catalogue. Pass --legacy-catalog explicitly before --apply.');
+}
 
 /**
  * Approved or concept-stage remote image sources keyed by product handle.

@@ -7,6 +7,10 @@
   assign catalog_url = 'kansa-catalog.json' | asset_url
   assign ar_poster = section.settings.ar_poster
   assign ar_src = section.settings.ar_model
+  assign kansa_heading_tag = 'h1'
+  if template.suffix == 'care'
+    assign kansa_heading_tag = 'h2'
+  endif
 -%}
 
 <div
@@ -22,7 +26,7 @@
   <div class="kansa-shell__inner section--page-width">
     <header class="kansa-shell__header" data-mt-scroll="chapter">
       {%- if section.settings.heading != blank -%}
-        <h1 class="kansa-shell__heading">{{ section.settings.heading | escape }}</h1>
+        <{{ kansa_heading_tag }} class="kansa-shell__heading">{{ section.settings.heading | escape }}</{{ kansa_heading_tag }}>
       {%- endif -%}
       {%- if section.settings.subheading != blank -%}
         <p class="kansa-shell__subheading" data-mt-scroll>{{ section.settings.subheading | escape }}</p>
@@ -42,8 +46,8 @@
         <p class="kansa-panel-sub">Four doors into the house.</p>
         <div class="kansa-jobs-grid">
           <a class="kansa-job-card" href="/pages/kansa?job=season">
-            <span class="kansa-job-label">Season</span>
-            <span class="kansa-job-lede">Build the patina — or water-cure clay.</span>
+            <span class="kansa-job-label">First use</span>
+            <span class="kansa-job-lede">Check the surface care routine.</span>
           </a>
           <a class="kansa-job-card" href="/pages/kansa?job=heat">
             <span class="kansa-job-label">Heat</span>
@@ -73,7 +77,8 @@
       </form>
     </div>
 
-    <div id="kansa-root" aria-live="polite"></div>
+    <div id="kansa-root"></div>
+    <div id="kansa-announcement" class="visually-hidden" role="status" aria-atomic="true"></div>
   </div>
 </div>
 
@@ -90,7 +95,8 @@
     --kansa-chamber: var(--glass-surface-dark);
     --kansa-chamber-lift: var(--glass-surface-dark-elevated);
     --kansa-line: var(--mt-surface-border);
-    --kansa-mute: rgb(var(--mt-color-bone-rgb) / 0.58);
+    --kansa-mute: #e8e2d9;
+    --kansa-text-accent: #ffe1ab;
     position: relative;
     isolation: isolate;
     color: var(--kansa-ink);
@@ -129,7 +135,7 @@
     font-size: var(--font-size--2xs);
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--kansa-bell);
+    color: #61451c;
   }
 
   .kansa-shell__heading {
@@ -164,12 +170,13 @@
     font-size: var(--font-size--2xs);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgb(var(--mt-color-soot-rgb) / 0.55);
+    color: var(--kansa-ink);
   }
 
   .kansa-shell__room a {
     color: inherit;
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
     border-block-end: 1px solid transparent;
   }
 
@@ -232,6 +239,10 @@
     color: var(--kansa-mute);
   }
 
+  .kansa-chamber .kansa-eyebrow {
+    color: var(--kansa-text-accent);
+  }
+
   .kansa-select-wrap {
     display: block;
   }
@@ -281,8 +292,8 @@
   }
 
   .kansa-mode-btn.is-active {
-    color: var(--kansa-bell);
-    border-block-end-color: var(--kansa-bell);
+    color: var(--kansa-text-accent);
+    border-block-end-color: var(--kansa-text-accent);
   }
 
   .kansa-mode-btn:focus-visible {
@@ -364,7 +375,7 @@
   }
 
   .kansa-job-card:hover {
-    border-color: var(--kansa-bell);
+    border-color: var(--kansa-text-accent);
     background: #241f1a;
   }
 
@@ -419,13 +430,13 @@
   }
 
   .kansa-mic-action:hover {
-    border-color: var(--kansa-bell);
-    color: var(--kansa-bell);
+    border-color: var(--kansa-text-accent);
+    color: var(--kansa-text-accent);
   }
 
   .kansa-mic-action.is-listening {
     border-color: var(--kansa-ember);
-    color: var(--kansa-ember);
+    color: #ffc3ad;
   }
 
   .kansa-mic-action:focus-visible {
@@ -450,7 +461,7 @@
     margin-block-start: 0.5rem;
   }
 
-  .kansa-text-input {
+  .kansa-shell input.kansa-text-input {
     flex: 1;
     min-width: 0;
     background: #100e0c;
@@ -463,16 +474,19 @@
     outline: none;
   }
 
-  .kansa-text-input::placeholder {
-    color: rgba(247, 242, 233, 0.35);
+  .kansa-shell input.kansa-text-input::placeholder {
+    color: var(--kansa-mute);
+    opacity: 1;
   }
 
-  .kansa-text-input:focus {
-    border-color: var(--kansa-bell);
+  .kansa-shell input.kansa-text-input:focus-visible {
+    border-color: var(--kansa-text-accent);
+    outline: 2px solid var(--kansa-text-accent);
+    outline-offset: 2px;
   }
 
   .kansa-send-btn {
-    background: var(--kansa-bell);
+    background: var(--kansa-text-accent);
     color: var(--kansa-ink);
     border: none;
     font-family: var(--font-mono--family, ui-monospace, monospace);
@@ -486,8 +500,9 @@
   }
 
   .kansa-send-btn:hover {
-    background: var(--kansa-ember);
-    color: #fff;
+    background: var(--kansa-text-accent);
+    color: var(--kansa-ink);
+    text-decoration: underline;
   }
 
   .kansa-send-btn:focus-visible {
@@ -531,7 +546,7 @@
     font-size: 0.68rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--kansa-bell);
+    color: var(--kansa-text-accent);
   }
 
   .kansa-answer-text {
@@ -546,7 +561,7 @@
     font-size: var(--font-size--2xs);
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--kansa-bell);
+    color: var(--kansa-text-accent);
     padding-block: 0.35rem;
   }
 
@@ -581,7 +596,7 @@
   }
 
   .kansa-tool-card:hover {
-    border-color: var(--kansa-bell);
+    border-color: var(--kansa-text-accent);
   }
 
   .kansa-tool-card__kicker {
@@ -589,7 +604,7 @@
     font-size: var(--font-size--3xs);
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--kansa-bell);
+    color: var(--kansa-text-accent);
   }
 
   .kansa-tool-card__body {
@@ -599,8 +614,8 @@
   }
 
   .kansa-chip.is-active {
-    color: var(--kansa-bell);
-    border-block-end-color: var(--kansa-bell);
+    color: var(--kansa-text-accent);
+    border-block-end-color: var(--kansa-text-accent);
   }
 
   .kansa-tool-row,
@@ -615,6 +630,7 @@
   .kansa-tool-btn,
   .kansa-text-btn,
   .kansa-chip {
+    min-height: 2.75rem;
     background: transparent;
     border: 0;
     border-block-end: 1px solid var(--kansa-line);
@@ -632,13 +648,13 @@
   .kansa-tool-btn:hover,
   .kansa-text-btn:hover,
   .kansa-chip:hover {
-    color: var(--kansa-bell);
-    border-block-end-color: var(--kansa-bell);
+    color: var(--kansa-text-accent);
+    border-block-end-color: var(--kansa-text-accent);
   }
 
   .kansa-text-btn--accent {
-    color: var(--kansa-bell);
-    border-block-end-color: var(--kansa-bell);
+    color: var(--kansa-text-accent);
+    border-block-end-color: var(--kansa-text-accent);
   }
 
   .kansa-tool-btn:focus-visible,
@@ -737,7 +753,7 @@
     font-size: 1.35rem;
     font-weight: 400;
     letter-spacing: -0.02em;
-    color: var(--kansa-bell);
+    color: var(--kansa-text-accent);
   }
 
   .kansa-remedy-cause {
@@ -782,7 +798,7 @@
     font-size: 0.68rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--kansa-bell);
+    color: var(--kansa-text-accent);
   }
 
   .kansa-spec-row dd {
@@ -858,6 +874,11 @@
 
   .kansa-look-upload:hover {
     background: rgba(184, 137, 58, 0.12);
+  }
+
+  .kansa-look-upload:focus-within {
+    outline: 2px solid var(--kansa-paper);
+    outline-offset: 3px;
   }
 
   .kansa-look-upload input {

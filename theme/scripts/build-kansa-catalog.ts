@@ -6,14 +6,14 @@ import { catalogueCategories } from '../../packages/catalog/src/categories.ts';
 import { readMockRelease, releasedSpecs } from '../../packages/catalog/src/mock-release.ts';
 import type { ProductSpec } from '../../packages/catalog/src/schema.ts';
 import { chulhaProductFamilies, forgeProductFamilies } from '../../packages/catalog/src/product-families.ts';
+import { maintenanceGroups } from '../../packages/catalog/src/maintenance.ts';
 
 const themeRoot = `${import.meta.dir}/..`;
 const outPath = `${themeRoot}/assets/kansa-catalog.json`;
 
 function materialCategory(p: ProductSpec): 'metal' | 'clay' | 'blade' | 'accessory' {
   const type = (p.product_type || '').toLowerCase();
-  const lineup = p.lineup || '';
-  if (type.includes('knife') || lineup === 'Kuro Strip') return 'blade';
+  if (type.includes('knife')) return 'blade';
   if (
     type.includes('oil') ||
     type.includes('care') ||
@@ -23,7 +23,7 @@ function materialCategory(p: ProductSpec): 'metal' | 'clay' | 'blade' | 'accesso
   ) {
     return 'accessory';
   }
-  if (lineup === 'Terre Clay' || type.includes('kulhad') || type.includes('bowl') || type.includes('platter') || type.includes('plate')) {
+  if (type.includes('kulhad') || type.includes('bowl') || type.includes('platter') || type.includes('plate')) {
     return 'clay';
   }
   return 'metal';
@@ -33,11 +33,12 @@ function ritualTrack(cat: ReturnType<typeof materialCategory>): 'metal' | 'clay'
   return cat === 'clay' ? 'clay' : 'metal';
 }
 
-const groupedForgeSkus = new Set(forgeProductFamilies.flatMap(family => family.variants.map(variant => variant.sku)));
+const maintenanceSkus = new Set(maintenanceGroups.flatMap(group => group.existingSkus));
 const release = readMockRelease();
+if (!release) throw new Error('Current release snapshot is required to build the Kansa catalogue.');
 const seen = new Set<string>();
 const pieces = releasedSpecs().filter(p => {
-  if (p.works_with_kansa === false || seen.has(p.handle) || (!release && groupedForgeSkus.has(p.sku))) return false;
+  if (p.works_with_kansa === false || seen.has(p.handle)) return false;
   seen.add(p.handle);
   return true;
 }).map((p) => {
@@ -46,7 +47,7 @@ const pieces = releasedSpecs().filter(p => {
   return {
     handle: p.handle,
     title: family ? p.title.replace(/\s+[·–-]\s+\d+\s*cm$/i, '') : p.title,
-    lineup: p.lineup,
+    lineup: maintenanceSkus.has(p.sku) ? 'Maintenance' : 'Forge',
     product_type: p.product_type,
     sku: p.sku,
     claim_status: p.claim_status,
@@ -102,7 +103,7 @@ const liveChulha = chulhaProductFamilies.filter(product => release?.products.som
   }));
 
 const payload = {
-  generatedAt: new Date().toISOString(),
+  generatedAt: release.verified_at,
   count: pieces.length + liveChulha.length,
   categories: catalogueCategories.map(({handle, title, summary, products}) => ({
     handle,

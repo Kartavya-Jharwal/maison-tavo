@@ -29,7 +29,7 @@
     {%- form 'customer', id: 'MaisonMailSignup', class: 'maison-mail__form' -%}
       <input type="hidden" name="contact[tags]" value="newsletter">
 
-      <label class="visually-hidden" for="MaisonMailEmail">
+      <label class="maison-mail__email-label" for="MaisonMailEmail">
         {{ section.settings.email_label | default: 'Email' | escape }}
       </label>
       <div class="maison-mail__row">
@@ -41,13 +41,15 @@
           autocorrect="off"
           autocapitalize="off"
           placeholder="{{ section.settings.placeholder | escape }}"
+          value="{{ form.email | escape }}"
           required
-          {% if form.errors %}
+          {% if form.errors contains 'email' %}
             aria-invalid="true"
             aria-describedby="MaisonMailError"
           {% elsif form.posted_successfully? %}
             aria-describedby="MaisonMailSuccess"
           {% endif %}
+          {% if form.errors %}autofocus{% endif %}
         >
         <button type="submit" class="button button--primary">
           {{ section.settings.button_label | escape }}
@@ -55,14 +57,11 @@
       </div>
 
       {%- if form.posted_successfully? -%}
-        <p class="maison-mail__note" id="MaisonMailSuccess" role="status">
+        <p class="maison-mail__note" id="MaisonMailSuccess" role="status" tabindex="-1" autofocus>
           {{ section.settings.success | escape }}
         </p>
       {%- elsif form.errors -%}
-        <p class="maison-mail__note" id="MaisonMailError" role="alert">
-          {{ form.errors.translated_fields.email | capitalize }}
-          {{ form.errors.messages.email }}
-        </p>
+        <div class="maison-mail__note" id="MaisonMailError" role="alert">{{ form.errors | default_errors }}</div>
       {%- elsif section.settings.fine_print != blank -%}
         <p class="maison-mail__fine">{{ section.settings.fine_print | escape }}</p>
       {%- endif -%}
@@ -112,6 +111,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+  }
+
+  .maison-mail__email-label {
+    display: block;
+    margin-block-end: 0.5rem;
   }
 
   .maison-mail__row input[type='email'] {

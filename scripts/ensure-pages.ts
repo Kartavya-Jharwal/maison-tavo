@@ -23,15 +23,16 @@ function flagValue(name: string): string | undefined {
 const STORE =
   flagValue('--store') ??
   process.env.SHOPIFY_FLAG_STORE ??
-  'maison-tavo.myshopify.com';
+  'maison-tavo-9pyrkr0c.myshopify.com';
 const APPLY = process.argv.includes('--apply');
 const API_VERSION = '2025-10';
 
 const PAGES = [
   {title: 'About us', handle: 'about', templateSuffix: 'about'},
+  {title: 'Agents', handle: 'agents', templateSuffix: 'agents'},
   {title: 'Our story', handle: 'our-story', templateSuffix: 'story'},
   {title: 'Building of', handle: 'building', templateSuffix: 'building'},
-  {title: 'Contact', handle: 'contact', templateSuffix: 'contact'},
+  {title: 'Contact Us', handle: 'contact', templateSuffix: 'contact'},
   {title: 'New arrivals', handle: 'new-arrivals', templateSuffix: 'arrivals'},
   {title: 'Releases', handle: 'releases', templateSuffix: 'releases'},
   {title: 'Mail', handle: 'mail', templateSuffix: 'mail'},
@@ -41,17 +42,22 @@ const PAGES = [
   {title: 'Finder', handle: 'finder', templateSuffix: 'finder'},
   {title: 'Journal', handle: 'journal', templateSuffix: 'journal'},
   {title: 'Delivery and returns', handle: 'delivery-returns', templateSuffix: 'shipping'},
-  {title: 'Frequently asked questions', handle: 'faq', templateSuffix: 'faq'},
+  {title: 'Refund and Returns Policy', handle: 'refund-returns-policy', templateSuffix: 'refund-returns-policy'},
+  {title: 'Track Order', handle: 'track-order', templateSuffix: 'track-order'},
+  {title: 'Start a Return', handle: 'start-a-return', templateSuffix: 'start-a-return'},
+  {title: 'FAQs', handle: 'faq', templateSuffix: 'faq'},
   {title: 'Good questions', handle: 'good-questions', templateSuffix: 'good-questions'},
   {title: 'Reviews', handle: 'reviews', templateSuffix: 'reviews'},
   {title: 'Cookie Policy', handle: 'cookie-policy', templateSuffix: 'cookies'},
   {title: 'Care', handle: 'care', templateSuffix: 'care'},
   {title: 'Privacy Policy', handle: 'privacy-policy', templateSuffix: 'privacy'},
-  {title: 'Terms of Service', handle: 'terms-of-service', templateSuffix: 'terms'},
+  {title: 'Terms & Conditions', handle: 'terms-of-service', templateSuffix: 'terms'},
   {title: 'Intellectual property', handle: 'intellectual-property', templateSuffix: 'ipr'},
   {title: 'Colour story explorer', handle: 'lookbook', templateSuffix: 'microapp'},
   {title: 'Kansa', handle: 'kansa', templateSuffix: 'kansa'},
   {title: 'UCP Protocol', handle: 'ucp', templateSuffix: 'ucp'},
+  {title: 'Ask AI', handle: 'ask-ai', templateSuffix: 'ask-ai'},
+  {title: 'Agent manifest', handle: 'llms-txt', templateSuffix: 'llms-txt'},
 ] as const;
 
 function loadCliIdentityToken(): string | undefined {

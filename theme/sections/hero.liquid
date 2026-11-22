@@ -514,6 +514,7 @@
       <a
         href="{{ section.settings.link }}"
         class="hero__link"
+        aria-label="{{ section.settings.link_label | default: section.settings.link | escape }}{% if section.settings.open_in_new_tab %} — {{ 'accessibility.new_window' | t | escape }}{% endif %}"
         {% if section.settings.open_in_new_tab %}
           target="_blank" rel="noopener"
         {% endif %}
@@ -955,6 +956,12 @@
       "type": "url",
       "id": "link",
       "label": "t:settings.link"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Accessible link name",
+      "info": "Describe where the hero link goes."
     },
     {
       "type": "checkbox",

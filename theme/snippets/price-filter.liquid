@@ -31,6 +31,8 @@
   >
     <summary
       class="facets__summary"
+      role="button"
+      aria-expanded="{% if filter_style == 'vertical' %}true{% else %}false{% endif %}"
       data-testid="price-filter"
     >
       <span class="facets__label">{{ filter.label }}</span>

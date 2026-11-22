@@ -113,7 +113,7 @@
             <div class="curator-media">
               {% liquid
                 assign curator_image = blank
-                assign forge_room = collections['forge-hybrid']
+                assign forge_room = collections['forge']
                 if forge_room != blank and forge_room.products_count > 0
                   assign curator_image = forge_room.products.first.featured_image
                 endif
@@ -470,10 +470,10 @@
     padding: 0.35rem 1rem;
     border-radius: var(--radius-pill, 62.5rem);
     flex-grow: 1;
-    max-width: 32rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    min-width: 0;
+    max-width: min(32rem, 100%);
+    overflow-wrap: anywhere;
+    white-space: normal;
   }
 
   .viewport-meta .meta-tag {

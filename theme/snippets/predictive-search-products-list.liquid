@@ -30,6 +30,7 @@
         <button
           class="predictive-search-results__clear button button-unstyled"
           type="button"
+          aria-label="{{ 'accessibility.clear_recently_viewed' | t | escape }}"
           on:click="/clearRecentlyViewedProducts"
         >
           {{ 'actions.clear' | t }}

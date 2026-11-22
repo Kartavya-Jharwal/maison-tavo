@@ -76,10 +76,9 @@
               target="_blank"
               rel="noopener noreferrer"
               class="maison-footer__ai-btn"
-              aria-label="Open {{ system }} to ask about Maison Tavo"
               style="--ai-color: {{ color }};"
             >
-              Ask on {{ system }} →
+              Ask on {{ system }} <span aria-hidden="true">→</span> (opens in a new tab)
             </a>
           </article>
         {%- endfor -%}
@@ -100,20 +99,26 @@
     <div class="maison-footer__signup">
       {%- form 'customer', id: 'MaisonFooterSignup', class: 'maison-footer__form' -%}
         <input type="hidden" name="contact[tags]" value="newsletter">
-        <label class="visually-hidden" for="MaisonFooterEmail">Email</label>
+        <label class="maison-footer__email-label" for="MaisonFooterEmail">Email address</label>
         <input
           id="MaisonFooterEmail"
           type="email"
           name="contact[email]"
           autocomplete="email"
           placeholder="Email address"
+          value="{{ form.email | escape }}"
           required
+          {% if form.errors contains 'email' %}
+            aria-invalid="true"
+            aria-describedby="MaisonFooterError"
+          {% endif %}
+          {% if form.errors %}autofocus{% endif %}
         >
         <button type="submit" class="button button--primary">{{ section.settings.button_label | escape }}</button>
         {%- if form.posted_successfully? -%}
-          <p class="maison-footer__note" data-mt-newsletter-success role="status">You're on the list.</p>
+          <p class="maison-footer__note" data-mt-newsletter-success role="status" tabindex="-1" autofocus>You're on the list.</p>
         {%- elsif form.errors -%}
-          <p class="maison-footer__note" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+          <div class="maison-footer__note" id="MaisonFooterError" role="alert">{{ form.errors | default_errors }}</div>
         {%- endif -%}
       {%- endform -%}
     </div>
@@ -139,26 +144,22 @@
               {%- endfor -%}
             {%- elsif i == 1 -%}
               <li><a href="{{ routes.collections_url }}">Catalogue</a></li>
-              <li><a href="{{ collections['cookware'].url | default: '/collections/cookware' }}">Cookware</a></li>
-              <li><a href="{{ collections['tableware-pottery'].url | default: '/collections/tableware-pottery' }}">Tableware &amp; Pottery</a></li>
-              <li><a href="{{ collections['care-sets'].url | default: '/collections/care-sets' }}">Care &amp; Sets</a></li>
+              <li><a href="{{ collections['forge'].url | default: '/collections/forge' }}">Forge</a></li>
+              <li><a href="{{ collections['chulha'].url | default: '/collections/chulha' }}">Chulha</a></li>
+              <li><a href="{{ collections['maintenance'].url | default: '/collections/maintenance' }}">Maintenance</a></li>
               <li><a href="/pages/releases">Releases</a></li>
               <li><a href="/pages/department">Department</a></li>
               <li><a href="/pages/kitchen">Kitchen</a></li>
               <li><a href="/pages/kansa">Kansa</a></li>
             {%- elsif i == 2 -%}
               <li><a href="/pages/about">About us</a></li>
-              <li><a href="/pages/our-story">Our story</a></li>
               <li><a href="/pages/building">How it works</a></li>
               <li><a href="/pages/journal">Journal</a></li>
               <li><a href="/pages/heat">Heat</a></li>
               <li><a href="/pages/finder">Finder</a></li>
               <li><a href="/pages/reviews">Reviews</a></li>
             {%- else -%}
-              <li><a href="/pages/contact">Contact &amp; locations</a></li>
               <li><a href="/pages/mail">Mail</a></li>
-              <li><a href="/pages/faq">FAQ</a></li>
-              <li><a href="/pages/delivery-returns">Delivery &amp; returns</a></li>
               <li><a href="{{ routes.search_url }}">Search</a></li>
               {%- if shop.customer_accounts_enabled -%}
                 <li>
@@ -174,11 +175,21 @@
         </div>
       {%- endfor -%}
       <div class="maison-footer__col">
+        <h3 class="maison-footer__label">Support</h3>
+        <ul role="list">
+          <li><a href="/pages/contact">Contact Us</a></li>
+          <li><a href="/pages/track-order">Track Order</a></li>
+          <li><a href="/pages/start-a-return">Start a Return</a></li>
+          <li><a href="/pages/faq">FAQs</a></li>
+          <li><a href="/pages/refund-returns-policy">Refund and Returns Policy</a></li>
+        </ul>
+      </div>
+      <div class="maison-footer__col">
         <h3 class="maison-footer__label">Legal</h3>
         <ul role="list">
-          <li><a href="/pages/privacy-policy">Privacy policy</a></li>
-          <li><a href="/pages/terms-of-service">Terms of service</a></li>
-          <li><a href="/pages/cookie-policy">Cookie policy</a></li>
+          <li><a href="/pages/privacy-policy">Privacy Policy</a></li>
+          <li><a href="/pages/cookie-policy">Cookie Policy</a></li>
+          <li><a href="/pages/terms-of-service">Terms &amp; Conditions</a></li>
           <li><a href="/pages/intellectual-property">Intellectual property</a></li>
           {%- comment -%} Explicit legal links above; skip shop policies that duplicate those titles {%- endcomment -%}
           {%- for policy in shop.policies -%}
@@ -213,12 +224,15 @@
     <p class="mt-coda__word" data-mt-scroll="coda" aria-hidden="true">{{ section.settings.wordmark | escape }}</p>
     <ul class="mt-coda__arrows" role="list">
       <li><a href="/pages/kansa">Ask Kansa — care, heat, sight →</a></li>
-      <li><a href="/pages/ucp">Read the agent spec ↗</a></li>
+      <li><a href="/agents.md">Read the agent manifest ↗</a></li>
       <li><a href="/pages/care">The care covenant ↓</a></li>
     </ul>
     <p class="mt-coda__legal">
       © {{ 'now' | date: '%Y' }} {{ shop.name | escape }}
       <span aria-hidden="true">·</span>
+      <button type="button" class="mt-reset" data-mt-profile-open>{{ 'accessibility.cooking_preferences' | t }}</button>
+      <button type="button" class="mt-reset" data-mt-reduced-motion-toggle aria-label="Reduced motion" aria-pressed="false">Reduced motion: <span data-mt-motion-label>OFF</span></button>
+      <span data-mt-sound-controls></span>
       <button type="button" class="mt-reset" data-mt-reset>[ Reset Session &amp; Storage ]</button>
     </p>
   </div>
@@ -282,6 +296,11 @@
   .maison-footer__form {
     display: grid;
     grid-template-columns: minmax(0, 1fr) fit-content(52%);
+  }
+
+  .maison-footer__email-label {
+    grid-column: 1 / -1;
+    margin-block-end: var(--mt-space-xs);
   }
 
   .maison-footer__form input[type='email'] {
@@ -470,14 +489,14 @@
     margin: 0;
     max-width: 48ch;
     font-size: var(--mt-type-body);
-    color: rgb(247 242 233 / 0.7);
+    color: #f7f2e9;
     line-height: 1.5;
   }
 
   .maison-footer__ai-grid {
     display: grid;
     gap: var(--mt-space-4);
-    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr));
     margin-block: var(--mt-space-5);
   }
 
@@ -536,7 +555,7 @@
   .maison-footer__ai-crawler {
     font-family: var(--footer-mono);
     font-size: 0.75rem;
-    color: rgb(247 242 233 / 0.55);
+    color: #f7f2e9;
   }
 
   .maison-footer__ai-body {
@@ -551,7 +570,7 @@
     font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgb(247 242 233 / 0.5);
+    color: #f7f2e9;
   }
 
   .maison-footer__ai-prompt {
@@ -563,16 +582,15 @@
   }
 
   .maison-footer__ai-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
+    text-align: center;
     padding: 0.45rem 0.85rem;
     border: 1px solid rgb(247 242 233 / 0.18);
     border-radius: 3px;
     font-family: var(--footer-mono);
     font-size: var(--mt-type-mono);
     letter-spacing: 0.06em;
-    color: var(--ai-color, #f7f2e9);
+    color: #f7f2e9;
     background: transparent;
     text-decoration: none;
     transition: background 0.2s ease, border-color 0.2s ease;
@@ -618,7 +636,7 @@
     { "type": "text", "id": "headline", "label": "Headline", "default": "Letters from Maison Tavo" },
     { "type": "text", "id": "button_label", "label": "Sign-up button", "default": "Join the next heat" },
     { "type": "header", "content": "Menus" },
-    { "type": "link_list", "id": "menu_1", "label": "Column 1", "default": "main-menu" },
+    { "type": "link_list", "id": "menu_1", "label": "Column 1" },
     { "type": "text", "id": "label_1", "label": "Column 1 label", "default": "Shop" },
     { "type": "link_list", "id": "menu_2", "label": "Column 2" },
     { "type": "text", "id": "label_2", "label": "Column 2 label" },

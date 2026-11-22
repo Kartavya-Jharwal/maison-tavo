@@ -1,19 +1,3 @@
-{% comment %}
-  Homepage featured trio — merchant picks three products in the theme editor:
-  (1) flagship pan, (2) service / maintenance kit, (3) secondary flagship from
-  a secondary pod. No hard-coded SKUs.
-{% endcomment %}
-
-{% liquid
-  assign product_1 = section.settings.product_1
-  assign product_2 = section.settings.product_2
-  assign product_3 = section.settings.product_3
-  assign has_any = false
-  if product_1 != blank or product_2 != blank or product_3 != blank
-    assign has_any = true
-  endif
-%}
-
 <div
   class="section section--page-width spacing-style maison-featured-trio"
   style="{% render 'spacing-style', settings: section.settings %}"
@@ -37,107 +21,76 @@
     {% endif %}
   </header>
 
-  {% if has_any %}
-    <ul class="maison-featured-trio__grid" role="list" data-mt-scroll="stagger">
-      {% for i in (1..3) %}
-        {% liquid
-          case i
-            when 1
-              assign product = product_1
-              assign role_label = section.settings.label_1
-            when 2
-              assign product = product_2
-              assign role_label = section.settings.label_2
-            else
-              assign product = product_3
-              assign role_label = section.settings.label_3
-          endcase
-        %}
-        {% if product != blank %}
-          <li class="maison-featured-trio__item" data-mt-scroll-item>
-            {% if role_label != blank %}
-              <p class="maison-featured-trio__role">{{ role_label | escape }}</p>
-            {% endif %}
+  <ul class="maison-featured-trio__grid" role="list" data-mt-scroll="stagger">
+    {% assign range_handles = 'forge,chulha,maintenance' | split: ',' %}
+    {% for handle in range_handles %}
+      {% liquid
+        assign product_key = 'product_' | append: forloop.index
+        assign label_key = 'label_' | append: forloop.index
+        assign featured_product = section.settings[product_key]
+        assign role_label = section.settings[label_key]
+        assign range_url = collections[handle].url | default: routes.collections_url
+
+        case handle
+          when 'forge'
+            assign range_title = 'Forge'
+            assign range_description = 'Clad steel for the hot work.'
+            assign range_image = 'maison-range-forge.webp'
+            assign image_alt = 'Nested stainless steel pans on a working stove'
+            assign image_width = 720
+            assign image_height = 900
+          when 'chulha'
+            assign range_title = 'Chulha'
+            assign range_description = 'Terracotta studies for chai, rice and the table.'
+            assign range_image = 'maison-range-chulha.webp'
+            assign image_alt = 'Two hands holding an unglazed terracotta vessel'
+            assign image_width = 900
+            assign image_height = 900
+          when 'maintenance'
+            assign range_title = 'Maintenance'
+            assign range_description = 'The right lid. The right care for the surface.'
+            assign range_image = 'maison-concept-care-kit.jpg'
+            assign image_alt = 'Illustrative care kit with balm, brush, cloth and scraper'
+            assign image_width = 447
+            assign image_height = 447
+        endcase
+      %}
+      <li class="maison-featured-trio__item" data-mt-scroll-item>
+        {% if role_label != blank %}
+          <p class="maison-featured-trio__role">{{ role_label | escape }}</p>
+        {% endif %}
+        {% if featured_product != blank %}
             {% render 'resource-card',
-              resource: product,
+              resource: featured_product,
               resource_type: 'product',
               image_aspect_ratio: '4 / 5',
               image_sizes: '(min-width: 990px) 28vw, (min-width: 750px) 40vw, 90vw'
             %}
-          </li>
+        {% else %}
+          <div class="resource-card">
+            <a class="resource-card__link" href="{{ range_url }}">
+              <span class="visually-hidden">{{ range_title }}</span>
+            </a>
+            <div class="resource-card__media" style="--image-aspect-ratio: 4 / 5;">
+              <img
+                class="resource-card__image"
+                src="{{ range_image | asset_url }}"
+                alt="{{ image_alt }}"
+                width="{{ image_width }}"
+                height="{{ image_height }}"
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+            <div class="resource-card__content">
+              <h3 class="resource-card__title">{{ range_title }}</h3>
+              <p class="resource-card__subtitle">{{ range_description }}</p>
+            </div>
+          </div>
         {% endif %}
-      {% endfor %}
-    </ul>
-  {% else %}
-    <ul class="maison-featured-trio__grid" role="list" data-mt-scroll="stagger">
-      <li class="maison-featured-trio__item" data-mt-scroll-item>
-        <p class="maison-featured-trio__role">{{ section.settings.label_1 | default: 'Flagship Pan' | escape }}</p>
-        <div class="resource-card">
-          <a class="resource-card__link" href="/collections/cookware">
-            <span class="visually-hidden">The Flagship Kadhai</span>
-          </a>
-          <div class="resource-card__media" style="--image-aspect-ratio: 4 / 5;">
-            <img
-              class="resource-card__image"
-              src="{{ 'maison-flagship-kadai.webp' | asset_url }}"
-              alt="The Flagship Kadhai — Bell Bronze and Carbon Steel"
-              width="1200"
-              height="1500"
-              loading="lazy"
-            >
-          </div>
-          <div class="resource-card__content">
-            <h3 class="resource-card__title">The Flagship Kadhai</h3>
-            <p class="resource-card__subtitle">78:22 Bell Bronze &amp; Carbon Steel</p>
-          </div>
-        </div>
       </li>
-      <li class="maison-featured-trio__item" data-mt-scroll-item>
-        <p class="maison-featured-trio__role">{{ section.settings.label_2 | default: 'Slow-Heat Clay' | escape }}</p>
-        <div class="resource-card">
-          <a class="resource-card__link" href="/collections/cookware">
-            <span class="visually-hidden">Terre Clay Open Vessel</span>
-          </a>
-          <div class="resource-card__media" style="--image-aspect-ratio: 4 / 5;">
-            <img
-              class="resource-card__image"
-              src="{{ 'maison-clay-openpot.webp' | asset_url }}"
-              alt="Terre Clay Open Vessel — Refractory Stoneware"
-              width="1200"
-              height="1500"
-              loading="lazy"
-            >
-          </div>
-          <div class="resource-card__content">
-            <h3 class="resource-card__title">Terre Clay Open Vessel</h3>
-            <p class="resource-card__subtitle">Hand-Turned Refractory Stoneware</p>
-          </div>
-        </div>
-      </li>
-      <li class="maison-featured-trio__item" data-mt-scroll-item>
-        <p class="maison-featured-trio__role">{{ section.settings.label_3 | default: 'Secondary Flagship' | escape }}</p>
-        <div class="resource-card">
-          <a class="resource-card__link" href="/collections/cookware">
-            <span class="visually-hidden">The Foundry High Pot</span>
-          </a>
-          <div class="resource-card__media" style="--image-aspect-ratio: 4 / 5;">
-            <img
-              class="resource-card__image"
-              src="{{ 'maison-highpot-set.webp' | asset_url }}"
-              alt="The Foundry High Pot — Dual-Mass Lathe Spun with Lid"
-              width="1200"
-              height="1500"
-              loading="lazy"
-            >
-          </div>
-          <div class="resource-card__content">
-            <h3 class="resource-card__title">The Foundry High Pot</h3>
-            <p class="resource-card__subtitle">Dual-Mass Lathe Spun with Lid</p>
-          </div>
-        </div>
-      </li>
-    </ul>
-  {% endif %}
+    {% endfor %}
+  </ul>
 </div>
 
 {% stylesheet %}
@@ -285,7 +238,7 @@
     },
     {
       "type": "paragraph",
-      "content": "Pick products in the theme editor. Leave blank until catalogue SKUs are ready — nothing is hard-coded."
+      "content": "Pick products to feature. An empty slot links to its material or care range."
     },
     {
       "type": "header",

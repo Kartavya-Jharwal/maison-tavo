@@ -11,6 +11,7 @@
 
 [environments.development]
 store = "maison-tavo-9pyrkr0c.myshopify.com"
+nodelete = true
 # No theme id: `shopify theme dev` creates/uses an unpublished development theme.
 
 [environments.production]
@@ -18,3 +19,4 @@ store = "maison-tavo-9pyrkr0c.myshopify.com"
 theme = "210460377457"
 allow-live = true
 nodelete = true
+ignore = ["config/settings_data.json"]

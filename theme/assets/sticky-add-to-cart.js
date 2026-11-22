@@ -69,12 +69,21 @@ class StickyAddToCartComponent extends Component {
   /** @type {boolean} */
   #hiddenByBottom = false;
 
+  #variantChangeGeneration = 0;
+
+  #hideRequested = false;
+
   connectedCallback() {
     super.connectedCallback();
 
     this.#setupIntersectionObserver();
 
     const { signal } = this.#abortController;
+    this.refs.stickyBar.addEventListener('focusout', () => {
+      queueMicrotask(() => {
+        if (this.#hideRequested && !this.refs.stickyBar.contains(document.activeElement)) this.#hideStickyBar();
+      });
+    }, { signal });
     const target = this.closest('.shopify-section');
     target?.addEventListener(StandardEvents.productSelect, this.#handleProductSelect, { signal });
 
@@ -209,6 +218,10 @@ class StickyAddToCartComponent extends Component {
    */
   #handleProductSelect = (event) => {
     if (!(event.target instanceof Element) || event.target.closest('product-card')) return;
+    if (event.target instanceof HTMLElement && event.target.dataset.productId &&
+        event.target.dataset.productId !== this.dataset.productId) return;
+    const generation = ++this.#variantChangeGeneration;
+    this.refs.addToCartButton.disabled = true;
 
     // Update variant ID from the event detail (variant:selected part)
     const { optionValueId } = event.detail ?? {};
@@ -219,6 +232,7 @@ class StickyAddToCartComponent extends Component {
     // Wait for the promise to resolve with variant update data
     event.promise
       .then(({ detail }) => {
+        if (generation !== this.#variantChangeGeneration) return;
         if (!detail?.html) return;
 
         const { html, productId, resource: variant } = detail;
@@ -321,7 +335,9 @@ class StickyAddToCartComponent extends Component {
    */
   #showStickyBar() {
     const { stickyBar } = this.refs;
+    this.#hideRequested = false;
     this.#isStuck = true;
+    stickyBar.inert = false;
     stickyBar.dataset.stuck = 'true';
   }
 
@@ -330,7 +346,11 @@ class StickyAddToCartComponent extends Component {
    */
   #hideStickyBar() {
     const { stickyBar } = this.refs;
+    this.#hideRequested = true;
     this.#isStuck = false;
+    // Keep a focused control visible until the shopper moves focus elsewhere.
+    if (stickyBar.contains(document.activeElement)) return;
+    stickyBar.inert = true;
     stickyBar.dataset.stuck = 'false';
   }
 

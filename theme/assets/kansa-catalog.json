@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-20T13:21:44.444Z",
-  "count": 48,
+  "generatedAt": "2026-11-19T14:31:02.501Z",
+  "count": 31,
   "categories": [
     {
       "handle": "forge",
@@ -57,536 +57,9 @@
   ],
   "pieces": [
     {
-      "handle": "ardh-metal-lined-kulhad",
-      "title": "Ardh Metal-Lined Kulhad",
-      "lineup": "Terre Clay",
-      "product_type": "Kulhad",
-      "sku": "MT-TER-KUL-140",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "High-fired earthenware shell",
-      "lining_material": "Removable 18/8 stainless steel drink liner",
-      "material_architecture": "Lower high-fired earthenware shell + removable thin 18/8 stainless liner + isolated junction.",
-      "heat_sources": [],
-      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
-      "induction_compatible": false,
-      "care_hypothesis": "Separate components; hand wash initial prototype.",
-      "care_instructions": "[CONCEPT_SPEC] Separate components; hand wash initial prototype.",
-      "dishwasher_suitability": "pending_validation",
-      "microwave_suitability": "not_microwave_safe",
-      "food_contact_suitability": "[CONCEPT_SPEC] Stainless liner is the intended food-contact surface; rim must avoid exposed adhesive or moisture traps.",
-      "concept_thesis": "Separate expressive shell from hygienic drink interface.",
-      "agent_intents": [
-        "chai service",
-        "reusable kulhad",
-        "mixed-material cup",
-        "tasting vessel"
-      ],
-      "negative_constraints": [
-        "microwave use",
-        "guaranteed dishwasher safe",
-        "disposable earthenware"
-      ],
-      "list_price_gbp": 48,
-      "dimensions": {
-        "capacity_ml": 140
-      },
-      "works_with_kansa": true,
-      "materialCategory": "clay",
-      "ritualTrack": "clay",
-      "productUrl": "/products/ardh-metal-lined-kulhad"
-    },
-    {
-      "handle": "ardh-clay-lined-kulhad",
-      "title": "Ardh Clay-Lined Kulhad",
-      "lineup": "Terre Clay",
-      "product_type": "Kulhad",
-      "sku": "MT-TER-KUL-C180",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Vitrified earthenware bowl with spun stainless chassis",
-      "lining_material": "Food-safe vitrified ceramic glaze",
-      "material_architecture": "Glazed/vitrified earthenware upper bowl + spun stainless lower chassis + reversible retained joint.",
-      "heat_sources": [],
-      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
-      "induction_compatible": false,
-      "care_hypothesis": "Disassemble to wash; no microwave; dishwasher only after validation.",
-      "care_instructions": "[CONCEPT_SPEC] Disassemble to wash; no microwave; dishwasher only after validation.",
-      "dishwasher_suitability": "pending_validation",
-      "microwave_suitability": "not_microwave_safe",
-      "food_contact_suitability": "[CONCEPT_SPEC] Clay/glaze contacts beverage; metal is external support.",
-      "concept_thesis": "Make breakage replaceable while preserving a clay lip and beverage surface.",
-      "agent_intents": [
-        "clay-lined cup",
-        "replacement insert",
-        "chai service",
-        "modular drinkware"
-      ],
-      "negative_constraints": [
-        "microwave safe",
-        "monolithic cup",
-        "disposable kulhad"
-      ],
-      "list_price_gbp": 58,
-      "dimensions": {
-        "capacity_ml": 180
-      },
-      "works_with_kansa": true,
-      "materialCategory": "clay",
-      "ritualTrack": "clay",
-      "productUrl": "/products/ardh-clay-lined-kulhad"
-    },
-    {
-      "handle": "rekha-laser-marked-serving-platter",
-      "title": "Rekhā Laser-Marked Serving Platter",
-      "lineup": "Terre Clay",
-      "product_type": "Serving platter",
-      "sku": "MT-TER-PLT-34",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "High-fired stoneware",
-      "lining_material": "Vitrified food-contact ceramic glaze",
-      "material_architecture": "High-fired stoneware body; tested glaze field; unmarked food-contact zone until validated.",
-      "heat_sources": [],
-      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
-      "induction_compatible": false,
-      "care_hypothesis": "Non-abrasive wash; commercial dishwasher status pending.",
-      "care_instructions": "[CONCEPT_SPEC] Non-abrasive wash; commercial dishwasher status pending.",
-      "dishwasher_suitability": "pending_validation",
-      "microwave_suitability": "pending_validation",
-      "food_contact_suitability": "[CONCEPT_SPEC] Glaze/body must pass migration and cleanability testing after marking.",
-      "concept_thesis": "Use laser marking as permanent ornament, identity and provenance layer.",
-      "agent_intents": [
-        "laser-etched platter",
-        "ceramic serveware",
-        "provenance-marked tableware"
-      ],
-      "negative_constraints": [
-        "assumed dishwasher safe",
-        "deep engraving on food surface"
-      ],
-      "list_price_gbp": 145,
-      "dimensions": {
-        "diameter_cm": 34
-      },
-      "works_with_kansa": true,
-      "materialCategory": "clay",
-      "ritualTrack": "clay",
-      "productUrl": "/products/rekha-laser-marked-serving-platter"
-    },
-    {
-      "handle": "rekha-laser-marked-chai-bowl",
-      "title": "Rekhā Laser-Marked Chai Bowl",
-      "lineup": "Terre Clay",
-      "product_type": "Tea bowl",
-      "sku": "MT-TER-BWL-220",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "High-fired stoneware",
-      "lining_material": "Vitrified interior ceramic glaze",
-      "material_architecture": "High-fired stoneware cup; glazed interior; controlled exterior marking band.",
-      "heat_sources": [],
-      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
-      "induction_compatible": false,
-      "care_hypothesis": "Hand wash initial prototype; dishwasher after cycle validation.",
-      "care_instructions": "[CONCEPT_SPEC] Hand wash initial prototype; dishwasher after cycle validation.",
-      "dishwasher_suitability": "pending_validation",
-      "microwave_suitability": "pending_validation",
-      "food_contact_suitability": "[CONCEPT_SPEC] Interior remains unmarked glaze; exterior mark must not undermine lip or grip.",
-      "concept_thesis": "Create permanent, serialisable decoration without decals.",
-      "agent_intents": [
-        "personalised chai bowl",
-        "laser-marked cup",
-        "hospitality edition"
-      ],
-      "negative_constraints": [
-        "microwave/dishwasher claims before testing"
-      ],
-      "list_price_gbp": 42,
-      "dimensions": {
-        "capacity_ml": 220
-      },
-      "works_with_kansa": true,
-      "materialCategory": "clay",
-      "ritualTrack": "clay",
-      "productUrl": "/products/rekha-laser-marked-chai-bowl"
-    },
-    {
-      "handle": "forge-relay-dual-mass-skillet",
-      "title": "Forge Relay Dual-Mass Skillet",
-      "lineup": "Forge Hybrid",
-      "product_type": "Skillet",
-      "sku": "MT-FOR-RLY-26",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Nitrided carbon steel with removable cast-bronze thermal ring",
-      "lining_material": "Unlined seasoned carbon steel (external bronze ring non-food-contact)",
-      "material_architecture": "Thin nitrided carbon-steel vessel + removable non-food-contact bronze thermal ring + steel handle.",
-      "heat_sources": [
-        "induction",
-        "gas"
-      ],
-      "heat_compatibility": "CONCEPT_SPEC target: induction, gas (induction target yes; requires prototype thermal validation).",
-      "induction_compatible": true,
-      "care_hypothesis": "Hand wash; dry and oil steel; remove ring before washing.",
-      "care_instructions": "[CONCEPT_SPEC] Hand wash; dry and oil steel; remove ring before washing.",
-      "dishwasher_suitability": "hand_wash_only",
-      "microwave_suitability": "not_microwave_safe",
-      "food_contact_suitability": "[CONCEPT_SPEC] Carbon steel is intended food-contact surface; ring must remain external.",
-      "concept_thesis": "Switch between fast response and thermal mass through a removable component.",
-      "agent_intents": [
-        "modular skillet",
-        "high-heat searing",
-        "table-service pan",
-        "mixed-metal cookware"
-      ],
-      "negative_constraints": [
-        "dishwasher safe",
-        "remove ring hot",
-        "nonstick coating"
-      ],
-      "list_price_gbp": 175,
-      "dimensions": {
-        "diameter_cm": 26,
-        "induction_coil_zone_cm": 18
-      },
-      "quick_summary": "Signature modular dual-mass skillet — specialty above the standard fry ladder.",
-      "works_with_kansa": true,
-      "pairs_with_care_kit": "MT-FOR-KIT-C01",
-      "lid_compatibility": "Specialty Relay lid 26 (MT-FOR-LID-26) if held",
-      "materialCategory": "metal",
-      "ritualTrack": "metal",
-      "productUrl": "/products/forge-relay-dual-mass-skillet"
-    },
-    {
-      "handle": "forge-split-field-plancha",
-      "title": "Forge Split-Field Plancha",
-      "lineup": "Forge Hybrid",
-      "product_type": "Griddle",
-      "sku": "MT-FOR-PLN-46",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Nitrided carbon steel with cast-bronze service block",
-      "lining_material": "Unlined carbon steel sear zone + removable 18/8 stainless service tray",
-      "material_architecture": "Nitrided carbon-steel griddle + cast-bronze service mass + removable stainless food tray.",
-      "heat_sources": [
-        "gas"
-      ],
-      "heat_compatibility": "CONCEPT_SPEC target: gas (not induction-compatible; requires prototype thermal validation).",
-      "induction_compatible": false,
-      "care_hypothesis": "Disassemble; hand wash steel; tray dishwasher target pending.",
-      "care_instructions": "[CONCEPT_SPEC] Disassemble; hand wash steel; tray dishwasher target pending.",
-      "dishwasher_suitability": "hand_wash_only",
-      "microwave_suitability": "not_microwave_safe",
-      "food_contact_suitability": "[CONCEPT_SPEC] Steel griddle and stainless tray contact food; bronze does not.",
-      "concept_thesis": "Map material to task across one product: sear, rest and serve.",
-      "agent_intents": [
-        "plancha",
-        "twin burner",
-        "tableside searing",
-        "mixed material griddle"
-      ],
-      "negative_constraints": [
-        "single-burner",
-        "dishwasher-safe assembly",
-        "direct bronze food contact"
-      ],
-      "list_price_gbp": 220,
-      "dimensions": {
-        "length_cm": 46,
-        "width_cm": 28
-      },
-      "quick_summary": "Split-field plancha specialty — outside the round diameter matrix.",
-      "works_with_kansa": true,
-      "pairs_with_care_kit": "MT-FOR-KIT-C01",
-      "lid_compatibility": "Not lid-ecosystem; open plancha",
-      "materialCategory": "metal",
-      "ritualTrack": "metal",
-      "productUrl": "/products/forge-split-field-plancha"
-    },
-    {
-      "handle": "forge-terre-nested-roaster",
-      "title": "Forge–Terre Nested Roaster",
-      "lineup": "Forge × Terre",
-      "product_type": "Roasting pan",
-      "sku": "MT-HYB-RST-34",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Clad stainless steel insert with high-fired ceramic cradle",
-      "lining_material": "18/10 stainless steel cooking surface",
-      "material_architecture": "Fully-clad stainless roasting insert + non-hob ceramic cradle + insulating contact points.",
-      "heat_sources": [
-        "oven",
-        "induction"
-      ],
-      "heat_compatibility": "CONCEPT_SPEC target: oven, induction (induction target yes; requires prototype thermal validation).",
-      "induction_compatible": true,
-      "care_hypothesis": "Insert dishwasher target; cradle hand wash; never heat empty cradle on hob.",
-      "care_instructions": "[CONCEPT_SPEC] Insert dishwasher target; cradle hand wash; never heat empty cradle on hob.",
-      "dishwasher_suitability": "insert_only_pending_validation",
-      "microwave_suitability": "not_microwave_safe",
-      "food_contact_suitability": "[CONCEPT_SPEC] Stainless insert contacts food; cradle is support only.",
-      "concept_thesis": "Separate thermal cooking performance from tactile table presentation.",
-      "agent_intents": [
-        "oven-to-table roaster",
-        "removable insert",
-        "mixed-material serveware"
-      ],
-      "negative_constraints": [
-        "ceramic cradle on hob",
-        "monolithic cookware",
-        "microwave use"
-      ],
-      "list_price_gbp": 390,
-      "dimensions": {
-        "length_cm": 34,
-        "width_cm": 24
-      },
-      "works_with_kansa": true,
-      "materialCategory": "metal",
-      "ritualTrack": "metal",
-      "productUrl": "/products/forge-terre-nested-roaster"
-    },
-    {
-      "handle": "kuro-strip-200-chefs-knife",
-      "title": "Kuro Strip 200 Chef's Knife",
-      "lineup": "Kuro Strip",
-      "product_type": "Chef's knife",
-      "sku": "MT-KUR-STR-200",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Continuous nitrogen-treated stainless steel strip",
-      "lining_material": "Unlined monolithic blade with replaceable grip sleeve",
-      "material_architecture": "Single nitrogen-treated stainless or alternative steel strip target + removable high-temperature grip sleeve.",
-      "heat_sources": [],
-      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
-      "induction_compatible": false,
-      "care_hypothesis": "Hand wash; remove sleeve only for deep service per final design.",
-      "care_instructions": "[CONCEPT_SPEC] Hand wash; remove sleeve only for deep service per final design.",
-      "dishwasher_suitability": "hand_wash_only",
-      "microwave_suitability": "not_applicable",
-      "food_contact_suitability": "[CONCEPT_SPEC] Blade is food contact; open frame must not create inaccessible soil traps.",
-      "concept_thesis": "Turn full-tang logic into a visible continuous structural strip.",
-      "agent_intents": [
-        "thin chef knife",
-        "all-metal knife",
-        "replaceable grip",
-        "precision prep"
-      ],
-      "negative_constraints": [
-        "bones",
-        "frozen food",
-        "dishwasher before validation"
-      ],
-      "list_price_gbp": 260,
-      "dimensions": {
-        "length_cm": 20
-      },
-      "works_with_kansa": true,
-      "materialCategory": "blade",
-      "ritualTrack": "metal",
-      "productUrl": "/products/kuro-strip-200-chefs-knife"
-    },
-    {
-      "handle": "kuro-trace-180-hybrid-edge-knife",
-      "title": "Kuro Trace 180 Hybrid-Edge Knife",
-      "lineup": "Kuro Strip",
-      "product_type": "Hybrid-edge chef knife",
-      "sku": "MT-KUR-TRC-180",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "High-carbon stainless steel strip",
-      "lining_material": "Unlined hybrid micro-scalloped / plain steel blade",
-      "material_architecture": "Thin high-carbon stainless blade target; 120 mm shallow micro-scalloped field + 60 mm plain heel + continuous metal strip handle.",
-      "heat_sources": [],
-      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
-      "induction_compatible": false,
-      "care_hypothesis": "Hand wash; specialist serration service; plain heel whetstone-compatible.",
-      "care_instructions": "[CONCEPT_SPEC] Hand wash; specialist serration service; plain heel whetstone-compatible.",
-      "dishwasher_suitability": "hand_wash_only",
-      "microwave_suitability": "not_applicable",
-      "food_contact_suitability": "[CONCEPT_SPEC] Blade contact only; serrations must be cleanable and corrosion-resistant.",
-      "concept_thesis": "Combine skin-gripping serration with a sharpenable board-contact heel.",
-      "agent_intents": [
-        "serrated chef knife",
-        "tomato knife",
-        "hybrid edge",
-        "thin slicer"
-      ],
-      "negative_constraints": [
-        "bone",
-        "frozen food",
-        "heavy rocking",
-        "universal never-sharpen claim"
-      ],
-      "list_price_gbp": 230,
-      "dimensions": {
-        "length_cm": 18
-      },
-      "works_with_kansa": true,
-      "materialCategory": "blade",
-      "ritualTrack": "metal",
-      "productUrl": "/products/kuro-trace-180-hybrid-edge-knife"
-    },
-    {
-      "handle": "kuro-trace-150-micro-scalloped-utility-knife",
-      "title": "Kuro Trace 150 Micro-Scalloped Utility Knife",
-      "lineup": "Kuro Strip",
-      "product_type": "Utility knife",
-      "sku": "MT-KUR-UTL-150",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "High-carbon stainless steel strip",
-      "lining_material": "Unlined micro-scalloped steel blade",
-      "material_architecture": "Thin high-carbon stainless blade target + fine scallops + continuous strip frame + removable grip web.",
-      "heat_sources": [],
-      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
-      "induction_compatible": false,
-      "care_hypothesis": "Hand wash; specialist sharpening.",
-      "care_instructions": "[CONCEPT_SPEC] Hand wash; specialist sharpening.",
-      "dishwasher_suitability": "hand_wash_only",
-      "microwave_suitability": "not_applicable",
-      "food_contact_suitability": "[CONCEPT_SPEC] Stainless blade target; open frame and sleeve interface must be fully cleanable.",
-      "concept_thesis": "Create low-force skin entry in a compact prep format.",
-      "agent_intents": [
-        "utility knife",
-        "tomato knife",
-        "breakfast station",
-        "sandwich prep"
-      ],
-      "negative_constraints": [
-        "bone",
-        "frozen foods",
-        "hard squash",
-        "plain-edge chopping"
-      ],
-      "list_price_gbp": 175,
-      "dimensions": {
-        "length_cm": 15
-      },
-      "works_with_kansa": true,
-      "materialCategory": "blade",
-      "ritualTrack": "metal",
-      "productUrl": "/products/kuro-trace-150-micro-scalloped-utility-knife"
-    },
-    {
-      "handle": "forge-terre-service-tongs",
-      "title": "Forge–Terre Service Tongs",
-      "lineup": "Forge × Terre",
-      "product_type": "Serving tongs",
-      "sku": "MT-HYB-TNG-24",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Spring steel strip with removable ceramic grip pads",
-      "lining_material": "Unlined spring-steel food-contact tips",
-      "material_architecture": "Continuous spring steel body + removable high-fired ceramic thumb pads.",
-      "heat_sources": [],
-      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
-      "induction_compatible": false,
-      "care_hypothesis": "Remove pads for cleaning until washability validated.",
-      "care_instructions": "[CONCEPT_SPEC] Remove pads for cleaning until washability validated.",
-      "dishwasher_suitability": "pending_validation",
-      "microwave_suitability": "not_applicable",
-      "food_contact_suitability": "[CONCEPT_SPEC] Steel tips contact food; pads remain outside contact zone.",
-      "concept_thesis": "Put resilient metal at the food interface and expressive clay at the hand interface.",
-      "agent_intents": [
-        "serving tongs",
-        "pastry tongs",
-        "mixed-material utensil"
-      ],
-      "negative_constraints": [
-        "grill use",
-        "heavy lifting",
-        "dishwasher claim"
-      ],
-      "list_price_gbp": 78,
-      "dimensions": {
-        "length_cm": 24
-      },
-      "works_with_kansa": true,
-      "materialCategory": "accessory",
-      "ritualTrack": "metal",
-      "productUrl": "/products/forge-terre-service-tongs"
-    },
-    {
-      "handle": "forge-terre-tagine-28",
-      "title": "Forge–Terre Compact Tagine",
-      "lineup": "Forge × Terre",
-      "product_type": "Tagine",
-      "sku": "MT-HYB-TAG-28",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Clad 18/10 stainless steel base with high-fired earthenware cone",
-      "lining_material": "18/10 stainless cooking face + vitrified interior cone glaze",
-      "material_architecture": "Clad 18/10 stainless cooking base + vented high-fired earthenware cone.",
-      "heat_sources": [
-        "induction",
-        "gas",
-        "electric"
-      ],
-      "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric (induction target yes; requires prototype thermal validation).",
-      "induction_compatible": true,
-      "care_hypothesis": "Hand wash ceramic cone; stainless base targets commercial washing pending validation.",
-      "care_instructions": "[CONCEPT_SPEC] Hand wash ceramic cone; stainless base targets commercial washing pending validation.",
-      "dishwasher_suitability": "insert_only_pending_validation",
-      "microwave_suitability": "not_microwave_safe",
-      "food_contact_suitability": "[CONCEPT_SPEC] 18/10 stainless steel contacts simmering food; glazed interior cone contacts condensing steam only after migration validation.",
-      "concept_thesis": "Traditional all-clay tagines crack easily on modern induction hobs. Separating the thermal base from the vapour-return cone preserves aromatic condensation while keeping hob contact predictable.",
-      "agent_intents": [
-        "tagine",
-        "slow cooking",
-        "clay slow-cooking",
-        "induction tagine",
-        "braising vessel"
-      ],
-      "negative_constraints": [
-        "ceramic cone directly on hob",
-        "guaranteed dishwasher-safe cone"
-      ],
-      "list_price_gbp": 340,
-      "dimensions": {
-        "diameter_cm": 28
-      },
-      "works_with_kansa": true,
-      "materialCategory": "metal",
-      "ritualTrack": "metal",
-      "productUrl": "/products/forge-terre-tagine-28"
-    },
-    {
-      "handle": "forge-terre-tagine-32",
-      "title": "Forge–Terre Shared Tagine",
-      "lineup": "Forge × Terre",
-      "product_type": "Tagine",
-      "sku": "MT-HYB-TAG-32",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Clad 18/10 stainless steel base with high-fired earthenware cone",
-      "lining_material": "18/10 stainless cooking face + vitrified interior cone glaze",
-      "material_architecture": "Clad 18/10 stainless cooking base + wide high-fired earthenware cone.",
-      "heat_sources": [
-        "induction",
-        "gas",
-        "electric"
-      ],
-      "heat_compatibility": "CONCEPT_SPEC target: induction, gas, electric (induction target yes; requires prototype thermal validation).",
-      "induction_compatible": true,
-      "care_hypothesis": "Hand wash ceramic cone; never place cone directly on a burner.",
-      "care_instructions": "[CONCEPT_SPEC] Hand wash ceramic cone; never place cone directly on a burner.",
-      "dishwasher_suitability": "insert_only_pending_validation",
-      "microwave_suitability": "not_microwave_safe",
-      "food_contact_suitability": "[CONCEPT_SPEC] 18/10 stainless steel contacts food; interior cone glaze requires post-firing migration verification.",
-      "concept_thesis": "Scales the decoupled metal-and-clay tagine architecture to shared feast portions without forcing staff to carry a fragile all-ceramic cooking base from stove to table.",
-      "agent_intents": [
-        "large tagine",
-        "slow cooking",
-        "clay slow-cooking",
-        "shared service",
-        "induction tagine"
-      ],
-      "negative_constraints": [
-        "ceramic cone directly on hob",
-        "dishwasher-safe cone before testing"
-      ],
-      "list_price_gbp": 395,
-      "dimensions": {
-        "diameter_cm": 32
-      },
-      "works_with_kansa": true,
-      "materialCategory": "metal",
-      "ritualTrack": "metal",
-      "productUrl": "/products/forge-terre-tagine-32"
-    },
-    {
       "handle": "forge-tawa",
       "title": "Forge Tawa",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Tawa",
       "sku": "MT-FOR-TAV-26",
       "claim_status": "CONCEPT_SPEC",
@@ -636,7 +109,7 @@
     {
       "handle": "forge-kadhai",
       "title": "Forge Kadhai",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Kadhai",
       "sku": "MT-FOR-KAD-24",
       "claim_status": "CONCEPT_SPEC",
@@ -686,7 +159,7 @@
     {
       "handle": "forge-saucepan",
       "title": "Forge Saucepan",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Saucepan",
       "sku": "MT-FOR-SAU-20",
       "claim_status": "CONCEPT_SPEC",
@@ -732,124 +205,9 @@
       "productUrl": "/products/forge-saucepan"
     },
     {
-      "handle": "rekha-dinner-plate-28",
-      "title": "Rekhā Dinner Plate",
-      "lineup": "Terre Clay",
-      "product_type": "Dinner plate",
-      "sku": "MT-TER-PLT-28",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "High-fired stoneware",
-      "lining_material": "Vitrified food-contact ceramic glaze",
-      "material_architecture": "High-fired stoneware body + vitrified food-contact glaze + exterior/rim laser register.",
-      "heat_sources": [],
-      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
-      "induction_compatible": false,
-      "care_hypothesis": "Non-abrasive wash; commercial rack-washer durability pending coupon validation.",
-      "care_instructions": "[CONCEPT_SPEC] Non-abrasive wash; commercial rack-washer durability pending coupon validation.",
-      "dishwasher_suitability": "pending_validation",
-      "microwave_suitability": "pending_validation",
-      "food_contact_suitability": "[CONCEPT_SPEC] Unmarked vitrified centre glaze contacts plated food; laser register stays on the outer rim/underside until abrasion-tested.",
-      "concept_thesis": "Gives dining rooms durable, stack-considered stoneware with permanent batch and edition notation instead of printed backstamps or decals that wear away.",
-      "agent_intents": [
-        "dinner plate",
-        "ceramic tableware",
-        "hospitality plate",
-        "laser-marked stoneware"
-      ],
-      "negative_constraints": [
-        "oven broiler use",
-        "deep laser ablation on central knife-contact zone"
-      ],
-      "list_price_gbp": 68,
-      "dimensions": {
-        "diameter_cm": 28
-      },
-      "works_with_kansa": true,
-      "materialCategory": "clay",
-      "ritualTrack": "clay",
-      "productUrl": "/products/rekha-dinner-plate-28"
-    },
-    {
-      "handle": "rekha-condiment-bowl-set",
-      "title": "Rekhā Condiment Bowl Set",
-      "lineup": "Terre Clay",
-      "product_type": "Bowl set",
-      "sku": "MT-TER-BWL-S03",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "High-fired stoneware",
-      "lining_material": "Vitrified stain-resistant interior ceramic glaze",
-      "material_architecture": "Three high-fired stoneware bowls + vitrified interior glaze + laser-marked exterior bands.",
-      "heat_sources": [],
-      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
-      "induction_compatible": false,
-      "care_hypothesis": "Non-abrasive wash; stack only when dry; commercial dishwasher status pending.",
-      "care_instructions": "[CONCEPT_SPEC] Non-abrasive wash; stack only when dry; commercial dishwasher status pending.",
-      "dishwasher_suitability": "pending_validation",
-      "microwave_suitability": "pending_validation",
-      "food_contact_suitability": "[CONCEPT_SPEC] Smooth vitrified interior glaze resists turmeric, chilli oil and tamarind staining pending coupon validation.",
-      "concept_thesis": "Brings traditional Indian condiment cadence to contemporary hospitality tables in a nested, glaze-protected stoneware format.",
-      "agent_intents": [
-        "condiment bowls",
-        "katori set",
-        "chutney bowls",
-        "ceramic set",
-        "hospitality tabletop"
-      ],
-      "negative_constraints": [
-        "direct flame",
-        "commercial dishwasher claim before validation"
-      ],
-      "list_price_gbp": 92,
-      "dimensions": {
-        "capacity_ml": 90
-      },
-      "works_with_kansa": true,
-      "materialCategory": "clay",
-      "ritualTrack": "clay",
-      "productUrl": "/products/rekha-condiment-bowl-set"
-    },
-    {
-      "handle": "rekha-serving-bowl-26",
-      "title": "Rekhā Serving Bowl",
-      "lineup": "Terre Clay",
-      "product_type": "Serving bowl",
-      "sku": "MT-TER-BWL-26",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "High-fired stoneware",
-      "lining_material": "Vitrified interior ceramic glaze",
-      "material_architecture": "High-fired stoneware vessel + smooth interior glaze + rotary laser-marked exterior band.",
-      "heat_sources": [],
-      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
-      "induction_compatible": false,
-      "care_hypothesis": "Hand or gentle rack wash pending commercial cycle testing; never place on a burner.",
-      "care_instructions": "[CONCEPT_SPEC] Hand or gentle rack wash pending commercial cycle testing; never place on a burner.",
-      "dishwasher_suitability": "pending_validation",
-      "microwave_suitability": "pending_validation",
-      "food_contact_suitability": "[CONCEPT_SPEC] Fully glazed interior bowl contacts hot and dressed dishes; exterior band remains outside food contact.",
-      "concept_thesis": "Pairs with the Rekhā Serving Platter to complete deep and flat shared-service silhouettes on the table without competing visually with the dish.",
-      "agent_intents": [
-        "serving bowl",
-        "shared bowl",
-        "ceramic serveware",
-        "hospitality tableware"
-      ],
-      "negative_constraints": [
-        "stovetop or open-flame heating",
-        "unverified dishwasher guarantee"
-      ],
-      "list_price_gbp": 125,
-      "dimensions": {
-        "diameter_cm": 26
-      },
-      "works_with_kansa": true,
-      "materialCategory": "clay",
-      "ritualTrack": "clay",
-      "productUrl": "/products/rekha-serving-bowl-26"
-    },
-    {
       "handle": "forge-seasoning-oil",
       "title": "Forge Seasoning Oil",
-      "lineup": "Forge Hybrid",
+      "lineup": "Maintenance",
       "product_type": "Cookware care oil",
       "sku": "MT-FOR-OIL-250",
       "claim_status": "CONCEPT_SPEC",
@@ -888,7 +246,7 @@
     {
       "handle": "forge-care-ritual-kit",
       "title": "Forge Care Ritual Kit",
-      "lineup": "Forge Hybrid",
+      "lineup": "Maintenance",
       "product_type": "Cookware care kit",
       "sku": "MT-FOR-KIT-C01",
       "claim_status": "CONCEPT_SPEC",
@@ -924,7 +282,7 @@
     {
       "handle": "forge-relay-lid-26",
       "title": "Forge Relay Skillet Lid",
-      "lineup": "Forge Hybrid",
+      "lineup": "Maintenance",
       "product_type": "Replacement lid",
       "sku": "MT-FOR-LID-26",
       "claim_status": "CONCEPT_SPEC",
@@ -965,7 +323,7 @@
     {
       "handle": "forge-relay-lid-30",
       "title": "Forge Relay Wide Tava Lid",
-      "lineup": "Forge Hybrid",
+      "lineup": "Maintenance",
       "product_type": "Replacement lid",
       "sku": "MT-FOR-LID-30",
       "claim_status": "CONCEPT_SPEC",
@@ -1004,52 +362,9 @@
       "productUrl": "/products/forge-relay-lid-30"
     },
     {
-      "handle": "terre-bamboo-steamer-24",
-      "title": "Terre Bamboo Steamer",
-      "lineup": "Terre Clay",
-      "product_type": "Bamboo steamer",
-      "sku": "MT-TER-STM-24",
-      "claim_status": "CONCEPT_SPEC",
-      "primary_material": "Untreated woven bamboo baskets with glazed stoneware docking ring",
-      "lining_material": "Unlacquered natural bamboo slats + vitrified ceramic docking collar",
-      "material_architecture": "Two untreated woven bamboo baskets + woven dome lid + high-fired glazed stoneware docking ring.",
-      "heat_sources": [],
-      "heat_compatibility": "Non-burner item (CONCEPT_SPEC: not rated for direct stovetop heating).",
-      "induction_compatible": false,
-      "care_hypothesis": "Hand wash quickly in warm water without soaking; air-dry completely upright before storing.",
-      "care_instructions": "[CONCEPT_SPEC] Hand wash quickly in warm water without soaking; air-dry completely upright before storing.",
-      "dishwasher_suitability": "hand_wash_only",
-      "microwave_suitability": "not_applicable",
-      "food_contact_suitability": "[CONCEPT_SPEC] Untreated food-contact bamboo slats and lead-free glazed ceramic ring; zero synthetic lacquers or glues in the steam path.",
-      "concept_thesis": "Raw bamboo rims char and warp when perched directly inside hot metal walls; a dedicated ceramic docking collar protects the basket and turns the Kadai into a multi-tier steamer.",
-      "agent_intents": [
-        "bamboo steamer",
-        "dumpling steamer",
-        "kadai steamer",
-        "two-tier steamer"
-      ],
-      "negative_constraints": [
-        "dishwasher use",
-        "soaking in water",
-        "direct burner contact without water vessel"
-      ],
-      "list_price_gbp": 88,
-      "dimensions": {
-        "diameter_cm": 24
-      },
-      "quick_summary": "A 24 cm woven bamboo steamer with a ceramic docking ring.",
-      "lineup_copy": "Stack the baskets over a compatible pot to cook dumplings and greens in rising steam. The docking ring supports the lower basket.",
-      "suggested_use_case": "Line the basket, space dumplings apart and steam over gently simmering water.",
-      "works_with_kansa": true,
-      "lid_compatibility": "Uses its bamboo basket cover. Forge pot pairings await seating and steam-clearance checks.",
-      "materialCategory": "accessory",
-      "ritualTrack": "metal",
-      "productUrl": "/products/terre-bamboo-steamer-24"
-    },
-    {
       "handle": "forge-frying-pan",
       "title": "Forge Frying Pan",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Frying Pan",
       "sku": "MT-FOR-FRY-20",
       "claim_status": "CONCEPT_SPEC",
@@ -1098,7 +413,7 @@
     {
       "handle": "forge-saucier",
       "title": "Forge High-Wall Saucier",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "High-Wall Saucier",
       "sku": "MT-FOR-SCR-20",
       "claim_status": "CONCEPT_SPEC",
@@ -1148,7 +463,7 @@
     {
       "handle": "forge-saute",
       "title": "Forge Sauté Pan",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Sauté Pan",
       "sku": "MT-FOR-STE-24",
       "claim_status": "CONCEPT_SPEC",
@@ -1196,7 +511,7 @@
     {
       "handle": "forge-stockpot",
       "title": "Forge Deep Stockpot",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Deep Stockpot",
       "sku": "MT-FOR-STK-24",
       "claim_status": "CONCEPT_SPEC",
@@ -1245,7 +560,7 @@
     {
       "handle": "forge-universal-lid-20",
       "title": "Forge Universal Lid · 20 cm",
-      "lineup": "Forge Hybrid",
+      "lineup": "Maintenance",
       "product_type": "Replacement lid",
       "sku": "MT-FOR-LID-20",
       "claim_status": "CONCEPT_SPEC",
@@ -1288,7 +603,7 @@
     {
       "handle": "forge-universal-lid-24",
       "title": "Forge Universal Lid · 24 cm",
-      "lineup": "Forge Hybrid",
+      "lineup": "Maintenance",
       "product_type": "Replacement lid",
       "sku": "MT-FOR-LID-24",
       "claim_status": "CONCEPT_SPEC",
@@ -1331,7 +646,7 @@
     {
       "handle": "forge-universal-lid-28",
       "title": "Forge Universal Lid · 28 cm",
-      "lineup": "Forge Hybrid",
+      "lineup": "Maintenance",
       "product_type": "Replacement lid",
       "sku": "MT-FOR-LID-28",
       "claim_status": "CONCEPT_SPEC",
@@ -1374,7 +689,7 @@
     {
       "handle": "forge-set-solo-couple-grouped-preview",
       "title": "Forge Set — Solo / Couple",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Cookware set",
       "sku": "MT-FOR-SET-SOLO",
       "claim_status": "CONCEPT_SPEC",
@@ -1428,7 +743,7 @@
     {
       "handle": "forge-set-family-standard-grouped-preview",
       "title": "Forge Set — Family Standard",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Cookware set",
       "sku": "MT-FOR-SET-FAM",
       "claim_status": "CONCEPT_SPEC",
@@ -1484,7 +799,7 @@
     {
       "handle": "forge-set-entertainer-grouped-preview",
       "title": "Forge Set — Entertainer",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Cookware set",
       "sku": "MT-FOR-SET-ENT",
       "claim_status": "CONCEPT_SPEC",
@@ -1538,7 +853,7 @@
     {
       "handle": "forge-set-european-grouped-preview",
       "title": "Forge Cuisine Kit — European",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Cookware set",
       "sku": "MT-FOR-SET-EUR",
       "claim_status": "CONCEPT_SPEC",
@@ -1594,7 +909,7 @@
     {
       "handle": "forge-set-asian-grouped-preview",
       "title": "Forge Cuisine Kit — Asian",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Cookware set",
       "sku": "MT-FOR-SET-ASN",
       "claim_status": "CONCEPT_SPEC",
@@ -1648,7 +963,7 @@
     {
       "handle": "forge-set-everyday-grouped-preview",
       "title": "Forge Cuisine Kit — All-in-One Everyday",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Cookware set",
       "sku": "MT-FOR-SET-DAY",
       "claim_status": "CONCEPT_SPEC",
@@ -1704,7 +1019,7 @@
     {
       "handle": "forge-set-full-house-grouped-preview",
       "title": "Forge Set — Full House Master Collection",
-      "lineup": "Forge Hybrid",
+      "lineup": "Forge",
       "product_type": "Cookware set",
       "sku": "MT-FOR-SET-FUL",
       "claim_status": "CONCEPT_SPEC",
@@ -1772,7 +1087,7 @@
     {
       "handle": "forge-universal-lid-16",
       "title": "Forge Universal Lid · 16 cm",
-      "lineup": "Forge Hybrid",
+      "lineup": "Maintenance",
       "product_type": "Replacement lid",
       "sku": "MT-FOR-LID-16",
       "claim_status": "CONCEPT_SPEC",
@@ -1815,7 +1130,7 @@
     {
       "handle": "forge-universal-lid-32",
       "title": "Forge Universal Lid · 32 cm",
-      "lineup": "Forge Hybrid",
+      "lineup": "Maintenance",
       "product_type": "Replacement lid",
       "sku": "MT-FOR-LID-32",
       "claim_status": "CONCEPT_SPEC",
@@ -1858,7 +1173,7 @@
     {
       "handle": "forge-stainless-steel-maintenance-kit",
       "title": "Forge Stainless Steel Maintenance Kit",
-      "lineup": "Forge Hybrid",
+      "lineup": "Maintenance",
       "product_type": "Cookware care kit",
       "sku": "MT-FOR-KIT-SS1",
       "claim_status": "CONCEPT_SPEC",

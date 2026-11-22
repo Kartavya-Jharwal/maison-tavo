@@ -168,6 +168,9 @@ export const ProductSpec = z.object({
   bundle_components: z.array(z.string()).optional(),
   /** Vessel shape key for Forge matrix filtering. */
   vessel_shape: z.string().optional(),
+  size_family: z.string().optional(),
+  included_lids: z.array(z.string()).optional(),
+  search_keywords: z.array(z.string()).optional(),
   /** 5–6 shot media plan across Human / Engineer / Machine modes. */
   media_plan: z.array(MediaShot).optional(),
 });

@@ -7,8 +7,6 @@
   <div
     id="predictive-search-results"
     class="predictive-search-dropdown"
-    role="listbox"
-    aria-label="{{ 'content.search_results_label' | t }}"
     data-transition-container
     style="--color-shadow: rgb(var(--color-foreground-rgb) / var(--opacity-10-25));"
   >
@@ -28,7 +26,7 @@
 
       <div
         class="visually-hidden"
-        role="status"
+        data-search-status
       >
         {%- if predictive_search.performed and search_results_count > 0 -%}
           {{ 'accessibility.search_results_count' | t: count: search_results_count, query: predictive_search.terms }}
@@ -48,7 +46,6 @@
               <li
                 class="predictive-search-results__card--query"
                 ref="resultsItems[]"
-                on:keydown="/onSearchKeyDown"
               >
                 <a
                   class="pills__pill predictive-search-results__pill"

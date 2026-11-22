@@ -16,20 +16,13 @@
   style="{% render 'spacing-padding', settings: section.settings %}; --border-bottom-width: {{ section.settings.divider_width }}px;{% if section.settings.divider_color != blank %} --color-border: {{ section.settings.divider_color }};{% endif %}"
 >
   {% liquid
-    assign autoplay = false
     assign show_arrows = false
     if section.blocks.size > 1
-      assign autoplay = true
       assign show_arrows = true
     endif
   %}
 
-  <announcement-bar-component
-    class="announcement-bar__slider"
-    {% if autoplay == true %}
-      autoplay="{{ section.settings.speed }}" aria-live="polite"
-    {% endif %}
-  >
+  <announcement-bar-component class="announcement-bar__slider">
     {% if show_arrows %}
       {% render 'slideshow-arrows', icon_style: 'chevron' %}
     {% endif %}
@@ -37,6 +30,9 @@
     <div class="announcement-bar__slides">
       {% content_for 'blocks' %}
     </div>
+    {% if show_arrows %}
+      <span class="visually-hidden" aria-live="polite" aria-atomic="true" ref="announcementStatus"></span>
+    {% endif %}
   </announcement-bar-component>
 </aside>
 
@@ -57,11 +53,19 @@
   }
 
   .announcement-bar__slides {
+    width: 100%;
+    max-width: 680px;
+    margin-inline: auto;
+  }
+
+  announcement-bar-component[data-enhanced] .announcement-bar__slides {
     display: grid;
     grid: [stack] auto / [stack] auto;
     width: calc(100% - var(--button-size) * 2);
-    max-width: 680px;
-    margin-inline: auto;
+  }
+
+  announcement-bar-component:not([data-enhanced]) slideshow-arrows {
+    display: none;
   }
 
   .announcement-bar__slides > * {
@@ -137,15 +141,6 @@
     "groups": ["header"]
   },
   "settings": [
-    {
-      "type": "range",
-      "id": "speed",
-      "label": "t:settings.scroll_speed",
-      "min": 2,
-      "max": 10,
-      "default": 5,
-      "unit": "sec"
-    },
     {
       "type": "header",
       "content": "t:content.appearance"

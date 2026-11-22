@@ -44,12 +44,18 @@ export class CartItemsComponent extends createViewEventElement(Component) {
   }
 
   #debouncedOnChange = debounce(
-    /** @param {Event} event */
-    (event) => {
-      if (event instanceof QuantitySelectorUpdateEvent) this.#onQuantityChange(event);
-    },
+    /** @param {QuantitySelectorUpdateEvent} event */
+    (event) => this.#onQuantityChange(event),
     300
   );
+  /** @param {Event} event */
+  #handleQuantityChange = (event) => {
+    // Ignore other quantity selectors before scheduling: otherwise their events cancel
+    // this cart's pending update even though they are rejected after the debounce.
+    if (event instanceof QuantitySelectorUpdateEvent && event.target instanceof Node && this.contains(event.target)) {
+      this.#debouncedOnChange(event);
+    }
+  };
   /** @type {Promise<any> | null} */
   #pendingCartFetch = null;
 
@@ -139,7 +145,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
     super.connectedCallback();
 
     document.addEventListener(StandardEvents.cartLinesUpdate, this.#handleCartUpdate);
-    document.addEventListener(ThemeEvents.quantitySelectorUpdate, this.#debouncedOnChange);
+    document.addEventListener(ThemeEvents.quantitySelectorUpdate, this.#handleQuantityChange);
     document.addEventListener(StandardEvents.cartDiscountUpdate, this.#handleDiscountUpdate);
     document.addEventListener(StandardEvents.cartNoteUpdate, this.#handleNoteUpdate);
     window.addEventListener('pageshow', this.#handlePageShow);
@@ -149,7 +155,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
     super.disconnectedCallback();
 
     document.removeEventListener(StandardEvents.cartLinesUpdate, this.#handleCartUpdate);
-    document.removeEventListener(ThemeEvents.quantitySelectorUpdate, this.#debouncedOnChange);
+    document.removeEventListener(ThemeEvents.quantitySelectorUpdate, this.#handleQuantityChange);
     document.removeEventListener(StandardEvents.cartDiscountUpdate, this.#handleDiscountUpdate);
     document.removeEventListener(StandardEvents.cartNoteUpdate, this.#handleNoteUpdate);
     window.removeEventListener('pageshow', this.#handlePageShow);
@@ -245,49 +251,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
    * @param {number} line - The line item index.
    */
   onLineItemRemove(line) {
-    this.updateQuantity({
-      line,
-      quantity: 0,
-      action: 'clear',
-    });
-
-    const cartItemRowToRemove = this.refs.cartItemRows[line - 1];
-
-    if (!cartItemRowToRemove) return;
-
-    const rowsToRemove = [
-      cartItemRowToRemove,
-      // Get all nested lines of the row to remove
-      ...this.refs.cartItemRows.filter((row) => row.dataset.parentKey === cartItemRowToRemove.dataset.key),
-    ];
-
-    // If the cart item row is the last row, optimistically trigger the cart empty state
-    const isEmptyCart = rowsToRemove.length == this.refs.cartItemRows.length;
-
-    const template = document.getElementById('empty-cart-template');
-    if (isEmptyCart && template instanceof HTMLTemplateElement) {
-      const clone = document.importNode(template.content, true);
-
-      startViewTransition(() => {
-        document.getElementById('cart-drawer-heading')?.remove();
-        this.replaceChildren(clone);
-      }, [this.isDrawer ? 'empty-cart-drawer' : 'empty-cart-page']);
-
-      return;
-    }
-
-    // Add class to the row to trigger the animation
-    rowsToRemove.forEach((row) => {
-      const remove = () => row.remove();
-
-      if (prefersReducedMotion()) return remove();
-
-      row.style.setProperty('--row-height', `${row.clientHeight}px`);
-      row.classList.add('removing');
-
-      // Remove the row after the animation ends
-      onAnimationEnd(row, remove);
-    });
+    this.updateQuantity({ line, quantity: 0, action: 'clear' });
   }
 
   /**
@@ -298,6 +262,9 @@ export class CartItemsComponent extends createViewEventElement(Component) {
    * @param {string} config.action - The action.
    */
   async updateQuantity(config) {
+    const focusedBeforeUpdate = document.activeElement;
+    const removedRow = config.quantity === 0 ? this.refs.cartItemRows?.[config.line - 1] : null;
+    const restoreRemovalFocus = Boolean(removedRow && focusedBeforeUpdate && removedRow.contains(focusedBeforeUpdate));
     const cartPerformaceUpdateMarker = cartPerformance.createStartingMarker(`${config.action}:user-action`);
     const deferredUpdatePromise = CartLinesUpdateEvent.createPromise();
     let completeQuantityUpdate = () => {};
@@ -350,9 +317,13 @@ export class CartItemsComponent extends createViewEventElement(Component) {
 
       resetShimmer(this);
 
-      if (parsedResponseText.errors) {
-        this.#handleCartError(line, parsedResponseText);
-        deferredUpdatePromise.reject(new Error(parsedResponseText.errors));
+      if (!response.ok || parsedResponseText.errors) {
+        const fallback = this.dataset.cartUpdateError || 'Unable to update your bag. Please try again.';
+        const serverMessage = [parsedResponseText.description, parsedResponseText.errors, parsedResponseText.message]
+          .find((message) => typeof message === 'string' && message.trim());
+        const message = serverMessage || fallback;
+        this.#handleCartError(line, { errors: message }, response.status >= 500 ? 'SERVICE_UNAVAILABLE' : 'INVALID');
+        deferredUpdatePromise.reject(new Error(message));
         return;
       }
 
@@ -377,6 +348,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
         });
 
         await this.#refreshCartSection();
+        if (restoreRemovalFocus) this.#restoreFocusAfterRemoval(config.line, focusedBeforeUpdate);
         return;
       }
 
@@ -403,16 +375,13 @@ export class CartItemsComponent extends createViewEventElement(Component) {
       });
 
       this.#updateCartQuantitySelectorButtonStates();
+      if (restoreRemovalFocus) this.#restoreFocusAfterRemoval(config.line, focusedBeforeUpdate);
     } catch (error) {
       console.error(error);
+      resetShimmer(this);
       deferredUpdatePromise.reject(error);
-
-      this.dispatchEvent(
-        new CartErrorEvent({
-          error: error?.message || 'Failed to update cart',
-          code: 'SERVICE_UNAVAILABLE',
-        })
-      );
+      const message = this.dataset.cartUpdateError || 'Unable to update your bag. Please try again.';
+      this.#handleCartError(config.line, { errors: message }, 'SERVICE_UNAVAILABLE');
     } finally {
       try {
         this.#enableCartItems();
@@ -424,33 +393,46 @@ export class CartItemsComponent extends createViewEventElement(Component) {
     }
   }
 
+  /** @param {number} line @param {Element | null} previousFocus */
+  #restoreFocusAfterRemoval(line, previousFocus) {
+    if (document.activeElement !== document.body && document.activeElement !== previousFocus) return;
+    if (previousFocus?.isConnected) return;
+    const rows = this.refs.cartItemRows ?? [];
+    const nextRow = rows[Math.min(line - 1, rows.length - 1)];
+    const nextControl = nextRow?.querySelector('button.cart-items__remove:not([hidden]):not([disabled]), input:not([disabled])');
+    const fallback = this.querySelector('.cart-items__empty-button') || document.querySelector('#cart-drawer-heading');
+    const target = nextControl || fallback;
+    if (target instanceof HTMLElement) {
+      if (!target.matches('a, button, input, select, textarea, [tabindex]')) target.tabIndex = -1;
+      target.focus();
+    }
+  }
+
   /**
    * Handles the cart error.
    * @param {number} line - The line.
    * @param {Object} parsedResponseText - The parsed response text.
    * @param {string} parsedResponseText.errors - The errors.
+   * @param {string} [code] - The error category.
    */
-  #handleCartError = (line, parsedResponseText) => {
-    const quantitySelector = this.refs.quantitySelectors[line - 1];
+  #handleCartError = (line, parsedResponseText, code = 'INVALID') => {
+    const quantitySelector = this.refs.quantitySelectors?.[line - 1];
     const quantityInput = quantitySelector?.querySelector('input');
 
-    if (!quantityInput) throw new Error('Quantity input not found');
-
-    quantityInput.value = quantityInput.defaultValue;
+    if (quantityInput) quantityInput.value = quantityInput.defaultValue;
 
     const cartItemError = this.refs[`cartItemError-${line}`];
     const cartItemErrorContainer = this.refs[`cartItemErrorContainer-${line}`];
 
-    if (!(cartItemError instanceof HTMLElement)) throw new Error('Cart item error not found');
-    if (!(cartItemErrorContainer instanceof HTMLElement)) throw new Error('Cart item error container not found');
-
-    cartItemError.textContent = parsedResponseText.errors;
-    cartItemErrorContainer.classList.remove('hidden');
+    if (cartItemError instanceof HTMLElement && cartItemErrorContainer instanceof HTMLElement) {
+      cartItemError.textContent = parsedResponseText.errors;
+      cartItemErrorContainer.classList.remove('hidden');
+    }
 
     this.dispatchEvent(
       new CartErrorEvent({
         error: parsedResponseText.errors || 'Cart update failed',
-        code: 'INVALID',
+        code,
       })
     );
   };

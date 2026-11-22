@@ -51,7 +51,8 @@
       data-product-url="{{ product.url }}"
       on:submit="/handleSubmit"
       data-quantity-default="{% if product.selected_or_first_available_variant.quantity_rule.min %}{{ product.selected_or_first_available_variant.quantity_rule.min }}{% else %}1{% endif %}"
-      data-quantity-error-max="{{ 'products.product.quantity_error_max' | t }}"
+      data-quantity-error-max="{{ 'products.product.quantity_error_max' | t | escape }}"
+      data-cart-error="{{ 'products.product.add_to_cart_retry' | t | escape }}"
     >
       <div
         class="visually-hidden"
@@ -76,7 +77,6 @@
           style="{% render 'spacing-style', settings: block_settings %}"
           ref="productFormButtons"
         >
-          {%- unless block_settings.gift_card_form and product.gift_card? -%}
             <span
               class="product-form-text__error hidden"
               ref="addToCartTextError"
@@ -84,8 +84,8 @@
               <span class="svg-wrapper">
                 {{- 'icon-error.svg' | inline_asset_content -}}
               </span>
+              <span data-product-form-error-message></span>
             </span>
-          {%- endunless -%}
 
           {%- liquid
             assign has_quantity_rules = false

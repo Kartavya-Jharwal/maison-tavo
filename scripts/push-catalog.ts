@@ -26,8 +26,9 @@
  * Usage (from repo root):
  *   bun scripts/push-catalog.ts                    # dry-run seed sync + live 5-stage diagnostic
  *   bun scripts/push-catalog.ts --offline          # pure offline dry-run against retained ID map
- *   bun scripts/push-catalog.ts --apply            # create/refresh drafts, metafields, taxonomy & collections
- *   bun scripts/push-catalog.ts --apply --publish  # activate + publish to Online Store
+ *   bun scripts/push-catalog.ts --apply --store <legacy-map-domain> # legacy seed sync only
+ *   bun scripts/push-catalog.ts --apply --publish --store <legacy-map-domain> # legacy workflow
+ *   bun scripts/push-catalog.ts --forge-drafts --store <domain> [--apply] # reconcile clarified Forge inventory only
  */
 
 import {spawnSync} from 'node:child_process';
@@ -36,6 +37,13 @@ import {join} from 'node:path';
 import {readFileSync, existsSync, writeFileSync, unlinkSync} from 'node:fs';
 import {
   ShopifyIdMap,
+  ALL_FORGE_LAUNCH_SKUS,
+  forgeProductFamilies,
+  maintenanceGroups,
+  maintenanceCategory,
+  forgeBundleProducts,
+  chulhaProductFamilies,
+  chulhaCategory,
   seedCatalog,
   type Lineup,
   type ProductSpec,
@@ -45,10 +53,18 @@ import {
 const STORE =
   flagValue('--store') ??
   process.env.SHOPIFY_FLAG_STORE ??
-  'maison-tavo.myshopify.com';
+  'maison-tavo-9pyrkr0c.myshopify.com';
 const APPLY = process.argv.includes('--apply');
 const PUBLISH = process.argv.includes('--publish');
 const OFFLINE = process.argv.includes('--offline');
+const GROUP_FORGE = process.argv.includes('--group-forge');
+const FINISH_MOCK_RELEASE = process.argv.includes('--finish-mock-release');
+const MOCK_RELEASE = process.argv.includes('--mock-release');
+const AUDIT_RELEASE = process.argv.includes('--audit-release');
+const STAGE_CHULHA = process.argv.includes('--stage-chulha');
+const FORGE_DRAFTS = process.argv.includes('--forge-drafts') || GROUP_FORGE || STAGE_CHULHA || AUDIT_RELEASE || MOCK_RELEASE || FINISH_MOCK_RELEASE;
+const CONVERT_LEGACY_FORGE = process.argv.includes('--convert-legacy-forge');
+const LEGACY_FORGE_VESSELS = new Set(['MT-FOR-TAV-26', 'MT-FOR-TAV-30', 'MT-FOR-KAD-24', 'MT-FOR-SAU-20']);
 const API_VERSION = '2026-04';
 const ONLINE_STORE_APP_HANDLE = 'online_store';
 const ID_MAP_PATH = join(import.meta.dir, '..', 'data', 'shopify-id-map.json');
@@ -120,6 +136,7 @@ const TABLEWARE_SKUS = new Set([
 ]);
 
 function categoryFor(spec: ProductSpec): Category {
+  if (spec.vessel_shape === 'lid' || spec.vessel_shape === 'set' || spec.sku === 'MT-FOR-KIT-SS1') return 'Care & Sets';
   if (CARE_SKUS.has(spec.sku)) return 'Care & Sets';
   if (TABLEWARE_SKUS.has(spec.sku)) return 'Tableware & Pottery';
   return 'Cookware';
@@ -193,6 +210,10 @@ type MetafieldDefSpec = {
 
 /** Repeatable structured PRODUCT metafields under namespace `specs`. */
 export const SPECS_DEFINITIONS: MetafieldDefSpec[] = [
+  {key: 'size_family', name: 'Size family', type: 'single_line_text_field', description: 'Groups compatible listings for diameter navigation.'},
+  {key: 'size_options', name: 'Size options', type: 'json', description: 'Sibling product handles and their inner rim diameters in centimetres.'},
+  {key: 'search_keywords', name: 'Search keywords', type: 'list.single_line_text_field', description: 'Culinary terms and alternate names for catalogue discovery.'},
+  {key: 'included_lids', name: 'Included lids', type: 'list.single_line_text_field', description: 'Lid SKUs included in a curated Forge set.'},
   {
     key: 'lineup',
     name: 'Lineup',
@@ -426,7 +447,14 @@ function loadIdMap(): ShopifyIdMapType {
       collections_by_handle: {},
     };
   }
-  return ShopifyIdMap.parse(JSON.parse(readFileSync(ID_MAP_PATH, 'utf8')));
+  const map = ShopifyIdMap.parse(JSON.parse(readFileSync(ID_MAP_PATH, 'utf8')));
+  if (map.store !== STORE) {
+    throw new Error(
+      `Retained catalogue ID map belongs to ${map.store}, not ${STORE}. ` +
+      'Choose the matching --store or use the grouped release workflow; do not reuse legacy IDs across shops.',
+    );
+  }
+  return map;
 }
 
 function saveIdMap(map: ShopifyIdMapType): void {
@@ -438,7 +466,7 @@ function shopifyEnv(): NodeJS.ProcessEnv {
   return {
     ...process.env,
     SHOPIFY_CLI_AGENT_INFO:
-      process.env.SHOPIFY_CLI_AGENT_INFO ?? 'n:cursor|v:none|p:google|m:gemini-4-carbon',
+      process.env.SHOPIFY_CLI_AGENT_INFO ?? 'n:maison-tavo-catalog|v:none|p:none|m:none',
     SHOPIFY_CLI_AGENT_IDS:
       process.env.SHOPIFY_CLI_AGENT_IDS ?? 'r:push-catalog',
   };
@@ -473,6 +501,7 @@ function loadCliIdentityToken(): string | undefined {
     const accounts = root['accounts.shopify.com'];
     if (!accounts) return undefined;
     const sessionId = conf.currentSessionId ?? Object.keys(accounts)[0];
+    if (!sessionId) return undefined;
     const token = accounts[sessionId]?.identity?.accessToken;
     if (!token) return undefined;
     const expiresAt = accounts[sessionId]?.identity?.expiresAt;
@@ -572,7 +601,7 @@ async function executeGraphqlCli(
   variables?: Record<string, unknown>,
   {mutate = false}: {mutate?: boolean} = {},
 ): Promise<GraphqlResult> {
-  const storeDomain = await storeExecuteDomain();
+  const storeDomain = FORGE_DRAFTS ? STORE : await storeExecuteDomain();
   const stamp = `${process.pid}-${Date.now()}`;
   const queryFile = join(tmpdir(), `maison-push-catalog-${stamp}.graphql`);
   const variableFile = variables
@@ -601,11 +630,12 @@ async function executeGraphqlCli(
   }
 
   try {
-    const result = spawnSync('shopify', args, {
+    const executable = Bun.which('shopify') ?? 'shopify';
+    const result = spawnSync(executable, args, {
       encoding: 'utf8',
       env: shopifyEnv(),
       maxBuffer: 16 * 1024 * 1024,
-      shell: process.platform === 'win32',
+      shell: /\.cmd$/i.test(executable),
     });
 
     if (result.status !== 0) {
@@ -641,7 +671,7 @@ async function executeGraphql(
   variables?: Record<string, unknown>,
   opts: {mutate?: boolean; forceCli?: boolean} = {},
 ): Promise<GraphqlResult> {
-  if (!opts.forceCli && adminToken()) {
+  if (!FORGE_DRAFTS && !opts.forceCli && adminToken()) {
     return executeGraphqlDirect(query, variables);
   }
   return executeGraphqlCli(query, variables, opts);
@@ -808,6 +838,17 @@ export function productMetafields(spec: ProductSpec): Array<{
       value: spec.media_plan.map((shot) => `[${shot.mode}] ${shot.shot}`).join('\n'),
     });
   }
+  for (const [key, values] of [['search_keywords', spec.search_keywords], ['included_lids', spec.included_lids]] as const) {
+    if (values?.length) fields.push({namespace: 'specs', key, type: 'list.single_line_text_field', value: listValue(values)});
+  }
+  if (spec.size_family) {
+    fields.push({namespace: 'specs', key: 'size_family', type: 'single_line_text_field', value: spec.size_family});
+    if (spec.dimensions.diameter_cm) {
+      const sizes = seedCatalog.filter((s) => s.size_family === spec.size_family && s.dimensions.diameter_cm)
+        .map((s) => ({handle: s.handle, diameter_cm: s.dimensions.diameter_cm!})).sort((a,b) => a.diameter_cm - b.diameter_cm);
+      fields.push({namespace: 'specs', key: 'size_options', type: 'json', value: JSON.stringify(sizes)});
+    }
+  }
   return fields;
 }
 
@@ -853,7 +894,7 @@ async function resolveTaxonomyCategories(
 
 async function existingDefinitionKeys(): Promise<Set<string>> {
   const query = `query SpecsDefs($namespace: String!) {
-    metafieldDefinitions(first: 50, ownerType: PRODUCT, namespace: $namespace) {
+    metafieldDefinitions(first: 250, ownerType: PRODUCT, namespace: $namespace) {
       nodes { key namespace }
     }
   }`;
@@ -878,12 +919,33 @@ type ExistingProduct = {
   sku?: string;
 };
 
+async function catalogProductPages<T>(query: string, variables: Record<string, unknown> = {}): Promise<T[]> {
+  const nodes: T[] = [];
+  let cursor: string | null = null;
+  do {
+    const input = {query: 'vendor:"Maison Tavo"', ...variables, after: cursor};
+    let result: GraphqlResult;
+    try {
+      result = await executeGraphql(query, input);
+      assertNoErrors('Read catalog products', result);
+    } catch {
+      result = await executeGraphql(query, input, {forceCli: true});
+      assertNoErrors('Read catalog products', result);
+    }
+    const page = result.data?.products as {nodes: T[]; pageInfo: {hasNextPage: boolean; endCursor: string}};
+    nodes.push(...page.nodes);
+    cursor = page.pageInfo.hasNextPage ? page.pageInfo.endCursor : null;
+  } while (cursor);
+  return nodes;
+}
+
 async function existingProductsIndex(): Promise<{
   byHandle: Map<string, ExistingProduct>;
   bySku: Map<string, ExistingProduct>;
 }> {
-  const query = `query CatalogProducts($query: String!) {
-    products(first: 50, query: $query) {
+  const query = `query CatalogProducts($query: String!, $after: String) {
+    products(first: 50, query: $query, after: $after) {
+      pageInfo { hasNextPage endCursor }
       nodes {
         id
         handle
@@ -899,28 +961,13 @@ async function existingProductsIndex(): Promise<{
       }
     }
   }`;
-  const result = await executeGraphql(query, {query: 'vendor:"Maison Tavo"'});
-  assertNoErrors('products', result);
-  const nodes =
-    (
-      result.data?.products as
-        | {
-            nodes: Array<{
-              id: string;
-              handle: string;
-              status: string;
-              category?: {id: string; fullName: string} | null;
-              variants: {
-                nodes: Array<{
-                  id: string;
-                  sku?: string | null;
-                  inventoryItem?: {id: string} | null;
-                }>;
-              };
-            }>;
-          }
-        | undefined
-    )?.nodes ?? [];
+  const nodes = await catalogProductPages<{
+    id: string;
+    handle: string;
+    status: string;
+    category?: {id: string} | null;
+    variants: {nodes: Array<{id: string; sku?: string | null; inventoryItem?: {id: string} | null}>};
+  }>(query);
 
   const byHandle = new Map<string, ExistingProduct>();
   const bySku = new Map<string, ExistingProduct>();
@@ -987,6 +1034,7 @@ async function createDefinition(
         description: def.description,
         ownerType: 'PRODUCT',
         pin: false,
+        ...(FORGE_DRAFTS && def.key !== 'media_plan' ? {access: {storefront: 'PUBLIC_READ'}} : {}),
       },
     },
     {mutate: true},
@@ -1024,6 +1072,8 @@ async function setVariantFields(
   productId: string,
   variantId: string,
   spec: ProductSpec,
+  priceOnly = false,
+  requireComponents = false,
 ): Promise<{variantId: string; inventoryItemId?: string}> {
   const variantMutation = `mutation SetVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
     productVariantsBulkUpdate(productId: $productId, variants: $variants) {
@@ -1069,7 +1119,7 @@ async function setVariantFields(
     variantMutation,
     {
       productId,
-      variants: [variantInput],
+      variants: [priceOnly ? {id: variantId, price: spec.price_usd.toFixed(2), ...(requireComponents ? {requiresComponents: true} : {})} : variantInput],
     },
     {mutate: true},
   );
@@ -1097,6 +1147,7 @@ async function updateProduct(
   existing: ExistingProduct,
   spec: ProductSpec,
   categoryId?: string,
+  preserveInventory = false,
 ): Promise<{
   id: string;
   variantId?: string;
@@ -1142,7 +1193,7 @@ async function updateProduct(
     vendor: spec.vendor,
     productType: spec.product_type,
     tags: spec.tags,
-    status: nextStatus,
+    ...(preserveInventory ? {} : {status: nextStatus}),
     seo: {
       title: spec.seo_title ?? spec.title,
       description: spec.seo_description ?? '',
@@ -1178,7 +1229,7 @@ async function updateProduct(
   if (!variantId) {
     throw new Error(`productUpdate ${spec.handle}: missing default variant`);
   }
-  const varInfo = await setVariantFields(existing.id, variantId, spec);
+  const varInfo = await setVariantFields(existing.id, variantId, spec, preserveInventory);
 
   console.log(
     `  updated ${spec.handle} → ${updated.product.id} / ${varInfo.variantId} (${updated.product.status})`,
@@ -1318,7 +1369,7 @@ async function ensureCollections(
     const productIds = col
       .products()
       .map((p) => productIdsByHandle.get(p.handle))
-      .filter((id): id is string => Boolean(id) && !id.startsWith('dry-run://'));
+      .filter((id): id is string => typeof id === 'string' && !id.startsWith('dry-run://'));
 
     if (!APPLY) {
       const verb = existing.has(col.handle) ? 'update' : 'create';
@@ -1606,8 +1657,9 @@ async function diagnoseCatalog(idMap: ShopifyIdMapType, publicationId?: string):
     publicationId ??
     process.env.SHOPIFY_ONLINE_STORE_PUBLICATION_ID ??
     'gid://shopify/Publication/369593221489';
-  const query = `query DiagnoseCatalog($query: String!, $publicationId: ID!) {
-    products(first: 50, query: $query) {
+  const query = `query DiagnoseCatalog($query: String!, $publicationId: ID!, $after: String) {
+    products(first: 50, query: $query, after: $after) {
+      pageInfo { hasNextPage endCursor }
       nodes {
         id
         handle
@@ -1652,28 +1704,6 @@ async function diagnoseCatalog(idMap: ShopifyIdMapType, publicationId?: string):
     }
   }`;
 
-  let result: GraphqlResult;
-  try {
-    result = await executeGraphql(query, {
-      query: 'vendor:"Maison Tavo"',
-      publicationId: channelId,
-    });
-    if (result.errors?.length) {
-      result = await executeGraphql(
-        query,
-        {query: 'vendor:"Maison Tavo"', publicationId: channelId},
-        {forceCli: true},
-      );
-    }
-  } catch {
-    result = await executeGraphql(
-      query,
-      {query: 'vendor:"Maison Tavo"', publicationId: channelId},
-      {forceCli: true},
-    );
-  }
-  assertNoErrors('diagnoseCatalog', result);
-
   type DiagNode = {
     id: string;
     handle: string;
@@ -1707,7 +1737,7 @@ async function diagnoseCatalog(idMap: ShopifyIdMapType, publicationId?: string):
     primary_material?: {value: string} | null;
   };
 
-  const nodes = ((result.data?.products as {nodes: DiagNode[]} | undefined)?.nodes) ?? [];
+  const nodes = await catalogProductPages<DiagNode>(query, {publicationId: channelId});
   const byHandle = new Map(nodes.map((n) => [n.handle, n]));
 
   console.log('\n5-Stage Storefront & Purchasability Readiness Diagnostic:');
@@ -1789,8 +1819,900 @@ async function diagnoseCatalog(idMap: ShopifyIdMapType, publicationId?: string):
   );
 }
 
+type ForgeVariant = {
+  id: string;
+  sku: string;
+  inventoryItem: {id: string; tracked: boolean};
+  product: {id: string; handle: string; status: string; category: {id: string} | null};
+};
+
+/** Only create missing Forge drafts. Existing merchant records remain under merchant control. */
+async function stageForgeDrafts(idMap: ShopifyIdMapType): Promise<void> {
+  const rows = seedCatalog.filter(
+    (s) => s.sku === 'MT-FOR-KIT-SS1' || ALL_FORGE_LAUNCH_SKUS.some((row) => row.sku === s.sku),
+  );
+  const variants = new Map<string, ForgeVariant>();
+  const handles = new Set<string>();
+  const duplicateSkus = new Set<string>();
+  let cursor: string | null = null;
+  do {
+    const result = await executeGraphql(
+      `query ForgeInventory($after: String) {
+      shop { currencyCode }
+      productVariants(first: 150, after: $after) {
+        pageInfo { hasNextPage endCursor }
+        nodes { id sku inventoryItem { id tracked } product { id handle status category { id } } }
+      }
+    }`,
+      {after: cursor},
+    );
+    assertNoErrors('Forge inventory', result);
+    if ((result.data?.shop as {currencyCode: string}).currencyCode !== 'GBP')
+      throw new Error('Expected GBP for Forge draft pricing.');
+    const page = result.data?.productVariants as {
+      nodes: ForgeVariant[];
+      pageInfo: {hasNextPage: boolean; endCursor: string};
+    };
+    for (const row of page.nodes) {
+      if (variants.has(row.sku)) duplicateSkus.add(row.sku);
+      variants.set(row.sku, row);
+      handles.add(row.product.handle);
+    }
+    cursor = page.pageInfo.hasNextPage ? page.pageInfo.endCursor : null;
+  } while (cursor);
+
+  const categories = await resolveTaxonomyCategories(rows.map((s) => s.product_category));
+  const defined = await existingDefinitionKeys();
+  const usedKeys = new Set(rows.flatMap((row) => productMetafields(row).map((field) => field.key)));
+  for (const definition of SPECS_DEFINITIONS) {
+    if (usedKeys.has(definition.key) && !defined.has(definition.key)) await createDefinition(definition);
+  }
+  const ready = new Map<string, ForgeVariant>();
+  for (const spec of [...rows].sort(
+    (a, b) => Number(Boolean(a.bundle_components?.length)) - Number(Boolean(b.bundle_components?.length)),
+  )) {
+    const existing = variants.get(spec.sku);
+    const category = categories.get(spec.product_category);
+    const retained = idMap.products_by_sku[spec.sku];
+    const convert =
+      CONVERT_LEGACY_FORGE &&
+      LEGACY_FORGE_VESSELS.has(spec.sku) &&
+      existing?.product.status === 'ACTIVE' &&
+      existing.product.id === retained?.product_id &&
+      existing.id === retained?.variant_id &&
+      existing.inventoryItem.id === retained?.inventory_item_id;
+    if (
+      !category ||
+      duplicateSkus.has(spec.sku) ||
+      (existing &&
+        ((!convert && existing.product.status !== 'DRAFT') || existing.product.handle !== spec.handle)) ||
+      (!existing && handles.has(spec.handle))
+    ) {
+      console.log(
+        `Held ${spec.sku}: ${!category ? 'unresolved taxonomy' : 'existing product identity or status conflict'}`,
+      );
+      continue;
+    }
+    const components = spec.bundle_components ?? [];
+    if (components.some((sku) => !ready.has(sku))) {
+      console.log(
+        `Held ${spec.sku}: components pending ${components.filter((sku) => !ready.has(sku)).join(', ')}`,
+      );
+      continue;
+    }
+    if (!APPLY) {
+      console.log(
+        `[dry-run] ${convert ? 'convert in place' : existing ? 'retain' : 'create draft'} ${spec.sku} GBP ${spec.price_usd}`,
+      );
+      ready.set(spec.sku, existing ?? ({} as ForgeVariant));
+      continue;
+    }
+    let variant = existing;
+    if (convert && existing) {
+      await updateProduct(
+        {
+          id: existing.product.id,
+          handle: existing.product.handle,
+          status: existing.product.status,
+          sku: existing.sku,
+          variantId: existing.id,
+          inventoryItemId: existing.inventoryItem.id,
+        },
+        spec,
+        category,
+        true,
+      );
+    }
+    if (!variant) {
+      const {name, value} = spec.variant_option;
+      const result = await executeGraphql(
+        `mutation StageForge($input: ProductSetInput!) {
+        productSet(input: $input, synchronous: true) {
+          product { variants(first: 1) { nodes { id sku inventoryItem { id tracked } product { id handle status category { id } } } } }
+          userErrors { field message }
+        }
+      }`,
+        {
+          input: {
+            title: spec.title,
+            handle: spec.handle,
+            status: 'DRAFT',
+            vendor: spec.vendor,
+            productType: spec.product_type,
+            category,
+            descriptionHtml: spec.description_html,
+            seo: {title: spec.seo_title, description: spec.seo_description},
+            tags: spec.tags,
+            metafields: productMetafields(spec),
+            productOptions: [{name, values: [{name: value}]}],
+            variants: [
+              {
+                sku: spec.sku,
+                price: spec.price_usd.toFixed(2),
+                inventoryPolicy: 'DENY',
+                inventoryItem: {tracked: true, requiresShipping: true},
+                optionValues: [{optionName: name, name: value}],
+              },
+            ],
+          },
+        },
+        {mutate: true},
+      );
+      assertNoErrors(spec.sku, result);
+      const payload = result.data?.productSet as {
+        product?: {variants: {nodes: ForgeVariant[]}};
+        userErrors: {message: string}[];
+      };
+      variant = payload.product?.variants.nodes[0];
+      if (
+        payload.userErrors.length ||
+        !variant ||
+        variant.sku !== spec.sku ||
+        !variant.inventoryItem.tracked ||
+        variant.product.status !== 'DRAFT' ||
+        variant.product.handle !== spec.handle
+      ) {
+        throw new Error(`${spec.sku}: draft creation failed: ${JSON.stringify(payload.userErrors)}`);
+      }
+      console.log(`Created tracked draft ${spec.sku} ${variant.product.id}`);
+    }
+    idMap.products_by_sku[spec.sku] = {
+      sku: spec.sku,
+      handle: spec.handle,
+      product_id: variant.product.id,
+      variant_id: variant.id,
+      inventory_item_id: variant.inventoryItem.id,
+      category_id: variant.product.category?.id ?? null,
+    };
+    saveIdMap(idMap);
+    if (components.length)
+      await linkForgeComponents(
+        variant,
+        components.map((sku) => ready.get(sku)!.id),
+        spec,
+      );
+    ready.set(spec.sku, variant);
+  }
+  if (APPLY && ready.size) {
+    await syncForgeNavigationAndAccessoryCopy(ready, rows, variants, idMap);
+    await assignDraftCollections(new Map([...ready].filter(([, v]) => v.product.status === 'DRAFT')), idMap);
+  }
+  console.log(`Forge inventory records reconciled: ${ready.size}/${rows.length}`);
+}
+
+async function syncForgeNavigationAndAccessoryCopy(
+  ready: Map<string, ForgeVariant>,
+  rows: ProductSpec[],
+  variants: Map<string, ForgeVariant>,
+  idMap: ShopifyIdMapType,
+): Promise<void> {
+  const inputs = rows.flatMap((spec) => {
+    const ownerId = ready.get(spec.sku)?.product.id;
+    const sizeField = productMetafields(spec).find((f) => f.key === 'size_options');
+    return ownerId && sizeField ? [{ownerId, ...sizeField}] : [];
+  });
+  if (CONVERT_LEGACY_FORGE) {
+    const sku = 'MT-TER-STM-24';
+    const steamer = seedCatalog.find((s) => s.sku === sku);
+    const owner = variants.get(sku);
+    if (!steamer || !owner || owner.id !== idMap.products_by_sku[sku]?.variant_id || owner.product.handle !== steamer.handle) {
+      throw new Error('Cannot verify the retained bamboo steamer identity.');
+    }
+    const keys = new Set(['quick_summary', 'lineup_copy', 'suggested_use_case', 'lid_compatibility', 'media_plan']);
+    const fields = productMetafields(steamer).filter((field) => keys.has(field.key));
+    if (fields.length !== keys.size) throw new Error('Bamboo steamer copy is incomplete.');
+    inputs.push(...fields.map((field) => ({ownerId: owner.product.id, ...field})));
+  }
+  for (let offset = 0; offset < inputs.length; offset += 25) {
+    const result = await executeGraphql(
+      `mutation SyncForgeSizes($metafields: [MetafieldsSetInput!]!) {
+      metafieldsSet(metafields: $metafields) { metafields { key } userErrors { message field } }
+    }`,
+      {metafields: inputs.slice(offset, offset + 25)},
+      {mutate: true},
+    );
+    assertNoErrors('Size options', result);
+    const payload = result.data?.metafieldsSet as {userErrors: {message: string}[]};
+    if (payload.userErrors.length) throw new Error(JSON.stringify(payload.userErrors));
+  }
+}
+
+async function assignDraftCollections(
+  ready: Map<string, ForgeVariant>,
+  idMap: ShopifyIdMapType,
+): Promise<void> {
+  const collectionIds = await existingCollectionsByHandle();
+  const memberships = await executeGraphql(
+    `query ForgeCollections($ids: [ID!]!) {
+    nodes(ids: $ids) { ... on Product { id collections(first: 250) { nodes { handle } pageInfo { hasNextPage } } } }
+  }`,
+    {ids: [...ready.values()].map((v) => v.product.id)},
+  );
+  assertNoErrors('Draft collection membership', memberships);
+  const found = memberships.data?.nodes as {
+    id: string;
+    collections: {nodes: {handle: string}[]; pageInfo: {hasNextPage: boolean}};
+  }[];
+  if (found.some((p) => !p || p.collections.pageInfo.hasNextPage))
+    throw new Error('Incomplete draft collection membership.');
+  for (const collection of ALL_COLLECTIONS) {
+    const ids = collection
+      .products()
+      .map((s) => ready.get(s.sku)?.product.id)
+      .filter(
+        (id): id is string =>
+          Boolean(id) &&
+          !found.some((p) => p.id === id && p.collections.nodes.some((c) => c.handle === collection.handle)),
+      );
+    if (!ids.length) continue;
+    let collectionId = collectionIds.get(collection.handle);
+    if (!collectionId) {
+      const result = await executeGraphql(
+        `mutation NewDraftCollection($input: CollectionInput!) {
+        collectionCreate(input: $input) { collection { id } userErrors { message } }
+      }`,
+        {
+          input: {
+            title: collection.title,
+            handle: collection.handle,
+            descriptionHtml: collection.descriptionHtml,
+            products: ids,
+          },
+        },
+        {mutate: true},
+      );
+      assertNoErrors(collection.handle, result);
+      const payload = result.data?.collectionCreate as {
+        collection?: {id: string};
+        userErrors: {message: string}[];
+      };
+      if (!payload.collection || payload.userErrors.length)
+        throw new Error(JSON.stringify(payload.userErrors));
+      collectionId = payload.collection.id;
+    } else {
+      const result = await executeGraphql(
+        `mutation AddDraftMembers($id: ID!, $products: [ID!]!) {
+        collectionAddProducts(id: $id, productIds: $products) { userErrors { message } }
+      }`,
+        {id: collectionId, products: ids},
+        {mutate: true},
+      );
+      assertNoErrors(collection.handle, result);
+      const payload = result.data?.collectionAddProducts as {userErrors: {message: string}[]};
+      if (payload.userErrors.length) throw new Error(JSON.stringify(payload.userErrors));
+    }
+    idMap.collections_by_handle[collection.handle] = {
+      handle: collection.handle,
+      title: collection.title,
+      collection_id: collectionId,
+    };
+    saveIdMap(idMap);
+    console.log(`Added ${ids.length} drafts to ${collection.handle}`);
+  }
+}
+
+async function linkForgeComponents(variant: {id: string; product: {id: string}}, componentIds: string[], spec: ProductSpec): Promise<void> {
+  const current = await executeGraphql(
+    `query ComponentIds($id: ID!) {
+    productVariant(id: $id) { price requiresComponents productVariantComponents(first: 100) { nodes { quantity productVariant { id } } } }
+  }`,
+    {id: variant.id},
+  );
+  assertNoErrors('Read component quantities', current);
+  const parent = current.data?.productVariant as {
+    price: string;
+    requiresComponents: boolean;
+    productVariantComponents: {nodes: {quantity: number; productVariant: {id: string}}[]};
+  };
+  const existing = parent.productVariantComponents.nodes;
+  if (existing.some((node) => !componentIds.includes(node.productVariant.id) || node.quantity !== 1))
+    throw new Error('Existing bundle differs from its bill of materials.');
+  const missing = componentIds.filter((id) => !existing.some((node) => node.productVariant.id === id));
+  if (!missing.length) {
+    if (!parent.requiresComponents) throw new Error('Bundle is missing required component enforcement.');
+    if (Number(parent.price) !== spec.price_usd) await setVariantFields(variant.product.id, variant.id, spec, true);
+    return;
+  }
+  const result = await executeGraphql(
+    `mutation LinkForgeBundle($input: [ProductVariantRelationshipUpdateInput!]!) {
+    productVariantRelationshipBulkUpdate(input: $input) {
+      parentProductVariants { id price requiresComponents productVariantComponents(first: 100) { nodes { quantity productVariant { id } } } }
+      userErrors { field message }
+    }
+  }`,
+    {
+      input: [
+        {
+          parentProductVariantId: variant.id,
+          priceInput: {calculation: 'FIXED', price: spec.price_usd.toFixed(2)},
+          productVariantRelationshipsToCreate: missing.map((id) => ({id, quantity: 1})),
+        },
+      ],
+    },
+    {mutate: true},
+  );
+  assertNoErrors('Link bundle', result);
+  const payload = result.data?.productVariantRelationshipBulkUpdate as {
+    userErrors: {message: string}[];
+    parentProductVariants: (typeof parent)[];
+  };
+  const linked = payload.parentProductVariants?.[0]?.productVariantComponents.nodes ?? [];
+  if (
+    payload.userErrors.length || !payload.parentProductVariants?.[0]?.requiresComponents ||
+    linked.length !== componentIds.length ||
+    componentIds.some((id) => !linked.some((line) => line.productVariant.id === id && line.quantity === 1))
+  ) {
+    throw new Error(`Bundle components unverified: ${JSON.stringify(payload.userErrors)}`);
+  }
+  if (Number(payload.parentProductVariants[0]?.price) !== spec.price_usd) {
+    await setVariantFields(variant.product.id, variant.id, spec, true);
+  }
+  console.log(`Verified native Shopify bundle with ${linked.length} components`);
+}
+
+const FORGE_ARTWORK_FIELDS: MetafieldDefSpec[] = [
+  {key: 'human_artwork', name: 'Human artwork', type: 'list.file_reference', description: 'Shared editorial images for every size.'},
+  {key: 'engineer_artwork', name: 'Engineer artwork', type: 'list.file_reference', description: 'Shared geometry and construction artwork.'},
+  {key: 'machine_artwork', name: 'Machine artwork', type: 'list.file_reference', description: 'Shared silhouette and structured-spec artwork.'},
+];
+
+async function stageGroupedForge() {
+  if (PUBLISH || OFFLINE) throw new Error('Grouped Forge staging requires an online draft-only run.');
+  const keys = await existingDefinitionKeys();
+  for (const field of FORGE_ARTWORK_FIELDS) {
+    if (!keys.has(field.key)) await createDefinition(field);
+  }
+
+  const stagedVariantIds = new Map<string, string>();
+  for (const family of forgeProductFamilies) {
+    const {handle} = family;
+    const specs = family.variants.map(({sku}) => {
+      const spec = seedCatalog.find(product => product.sku === sku);
+      if (!spec) throw new Error(`Missing Forge spec: ${sku}`);
+      return spec;
+    });
+    const reference = specs[0]!;
+    const title = reference.title.replace(/\s+[·–-]\s+\d+\s*cm$/i, '');
+    const expected = family.variants.map(row => ({
+      sku: 'STAGE-' + row.sku,
+      price: row.priceGbp.toFixed(2),
+      diameter: `${row.diameterCm} cm`,
+    }));
+    const existing = await executeGraphql(
+      `query GroupedForge($identifier: ProductIdentifierInput!) {
+        productByIdentifier(identifier: $identifier) {
+          id status variants(first: 20) { nodes { id sku price selectedOptions { name value } } }
+        }
+      }`,
+      {identifier: {handle}},
+    );
+    assertNoErrors(handle, existing);
+    let product = existing.data?.productByIdentifier as {
+      id: string;
+      status: string;
+      variants: {nodes: {id: string; sku: string; price: string; selectedOptions: {name:string;value:string}[]}[]};
+    } | null;
+    if (!product && APPLY) {
+      const result = await executeGraphql(
+        `mutation StageGroupedForge($input: ProductSetInput!) {
+          productSet(input: $input, synchronous: true) {
+            product { id status variants(first: 20) { nodes { id sku price selectedOptions { name value } } } }
+            userErrors { message }
+          }
+        }`,
+        {input: {
+          title, handle, status: 'DRAFT', vendor: reference.vendor, productType: reference.product_type,
+          tags: [...reference.tags, 'forge-grouped-preview'],
+          metafields: productMetafields(reference).filter(field =>
+            ['lineup', 'lineup_copy', 'suggested_use_case', 'primary_material', 'claim_status',
+             'material_architecture', 'care_instructions', 'works_with_kansa', 'search_keywords'].includes(field.key)
+          ).map(field => field.key === 'lineup' ? {...field, value: 'Forge'} : field),
+          descriptionHtml: `<p>${reference.lineup_copy}</p><p>${reference.suggested_use_case}</p>`,
+          productOptions: [{name: 'Diameter', values: expected.map(row => ({name: row.diameter}))}],
+          variants: expected.map(row => ({
+            sku: row.sku,
+            price: row.price,
+            optionValues: [{optionName: 'Diameter', name: row.diameter}],
+            inventoryPolicy: 'DENY',
+            inventoryItem: {tracked: true, requiresShipping: true},
+          })),
+        }},
+        {mutate: true},
+      );
+      assertNoErrors(handle, result);
+      const payload = result.data?.productSet as {product: NonNullable<typeof product>; userErrors: {message: string}[]};
+      if (payload.userErrors.length) throw new Error(`${handle}: ${payload.userErrors.map(error => error.message).join(', ')}`);
+      product = payload.product;
+    }
+
+    if (product && (product.status !== 'DRAFT' || product.variants.nodes.length !== expected.length ||
+      expected.some(row => !product!.variants.nodes.some(variant =>
+        variant.sku === row.sku && Number(variant.price) === Number(row.price) &&
+        variant.selectedOptions.some(option => option.name === 'Diameter' && option.value === row.diameter)
+      )))) {
+      throw new Error(`Unexpected product at ${handle}. Existing data requires reconciliation.`);
+    }
+    for (const variant of product?.variants.nodes ?? []) {
+      stagedVariantIds.set(variant.sku.replace(/^STAGE-/, ''), variant.id);
+    }
+    console.log(`${product ? 'Verified draft' : 'Would stage'} ${handle}: ${expected.map(row => row.diameter).join(', ')}`);
+  }
+  if (APPLY && process.argv.includes('--stage-grouped-bundles')) {
+    await stageGroupedBundles(stagedVariantIds);
+  }
+}
+
+async function stageGroupedBundles(stagedVariantIds: Map<string, string>) {
+  const retained = ShopifyIdMap.parse(JSON.parse(readFileSync(ID_MAP_PATH, 'utf8')));
+  for (const bundle of forgeBundleProducts) {
+    const spec = seedCatalog.find(row => row.sku === bundle.sku);
+    if (!spec) throw new Error(`Missing Forge bundle spec: ${bundle.sku}`);
+    const componentIds = bundle.componentSkus.map(sku => {
+      const id = stagedVariantIds.get(sku) ?? retained.products_by_sku[sku]?.variant_id;
+      if (!id) throw new Error(`Missing bundle component ${sku} for ${spec.sku}`);
+      return id;
+    });
+    const {handle} = bundle;
+    const sku = `STAGE-${spec.sku}`;
+    const read = await executeGraphql(
+      `query GroupedBundle($identifier: ProductIdentifierInput!) {
+        productByIdentifier(identifier: $identifier) {
+          id status variants(first: 2) { nodes { id sku } }
+        }
+      }`,
+      {identifier: {handle}},
+    );
+    assertNoErrors(handle, read);
+    type BundleDraft = {id: string; status: string; variants: {nodes: {id: string; sku: string}[]}};
+    let product = read.data?.productByIdentifier as BundleDraft | null;
+    if (!product) {
+      const result = await executeGraphql(
+        `mutation StageGroupedBundle($input: ProductSetInput!) {
+          productSet(input: $input, synchronous: true) {
+            product { id status variants(first: 2) { nodes { id sku } } }
+            userErrors { message }
+          }
+        }`,
+        {input: {
+          title: spec.title, handle, status: 'DRAFT', vendor: spec.vendor,
+          descriptionHtml: spec.description_html, productType: spec.product_type,
+          tags: [...spec.tags, 'forge-grouped-preview'],
+          metafields: productMetafields(spec).filter(field =>
+            ['lineup', 'claim_status', 'bundle_components', 'included_lids'].includes(field.key)
+          ).map(field => field.key === 'lineup' ? {...field, value: 'Forge'} : field),
+          productOptions: [{name: 'Title', values: [{name: 'Default Title'}]}],
+          variants: [{
+            sku, price: spec.price_usd.toFixed(2), inventoryPolicy: 'DENY',
+            optionValues: [{optionName: 'Title', name: 'Default Title'}],
+          }],
+        }},
+        {mutate: true},
+      );
+      assertNoErrors(handle, result);
+      const payload = result.data?.productSet as {product: BundleDraft | null; userErrors: {message: string}[]};
+      if (payload.userErrors.length) throw new Error(`${handle}: ${payload.userErrors.map(error => error.message).join(', ')}`);
+      product = payload.product;
+    }
+    const variant = product?.variants.nodes[0];
+    if (!product || product.status !== 'DRAFT' || product.variants.nodes.length !== 1 || variant?.sku !== sku) {
+      throw new Error(`Unexpected bundle product at ${handle}`);
+    }
+    await setVariantFields(product.id, variant.id, spec, true, true);
+    await linkForgeComponents({id: variant.id, product: {id: product.id}}, componentIds, spec);
+    console.log(`Verified grouped bundle draft ${handle}`);
+  }
+}
+
+async function stageChulha() {
+  if (PUBLISH || OFFLINE) throw new Error('Chulha staging is online and draft-only.');
+  const taxonomy = await resolveTaxonomyCategories(chulhaProductFamilies.map(product => product.taxonomyLeaf));
+  const productIds: string[] = [];
+  for (const product of chulhaProductFamilies) {
+    const category = taxonomy.get(product.taxonomyLeaf);
+    if (!category) throw new Error(`Missing Shopify taxonomy category: ${product.taxonomyLeaf}`);
+    const lookup = await executeGraphql(
+      `query ChulhaDraft($identifier: ProductIdentifierInput!) {
+        productByIdentifier(identifier: $identifier) {
+          id status category { id } variants(first: 10) { nodes { sku price selectedOptions { name value } } }
+        }
+      }`,
+      {identifier: {handle: product.handle}},
+    );
+    assertNoErrors(product.handle, lookup);
+    type Draft = {
+      id: string; status: string; category: {id: string};
+      variants: {nodes: {sku: string; price: string; selectedOptions: {name: string; value: string}[]}[]};
+    };
+    let draft = lookup.data?.productByIdentifier as Draft | null;
+    if (!draft && APPLY) {
+      const pressure = product.handle === 'chulha-pressure-cooker';
+      const story = `${product.form}. ${product.finishTarget ? `Proposed finish: ${product.finishTarget}. ` : ''}Sizes are design targets pending prototype measurement.`;
+      const metafields = [
+        {key: 'lineup', type: 'single_line_text_field', value: chulhaCategory.title},
+        {key: 'claim_status', type: 'single_line_text_field', value: 'CONCEPT_SPEC'},
+        {key: 'primary_material', type: 'single_line_text_field', value: 'Unglazed terracotta vessel body (design target)'},
+        {key: 'lineup_copy', type: 'multi_line_text_field', value: story},
+        ...(!pressure ? [{key: 'suggested_use_case', type: 'multi_line_text_field', value: product.suggestedDish}] : []),
+      ].map(field => ({namespace: 'specs', ...field}));
+      const result = await executeGraphql(
+        `mutation StageChulha($input: ProductSetInput!) {
+          productSet(input: $input, synchronous: true) {
+            product { id status category { id } variants(first: 10) { nodes { sku price selectedOptions { name value } } } }
+            userErrors { message }
+          }
+        }`,
+        {input: {
+          title: product.title, handle: product.handle, status: 'DRAFT', vendor: 'Maison Tavo',
+          productType: product.taxonomyLeaf, category, tags: [chulhaCategory.title, 'Concept Spec'],
+          descriptionHtml: `<p>${story}</p>`,
+          metafields,
+          productOptions: [{name: product.option, values: product.variants.map(row => ({name: row.size}))}],
+          variants: product.variants.map(row => ({
+            sku: row.sku, price: row.priceGbp.toFixed(2), inventoryPolicy: 'DENY',
+            inventoryItem: {tracked: true, requiresShipping: true},
+            optionValues: [{optionName: product.option, name: row.size}],
+          })),
+        }},
+        {mutate: true},
+      );
+      assertNoErrors(product.handle, result);
+      const payload = result.data?.productSet as {product: Draft | null; userErrors: {message: string}[]};
+      if (!payload.product || payload.userErrors.length) {
+        throw new Error(`${product.handle}: ${payload.userErrors.map(error => error.message).join(', ')}`);
+      }
+      draft = payload.product;
+    }
+    if (draft && (draft.status !== 'DRAFT' || draft.category?.id !== category || draft.variants.nodes.length !== product.variants.length ||
+      product.variants.some(row => !draft!.variants.nodes.some(variant =>
+        variant.sku === row.sku && Number(variant.price) === row.priceGbp &&
+        variant.selectedOptions.some(option => option.name === product.option && option.value === row.size)
+      )))) {
+      throw new Error(`Chulha variant or product mismatch at ${product.handle}`);
+    }
+    if (draft) productIds.push(draft.id);
+    console.log(`${draft ? 'Verified' : 'Would stage'} ${product.handle}: ${product.variants.map(row => `${row.size} GBP ${row.priceGbp}`).join(', ')}`);
+  }
+  if (APPLY) await syncChulhaCollection(productIds);
+}
+
+async function syncChulhaCollection(productIds: string[]) {
+  return syncReleaseCollection(chulhaCategory, productIds);
+}
+
+async function syncReleaseCollection(category: {handle: string; title: string; description: string}, productIds: string[]) {
+  const read = await executeGraphql(
+    `query ChulhaCollection($query: String!) {
+      collections(first: 2, query: $query) {
+        nodes { id handle products(first: 50) { nodes { id } pageInfo { hasNextPage } } }
+      }
+    }`,
+    {query: `handle:${category.handle}`},
+  );
+  assertNoErrors('Read Chulha collection', read);
+  const nodes = (read.data?.collections as {
+    nodes: {id: string; handle: string; products: {nodes: {id: string}[]; pageInfo: {hasNextPage: boolean}}}[];
+  }).nodes;
+  const collection = nodes.find(node => node.handle === category.handle);
+  if (collection?.products.pageInfo.hasNextPage) throw new Error('Incomplete Chulha collection read.');
+  let collectionId = collection?.id;
+  if (!collection) {
+    const result = await executeGraphql(
+      `mutation CreateChulhaCollection($input: CollectionInput!) {
+        collectionCreate(input: $input) {
+          collection { id products(first: 50) { nodes { id } } }
+          userErrors { message }
+        }
+      }`,
+      {input: {
+        handle: category.handle, title: category.title,
+        descriptionHtml: `<p>${category.description}</p>`, products: productIds,
+      }},
+      {mutate: true},
+    );
+    assertNoErrors('Create Chulha collection', result);
+    const payload = result.data?.collectionCreate as {
+      collection: {id: string; products: {nodes: {id: string}[]}} | null; userErrors: {message: string}[];
+    };
+    if (!payload.collection || payload.userErrors.length ||
+      productIds.some(id => !payload.collection!.products.nodes.some(node => node.id === id))) {
+      throw new Error(`Missing Chulha collection members: ${JSON.stringify(payload.userErrors)}`);
+    }
+    collectionId = payload.collection.id;
+  } else {
+    const missing = productIds.filter(id => !collection.products.nodes.some(node => node.id === id));
+    if (missing.length) {
+      const result = await executeGraphql(
+        `mutation AddChulhaProducts($id: ID!, $products: [ID!]!) {
+          collectionAddProducts(id: $id, productIds: $products) { userErrors { message } }
+        }`,
+        {id: collection.id, products: missing},
+        {mutate: true},
+      );
+      assertNoErrors('Add Chulha collection products', result);
+      const payload = result.data?.collectionAddProducts as {userErrors: {message: string}[]};
+      if (payload.userErrors.length) throw new Error(JSON.stringify(payload.userErrors));
+    }
+  }
+  console.log(`${category.title} collection reconciled with ${productIds.length} products.`);
+  return collectionId!;
+}
+
+async function auditRelease() {
+  if (PUBLISH || OFFLINE || (APPLY && !MOCK_RELEASE && !FINISH_MOCK_RELEASE)) throw new Error('Use the explicit mock release mode for release writes.');
+  const publication = await resolveOnlineStorePublicationId();
+  const plan = new Map<string, string[]>();
+  for (const family of forgeProductFamilies) {
+    plan.set(family.handle, family.variants.map(variant => `STAGE-${variant.sku}`));
+  }
+  for (const bundle of forgeBundleProducts) plan.set(bundle.handle, [`STAGE-${bundle.sku}`]);
+  for (const product of chulhaProductFamilies) {
+    plan.set(product.handle, product.variants.map(variant => variant.sku));
+  }
+  for (const group of maintenanceGroups) {
+    for (const sku of group.existingSkus) {
+      const spec = seedCatalog.find(product => product.sku === sku);
+      if (!spec) throw new Error(`Missing Maintenance specification for ${sku}`);
+      plan.set(spec.handle, [sku]);
+    }
+  }
+  type Variant = {
+    id: string; sku: string; inventoryQuantity: number | null; inventoryPolicy: string;
+    requiresComponents: boolean; inventoryItem: {
+      id: string; tracked: boolean; requiresShipping: boolean;
+      inventoryLevels: {nodes: {location: {name: string}; quantities: {quantity: number}[]}[]};
+    };
+  };
+  type Product = {
+    id: string; handle: string; status: string; publishedOnPublication: boolean;
+    variants: {nodes: Variant[]};
+  };
+  const expectedHandles = [...plan.keys()];
+  const audit: Product[] = [];
+  for (let index = 0; index < expectedHandles.length; index += 6) {
+    const handles = expectedHandles.slice(index, index + 6);
+    const query = handles.map((handle, offset) =>
+      `p${offset}: productByIdentifier(identifier: {handle: ${JSON.stringify(handle)}}) {
+        id handle status publishedOnPublication(publicationId: $publication)
+        variants(first: 5) { nodes {
+          id sku inventoryQuantity inventoryPolicy requiresComponents
+          inventoryItem { id tracked requiresShipping inventoryLevels(first: 5) { nodes {
+            location { name }
+            quantities(names: ["available"]) { quantity }
+          } } }
+        } }
+      }`).join('\n');
+    const result = await executeGraphql(
+      `query ReleaseAudit($publication: ID!) { ${query} }`,
+      {publication},
+    );
+    assertNoErrors('Read release products', result);
+    for (const [offset, handle] of handles.entries()) {
+      const product = result.data?.[`p${offset}`] as Product | null | undefined;
+      if (!product || product.handle !== handle) throw new Error(`Release product missing: ${handle}`);
+      audit.push(product);
+      const planned = plan.get(handle)!;
+      const actual = product.variants.nodes.map(variant => variant.sku);
+      if (actual.length !== planned.length || planned.some(sku => !actual.includes(sku) && !((MOCK_RELEASE || FINISH_MOCK_RELEASE) && actual.includes(sku.replace(/^STAGE-/, ''))))) {
+        throw new Error(`Release SKU mismatch: ${handle} (${actual.join(', ')})`);
+      }
+    }
+  }
+
+  const variants = new Map(audit.flatMap(product => product.variants.nodes.map(variant => [variant.sku.replace(/^STAGE-/, ''), variant] as const)));
+  for (const bundle of forgeBundleProducts) {
+    const parent = variants.get(bundle.sku)!;
+    const result = await executeGraphql(
+      `query ReleaseBundle($id: ID!) {
+        productVariant(id: $id) { productVariantComponents(first: 30) {
+          nodes { quantity productVariant { id sku } }
+          pageInfo { hasNextPage }
+        } }
+      }`,
+      {id: parent.id},
+    );
+    assertNoErrors(bundle.sku, result);
+    const components = (result.data?.productVariant as {
+      productVariantComponents: {
+        nodes: {quantity: number; productVariant: {id: string; sku: string}}[]; pageInfo: {hasNextPage: boolean};
+      };
+    }).productVariantComponents;
+    const actual = components.nodes.map(line => line.productVariant.sku.replace(/^STAGE-/, '')).sort();
+    const expected = [...bundle.componentSkus].sort();
+    if (!parent.requiresComponents || components.pageInfo.hasNextPage ||
+      components.nodes.some(line => line.quantity !== 1) || JSON.stringify(actual) !== JSON.stringify(expected)) {
+      throw new Error(`Bundle bill of materials mismatch: ${bundle.sku}`);
+    }
+  }
+
+  const shippable = [...variants.values()].filter(variant => !variant.requiresComponents);
+  for (const product of audit) {
+    console.log(`${product.handle} ${product.status}${product.publishedOnPublication ? ' / Online Store' : ''}`);
+    for (const variant of product.variants.nodes) {
+      const locations = variant.inventoryItem.inventoryLevels.nodes.map(level =>
+        `${level.location.name}: ${level.quantities[0]?.quantity ?? 'unknown'}`);
+      console.log(`  ${variant.sku}: ${variant.requiresComponents ? 'component stock' :
+        `${variant.inventoryQuantity ?? 'unknown'} total; ${locations.join(', ') || 'no location stock levels'}`}`);
+    }
+  }
+  console.log(`Verified ${audit.length} products and ${forgeBundleProducts.length} fixed bundles. Positive recorded stock on ${shippable.filter(variant => variant.inventoryItem.tracked && (variant.inventoryQuantity ?? 0) > 0).length}/${shippable.length} tracked singles.`);
+  if (FINISH_MOCK_RELEASE) {
+    if (!APPLY || audit.some(product => product.status !== 'ACTIVE' || !product.publishedOnPublication ||
+      product.variants.nodes.some(variant => variant.sku.startsWith('STAGE-')))) {
+      throw new Error('All release products must be active and published with their final SKUs first.');
+    }
+    const forgeIds = audit.filter(product => forgeProductFamilies.some(family => family.handle === product.handle) ||
+      forgeBundleProducts.some(bundle => bundle.handle === product.handle)).map(product => product.id);
+    const chulhaIds = audit.filter(product => product.handle.startsWith('chulha-')).map(product => product.id);
+    const maintenanceIds = audit.filter(product => !forgeIds.includes(product.id) && !chulhaIds.includes(product.id)).map(product => product.id);
+    const groups = [
+      {category: {handle: 'forge', title: 'Forge', description: 'Stainless steel cookware and fixed sets.'}, ids: forgeIds},
+      {category: chulhaCategory, ids: chulhaIds},
+      {category: maintenanceCategory, ids: maintenanceIds},
+    ];
+    const collections = [];
+    for (const {category, ids} of groups) {
+      const id = await syncReleaseCollection(category, ids);
+      await publishToOnlineStore(id, publication, category.handle);
+      collections.push({handle: category.handle, id});
+    }
+    const releasePath = join(import.meta.dir, '..', 'data', 'mock-release.json');
+    writeFileSync(releasePath, JSON.stringify({
+      store: STORE, publication, mock: true, verified_at: new Date().toISOString(), collections,
+      products: audit.map(product => ({handle: product.handle, id: product.id, variants: product.variants.nodes.map(variant => ({
+        sku: variant.sku, id: variant.id, inventory_item_id: variant.inventoryItem.id,
+        available: variant.inventoryQuantity, component_inventory: variant.requiresComponents,
+      }))})),
+    }, null, 2) + '\n', 'utf8');
+    return;
+  }
+
+  if (!MOCK_RELEASE || !APPLY) return;
+
+  const locations = await executeGraphql(`query ReleaseLocation {
+    locations(first: 25) { nodes { id isActive fulfillsOnlineOrders address { countryCode } } }
+  }`);
+  assertNoErrors('Read mock fulfilment location', locations);
+  const india = (locations.data?.locations as {nodes: {id: string; isActive: boolean; fulfillsOnlineOrders: boolean; address: {countryCode: string}}[]})
+    .nodes.filter(location => location.isActive && location.fulfillsOnlineOrders && location.address.countryCode === 'IN');
+  if (india.length !== 1) throw new Error('Expected one active online fulfilment location in India.');
+  const locationId = india[0]!.id;
+  const pending = shippable.filter(variant => variant.inventoryQuantity !== 18);
+  if (shippable.some(variant => !variant.inventoryItem.tracked || !variant.inventoryItem.requiresShipping || variant.inventoryPolicy !== 'DENY') ||
+      pending.some(variant => variant.inventoryQuantity !== 0)) {
+    throw new Error('Inventory differs from the expected tracked zero-stock launch baseline.');
+  }
+  if (pending.length) {
+    const result = await executeGraphql(
+      `mutation SeedMockStock($input: InventorySetQuantitiesInput!, $key: String!) {
+        inventorySetQuantities(input: $input) @idempotent(key: $key) {
+          inventoryAdjustmentGroup { changes { name delta } }
+          userErrors { field message }
+        }
+      }`,
+      {
+        key: crypto.randomUUID(),
+        input: {name: 'available', reason: 'correction', quantities: pending.map(variant => ({
+          inventoryItemId: variant.inventoryItem.id, locationId, quantity: 18, changeFromQuantity: 0,
+        }))},
+      },
+      {mutate: true},
+    );
+    releaseMutationErrors(result, 'inventorySetQuantities');
+    console.log(`Set mock stock on ${pending.length} item variants in India.`);
+  }
+
+  const retained = ShopifyIdMap.parse(JSON.parse(readFileSync(ID_MAP_PATH, 'utf8')));
+  for (const product of audit) {
+    const moved = product.variants.nodes.filter(variant => variant.sku.startsWith('STAGE-'));
+    if (!moved.length) continue;
+    for (const variant of moved) {
+      const sku = variant.sku.replace(/^STAGE-/, '');
+      const original = retained.products_by_sku[sku];
+      if (!original?.variant_id || !original.inventory_item_id) throw new Error(`Missing legacy identity for ${sku}`);
+      const old = await executeGraphql(
+        `query LegacyReleaseVariant($id: ID!) {
+          productVariant(id: $id) { sku inventoryQuantity product { id status } }
+        }`,
+        {id: original.variant_id},
+      );
+      assertNoErrors(sku, old);
+      const legacy = old.data?.productVariant as {sku: string; inventoryQuantity: number | null; product: {id: string; status: string}};
+      if (!legacy || legacy.product.id !== original.product_id ||
+          ![sku, `ARCHIVE-${sku}`].includes(legacy.sku) || (legacy.inventoryQuantity ?? 0) > 0) {
+        throw new Error(`Legacy SKU or stock mismatch: ${sku}`);
+      }
+      if (legacy.sku === sku) await setReleaseSku(original.inventory_item_id, `ARCHIVE-${sku}`);
+    }
+    for (const variant of moved) await setReleaseSku(variant.inventoryItem.id, variant.sku.replace(/^STAGE-/, ''));
+  }
+
+  for (const product of audit) {
+    if (product.status !== 'ACTIVE') await activateProduct(product.id, product.handle);
+    if (!product.publishedOnPublication) await publishToOnlineStore(product.id, publication, product.handle);
+  }
+
+  // Archive legacy products only after all replacement pages are published.
+  for (const product of audit) {
+    for (const variant of product.variants.nodes) {
+      const sku = variant.sku.replace(/^STAGE-/, '');
+      const original = retained.products_by_sku[sku];
+      if (!original || original.product_id === product.id) continue;
+      const archive = await executeGraphql(
+        `mutation ArchiveLegacy($product: ProductUpdateInput!) {
+          productUpdate(product: $product) { product { id status } userErrors { message } }
+        }`,
+        {product: {id: original.product_id, status: 'ARCHIVED'}},
+        {mutate: true},
+      );
+      releaseMutationErrors(archive, 'productUpdate');
+      await ensureReleaseRedirect(`/products/${original.handle}`, `/products/${product.handle}?variant=${variant.id.split('/').at(-1)}`);
+    }
+  }
+  console.log(`Published ${audit.length} release products to Online Store.`);
+}
+
+function releaseMutationErrors(result: GraphqlResult, field: string) {
+  assertNoErrors(field, result);
+  const payload = result.data?.[field] as {userErrors: {message: string}[]} | undefined;
+  if (!payload || payload.userErrors.length) throw new Error(`${field}: ${JSON.stringify(payload?.userErrors)}`);
+}
+
+async function setReleaseSku(id: string, sku: string) {
+  const result = await executeGraphql(
+    `mutation MoveReleaseSku($id: ID!, $input: InventoryItemInput!) {
+      inventoryItemUpdate(id: $id, input: $input) { inventoryItem { sku } userErrors { message } }
+    }`,
+    {id, input: {sku}}, {mutate: true},
+  );
+  releaseMutationErrors(result, 'inventoryItemUpdate');
+}
+
+async function ensureReleaseRedirect(path: string, target: string) {
+  const found = await executeGraphql(`query ReleaseRedirect($query: String!) {
+    urlRedirects(first: 10, query: $query) { nodes { path target } }
+  }`, {query: `path:${path}`});
+  assertNoErrors(path, found);
+  const existing = (found.data?.urlRedirects as {nodes: {path: string; target: string}[]}).nodes.find(row => row.path === path);
+  if (existing) {
+    if (existing.target !== target) throw new Error(`Conflicting redirect: ${path}`);
+    return;
+  }
+  const result = await executeGraphql(`mutation CreateReleaseRedirect($input: UrlRedirectInput!) {
+    urlRedirectCreate(urlRedirect: $input) { urlRedirect { id } userErrors { message } }
+  }`, {input: {path, target}}, {mutate: true});
+  releaseMutationErrors(result, 'urlRedirectCreate');
+}
+
 async function main(): Promise<void> {
+  if (AUDIT_RELEASE || MOCK_RELEASE || FINISH_MOCK_RELEASE) return auditRelease();
+  if (STAGE_CHULHA) return stageChulha();
+  if (GROUP_FORGE) return stageGroupedForge();
   const idMap = loadIdMap();
+  if (FORGE_DRAFTS) {
+    if (PUBLISH || OFFLINE) throw new Error('--forge-drafts performs an Admin reconciliation and cannot publish.');
+    await stageForgeDrafts(idMap);
+    return;
+  }
   const authMode = OFFLINE
     ? 'offline (no network calls)'
     : adminToken()

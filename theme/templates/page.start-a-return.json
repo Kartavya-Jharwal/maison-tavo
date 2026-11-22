@@ -1,0 +1,41 @@
+{
+  "sections": {
+    "room": {
+      "type": "maison-room",
+      "settings": {
+        "eyebrow": "Support",
+        "heading": "Start a Return",
+        "lede": "<p>Tell us about an order you need reviewed.</p>",
+        "notice": "The current storefront is a gated exhibition. Test orders do not need a parcel returned.",
+        "padding-block-start": 48,
+        "padding-block-end": 64
+      },
+      "blocks": {
+        "steps": {
+          "type": "clause",
+          "settings": {
+            "heading": "For an exhibition test order",
+            "text": "<p>Use <a href=\"/pages/contact\">Contact Us</a> and include the test order reference, the email used and what you want us to review. Please omit payment information. Do not ship anything to Maison Tavo.</p>"
+          }
+        },
+        "account": {
+          "type": "clause",
+          "settings": {
+            "heading": "If your order page offers returns",
+            "text": "<p>Open the order status link in your confirmation email or <a href=\"/account\">Account</a>. If a return action is available there, follow the steps shown for that order. Availability depends on the store settings and order status.</p>"
+          }
+        },
+        "policy": {
+          "type": "pathway",
+          "settings": {
+            "label": "Refund and Returns Policy",
+            "url": "/pages/refund-returns-policy",
+            "text": "Read the exhibition returns and refund information."
+          }
+        }
+      },
+      "block_order": ["steps", "account", "policy"]
+    }
+  },
+  "order": ["room"]
+}

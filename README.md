@@ -58,10 +58,10 @@ Equivalent theme CLI (from `theme/`):
 ```bash
 shopify theme dev -e development
 shopify theme pull -e production
-shopify theme push -e production
+bun run push
 ```
 
-Production push uses live theme id `198667665777` with `allow-live` and does not upload `config/settings_data.json` (theme editor values stay on the store). CSS/custom-theme notes: [`theme/AGENTS.md`](theme/AGENTS.md).
+`bun run push` rebuilds and verifies the bundles before uploading to live theme `210460377457`. The production environment preserves `config/settings_data.json` on the store. See [`theme/AGENTS.md`](theme/AGENTS.md) for theme development notes.
 
 ## License
 

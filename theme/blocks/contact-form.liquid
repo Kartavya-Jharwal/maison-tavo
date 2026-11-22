@@ -6,6 +6,7 @@
 
 <div
   class="contact-form spacing-style size-style"
+  {% if block.settings.trade_fields %}id="trade"{% endif %}
   style="
     {% render 'spacing-style', settings: block.settings %}
     {% render 'size-style', settings: block.settings %}
@@ -36,19 +37,21 @@
     {%- if form.errors and form_matches -%}
       <div
         class="contact-form__error"
+        id="{{ form_id }}-email-error"
+        role="alert"
         tabindex="-1"
         autofocus
       >
         {{- 'icon-error.svg' | inline_asset_content -}}
 
-        {{- form.errors.translated_fields.email | capitalize }}
-        {{ form.errors.messages.email -}}
+        {{- form.errors | default_errors -}}
       </div>
     {%- endif -%}
 
     {%- if form.posted_successfully? and form_matches -%}
       <div
         class="contact-form__success"
+        role="status"
         tabindex="-1"
         autofocus
       >
@@ -59,14 +62,14 @@
 
     <div class="contact-form__form-row">
       <label
-        class="visually-hidden"
-        for="ContactForm-name"
+        class="contact-form__label"
+        for="{{ form_id }}-name"
       >
         {{- 'blocks.contact_form.name' | t -}}
       </label>
       <input
         type="text"
-        id="ContactForm-name"
+        id="{{ form_id }}-name"
         class="contact-form__input"
         autocomplete="name"
         name="contact[name]"
@@ -75,56 +78,71 @@
       >
 
       <label
-        class="visually-hidden"
-        for="ContactForm-email"
+        class="contact-form__label"
+        for="{{ form_id }}-email"
       >
         {{- 'blocks.contact_form.email' | t -}}
         <span aria-hidden="true">*</span></label
       >
       <input
         type="email"
-        id="ContactForm-email"
+        id="{{ form_id }}-email"
         class="contact-form__input"
         autocomplete="email"
         name="contact[email]"
         spellcheck="false"
         autocapitalize="off"
         value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+        required
         aria-required="true"
         {% if form.errors contains 'email' and form_matches %}
           aria-invalid="true"
-          aria-describedby="ContactForm-email-error"
+          aria-describedby="{{ form_id }}-email-error"
         {% endif %}
         placeholder="{{ 'blocks.contact_form.email' | t }}"
       >
     </div>
 
     <label
-      class="visually-hidden"
-      for="ContactForm-phone"
+      class="contact-form__label"
+      for="{{ form_id }}-phone"
     >
       {{- 'blocks.contact_form.phone' | t -}}
     </label>
     <input
       type="tel"
-      id="ContactForm-phone"
+      id="{{ form_id }}-phone"
       class="contact-form__input"
       autocomplete="tel"
       name="contact[phone]"
-      pattern="[0-9\-]*"
       value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
       placeholder="{{ 'blocks.contact_form.phone' | t }}"
     >
 
+    {%- if block.settings.trade_fields -%}
+      <fieldset class="contact-form__trade">
+        <legend>Trade and hospitality</legend>
+        <p>Give us the pieces, the count and the first service date. For reorders, include the model and size. For custom marking, tell us where the mark should go.</p>
+        <label for="{{ form_id }}-organisation">Company or project name (optional)</label>
+        <input
+          type="text"
+          id="{{ form_id }}-organisation"
+          class="contact-form__input"
+          name="contact[Company or project]"
+          autocomplete="organization"
+        >
+      </fieldset>
+    {%- endif -%}
+
     <label
-      class="visually-hidden"
-      for="ContactForm-body"
+      class="contact-form__label"
+      for="{{ form_id }}-body"
     >
       {{- 'blocks.contact_form.comment' | t -}}
     </label>
     <textarea
       rows="10"
-      id="ContactForm-body"
+      id="{{ form_id }}-body"
       class="contact-form__input contact-form__input--textarea"
       name="contact[body]"
       placeholder="{{ 'blocks.contact_form.comment' | t }}"
@@ -149,9 +167,34 @@
     gap: var(--gap-md);
 
     @media screen and (min-width: 750px) {
-      flex-direction: row;
-      align-items: center;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+
+      label { grid-row: 1; }
     }
+  }
+
+  .contact-form__trade {
+    display: grid;
+    gap: 0.5rem;
+    min-inline-size: 0;
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+  }
+
+  .contact-form#trade {
+    scroll-margin-block-start: calc(var(--header-group-height, 4rem) + 1rem);
+  }
+
+  .contact-form__trade legend {
+    padding-inline: 0.3rem;
+    font-weight: var(--font-weight-semibold, 600);
+  }
+
+  .contact-form__trade p {
+    margin: 0 0 0.5rem;
   }
 
   .contact-form__input {
@@ -184,6 +227,7 @@
   "name": "t:names.contact_form",
   "tag": null,
   "settings": [
+    { "type": "checkbox", "id": "trade_fields", "label": "Show trade enquiry fields", "default": false },
     {
       "type": "select",
       "id": "width",

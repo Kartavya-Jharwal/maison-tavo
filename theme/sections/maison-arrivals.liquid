@@ -51,6 +51,8 @@
                   alt: image_alt,
                   loading: 'lazy'
               }}
+            {% else %}
+              {% render 'maison-concept-image', product: product %}
             {% endif %}
             <span class="maison-arrivals__name">{{ product.title | escape }}</span>
             <span class="maison-arrivals__price">{{ product.price | money }}</span>
