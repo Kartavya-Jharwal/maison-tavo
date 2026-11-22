@@ -126,32 +126,7 @@
           }}
         {%- endif -%}
       {%- else -%}
-        {% liquid
-          assign item_key = resource.handle | append: ' ' | append: resource.title | downcase
-          if item_key contains 'kadai' or item_key contains 'kadhai' or item_key contains 'wok'
-            assign fallback_img = 'maison-flagship-kadai.webp'
-          elsif item_key contains 'clay' or item_key contains 'kulhad' or item_key contains 'terre' or item_key contains 'handi' or item_key contains 'earthen'
-            assign fallback_img = 'maison-clay-openpot.webp'
-          elsif item_key contains 'high pot' or item_key contains 'highpot' or item_key contains 'stockpot' or item_key contains 'degchi'
-            assign fallback_img = 'maison-highpot-set.webp'
-          elsif item_key contains 'sauce' or item_key contains 'saucier'
-            assign fallback_img = 'maison-saucepot.webp'
-          elsif item_key contains 'set' or item_key contains 'suite' or item_key contains 'thali' or item_key contains 'dining' or item_key contains 'trio'
-            assign fallback_img = 'maison-dining-set-6pc.webp'
-          elsif item_key contains 'pan' or item_key contains 'skillet' or item_key contains 'relay' or item_key contains 'tava'
-            assign fallback_img = 'maison-pan-set.jpg'
-          else
-            assign fallback_img = 'maison-flagship-kadai.webp'
-          endif
-        %}
-        <img
-          class="resource-card__image"
-          src="{{ fallback_img | asset_url }}"
-          alt="{{ resource.title | default: 'Maison Tavo Piece' | escape }}"
-          width="1200"
-          height="1500"
-          loading="lazy"
-        >
+        {% render 'maison-concept-image', product: resource, class_name: 'resource-card__image' %}
       {%- endif -%}
     {%- elsif resource_type == 'collection' -%}
       {%- if resource.image != blank -%}

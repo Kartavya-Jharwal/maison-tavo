@@ -5,7 +5,7 @@
       "settings": {
         "eyebrow": "Atelier dispatches",
         "heading": "Journal",
-        "lede": "Letters from the cutting table: fittings, cloth, and the making of Maison Tavo. A dedicated house page — not a Shopify blog grid.",
+        "lede": "Field notes on cookware, careful use, and the ideas behind Maison Tavo.",
         "padding-block-start": 48,
         "padding-block-end": 24
       }
@@ -17,32 +17,32 @@
           "type": "entry",
           "settings": {
             "date_label": "Note 01",
-            "heading": "The pass stays quiet",
-            "text": "<p>Journal entries land here as living notes — fittings, cloth, and foundry heat — without requiring a Shopify blog. Add or reorder entries in the theme editor.</p>"
+            "heading": "A vessel for everyday heat",
+            "text": "<p>A useful pan earns its place through ordinary meals. We study shape, weight, and heat response alongside the rituals cooks return to each day.</p>"
           }
         },
         "heat": {
           "type": "entry",
           "settings": {
             "date_label": "Note 02",
-            "heading": "Heat before merch",
-            "text": "<p>We open a release when a foundry allocation is ready, not when a calendar asks for content. The journal records that discipline.</p>"
+            "heading": "Reading the heat",
+            "text": "<p>The colour of oil, the sound of a simmer, and the moment food releases from a surface are practical signals. Our heat study explores how vessel construction can support that judgement.</p>"
           }
         },
         "rooms": {
           "type": "entry",
           "settings": {
             "date_label": "Note 03",
-            "heading": "Rooms before shout",
-            "text": "<p>Department, Kitchen, Heat, Finder, Mail, and Releases each keep a page. The journal is the written spine between them.</p>"
+            "heading": "Care is part of the object",
+            "text": "<p>Cleaning, drying, and storing cookware are part of its design life. Visit the care guide for steps suited to each material and finish.</p>"
           }
         }
       },
       "block_order": ["pass", "heat", "rooms"],
       "settings": {
         "eyebrow": "Dispatches",
-        "heading": "From the cutting table",
-        "lede": "Editorial notes for the house. Replace these placeholders as real dispatches land.",
+        "heading": "Notes from the kitchen",
+        "lede": "Three short studies from the exhibition, with product guidance linked from each piece page.",
         "padding-block-start": 24,
         "padding-block-end": 96
       }

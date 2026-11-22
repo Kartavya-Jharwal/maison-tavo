@@ -2,7 +2,7 @@
   Maison Tavo — Post-splash full-bleed hero.
   First viewport: brand + Instrument Serif headline + house tagline + CTA.
   Art-directed crops via <picture> (optional mobile/tablet images) + CSS object-fit.
-  Media: section pickers → Forge Hybrid product → assets/maison-hero.svg (swap for maison-hero.jpg).
+  Media: section pickers, then Forge product media, then the bundled cookware illustration.
 {% endcomment %}
 
 {% liquid
@@ -37,7 +37,7 @@
   endif
 
   if hero_alt == blank
-    assign hero_alt = 'Maison Tavo hand-forged dual-mass cookware'
+    assign hero_alt = hero_desktop.alt
   endif
 
   if hero_tablet == blank
@@ -109,33 +109,20 @@
         <picture class="maison-hero__picture" data-mt-scrub="16">
           <source
             media="(max-width: 749px)"
-            srcset="{{ 'maison-kadai-topdown.webp' | asset_url }}"
-            width="823"
-            height="823"
-          >
-          <source
-            media="(min-width: 750px) and (max-width: 1199px)"
-            srcset="{{ 'maison-hero-kadai.webp' | asset_url }}"
-            width="823"
-            height="823"
-          >
-          <source
-            media="(min-width: 1200px)"
-            srcset="{{ 'maison-hero.webp' | asset_url }}"
-            width="823"
-            height="823"
+            srcset="{{ 'maison-concept-tavo-collection-small.webp' | asset_url }}"
+            width="800"
+            height="800"
           >
           <img
             class="maison-hero__img maison-hero__img--asset"
-            src="{{ 'maison-hero.webp' | asset_url }}"
-            alt="{{ hero_alt | escape }}"
-            width="823"
-            height="823"
+            src="{{ 'maison-concept-tavo-collection.webp' | asset_url }}"
+            alt=""
+            width="1600"
+            height="1600"
             loading="eager"
             fetchpriority="high"
             decoding="async"
             data-mt-scrub="16"
-            onerror="if(this.src!=='{{ 'maison-hero.svg' | asset_url }}'){this.src='{{ 'maison-hero.svg' | asset_url }}';}"
           >
         </picture>
       {% endif %}
